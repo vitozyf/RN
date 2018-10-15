@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import FirstPage from './test/FirstPage';
-import SecondPage from './test/SecondPage';
-import ThirdPage from './test/ThirdPage';
-import FourthPage from './test/FourthPage';
+import FirstPage from './slide/FirstPage';
+import SecondPage from './slide/SecondPage';
+import ThirdPage from './slide/ThirdPage';
+import FourthPage from './slide/FourthPage';
 import {
     StackNavigator,
     TabNavigator,

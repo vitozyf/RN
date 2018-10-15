@@ -29,13 +29,16 @@ class Index extends Component{
     })
   }
   render() {
-    const {navigation} = this.props;
+    const {SetHomeNav, navigation, rootnav} = this.props;
+    // this.props.navigation.navigate('DrawerOpen')
+    SetHomeNav(navigation);
+    console.log(123, this.props, rootnav.openDrawer);
     return (
       <View>
         <Text>
           首页
         </Text>
-        <ZnlButton onPress={() => {navigation.navigate('Pages')}}>
+        <ZnlButton onPress={() => {rootnav.openDrawer()}}>
           跳转到cloud
         </ZnlButton>
       </View>
@@ -44,15 +47,16 @@ class Index extends Component{
 }
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {IsLogin: state.IsLogin}, props);
+  console.log(222, state)
+  return Object.assign({}, {rootnav: state.Navigations.rootnav}, props);
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    SetIsLogin : (IsLogin) => {
+    SetHomeNav : (homenav) => {
       return dispatch({
-        type: 'SetIsLogin',
-        IsLogin
+        type: 'SetHomeNav',
+        homenav
       })
     }
   }

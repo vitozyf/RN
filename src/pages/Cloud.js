@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ZnlButton from '../components/ZnlButton';
-import Pages from '../router';
+// import Pages from '../router';
 
 class Cloud extends Component{
   static navigationOptions = ({ navigation }) => {
@@ -16,16 +16,16 @@ class Cloud extends Component{
   render() {
     const {navigation} = this.props;
     return(
-      // <View>
-      //   <Text>云价格</Text>
-      //   <StatusBar  
-      //     barStyle="light-content"
-      //     backgroundColor="#6a51ae" />
-      //   <ZnlButton onPress={() => {navigation.navigate('Home')}}>
-      //     跳转到Home
-      //   </ZnlButton>
-      // </View>
-      <Pages />
+      <View>
+        <Text>云价格</Text>
+        <StatusBar  
+          barStyle="light-content"
+          backgroundColor="#6a51ae" />
+        <ZnlButton onPress={() => {navigation.navigate('Home')}}>
+          跳转到Home
+        </ZnlButton>
+      </View>
+      // <Pages />
     )
   }
 }

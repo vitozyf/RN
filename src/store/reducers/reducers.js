@@ -15,3 +15,14 @@ export const UserInfo = (state = {}, action) => {
       return state;
   }
 }
+
+export const Navigations = (state = {}, action) => {
+  switch (action.type) {
+    case 'SetRootNav':
+      return Object.assign(state, {rootnav: action.rootnav});
+    case 'SetHomeNav':
+      return Object.assign(state, {homenav: action.homenav});
+    default:
+      return state;
+  }
+}
