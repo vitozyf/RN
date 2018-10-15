@@ -1,81 +1,68 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
 import { Provider } from 'react-redux';
-import {connect} from 'react-redux';
 import createStore from './src/store';
-import CONFIG from './src/utils/config';
+import { 
+  createStackNavigator, // 带标题
+  createSwitchNavigator, // 全屏
+  createDrawerNavigator, // 抽屉
+  createBottomTabNavigator // 底部
+} from 'react-navigation';
 
-import Login from './src/pages/Login';
-import Index from './src/pages/Index';
-
-import { getStorage } from './src/utils';
+import LoginScreen from './src/pages/Login';
+import IndexScreen from './src/pages/Index';
+import MineScreen from './src/pages/Mine';
+import CloudScreen from './src/pages/Cloud';
 
 const store = createStore()
+const navigationOptions = {
+  headerStyle:{
+      backgroundColor: '#ee7700'
+  },
+  headerTintColor: '#fff',
+  headerBackTitle: null,
+  headerTitleStyle: {
+      fontWeight: 'bold',
+  },
+  drawerLockMode:'locked-closed' 
+};
 
-class CurrentView extends Component {
-  render() {
-    const {IsLogin, SetIsLogin} = this.props;
-    const CurrentPage = IsLogin ? (<Index></Index>) : (<Login></Login>);
-    return (<View>
-      {CurrentPage}
-    </View>)
+const RootStack = createBottomTabNavigator(
+  {
+    Home: IndexScreen,
+    // Login: LoginScreen,
+    Cloud: CloudScreen,
+    Mine: MineScreen
+  },
+  {
+    initialRouteName: 'Cloud',
+    navigationOptions: navigationOptions
   }
-}
-
-const mapStateToProps = (state, props) => {
-  return Object.assign({}, {IsLogin: state.IsLogin}, props);
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    SetIsLogin : (IsLogin) => {
-      return dispatch({
-        type: 'SetIsLogin',
-        IsLogin
-      })
-    }
-  }
-}
-
-const CurrentViewWidthStore = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CurrentView);
-
+);
 
 export default class App extends Component {
   render() {
-    getStorage(CONFIG.TOKEN).then(data => {
-      store.dispatch({
-        type: 'SetIsLogin',
-        IsLogin: !!data
-      })
-    })
-
     return (
       <Provider store = { store }>
-        <View style={styles.container}>
-          <CurrentViewWidthStore></CurrentViewWidthStore>
-        </View>
+        <RootStack />
       </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    paddingTop: 100,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  }
-});
+
+// import React, { Component } from 'react';
+// import {
+//   StyleSheet,
+// } from 'react-native';
+// import Pages from './src/router';
+// export default class App extends Component{
+//   render() {
+//     return (
+//       <Pages/>
+//     );
+//   }
+// }
+
+// const styles = StyleSheet.create({
+
+// });

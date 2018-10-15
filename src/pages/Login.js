@@ -17,30 +17,65 @@ class Login extends Component{
     }
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: '登录',
+    };
+  };
+
+  componentWillMount() {
+    // console.log('login componentWillMount')
+    // const didBlurSubscription = this.props.navigation.addListener(
+    //   'didBlur',
+    //   payload => {
+    //     console.debug('didBlur', payload);
+    //   }
+    // );
+  }
+
   login = () => {
+    const {
+      SetIsLogin,
+      navigation
+    } = this.props;
     $post('user/login', {
-      PhoneNumber: "13729093675",
-      Password: "123456",
+      PhoneNumber: this.state.PhoneNumber,
+      Password: this.state.Password,
       IsFreeLogin: true
     })
     .then(data => {
-      if (data.Code === 0) {
-        setStorage(CONFIG.TOKEN, data.Data.Token);
-        this.props.SetIsLogin(true);
+      if (data) {
+        setStorage(CONFIG.TOKEN, data.Token);
+        setStorage(CONFIG.AvatarPath, data.AvatarPath);
+        setStorage(CONFIG.NickName, data.NickName);
+        SetIsLogin(true);
+        navigation.navigate('Home');
       } else {
-        this.props.SetIsLogin(false);
+        SetIsLogin(false);
       }
     })
+  }
+
+  onChangeText(value, name) {
+    const loginInfo = {};
+    loginInfo[name] = value;
+    this.setState(loginInfo);
   }
 
   render() {
     return (
       <View style={styles.main}>
         <Text style={styles.titleText}>正能量云平台</Text>
-        <ZnlInput placeholder="请输入账号">
-        </ZnlInput>
-        <ZnlInput placeholder="请输入密码">
-        </ZnlInput>
+        <ZnlInput 
+          placeholder="请输入账号" 
+          onChangeText={(value) => this.onChangeText(value, 'PhoneNumber')}
+        />
+        <ZnlInput 
+          placeholder="请输入密码" 
+          onChangeText={(value) => this.onChangeText(value, 'Password')}
+          onSubmitEditing={this.login}
+          secureTextEntry={true}
+        />
         <ZnlButton onPress={this.login}>
           登录
         </ZnlButton>
@@ -55,7 +90,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    SetIsLogin : (IsLogin) => {
+    SetIsLogin: (IsLogin) => {
       return dispatch({
         type: 'SetIsLogin',
         IsLogin

@@ -40,7 +40,27 @@ const removeStorage = (key) => {
 const removeAllStorage = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const value = await AsyncStorage.multiRemove([CONFIG.TOKEN]);
+      const value = await AsyncStorage.multiRemove([
+        CONFIG.TOKEN, 
+        CONFIG.AvatarPath, 
+        CONFIG.NickName
+      ]);
+      resolve(value)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+const cleaarAllStorage = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const value = await AsyncStorage.multiRemove([
+        CONFIG.TOKEN, 
+        CONFIG.AvatarPath, 
+        CONFIG.NickName, 
+        CONFIG.PhoneNumber
+      ]);
       resolve(value)
     } catch (error) {
       reject(error)
@@ -52,5 +72,6 @@ export {
   setStorage,
   getStorage,
   removeStorage,
-  removeAllStorage
+  removeAllStorage,
+  cleaarAllStorage
 }
