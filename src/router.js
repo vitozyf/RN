@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import FirstPage from './slide/FirstPage';
+import Home from './slide/Home';
 import SecondPage from './slide/SecondPage';
 import ThirdPage from './slide/ThirdPage';
 import FourthPage from './slide/FourthPage';
 import {
-    StackNavigator,
-    TabNavigator,
     createDrawerNavigator
 } from 'react-navigation';
 export default class Pages extends Component{
@@ -19,12 +17,12 @@ export default class Pages extends Component{
     }
 }
 const SimpleAppNavigator = createDrawerNavigator({
-    page1: {screen: FirstPage},
+    Home: {screen: Home},
     page2: {screen: SecondPage},
     page3: {screen: ThirdPage},
     page4: {screen: FourthPage}
 },{
-     initialRouteName: 'page1',
+     initialRouteName: 'Home',
      drawerPosition: 'left',
      swipeEnabled: true,
      animationEnabled: true,
