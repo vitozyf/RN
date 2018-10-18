@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
-import createStore from '../store';
+import createStore from '@src/store';
 import {connect} from 'react-redux';
 
 import { 
   createBottomTabNavigator // 底部
 } from 'react-navigation';
 
-import IndexScreen from '../pages/Index';
-import MineScreen from '../pages/Mine';
-import CloudScreen from '../pages/Cloud';
+import IndexScreen from '@pages/Index';
+import MineScreen from '@pages/Mine';
+import CloudScreen from '@pages/Cloud';
 
 const store = createStore()
 const navigationOptions = {

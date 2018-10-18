@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import ZnlButton from '../components/ZnlButton';
 import ZnlInput from '../components/ZnlInput';
 import {$post} from '../utils';
-import {setStorage} from '../utils';
+import {setStorage, removeAllStorage} from '../utils';
 import {connect} from 'react-redux';
 import CONFIG from '../utils/config';
 
@@ -52,6 +52,7 @@ class Login extends Component{
         navigation.navigate('Home');
       } else {
         SetIsLogin(false);
+        removeAllStorage();
       }
     })
   }

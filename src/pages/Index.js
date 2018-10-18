@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Bom from './IndexPages/bom';
+import Bom from '@pages/IndexPages/Bom';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { 
   createStackNavigator

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Provider } from 'react-redux';
-import createStore from './src/store';
-import Pages from './src/router';
+import createStore from '@src/store';
+import Pages from '@src/router';
 import { 
   createStackNavigator, // 带标题
   createSwitchNavigator, // 全屏

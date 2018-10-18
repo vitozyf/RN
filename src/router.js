@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Home from './slide/Home';
-import SecondPage from './slide/SecondPage';
-import ThirdPage from './slide/ThirdPage';
-import FourthPage from './slide/FourthPage';
+import Home from '@src/slide/Home';
+import Login from '@src/slide/Login';
+import ThirdPage from '@src/slide/ThirdPage';
+import FourthPage from '@src/slide/FourthPage';
 import {
     createDrawerNavigator
 } from 'react-navigation';
@@ -18,7 +18,7 @@ export default class Pages extends Component{
 }
 const SimpleAppNavigator = createDrawerNavigator({
     Home: {screen: Home},
-    page2: {screen: SecondPage},
+    Login: {screen: Login},
     page3: {screen: ThirdPage},
     page4: {screen: FourthPage}
 },{
@@ -26,6 +26,6 @@ const SimpleAppNavigator = createDrawerNavigator({
      drawerPosition: 'left',
      swipeEnabled: true,
      animationEnabled: true,
-     lazy: false,
+     lazy: true,
      tabBarPosition:'bottom',
  });

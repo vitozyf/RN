@@ -48,7 +48,7 @@ ZnlInput.propTypes = {
 };
 
 ZnlInput.defaultProps = {
-  placeholder: '请输入内容',
+  placeholder: '',
   maxLength: 20,
   autoFocus: false,
   defaultValue: '',
@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
   inputsty: {
     fontSize: 20,
     color: '#333333',
-    borderBottomWidth: 1,
+    borderWidth: 1,
+    borderColor: '#ee7700',
     width: 300,
-    height: 50,
+    height: 30,
     padding: 0
   }
 });
