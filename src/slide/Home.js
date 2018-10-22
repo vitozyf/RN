@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 import createStore from '@src/store';
 import {connect} from 'react-redux';
+import {CustomTabComponent} from '@components';
 
 import { 
   createBottomTabNavigator // 底部
@@ -24,7 +25,8 @@ const RootStack = createBottomTabNavigator(
   },
   {
     initialRouteName: 'Home',
-    tabBarOptions: navigationOptions
+    tabBarOptions: navigationOptions,
+    tabBarComponent: CustomTabComponent
   }
 );
 

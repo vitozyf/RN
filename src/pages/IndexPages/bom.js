@@ -3,26 +3,25 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {connect} from 'react-redux';
 import {getStorage} from '@src/utils';
 import CONFIG from '@src/utils/config';
+import {PR} from '@src/utils/system'
 import {
   HeaderTitle,
   HeaderRight,
   ZnlInput,
   ZnlButton
 } from '@components';
-import {PR} from '@src/utils/system'
 
 class Bom extends Component {
   constructor(props) {
     super(props);
   }
-  static navigationOptions = async ({ navigation }) => {
+  static navigationOptions = ({ navigation }) => {
     const onPress = () => {
       navigation.getParam('rootnav').openDrawer();
     }
-    const AvatarPath = await getStorage(CONFIG.AvatarPath);
+    const UserAvatar = navigation.getParam('AvatarPath');
     const defaultUrl = 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4001431513,4128677135&fm=26&gp=0.jpg';
-    const URL = AvatarPath ? `https:${AvatarPath}` : defaultUrl;
-    console.log(URL);
+    const AvatarPath = UserAvatar ? `https:${UserAvatar}` : defaultUrl;
     const headerLeft = (
       <TouchableOpacity
       activeOpacity={0.8}
@@ -30,7 +29,7 @@ class Bom extends Component {
         <Image 
         style={styles.headerLeftImg}
         source={{
-          uri: 'http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/eBPk33_1539748592007.png'
+          uri: AvatarPath
         }} />
       </TouchableOpacity>
     )
@@ -48,7 +47,9 @@ class Bom extends Component {
       navigation,
       rootnav
     } = this.props;
-    navigation.setParams({rootnav});
+    getStorage(CONFIG.AvatarPath).then(AvatarPath => {
+      navigation.setParams({rootnav, AvatarPath});
+    });
   }
   render() {
     return (
@@ -62,7 +63,7 @@ class Bom extends Component {
             }} />
         </View>
         <View style={styles.SearchBox}>
-          <ZnlInput />
+          <ZnlInput style={styles.SearchInput} />
           <ZnlButton style={styles.SearchButtton}>
             搜索
           </ZnlButton>
@@ -92,14 +93,17 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   SearchBox: {
-    height: 100,
-    justifyContent: 'flex-start',
+    // height: 100,
+    display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row'
+  },
+  SearchInput: {
+    width: 200
   },
   SearchButtton: {
-    borderRadius: 0,
-    backgroundColor: '#ee7700',
-    width: 100
+
   }
 });
 

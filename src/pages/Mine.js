@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {View, Text} from 'react-native';
 import { 
   createStackNavigator, // 带标题
   createSwitchNavigator, // 全屏

@@ -47,14 +47,14 @@ ZnlButton.defaultProps = {
 const styles = StyleSheet.create({
   // 主按钮
   buttonMain: {
-    backgroundColor: 'green',
-    width: 200,
+    width: 100,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
     marginTop: 20,
     marginBottom: 20,
+    borderRadius: 0,
+    backgroundColor: '#ee7700',
   },
   textMain: {
     color: '#fff', 
