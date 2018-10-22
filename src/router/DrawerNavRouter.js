@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Home from '@src/slide/Home';
-import Login from '@src/slide/Login';
-import ThirdPage from '@src/slide/ThirdPage';
-import FourthPage from '@src/slide/FourthPage';
+import Home from '@router/router-pages/Home';
+import Login from '@router/router-pages/Login';
+import ThirdPage from '@router/router-pages/ThirdPage';
+import FourthPage from '@router/router-pages/FourthPage';
 import {
     createDrawerNavigator
 } from 'react-navigation';

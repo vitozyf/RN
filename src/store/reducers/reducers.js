@@ -18,10 +18,12 @@ export const UserInfo = (state = {}, action) => {
 
 export const Navigations = (state = {}, action) => {
   switch (action.type) {
-    case 'SetRootNav':
-      return Object.assign(state, {rootnav: action.rootnav});
-    case 'SetHomeNav':
-      return Object.assign(state, {homenav: action.homenav});
+    case 'SetDrawerNav':
+      return Object.assign(state, {DrawerNav: action.DrawerNav});
+    case 'SetSwitchNav':
+      return Object.assign(state, {SwitchNav: action.SwitchNav});
+    case 'SetBottomTabNav':
+      return Object.assign(state, {BottomTabNav: action.BottomTabNav});
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, StyleSheet } from 'react-native';
+import { TextInput, View, StyleSheet } from 'react-native';
 class ZnlInput extends Component {
   render() {
     const { 
@@ -13,23 +13,37 @@ class ZnlInput extends Component {
       keyboardType,
       multiline,
       onSubmitEditing,
-      secureTextEntry
+      secureTextEntry,
+      onFocus
     } = this.props;
-    const styleMix = Object.assign({}, styles.inputsty, style);
+    const {children} = this.props;
+    const filterKeys = ['width', 'height']; // 过滤到外层的属性
+    let filterStyles = {};
+    let boxFilterStyles = {};
+    Object.keys(style).map(item => {
+      if (filterKeys.find(key => item === key)) {
+        boxFilterStyles[item] = style[item];
+      } else {
+        filterStyles[item] = style[item];
+      }
+    })
     return (
-      <TextInput 
-          style={styleMix}
-          placeholder={placeholder}
-          maxLength={maxLength}
-          onChangeText={onChangeText}
-          autoFocus={autoFocus}
-          defaultValue={defaultValue}
-          keyboardType={keyboardType}
-          multiline={multiline}
-          onSubmitEditing={onSubmitEditing}
-          secureTextEntry={secureTextEntry}
-          >
-      </TextInput>
+      <View style={[styles.inputbox, boxFilterStyles]}>
+        {children}
+        <TextInput 
+            style={[styles.inputsty, filterStyles]}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            onChangeText={onChangeText}
+            autoFocus={autoFocus}
+            defaultValue={defaultValue}
+            keyboardType={keyboardType}
+            multiline={multiline}
+            onSubmitEditing={onSubmitEditing}
+            secureTextEntry={secureTextEntry}
+            onFocus={onFocus}
+            />
+      </View>
     )
   }
 }
@@ -44,6 +58,7 @@ ZnlInput.propTypes = {
   keyboardType: PropTypes.string,
   multiline: PropTypes.bool,
   onSubmitEditing: PropTypes.func,
+  onFocus: PropTypes.func,
   secureTextEntry: PropTypes.bool
 };
 
@@ -57,13 +72,17 @@ ZnlInput.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+  inputbox: {
+    width: 300,
+    height: 40,
+  },
   inputsty: {
     fontSize: 20,
     color: '#333333',
     borderWidth: 1,
     borderColor: '#ee7700',
-    width: 300,
-    height: 40,
+    width: '100%',
+    height: '100%',
     padding: 5,
   }
 });

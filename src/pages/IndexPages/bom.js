@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 import {getStorage} from '@src/utils';
 import CONFIG from '@src/utils/config';
 import {PR} from '@src/utils/system'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import {
   HeaderTitle,
   HeaderRight,
   ZnlInput,
-  ZnlButton
 } from '@components';
 
 class Bom extends Component {
@@ -17,7 +18,7 @@ class Bom extends Component {
   }
   static navigationOptions = ({ navigation }) => {
     const onPress = () => {
-      navigation.getParam('rootnav').openDrawer();
+      navigation.getParam('DrawerNav').openDrawer();
     }
     const UserAvatar = navigation.getParam('AvatarPath');
     const defaultUrl = 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4001431513,4128677135&fm=26&gp=0.jpg';
@@ -42,16 +43,21 @@ class Bom extends Component {
       headerRight: <HeaderRight />
     };
   };
+  onFocus = () => {
+    const {SwitchNav} = this.props;
+    SwitchNav.navigate('SearchPage');
+  }
   componentWillMount() {
     const {
       navigation,
-      rootnav
+      DrawerNav
     } = this.props;
     getStorage(CONFIG.AvatarPath).then(AvatarPath => {
-      navigation.setParams({rootnav, AvatarPath});
+      navigation.setParams({DrawerNav, AvatarPath});
     });
   }
   render() {
+    // const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.ImgBox}>
@@ -63,10 +69,14 @@ class Bom extends Component {
             }} />
         </View>
         <View style={styles.SearchBox}>
-          <ZnlInput style={styles.SearchInput} />
-          <ZnlButton style={styles.SearchButtton}>
-            搜索
-          </ZnlButton>
+          <ZnlInput 
+            style={styles.SearchInput} 
+            onFocus={this.onFocus}>
+            <FontAwesome 
+              name={'search'} 
+              size={ 24 } 
+              style={styles.FontAwesome}/>
+          </ZnlInput>
         </View>
       </View>
     )
@@ -94,21 +104,26 @@ const styles = StyleSheet.create({
   },
   SearchBox: {
     // height: 100,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row'
   },
   SearchInput: {
-    width: 200
+    width: 300,
+    height: 48,
+    borderRadius: 10,
+    paddingLeft: 40
   },
-  SearchButtton: {
-
+  FontAwesome: {
+    position: 'absolute',
+    left: 10,
+    top: 12,
+    color: '#999'
   }
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {rootnav: state.Navigations.rootnav}, props);
+  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav, DrawerNav: state.Navigations.DrawerNav}, props);
 }
 
 export default connect(

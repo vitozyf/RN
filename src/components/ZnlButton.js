@@ -15,8 +15,8 @@ export default class ZnlButton extends Component{
       textStyle,
       activeOpacity
     } = this.props;
-    const styleMix = Object.assign({}, styles.buttonMain, style);
-    const textStyleMix = Object.assign({}, styles.textMain, textStyle);
+    const styleMix = [styles.buttonMain, style];
+    const textStyleMix = [styles.textMain, textStyle];
     return (
       <TouchableOpacity
         onPress={ onPress }

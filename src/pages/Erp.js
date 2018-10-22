@@ -5,7 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 class Cloud extends Component{
   static navigationOptions = ({ navigation }) => {
     return {
-      title: '云价格',
+      title: 'ERP',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         return <Entypo name={'icloud'} size={ 20 } color={focused ? '#ee7700' : '#333'} />;
       },

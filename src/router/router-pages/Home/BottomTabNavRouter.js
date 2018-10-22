@@ -1,27 +1,25 @@
 import React, {Component} from 'react';
-import { Provider } from 'react-redux';
-import createStore from '@src/store';
 import {connect} from 'react-redux';
 import {CustomTabComponent} from '@components';
 
 import { 
-  createBottomTabNavigator // 底部
+  createBottomTabNavigator, // 底部
 } from 'react-navigation';
 
 import IndexScreen from '@pages/Index';
-import MineScreen from '@pages/Mine';
-import CloudScreen from '@pages/Cloud';
+import ErpScreen from '@pages/Erp';
 
-const store = createStore()
+
+
+// tab导航
 const navigationOptions = {
   activeTintColor: '#ee7700',
 };
 
-const RootStack = createBottomTabNavigator(
+const TabNav = createBottomTabNavigator(
   {
     Home: IndexScreen,
-    Cloud: CloudScreen,
-    Mine: MineScreen
+    Erp: ErpScreen
   },
   {
     initialRouteName: 'Home',
@@ -30,17 +28,12 @@ const RootStack = createBottomTabNavigator(
   }
 );
 
-const AppIndex = class App extends Component {
-  static navigationOptions = {
-    drawerLabel: '首页'
-  };
+const BottomTabNavRouter = class App extends Component {
   render() {
-    const {SetRootNav, navigation} = this.props;
-    SetRootNav(navigation);
+    const {SetSwitchNav, navigation} = this.props;
+    SetSwitchNav(navigation);
     return (
-      <Provider store = { store }>
-        <RootStack />
-      </Provider>
+      <TabNav />
     );
   }
 }
@@ -51,10 +44,10 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    SetRootNav : (rootnav) => {
+    SetSwitchNav : (SwitchNav) => {
       return dispatch({
-        type: 'SetRootNav',
-        rootnav
+        type: 'SetSwitchNav',
+        SwitchNav
       })
     }
   }
@@ -63,4 +56,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AppIndex);
+)(BottomTabNavRouter);

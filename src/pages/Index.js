@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import Bom from '@pages/IndexPages/Bom';
+import BomScreen from '@pages/IndexPages/Bom';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {connect} from 'react-redux';
 import { 
   createStackNavigator
 } from 'react-navigation';
@@ -8,7 +9,7 @@ import {
 const IndexPages = createStackNavigator(
   {
     Bom: {
-      screen: Bom,
+      screen: BomScreen,
     }
   },
   {
@@ -27,10 +28,10 @@ const IndexPages = createStackNavigator(
   }
 );
 
-export default class Index extends Component{
+const Index =  class Index extends Component{
   static navigationOptions = ({ navigation }) => {
     return {
-      title: '首页',
+      title: 'BOM.AI',
       activeTintColor: '#ee7700',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         return (
@@ -43,9 +44,30 @@ export default class Index extends Component{
     };
   };
   render() {
-    // rootnav.openDrawer()
+    const {SetBottomTabNav, navigation} = this.props;
+    SetBottomTabNav(navigation);
     return (
         <IndexPages></IndexPages>
     )
   }
 }
+
+const mapStateToProps = (state, props) => {
+  return props;
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    SetBottomTabNav : (BottomTabNav) => {
+      return dispatch({
+        type: 'SetBottomTabNav',
+        BottomTabNav
+      })
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Index);

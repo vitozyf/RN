@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import { BottomTabBar } from 'react-navigation-tabs';
 
 
@@ -30,6 +30,12 @@ export default class CustomTabComponent extends React.Component {
   }
 
   render() {
-    return this.state.visible && <BottomTabBar {...this.props} />;
+    return this.state.visible && <BottomTabBar style={styles.BottomTabBar} {...this.props} />;
   }
 }
+
+const styles = StyleSheet.create({
+  BottomTabBar: {
+    // borderTopColor: '#ee7700',
+  }
+})

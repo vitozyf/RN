@@ -2,8 +2,9 @@
 export default {
   IsLogin: false,
   Navigations: {
-    rootnav: null,
-    homenav: null
+    DrawerNav: null,
+    SwitchNav: null,
+    BottomTabNav: null
   },
   UserInfo: {
     PhoneNumber: ''
