@@ -12,13 +12,15 @@ const AppIndex = class App extends Component {
     drawerLabel: '首页'
   };
   render() {
-    const {SetDrawerNav, navigation} = this.props;
-    SetDrawerNav(navigation);
     return (
       <Provider store = { store }>
         <SwitchNavRouter />
       </Provider>
     );
+  }
+  componentWillMount() {
+    const {SetDrawerNav, navigation} = this.props;
+    SetDrawerNav(navigation);
   }
 }
 

@@ -1,26 +1,27 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import BottomTabNavRouter from './BottomTabNavRouter';
-import SearchStackNavRouter from './SearchStackNavRouter';
 import { 
-  createSwitchNavigator,
+  createStackNavigator,
 } from 'react-navigation';
 
+import SearchPageScreen from '@pages/SearchPages/SearchPage';
+import SearchPageDetail from '@pages/SearchPages/SearchPageDetail';
 
-const SwitchNav = createSwitchNavigator(
+
+const SearchStackNav = createStackNavigator(
   {
-    TabNav: BottomTabNavRouter,
-    SearchPage: SearchStackNavRouter
+    SearchPage: SearchPageScreen,
+    SearchPageDetail: SearchPageDetail
   },
   {
-    initialRouteName: 'TabNav'
+    initialRouteName: 'SearchPage'
   }
 )
 
-const SwitchNavRouter = class App extends Component {
+const SearchStackNavRouter = class App extends Component {
   render() {
     return (
-      <SwitchNav />
+      <SearchStackNav />
     );
   }
 }
@@ -42,4 +43,4 @@ const SwitchNavRouter = class App extends Component {
 
 export default connect(
   // mapStateToProps
-)(SwitchNavRouter);
+)(SearchStackNavRouter);

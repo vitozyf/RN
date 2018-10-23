@@ -8,6 +8,7 @@ import {
   setStorage,
   getStorage,
   removeStorage,
+  setArrayStorage,
   removeAllStorage,
   cleaarAllStorage
 } from './storage';
@@ -20,6 +21,7 @@ export {
   setStorage,
   getStorage,
   removeStorage,
+  setArrayStorage,
   removeAllStorage,
   cleaarAllStorage
 }

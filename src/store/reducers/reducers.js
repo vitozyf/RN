@@ -24,6 +24,8 @@ export const Navigations = (state = {}, action) => {
       return Object.assign(state, {SwitchNav: action.SwitchNav});
     case 'SetBottomTabNav':
       return Object.assign(state, {BottomTabNav: action.BottomTabNav});
+    case 'SetSearchStackNav':
+      return Object.assign(state, {SearchStackNav: action.SearchStackNav});
     default:
       return state;
   }

@@ -48,11 +48,8 @@ const styles = StyleSheet.create({
   // 主按钮
   buttonMain: {
     width: 100,
-    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
     borderRadius: 0,
     backgroundColor: '#ee7700',
   },

@@ -30,11 +30,13 @@ const TabNav = createBottomTabNavigator(
 
 const BottomTabNavRouter = class App extends Component {
   render() {
-    const {SetSwitchNav, navigation} = this.props;
-    SetSwitchNav(navigation);
     return (
       <TabNav />
     );
+  }
+  componentWillMount() {
+    const {SetSwitchNav, navigation} = this.props;
+    SetSwitchNav(navigation);
   }
 }
 

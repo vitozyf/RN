@@ -43,7 +43,7 @@ class Bom extends Component {
       headerRight: <HeaderRight />
     };
   };
-  onFocus = () => {
+  toSearchPage = () => {
     const {SwitchNav} = this.props;
     SwitchNav.navigate('SearchPage');
   }
@@ -57,7 +57,6 @@ class Bom extends Component {
     });
   }
   render() {
-    // const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.ImgBox}>
@@ -68,16 +67,19 @@ class Bom extends Component {
             cache: 'force-cache'
             }} />
         </View>
-        <View style={styles.SearchBox}>
+        <TouchableOpacity 
+          style={styles.SearchBox} 
+          onPress={this.toSearchPage}
+          activeOpacity={1}>
           <ZnlInput 
             style={styles.SearchInput} 
-            onFocus={this.onFocus}>
-            <FontAwesome 
-              name={'search'} 
-              size={ 24 } 
+            editable={false}>
+            <FontAwesome
+              name={'search'}
+              size={ 24 }
               style={styles.FontAwesome}/>
           </ZnlInput>
-        </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -103,7 +105,6 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   SearchBox: {
-    // height: 100,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row'

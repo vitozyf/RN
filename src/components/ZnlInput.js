@@ -14,7 +14,9 @@ class ZnlInput extends Component {
       multiline,
       onSubmitEditing,
       secureTextEntry,
-      onFocus
+      onFocus,
+      editable,
+      returnKeyType
     } = this.props;
     const {children} = this.props;
     const filterKeys = ['width', 'height']; // 过滤到外层的属性
@@ -42,6 +44,8 @@ class ZnlInput extends Component {
             onSubmitEditing={onSubmitEditing}
             secureTextEntry={secureTextEntry}
             onFocus={onFocus}
+            editable={editable}
+            returnKeyType={returnKeyType}
             />
       </View>
     )
@@ -59,7 +63,9 @@ ZnlInput.propTypes = {
   multiline: PropTypes.bool,
   onSubmitEditing: PropTypes.func,
   onFocus: PropTypes.func,
-  secureTextEntry: PropTypes.bool
+  secureTextEntry: PropTypes.bool,
+  editable: PropTypes.bool,
+  returnKeyType: PropTypes.string
 };
 
 ZnlInput.defaultProps = {

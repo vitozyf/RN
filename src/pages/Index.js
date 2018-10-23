@@ -44,11 +44,13 @@ const Index =  class Index extends Component{
     };
   };
   render() {
-    const {SetBottomTabNav, navigation} = this.props;
-    SetBottomTabNav(navigation);
     return (
         <IndexPages></IndexPages>
     )
+  }
+  componentWillMount() {
+    const {SetBottomTabNav, navigation} = this.props;
+    SetBottomTabNav(navigation);
   }
 }
 

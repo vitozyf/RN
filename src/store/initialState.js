@@ -4,7 +4,8 @@ export default {
   Navigations: {
     DrawerNav: null,
     SwitchNav: null,
-    BottomTabNav: null
+    BottomTabNav: null,
+    SearchStackNav: null
   },
   UserInfo: {
     PhoneNumber: ''

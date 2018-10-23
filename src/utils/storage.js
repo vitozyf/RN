@@ -26,6 +26,48 @@ const getStorage = (key) => {
   })
 }
 
+/**
+ * 将数据以数组形式存储
+ * @param {*} key 
+ * @param {*} value 
+ * @param {*} length 数组最大长度
+ */
+const setArrayStorage = (key, value, length = 50) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let values = [];
+      const AlreadyValues = await getStorage(key) || JSON.stringify([]);
+      // 获取已有数据
+      try {
+        values = JSON.parse(AlreadyValues);
+      } catch (error) {
+        reject(error);
+      }
+      // 查找已有键值
+      let AlreadyIndex = 0;
+      const AlreadyItem = values.find((item, index) => {
+        AlreadyIndex = index;
+        return item === value
+      })
+      // 长度超过则裁剪
+      if (values.length >= length) {
+        values.pop();
+      }
+      // 存在则删除原有
+      if (AlreadyItem) {
+        values.splice(AlreadyIndex, 1);
+      } 
+      // 堆栈
+      values.unshift(value)
+      // 设置
+      await AsyncStorage.setItem(key, JSON.stringify(values));
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  })
+}
+
 const removeStorage = (key) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -72,6 +114,7 @@ export {
   setStorage,
   getStorage,
   removeStorage,
+  setArrayStorage,
   removeAllStorage,
   cleaarAllStorage
 }
