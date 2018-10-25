@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Provider } from 'react-redux';
 import createStore from '@src/store';
 import Pages from '@router/DrawerNavRouter';
+import './Global';
 import { 
   createStackNavigator, // 带标题
   createSwitchNavigator, // 全屏

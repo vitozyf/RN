@@ -7,7 +7,8 @@ import {$post, getStorage, removeStorage, setArrayStorage} from '@src/utils';
 import CONFIG from '@src/utils/config';
 import {
   ZnlInput,
-  ZnlButton
+  ZnlButton,
+  ZnlHeader
 } from '@components';
 
 class SearchPage extends Component {
@@ -35,12 +36,10 @@ class SearchPage extends Component {
     })
   }
   onPressKeywords = (Keyword) => {
-    // console.log(123, Keyword)
-    this.setState({Keyword: Keyword});
-    // console.log(222, this.state)
-    this.onSubmitEditing();
-    console.log(this.props);
-    // this.props.SearchStackNav.push('SearchPageDetail');
+    this.setState({Keyword}, () => {
+      this.onSubmitEditing();
+      this.props.navigation.push('SearchPageDetail');
+    });
   }
   onSubmitEditing = () => {
     const {
@@ -54,7 +53,6 @@ class SearchPage extends Component {
         this.getSearchRecord();
       })
     }
-    console.log(this.state);
     $post('ic', {
       PageIndex,
       PageSize,
@@ -93,7 +91,36 @@ class SearchPage extends Component {
     const {SearchRecord} = this.state;
     return (
       <View style={styles.SearchPage}>
-        <View style={styles.SearchBox}>
+        <ZnlHeader
+          hideLeft={true}
+          centerElement={
+            (
+              <ZnlInput 
+                style={styles.SearchInput} 
+                autoFocus={true}
+                returnKeyType="search"
+                onSubmitEditing={this.onSubmitEditing}
+                onChangeText={this.onChangeText}
+                placeholder="请输入型号进行搜索">
+                <FontAwesome 
+                  name={'search'} 
+                  size={ 24 } 
+                  style={styles.FontAwesome}/>
+              </ZnlInput>
+            )
+          }
+          rightElement={
+            (
+            <TouchableOpacity 
+              onPress={ this.cancelHandler }  
+              style={styles.cancelBtn} 
+              activeOpacity={1}>
+              <Text style={styles.cancelText}>取消</Text>
+            </TouchableOpacity>
+            )
+          }
+          />
+        {/* <View style={styles.SearchBox}>
           <ZnlInput 
             style={styles.SearchInput} 
             autoFocus={true}
@@ -109,7 +136,7 @@ class SearchPage extends Component {
           <TouchableOpacity onPress={ this.cancelHandler }  style={styles.cancelBtn} activeOpacity={1}>
             <Text style={styles.cancelText}>取消</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         <SearchPane title="搜索记录" onPressDelete={this.onPressDelete}>
           <View style={styles.searchBox}>
@@ -129,7 +156,9 @@ class SearchPage extends Component {
 }
 const styles = StyleSheet.create({
   SearchPage: {
-    padding: 20
+    padding: 20,
+    backgroundColor: '#fff',
+    flex: 1
   },
   SearchBox: {
     justifyContent: 'space-between',
@@ -141,7 +170,8 @@ const styles = StyleSheet.create({
     width: 260,
     height: 48,
     borderRadius: 10,
-    paddingLeft: 40
+    paddingLeft: 40,
+    flex: 1,
   },
   FontAwesome: {
     position: 'absolute',
@@ -150,6 +180,7 @@ const styles = StyleSheet.create({
     color: '#999'
   },
   cancelBtn: {
+    marginLeft: 10
   },
   cancelText: {
     fontSize: 20,

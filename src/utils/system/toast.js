@@ -10,7 +10,7 @@ import {ISANDROID, ISIOS} from './phonesystem';
  * @param {number} xOffset 
  * @param {number} yOffset 
  */
-const Toast = (message, duration, gravity, xOffset, yOffset) => {
+const Toast = (message, duration = 'SHORT', gravity, xOffset, yOffset) => {
   if (ISANDROID) {
     if (xOffset || yOffset) {
       return ToastAndroid.showWithGravityAndOffset(

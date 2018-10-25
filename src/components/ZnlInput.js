@@ -19,7 +19,7 @@ class ZnlInput extends Component {
       returnKeyType
     } = this.props;
     const {children} = this.props;
-    const filterKeys = ['width', 'height']; // 过滤到外层的属性
+    const filterKeys = ['width', 'height', 'flex']; // 过滤到外层的属性
     let filterStyles = {};
     let boxFilterStyles = {};
     Object.keys(style).map(item => {
@@ -79,7 +79,7 @@ ZnlInput.defaultProps = {
 
 const styles = StyleSheet.create({
   inputbox: {
-    width: 300,
+    // width: 300,
     height: 40,
   },
   inputsty: {

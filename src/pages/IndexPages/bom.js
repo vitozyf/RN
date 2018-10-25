@@ -87,6 +87,7 @@ class Bom extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff'
   },
   headerLeftImg: {
     width: 40, 
@@ -111,14 +112,14 @@ const styles = StyleSheet.create({
   },
   SearchInput: {
     width: 300,
-    height: 48,
+    height: 40,
     borderRadius: 10,
     paddingLeft: 40
   },
   FontAwesome: {
     position: 'absolute',
     left: 10,
-    top: 12,
+    top: 8,
     color: '#999'
   }
 });

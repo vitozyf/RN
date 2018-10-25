@@ -19,12 +19,13 @@ const fetchMethods = async (method, url, data, option) => {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'JWT ' + token
+          Authorization: 'JWTAPP ' + token
         },
         body: JSON.stringify(data)
       })
       .then((response) => response.json())
       .then(response => {
+        console.log('res', response)
         if (response.Code === 200) {
           const completeData = response.Result.Data;
           if (onlydata) {
@@ -42,6 +43,11 @@ const fetchMethods = async (method, url, data, option) => {
             resolve(completeData);
           }
         } else if (response.Code === 401) {
+          Toast(
+            response.Message || '权限验证失败',
+            'SHORT',
+            'CENTER'
+          );
           // 用户身份失效,清除存储
           removeStorage(CONFIG.TOKEN);
         } else {

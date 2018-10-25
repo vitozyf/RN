@@ -1,119 +1,129 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ZnlButton from '@components/ZnlButton';
-import ZnlInput from '@components/ZnlInput';
-import {$post} from '@src/utils';
-import {setStorage, removeAllStorage} from '@src/utils';
-import {connect} from 'react-redux';
-import CONFIG from '@src/utils/config';
-
+import {View, StyleSheet, Text} from 'react-native';
+import {ZnlHeader, ZnlInput, ZnlButton} from '@components';
 class Login extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      PhoneNumber: '',
-      Password: '',
-      IsFreeLogin: true
+        ContactCompanyName: '', // 公司名
+        ContactName: '', // 联系人名称
+        PhoneNumber: '', // 手机号
+        AccountName: '', // 账号
+        Password: '', // 密码
+        LoginType: 0 // 登录方式:0 手机号, 1 erp
     }
   }
-
   static navigationOptions = ({ navigation }) => {
     return {
       title: '登录',
     };
   };
-
-  componentWillMount() {
-    // console.log('login componentWillMount')
-    // const didBlurSubscription = this.props.navigation.addListener(
-    //   'didBlur',
-    //   payload => {
-    //     console.debug('didBlur', payload);
-    //   }
-    // );
+  goBackHome = () => {
+    const {navigation} = this.props;
+    navigation.navigate('Home');
   }
-
-  login = () => {
-    const {
-      SetIsLogin,
-      navigation
-    } = this.props;
-    $post('user/login', {
-      PhoneNumber: this.state.PhoneNumber,
-      Password: this.state.Password,
-      IsFreeLogin: true
-    })
-    .then(data => {
+  ToRegister = () => {
+    const {navigation} = this.props;
+    navigation.navigate('Register');
+  }
+  LoginHandler = () => {
+    $post('user/login', this.state).then(data => {
       if (data) {
-        setStorage(CONFIG.TOKEN, data.Token);
-        setStorage(CONFIG.AvatarPath, data.AvatarPath);
-        setStorage(CONFIG.NickName, data.NickName);
-        SetIsLogin(true);
-        navigation.navigate('Home');
-      } else {
-        SetIsLogin(false);
-        removeAllStorage();
+        $setStorage($CONFIG.AvatarPath, data.AvatarPath);
+        $setStorage($CONFIG.NickName, data.NickName);
+        $setStorage($CONFIG.PhoneNumber, this.state.PhoneNumber);
+        this.goBackHome();
       }
+    }).catch(err => {
+      console.log(err);
     })
   }
-
-  onChangeText(value, name) {
-    const loginInfo = {};
-    loginInfo[name] = value;
-    this.setState(loginInfo);
+  onChangeText = (value, name) => {
+    this.setState({
+      [name]: value
+    })
   }
-
+  
   render() {
     return (
-      <View style={styles.main}>
-        <Text style={styles.titleText}>正能量云平台</Text>
-        <ZnlInput 
-          placeholder="请输入账号" 
-          onChangeText={(value) => this.onChangeText(value, 'PhoneNumber')}
-        />
-        <ZnlInput 
-          placeholder="请输入密码" 
-          onChangeText={(value) => this.onChangeText(value, 'Password')}
-          onSubmitEditing={this.login}
-          secureTextEntry={true}
-        />
-        <ZnlButton onPress={this.login}>
+      <View style={styles.Page}>
+        <ZnlHeader onPressIcon={this.goBackHome} leftIcon="md-close"></ZnlHeader>
+        <View style={styles.Body}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>手机号登录</Text>
+            <Text style={styles.titleText}>ERP登录</Text>
+          </View>
+          <View>
+            <View style={styles.InputBox}>
+              <ZnlInput 
+                style={styles.Input}
+                onChangeText={(value) => {this.onChangeText(value, 'PhoneNumber')}}
+                placeholder="手机号">
+              </ZnlInput>
+            </View>
+            <View style={styles.InputBox}>
+              <ZnlInput 
+                style={styles.Input}
+                onChangeText={(value) => {this.onChangeText(value, 'Password')}}
+                placeholder="密码">
+              </ZnlInput>
+            </View>
+          </View>
+        </View>
+
+        <ZnlButton
+          type="main"
+          style={styles.Button}
+          onPress={this.LoginHandler}
+          >
           登录
         </ZnlButton>
+
+        <ZnlButton 
+          style={styles.ButtonReg}
+          onPress={this.ToRegister}
+          >
+          注册
+        </ZnlButton>
+
       </View>
     )
   }
 }
 
-const mapStateToProps = (state, props) => {
-  return Object.assign({}, {IsLogin: state.IsLogin}, props);
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    SetIsLogin: (IsLogin) => {
-      return dispatch({
-        type: 'SetIsLogin',
-        IsLogin
-      })
-    }
-  }
-}
-
 const styles = StyleSheet.create({
-  main: {
+  Page: {
+    backgroundColor: '#fff',
     flex: 1,
-    // justifyContent: 'center',
-    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  Body: {
+    paddingTop: 20,
+  },
+  title: {
+    paddingBottom: 50,
   },
   titleText: {
-    fontSize: 30,
-    textAlign: 'center',
-    lineHeight: 80
+    fontSize: 28,
+  },
+  InputBox: {
+    marginBottom: 16
+  },
+  Input: {
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+  Button: {
+    width: '100%',
+    height: 48,
+  },
+  ButtonReg: {
+    width: '100%',
+    height: 48,
+    marginTop: 20,
   }
 })
-   
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+
+export default Login;

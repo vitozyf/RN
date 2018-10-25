@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Home from '@router/router-pages/Home';
 import Login from '@router/router-pages/Login';
-import ThirdPage from '@router/router-pages/ThirdPage';
-import FourthPage from '@router/router-pages/FourthPage';
+import Register from '@router/router-pages/Register';
 import {
     createDrawerNavigator
 } from 'react-navigation';
@@ -19,8 +18,7 @@ export default class Pages extends Component{
 const SimpleAppNavigator = createDrawerNavigator({
     Home: {screen: Home},
     Login: {screen: Login},
-    page3: {screen: ThirdPage},
-    page4: {screen: FourthPage}
+    Register: {screen: Register}
 },{
      initialRouteName: 'Home',
      drawerPosition: 'left',
