@@ -63,7 +63,7 @@ ZnlInput.propTypes = {
   multiline: PropTypes.bool,
   onSubmitEditing: PropTypes.func,
   onFocus: PropTypes.func,
-  secureTextEntry: PropTypes.bool,
+  secureTextEntry: PropTypes.bool, // 密码类型
   editable: PropTypes.bool,
   returnKeyType: PropTypes.string
 };

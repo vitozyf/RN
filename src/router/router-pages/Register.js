@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {ZnlHeader, ZnlInput, ZnlButton} from '@components';
-// import {$post} from '@src/utils';
 class Register extends Component{
   constructor(props) {
     super(props);
@@ -28,7 +27,7 @@ class Register extends Component{
   }
   RegisterHandler = () => {
     console.log('RegisterHandler', this.state);
-    $post('user/reg', this.state).then(data => {
+    Cloud.$post('user/reg', this.state).then(data => {
       console.log(111, data);
     }).catch(err => {
       console.log(222, err);
@@ -93,7 +92,16 @@ class Register extends Component{
               <ZnlInput 
                 style={styles.Input}
                 onChangeText={(value) => {this.onChangeText(value, 'Password')}}
-                placeholder="密码">
+                placeholder="密码"
+                secureTextEntry={true}>
+              </ZnlInput>
+            </View>
+            <View style={styles.InputBox}>
+              <ZnlInput 
+                style={styles.Input}
+                onChangeText={(value) => {this.onChangeText(value, 'Password')}}
+                placeholder="再次输入密码"
+                secureTextEntry={true}>
               </ZnlInput>
             </View>
           </View>

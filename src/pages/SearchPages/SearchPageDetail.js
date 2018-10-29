@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import {$post, setArrayStorage} from '@src/utils';
-import CONFIG from '@src/utils/config';
+// import CONFIG from '@src/utils/config';
 import {
   ZnlInput,
-  ZnlButton
+  ZnlHeader
 } from '@components';
 import SerchList from './SerchList';
 
@@ -15,9 +13,20 @@ class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Keyword: '',
+      Keyword: 'LM358',
       PageIndex: 1,
       PageSize: 20,
+      YunExtStocks: [],
+      datas: [],
+      SupplierProducts: [],
+      StartIndex: 0,
+      ActiveTab: 'yunext',
+      error: false,
+      errorInfo: '',
+      isLoading: false,
+      showFoot: 0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
+      isRefreshing: false,
+
     }
   }
   static navigationOptions = ({ navigation }) => {
@@ -29,24 +38,60 @@ class SearchPage extends Component {
     const {SwitchNav} = this.props;
     SwitchNav.navigate('TabNav');
   }
-  onSubmitEditing = () => {
+  onSearchHandler = (name = 'yunext') => {
     const {
       PageIndex,
       PageSize,
-      Keyword
+      KeyWord,
+      StartIndex
     } = this.state;
-    if (Keyword) {
-      // 更新搜索记录
-      setArrayStorage(CONFIG.KeyWords, Keyword, 8)
-    }
-    $post('ic', {
-      PageIndex,
+    // if (KeyWord) {
+    //   // 更新搜索记录
+    //   Cloud.$setArrayStorage(CONFIG.KeyWords, KeyWord, 8).then(() => {
+    //     this.getSearchRecord();
+    //   })
+    // }
+    const serchData = {
       PageSize,
-      Keyword
-    }).then(data => {
-      console.log('data', data);
+      KeyWord
+    }
+    switch (name) {
+      case 'yunext':
+        serchData.PageIndex = PageIndex;
+        break;
+      case 'supplierproduct':
+        serchData.StartIndex = StartIndex;
+        break;
+      default:
+        serchData.PageIndex = PageIndex;
+        break;
+    }
+    Cloud.$post(`appget/${name}`, serchData).then(data => {
+      if (data) {
+        this.setState({
+          error: false
+        })
+        const YunExtStocks = data.YunExtStocks;
+        const SupplierProducts = data.Parts;
+        switch (name) {
+          case 'yunext':
+            this.setState({
+              datas: YunExtStocks ? YunExtStocks.Data.ResultList : []
+            })
+            break;
+          case 'supplierproduct':
+            this.setState({
+              datas: SupplierProducts ? SupplierProducts.Data.ResultList : []
+            })
+          default:
+            break;
+        }
+      }
     }).catch(err => {
-      console.log('err', err);
+      this.setState({
+        error: true,
+        errorInfo: err.Message || err
+      })
     })
   }
   onChangeText = (value) => {
@@ -57,35 +102,83 @@ class SearchPage extends Component {
   goBack = () => {
     this.props.navigation.goBack();
   }
+  setActiveTab = (ActiveTab = 'yunext') => {
+    this.setState({
+      ActiveTab
+    }, () => {
+      this.onSearchHandler(ActiveTab)
+    })
+  }
+  addPageIndexHandler = (PageIndex) => {
+    this.setState({
+      PageIndex
+    }, () => {
+      this.onSearchHandler();
+    })
+  }
+  setShowFoot = (showFoot) => {
+    this.setState({
+      showFoot
+    })
+  }
   render() {
+    const {
+      datas, 
+      ActiveTab, 
+      KeyWord, 
+      error, 
+      errorInfo,
+       PageIndex, 
+       showFoot, 
+       isLoading,
+       isRefreshing} = this.state; 
     return (
       <View style={styles.SearchPage}>
-        <View style={styles.SearchBox}>
-          <Ionicons.Button 
-          name = "ios-arrow-back" 
-          size = {26} 
-          backgroundColor="transparent" 
-          color="#666"
-          iconStyle={styles.iconStyle}
-          onPress={ this.goBack }/>
-          <ZnlInput 
-            style={styles.SearchInput} 
-            returnKeyType="search"
-            onSubmitEditing={this.onSubmitEditing}
-            onChangeText={this.onChangeText}
-            placeholder="请输入型号进行">
-            <FontAwesome 
-              name={'search'} 
-              size={ 24 } 
-              style={styles.FontAwesome}/>
-          </ZnlInput>
-          <TouchableOpacity onPress={ this.cancelHandler }  style={styles.cancelBtn} activeOpacity={1}>
-            <Text style={styles.cancelText}>取消</Text>
-          </TouchableOpacity>
-        </View>
+        <ZnlHeader
+          leftIcon="md-close"
+          onPressIcon={this.goBack}
+          centerElement={
+            (
+              <ZnlInput 
+                style={styles.SearchInput} 
+                returnKeyType="search"
+                onSubmitEditing={this.onSearchHandler}
+                onChangeText={this.onChangeText}
+                defaultValue={KeyWord}
+                placeholder="请输入型号进行搜索">
+                <FontAwesome 
+                  name={'search'} 
+                  size={ 24 } 
+                  style={styles.FontAwesome}/>
+              </ZnlInput>
+            )
+          }
+          rightElement={
+            (
+            <TouchableOpacity 
+              onPress={ this.cancelHandler }  
+              style={styles.cancelBtn} 
+              activeOpacity={1}>
+              <Text style={styles.cancelText}>取消</Text>
+            </TouchableOpacity>
+            )
+          }
+          />
 
         <View>
-          <SerchList />
+          <SerchList 
+            datas={datas} 
+            ActiveTab={ActiveTab}
+            setActiveTab={this.setActiveTab}
+            error={error}
+            errorInfo={errorInfo} 
+            PageIndex = {PageIndex}
+            addPageIndexHandler = {this.addPageIndexHandler}
+            setShowFoot = {this.setShowFoot}
+            showFoot = {showFoot}
+            isLoading = {isLoading}
+            isRefreshing = {isRefreshing}
+            />
         </View>
 
       </View>
@@ -94,13 +187,21 @@ class SearchPage extends Component {
   componentWillMount() {
     const {SetSearchStackNav, navigation} = this.props;
     SetSearchStackNav(navigation);
+    const KeyWord = navigation.getParam('KeyWord', '')
+    this.setState({
+      KeyWord
+    }, () => {
+      this.onSearchHandler();
+    })
   }
 }
 const styles = StyleSheet.create({
   SearchPage: {
-    padding: 20,
+    paddingTop: 20,
+    paddingLeft: 5,
+    paddingRight: 5,
     backgroundColor: '#fff',
-    flex: 1
+    flex: 1,
   },
   SearchBox: {
     justifyContent: 'space-between',

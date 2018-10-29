@@ -85,7 +85,9 @@ const styles = StyleSheet.create({
  },
  iconbox: {
   //  borderWidth: 1,
-   width: 30
+  marginLeft: 5,
+  width: 30,
+  marginRight: 10
  },
  icon: {
   lineHeight: 48,

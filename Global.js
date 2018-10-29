@@ -10,16 +10,22 @@ import {
   cleaarAllStorage
 } from '@src/utils'
 import { Toast, ISDEBUG } from '@src/utils/system';
+import {Loading} from '@src/components'
 
-global.$post = $post;
-global.$get = $get;
+const Cloud = {};
 
-global.$Toast = Toast;
-global.$ISDEBUG = ISDEBUG;
-global.$CONFIG = config;
-global.$setStorage = setStorage;
-global.$getStorage = getStorage;
-global.$removeStorage = removeStorage;
-global.$setArrayStorage = setArrayStorage;
-global.$removeAllStorage = removeAllStorage;
-global.$cleaarAllStorage = cleaarAllStorage;
+Cloud.$post = $post;
+Cloud.$get = $get;
+
+Cloud.$Toast = Toast;
+Cloud.$ISDEBUG = ISDEBUG;
+Cloud.$CONFIG = config;
+Cloud.$setStorage = setStorage;
+Cloud.$getStorage = getStorage;
+Cloud.$removeStorage = removeStorage;
+Cloud.$setArrayStorage = setArrayStorage;
+Cloud.$removeAllStorage = removeAllStorage;
+Cloud.$cleaarAllStorage = cleaarAllStorage;
+Cloud.$Loading = Loading;
+
+global.Cloud = Cloud;

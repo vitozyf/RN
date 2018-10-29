@@ -12,7 +12,7 @@ import { Toast } from './system';
 const fetchMethods = async (method, url, data, option) => {
   const token = await getStorage(CONFIG.TOKEN);
   // 是否只返回数据，默认true
-  const onlydata = option ? (typeof option.onlydata === 'undefined' ? true : option.onlydata) : true;
+  const onlydata = option ? (typeof option.onlydata === 'undefined' || option.onlydata ? true : option.onlydata) : true;
   try {
     return new Promise((resolve, reject) => {
       fetch(CONFIG.APIBASEURL + url, {
@@ -25,7 +25,6 @@ const fetchMethods = async (method, url, data, option) => {
       })
       .then((response) => response.json())
       .then(response => {
-        console.log('res', response)
         if (response.Code === 200) {
           const completeData = response.Result.Data;
           if (onlydata) {
@@ -40,7 +39,7 @@ const fetchMethods = async (method, url, data, option) => {
               resolve(null);
             }
           } else {
-            resolve(completeData);
+            resolve(response);
           }
         } else if (response.Code === 401) {
           Toast(
@@ -51,7 +50,11 @@ const fetchMethods = async (method, url, data, option) => {
           // 用户身份失效,清除存储
           removeStorage(CONFIG.TOKEN);
         } else {
-          throw new Error('网络异常');
+          Toast(
+            response.Message || '系统异常,请稍后重试',
+            'SHORT',
+            'CENTER'
+          );
         }
       })
       .catch(error => {

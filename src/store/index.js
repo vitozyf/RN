@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 export default () => {
-  return  createStore(
+  return createStore(
     rootReducers, 
     initialState,
     composeWithDevTools(
