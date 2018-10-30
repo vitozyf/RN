@@ -5,6 +5,7 @@ import ZnlHeader from './ZnlHeader';
 import ZnlInput from './ZnlInput';
 import CustomTabComponent from './CustomTabComponent';
 import {Loading} from './Loading';
+import {BackTop} from './BackTop';
 
 export {
   HeaderRight,
@@ -14,4 +15,5 @@ export {
   ZnlInput,
   CustomTabComponent,
   Loading,
+  BackTop,
 }

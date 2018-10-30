@@ -16,17 +16,16 @@ class SearchPage extends Component {
       Keyword: 'LM358',
       PageIndex: 1,
       PageSize: 20,
+      TotalCount: 0,
+      TotalPage: 1,
       YunExtStocks: [],
       datas: [],
       SupplierProducts: [],
       StartIndex: 0,
       ActiveTab: 'yunext',
-      error: false,
-      errorInfo: '',
+      showFoot: 0,
       isLoading: false,
-      showFoot: 0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
-      isRefreshing: false,
-
+      showHeader: true
     }
   }
   static navigationOptions = ({ navigation }) => {
@@ -38,12 +37,13 @@ class SearchPage extends Component {
     const {SwitchNav} = this.props;
     SwitchNav.navigate('TabNav');
   }
-  onSearchHandler = (name = 'yunext') => {
+  onSearchHandler = (name = 'yunext', isconcat) => {
     const {
       PageIndex,
       PageSize,
       KeyWord,
-      StartIndex
+      StartIndex,
+      datas
     } = this.state;
     // if (KeyWord) {
     //   // 更新搜索记录
@@ -51,52 +51,93 @@ class SearchPage extends Component {
     //     this.getSearchRecord();
     //   })
     // }
+    this.setState({isLoading: true});
     const serchData = {
       PageSize,
       KeyWord
     }
+    let searchApi = {searchApi: false};
+    let onlydata = {onlydata: true};
+    let url = '';
     switch (name) {
       case 'yunext':
         serchData.PageIndex = PageIndex;
+        url = `appget/${name}`;
         break;
-      case 'supplierproduct':
+      case 'getyunexttopstocks':
         serchData.StartIndex = StartIndex;
+        searchApi.searchApi = true;
+        onlydata.onlydata = false;
+        url = `${name}`
         break;
       default:
         serchData.PageIndex = PageIndex;
         break;
     }
-    Cloud.$post(`appget/${name}`, serchData).then(data => {
+    Cloud.$post(url, serchData, {loading: true, ...searchApi, ...onlydata}).then(data => {
+      this.setState({isLoading: false});
       if (data) {
-        this.setState({
-          error: false
-        })
-        const YunExtStocks = data.YunExtStocks;
-        const SupplierProducts = data.Parts;
+        let PageIndex;
+        let TotalCount;
+        let TotalPage;
+        let StartIndex;
+        let Datas = [];
         switch (name) {
           case 'yunext':
+            const YunExtStocks = data.YunExtStocks;
+            PageIndex = YunExtStocks ? YunExtStocks.Data.PageIndex : 1;
+            TotalCount = YunExtStocks ? YunExtStocks.Data.TotalCount : 1;
+            TotalPage = YunExtStocks ? YunExtStocks.Data.TotalPage : 1;
+            Datas = YunExtStocks ? YunExtStocks.Data.ResultList : [];
             this.setState({
-              datas: YunExtStocks ? YunExtStocks.Data.ResultList : []
+              datas: isconcat ? datas.concat(Datas) : Datas,
+              PageIndex,
+              StartIndex: 0,
+              TotalCount,
+              TotalPage
             })
+            if (PageIndex === TotalPage) {
+              this.setState({
+                showFoot: 1
+              })
+            } else {
+              this.setState({
+                showFoot: 0
+              })
+            }
             break;
-          case 'supplierproduct':
+          case 'getyunexttopstocks':
+            const SupplierProducts = data.Result.Data.SpotStockResult.Data;
+            StartIndex = SupplierProducts ? SupplierProducts.SartIndex : 0;
+            TotalCount = SupplierProducts ? SupplierProducts.TotalCount : 0;
+            Datas = SupplierProducts ? SupplierProducts.ResultList : [],
             this.setState({
-              datas: SupplierProducts ? SupplierProducts.Data.ResultList : []
+              datas: isconcat ? datas.concat(Datas) : Datas,
+              StartIndex,
+              PageIndex: 1,
+              TotalCount
             })
+            if (StartIndex === TotalCount) {
+              this.setState({
+                showFoot: 1
+              })
+            } else {
+              this.setState({
+                showFoot: 0
+              })
+            }
+            break;
           default:
             break;
         }
       }
     }).catch(err => {
-      this.setState({
-        error: true,
-        errorInfo: err.Message || err
-      })
+      console.log(err)
     })
   }
   onChangeText = (value) => {
     this.setState({
-      Keyword: value
+      KeyWord: value
     })
   }
   goBack = () => {
@@ -109,75 +150,73 @@ class SearchPage extends Component {
       this.onSearchHandler(ActiveTab)
     })
   }
-  addPageIndexHandler = (PageIndex) => {
+  setStateHandler = (stateName, value, bc) => {
     this.setState({
-      PageIndex
+      [stateName]: value
     }, () => {
-      this.onSearchHandler();
-    })
-  }
-  setShowFoot = (showFoot) => {
-    this.setState({
-      showFoot
+      if (bc) {
+        bc();
+      }
     })
   }
   render() {
     const {
-      datas, 
-      ActiveTab, 
-      KeyWord, 
-      error, 
-      errorInfo,
-       PageIndex, 
-       showFoot, 
-       isLoading,
-       isRefreshing} = this.state; 
+      datas,
+      ActiveTab,
+      KeyWord,
+      PageIndex,
+      StartIndex,
+      TotalCount,
+      showFoot,
+      isLoading,
+      showHeader
+    } = this.state;
+    const Header = showHeader ? (<ZnlHeader
+      leftIcon="md-close"
+      onPressIcon={this.goBack}
+      centerElement={
+        (
+          <ZnlInput 
+            style={styles.SearchInput} 
+            returnKeyType="search"
+            onSubmitEditing={() => this.onSearchHandler(ActiveTab)}
+            onChangeText={this.onChangeText}
+            defaultValue={KeyWord}
+            placeholder="请输入型号进行搜索">
+            <FontAwesome 
+              name={'search'} 
+              size={ 24 } 
+              style={styles.FontAwesome}/>
+          </ZnlInput>
+        )
+      }
+      rightElement={
+        (
+        <TouchableOpacity 
+          onPress={ this.cancelHandler }  
+          style={styles.cancelBtn} 
+          activeOpacity={1}>
+          <Text style={styles.cancelText}>取消</Text>
+        </TouchableOpacity>
+        )
+      }
+      />) : null
     return (
       <View style={styles.SearchPage}>
-        <ZnlHeader
-          leftIcon="md-close"
-          onPressIcon={this.goBack}
-          centerElement={
-            (
-              <ZnlInput 
-                style={styles.SearchInput} 
-                returnKeyType="search"
-                onSubmitEditing={this.onSearchHandler}
-                onChangeText={this.onChangeText}
-                defaultValue={KeyWord}
-                placeholder="请输入型号进行搜索">
-                <FontAwesome 
-                  name={'search'} 
-                  size={ 24 } 
-                  style={styles.FontAwesome}/>
-              </ZnlInput>
-            )
-          }
-          rightElement={
-            (
-            <TouchableOpacity 
-              onPress={ this.cancelHandler }  
-              style={styles.cancelBtn} 
-              activeOpacity={1}>
-              <Text style={styles.cancelText}>取消</Text>
-            </TouchableOpacity>
-            )
-          }
-          />
-
+        {Header}
         <View>
           <SerchList 
             datas={datas} 
             ActiveTab={ActiveTab}
             setActiveTab={this.setActiveTab}
-            error={error}
-            errorInfo={errorInfo} 
             PageIndex = {PageIndex}
-            addPageIndexHandler = {this.addPageIndexHandler}
-            setShowFoot = {this.setShowFoot}
-            showFoot = {showFoot}
+            StartIndex = {StartIndex}
+            TotalCount = {TotalCount}
             isLoading = {isLoading}
-            isRefreshing = {isRefreshing}
+            setStateHandler = {this.setStateHandler}
+            showFoot = {showFoot}
+            onSearchHandler = {this.onSearchHandler}
+            style={styles.SerchList}
             />
         </View>
 
@@ -233,6 +272,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 46,
   },
+  SerchList: {
+    height: '100%',
+    paddingBottom: 50
+  }
 });
 
 const mapStateToProps = (state, props) => {

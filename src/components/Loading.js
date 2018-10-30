@@ -16,6 +16,13 @@ const Loading = {
         </View>
       </View>
     )
+
+    const TimeId = setTimeout(() => {
+      if (sibling instanceof RootSiblings) {
+        sibling.destroy()
+      }
+      clearTimeout(TimeId);
+    }, 5000);
   },
 
   hidden: ()=> {

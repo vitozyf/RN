@@ -40,6 +40,9 @@ class SearchPage extends Component {
   }
   onSearchHandler = () => {
     const {KeyWord} = this.state;
+    Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8).then(() => {
+      this.getSearchRecord();
+    });
     this.props.navigation.push('SearchPageDetail', {KeyWord});
   }
   onChangeText = (value) => {
