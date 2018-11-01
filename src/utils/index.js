@@ -10,7 +10,7 @@ import {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  cleaarAllStorage
+  clearAllStorage
 } from './storage';
 
 export {
@@ -23,5 +23,5 @@ export {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  cleaarAllStorage
+  clearAllStorage
 }

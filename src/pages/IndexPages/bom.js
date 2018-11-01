@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {connect} from 'react-redux';
-import {getStorage} from '@src/utils';
-import CONFIG from '@src/utils/config';
+// import {getStorage} from '@src/utils';
+// import CONFIG from '@src/utils/config';
 import {PR} from '@src/utils/system'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -11,23 +11,18 @@ import {
   HeaderRight,
   ZnlInput,
 } from '@components';
-
-class Bom extends Component {
-  constructor(props) {
-    super(props);
+class HeaderLeft extends Component {
+  onPress = () => {
+    const {DrawerNav} = this.props;
+    DrawerNav.openDrawer();
   }
-  static navigationOptions = ({ navigation }) => {
-    const onPress = () => {
-      navigation.getParam('DrawerNav').openDrawer();
-      // navigation.getParam('DrawerNav').navigate('Login');
-    }
-    const UserAvatar = navigation.getParam('AvatarPath');
-    const defaultUrl = 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=4001431513,4128677135&fm=26&gp=0.jpg';
-    const AvatarPath = UserAvatar ? `https:${UserAvatar}` : defaultUrl;
-    const headerLeft = (
+  render() {
+    const { AvatarPath } = this.props;
+    console.log(22222, AvatarPath)
+    return (
       <TouchableOpacity
       activeOpacity={0.8}
-      onPress={ onPress }>
+      onPress={ this.onPress }>
         <Image 
         style={styles.headerLeftImg}
         source={{
@@ -35,29 +30,32 @@ class Bom extends Component {
         }} />
       </TouchableOpacity>
     )
+  }
+}
+
+const HeaderLeftCom = connect((state, props) => {
+  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, state.UserInfo, props);
+})(HeaderLeft)
+
+class Bom extends Component {
+  static navigationOptions = ({ navigation }) => {
     return {
-      title: '首页 | BomAi',
+      // title: '首页 | BomAi',
       headerTitle: (
         <HeaderTitle title="首页 | BomAi"/>
       ),
-      headerLeft,
+      headerLeft: <HeaderLeftCom />,
       headerRight: <HeaderRight />
     };
   };
   toSearchPage = () => {
-    const {SwitchNav} = this.props;
-    SwitchNav.navigate('SearchPage');
-  }
-  componentWillMount() {
-    const {
-      navigation,
-      DrawerNav
-    } = this.props;
-    getStorage(CONFIG.AvatarPath).then(AvatarPath => {
-      navigation.setParams({DrawerNav, AvatarPath});
-    });
+    const {SwitchNav, navigation} = this.props;
+    // SwitchNav.navigate('SearchPage');
+    navigation.navigate('SearchPage');
   }
   render() {
+    const { AvatarPath } = this.props;
+    console.log(3333, AvatarPath)
     return (
       <View style={styles.container}>
         <View style={styles.ImgBox}>
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav, DrawerNav: state.Navigations.DrawerNav}, props);
+  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav}, state.UserInfo, props);
 }
 
 export default connect(

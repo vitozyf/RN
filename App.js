@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import createStore from '@src/store';
 import Pages from '@router/DrawerNavRouter';
 import './Global';
+import {AppInit} from '@src/utils/appInit';
 
 import { 
   createStackNavigator, // 带标题
@@ -12,8 +13,11 @@ import {
 } from 'react-navigation';
 
 const store = createStore();
-
+// console.log(store)
 export default class App extends Component {
+  componentWillMount() {
+    AppInit(store);
+  }
   render() {
     return (
       <Provider store = { store }>

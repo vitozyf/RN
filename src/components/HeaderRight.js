@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class HeaderRight extends Component {
   render() {
     const {
-      title
+      title,
+      style
     } = this.props;
+    console.log('right', [styles.HeaderRightView, style])
     return (
-      <View style={styles.HeaderRightView}>
+      <View style={[styles.HeaderRightView, style]}>
       </View>
     )
   }
@@ -20,13 +22,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 40, 
     height: 40,
-    marginRight: 10
   }
 })
 
-// HeaderRight.propTypes = {
-//   title: PropTypes.string
-// }
+HeaderRight.propTypes = {
+  title: PropTypes.string,
+  style: PropTypes.object
+}
 // HeaderRight.defaultProps = {
 //   title: ''
 // }

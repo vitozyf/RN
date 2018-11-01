@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import BomScreen from '@pages/IndexPages/Bom';
+import SearchPageScreen from '@pages/SearchPages/SearchPage';
+import SearchPageDetailScreen from '@pages/SearchPages/SearchPageDetail';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import { 
@@ -10,6 +13,12 @@ const IndexPages = createStackNavigator(
   {
     Bom: {
       screen: BomScreen,
+    },
+    SearchPage: {
+      screen: SearchPageScreen
+    },
+    SearchPageDetail: {
+      screen: SearchPageDetailScreen
     }
   },
   {

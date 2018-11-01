@@ -5,7 +5,8 @@ import {connect} from 'react-redux';
 // import CONFIG from '@src/utils/config';
 import {
   ZnlInput,
-  ZnlHeader
+  ZnlHeader,
+  HeaderRight
 } from '@components';
 import SerchList from './SerchList';
 
@@ -30,7 +31,27 @@ class SearchPage extends Component {
   }
   static navigationOptions = ({ navigation }) => {
     return {
-      header: null
+      headerTitle: (
+        <ZnlInput 
+          style={styles.SearchInput} 
+          returnKeyType="search"
+          onSubmitEditing={() => this.onSearchHandler(ActiveTab)}
+          onChangeText={this.onChangeText}
+          defaultValue={KeyWord}
+          placeholder="请输入型号进行搜索">
+          <FontAwesome 
+            name={'search'} 
+            size={ 24 } 
+            style={styles.FontAwesome}/>
+        </ZnlInput>
+      ),
+      // headerRight: <HeaderRight style={styles.HeaderRight}/>,
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+      headerTitleStyle: {
+        color: '#333',
+      },
     };
   };
   cancelHandler = () => {
@@ -171,39 +192,39 @@ class SearchPage extends Component {
       isLoading,
       showHeader
     } = this.state;
-    const Header = showHeader ? (<ZnlHeader
-      leftIcon="md-close"
-      onPressIcon={this.goBack}
-      centerElement={
-        (
-          <ZnlInput 
-            style={styles.SearchInput} 
-            returnKeyType="search"
-            onSubmitEditing={() => this.onSearchHandler(ActiveTab)}
-            onChangeText={this.onChangeText}
-            defaultValue={KeyWord}
-            placeholder="请输入型号进行搜索">
-            <FontAwesome 
-              name={'search'} 
-              size={ 24 } 
-              style={styles.FontAwesome}/>
-          </ZnlInput>
-        )
-      }
-      rightElement={
-        (
-        <TouchableOpacity 
-          onPress={ this.cancelHandler }  
-          style={styles.cancelBtn} 
-          activeOpacity={1}>
-          <Text style={styles.cancelText}>取消</Text>
-        </TouchableOpacity>
-        )
-      }
-      />) : null
+    // const Header = showHeader ? (<ZnlHeader
+    //   leftIcon="md-close"
+    //   onPressIcon={this.goBack}
+    //   centerElement={
+    //     (
+    //       <ZnlInput 
+    //         style={styles.SearchInput} 
+    //         returnKeyType="search"
+    //         onSubmitEditing={() => this.onSearchHandler(ActiveTab)}
+    //         onChangeText={this.onChangeText}
+    //         defaultValue={KeyWord}
+    //         placeholder="请输入型号进行搜索">
+    //         <FontAwesome 
+    //           name={'search'} 
+    //           size={ 24 } 
+    //           style={styles.FontAwesome}/>
+    //       </ZnlInput>
+    //     )
+    //   }
+    //   rightElement={
+    //     (
+    //     <TouchableOpacity 
+    //       onPress={ this.cancelHandler }  
+    //       style={styles.cancelBtn} 
+    //       activeOpacity={1}>
+    //       <Text style={styles.cancelText}>取消</Text>
+    //     </TouchableOpacity>
+    //     )
+    //   }
+    //   />) : null
     return (
       <View style={styles.SearchPage}>
-        {Header}
+        {/* {Header} */}
         <View>
           <SerchList 
             datas={datas} 
@@ -253,15 +274,16 @@ const styles = StyleSheet.create({
     width: 10
   },
   SearchInput: {
-    height: 48,
+    height: 40,
     borderRadius: 10,
     paddingLeft: 40,
     flex: 1,
+    paddingRight: 20
   },
   FontAwesome: {
     position: 'absolute',
     left: 10,
-    top: 12,
+    top: 8,
     color: '#999'
   },
   cancelBtn: {

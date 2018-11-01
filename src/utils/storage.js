@@ -94,7 +94,8 @@ const removeAllStorage = () => {
   })
 }
 
-const cleaarAllStorage = () => {
+const clearAllStorage = () => {
+  console.log(123)
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.multiRemove([
@@ -116,5 +117,5 @@ export {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  cleaarAllStorage
+  clearAllStorage
 }

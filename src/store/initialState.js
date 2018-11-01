@@ -8,6 +8,10 @@ export default {
     SearchStackNav: null
   },
   UserInfo: {
-    PhoneNumber: ''
+    AvatarPath: 'http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg',
+    NickName: '',
+    TOKEN: '',
+    PhoneNumber: '',
+    UserIdentity: {}
   }
 };

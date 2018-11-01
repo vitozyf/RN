@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet,TextInput, TouchableOpacity, Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
 import SearchPane from '@components/IndexPages/SearchPane';
@@ -7,7 +7,9 @@ import CONFIG from '@src/utils/config';
 import {
   ZnlInput,
   ZnlButton,
-  ZnlHeader
+  ZnlHeader,
+  HeaderTitle,
+  HeaderRight,
 } from '@components';
 
 class SearchPage extends Component {
@@ -21,7 +23,27 @@ class SearchPage extends Component {
   }
   static navigationOptions = ({ navigation }) => {
     return {
-      header: null
+      headerTitle: (
+        <ZnlInput 
+          style={styles.SearchInput} 
+          autoFocus={true}
+          returnKeyType="search"
+          onSubmitEditing={this.onSearchHandler}
+          onChangeText={this.onChangeText}
+          placeholder="请输入型号进行搜索">
+          <FontAwesome 
+            name={'search'} 
+            size={ 24 } 
+            style={styles.FontAwesome}/>
+        </ZnlInput>
+      ),
+      // headerRight: <HeaderRight style={styles.HeaderRight}/>,
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+      headerTitleStyle: {
+        color: '#333',
+      },
     };
   };
   cancelHandler = () => {
@@ -83,7 +105,7 @@ class SearchPage extends Component {
     const {SearchRecord, HotModelList} = this.state;
     return (
       <View style={styles.SearchPage}>
-        <ZnlHeader
+        {/* <ZnlHeader
           hideLeft={true}
           centerElement={
             (
@@ -111,7 +133,7 @@ class SearchPage extends Component {
             </TouchableOpacity>
             )
           }
-          />
+          /> */}
 
         <SearchPane title="搜索记录" onPressDelete= {this.onPressDelete}>
           <View style={styles.searchBox}>
@@ -153,6 +175,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1
   },
+  HeaderRight: {
+    width: 10
+  },
   SearchBox: {
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -161,20 +186,21 @@ const styles = StyleSheet.create({
   },
   SearchInput: {
     width: 260,
-    height: 48,
+    height: 40,
     borderRadius: 10,
     paddingLeft: 40,
     flex: 1,
+    paddingRight: 20
   },
   FontAwesome: {
     position: 'absolute',
     left: 10,
-    top: 12,
+    top: 8,
     color: '#999'
   },
-  cancelBtn: {
-    marginLeft: 10
-  },
+  // cancelBtn: {
+  //   marginLeft: 10
+  // },
   cancelText: {
     fontSize: 20,
     lineHeight: 46,

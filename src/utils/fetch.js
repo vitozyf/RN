@@ -2,6 +2,9 @@ import { getStorage, removeStorage } from './storage';
 import CONFIG from './config';
 import { Toast } from './system';
 import {Loading} from '../components';
+// import {store} from '../../App';
+import createStore from '@src/store';
+const store = createStore();
 
 /**
  * 
@@ -31,7 +34,7 @@ const fetchMethods = async (method, url, data, option) => {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'JWTAPP ' + token === null ? '' : token
+          Authorization: 'JWTAPP ' + (token === null ? '' : token)
         },
         body: JSON.stringify(data)
       })
@@ -64,6 +67,10 @@ const fetchMethods = async (method, url, data, option) => {
           );
           // 用户身份失效,清除存储
           removeStorage(CONFIG.TOKEN);
+          const DrawerNav = store.getState().Navigations.DrawerNav;
+          if (DrawerNav) {
+            DrawerNav.navigate('Login');
+          }
         } else {
           Toast(
             response.Message || '系统异常,请稍后重试',

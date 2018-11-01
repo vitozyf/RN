@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {ZnlHeader, ZnlInput, ZnlButton} from '@components';
+import {AppInit} from '@src/utils/appInit';
+import {connect} from 'react-redux';
+
 class Login extends Component{
   constructor(props) {
     super(props);
@@ -27,12 +30,16 @@ class Login extends Component{
     navigation.navigate('Register');
   }
   LoginHandler = () => {
-    Cloud.$post('user/login', this.state).then(data => {
+    const {SetUserInfo} = this.props;
+    Cloud.$post('user/login', this.state).then(async (data) => {
       if (data) {
-        Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath);
-        Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName);
-        Cloud.$setStorage(Cloud.$CONFIG.PhoneNumber, this.state.PhoneNumber);
-        Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token);
+        await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath);
+        await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName);
+        await Cloud.$setStorage(Cloud.$CONFIG.PhoneNumber, this.state.PhoneNumber);
+        await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token);
+        AppInit({
+          dispatch: SetUserInfo
+        })
         this.goBackHome();
       }
     }).catch(err => {
@@ -173,5 +180,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   }
 })
-
-export default Login;
+const mapStateToProps = (state, props) => {
+  return props;
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    SetUserInfo: (SetUserInfo) => {
+      return dispatch(SetUserInfo)
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

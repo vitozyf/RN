@@ -7,9 +7,9 @@ import {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  cleaarAllStorage
+  clearAllStorage
 } from '@src/utils'
-import { Toast, ISDEBUG } from '@src/utils/system';
+import { Toast, ISDEBUG, ISANDROID, ISIOS } from '@src/utils/system';
 import {Loading} from '@src/components'
 
 const Cloud = {};
@@ -18,6 +18,8 @@ Cloud.$post = $post;
 Cloud.$get = $get;
 
 Cloud.$Toast = Toast;
+Cloud.$ISANDROID = ISANDROID;
+Cloud.$ISIOS = ISIOS;
 Cloud.$ISDEBUG = ISDEBUG;
 Cloud.$CONFIG = config;
 Cloud.$setStorage = setStorage;
@@ -25,7 +27,7 @@ Cloud.$getStorage = getStorage;
 Cloud.$removeStorage = removeStorage;
 Cloud.$setArrayStorage = setArrayStorage;
 Cloud.$removeAllStorage = removeAllStorage;
-Cloud.$cleaarAllStorage = cleaarAllStorage;
+Cloud.$clearAllStorage = clearAllStorage;
 Cloud.$Loading = Loading;
 
 global.Cloud = Cloud;
