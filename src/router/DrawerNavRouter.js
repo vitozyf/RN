@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Home from '@router/router-pages/Home';
-import Login from '@router/router-pages/Login';
-import Register from '@router/router-pages/Register';
-import { View, Text, ScrollView, StyleSheet, Image, Dimensions } from 'react-native';
+import Home from '@router/router-pages/Home'; // 首页
+import Login from '@router/router-pages/Login'; // 登录
+import Register from '@router/router-pages/Register'; // 注册
+import BaseInfo from '@router/router-pages/BaseInfo'; // 基本信息
+import Membership from '@router/router-pages/Membership'; // 会员身份
+import { View, Text, ScrollView, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { DrawerItems, SafeAreaView } from 'react-navigation';
 import {
     createDrawerNavigator
@@ -65,52 +67,79 @@ const styles = StyleSheet.create({
 const items = [
   // {
   //   key: "Home",
-  //   routeName: 'Home'
+  //   routeName: 'HOme'
+  // },
+  {
+    key: "BaseInfo",
+    routeName: 'BaseInfo'
+  },
+  {
+    key: "Membership",
+    routeName: 'Membership'
+  },
+  // {
+  //   key: "Register",
+  //   routeName: 'Register'
+  // },
+  // {
+  //   key: "Login",
+  //   routeName: 'Login'
   // }
 ]
 
 
 class MyScrollView extends Component {
-  toLogin = () => {
+  // toLogin = () => {
+  //   const {mynavigation} = this.props;
+  //   Cloud.$clearAllStorage().then(() => {
+  //     mynavigation.navigate('Login'); 
+  //   });
+  // }
+  toBaseInfo = () => {
     const {mynavigation} = this.props;
-    Cloud.$clearAllStorage().then(() => {
-      mynavigation.navigate('Login'); 
-    });
+    mynavigation.navigate('BaseInfo'); 
+  }
+  toMembership = () => {
+    const {mynavigation} = this.props;
+    mynavigation.navigate('Membership'); 
   }
   render() {
     const {AvatarPath, NickName, UserIdentity} = this.props;
-    console.log(11111, AvatarPath)
+    // console.log(11111, AvatarPath)
     // 用户身份
     let UserIdentityView = [];
      for (const key in UserIdentity) {
        if (UserIdentity[key]) {
         // UserIdentityView.push(<Text style={styles.UserIdentity} key={key}>{key}</Text>)
-        UserIdentityView[0] = (<Text style={styles.UserIdentity} key={key}>{key}</Text>)
+        UserIdentityView[0] = (<Text onPress={this.toMembership} style={styles.UserIdentity} key={key}>{key}</Text>)
        }
 
     }
     // 自定义区域
     const CustomDrawer = (
       <View style={styles.container}>
-        <View style={styles.header}>
+        <TouchableOpacity
+          onPress={this.toBaseInfo}
+          activeOpacity={1}
+          style={styles.header}>
           <Image 
             style={styles.headerLeftImg}
             source={{
               uri: AvatarPath
             }} />
-            <View  style={styles.headerName}>
-                <Text style={styles.NickName}>{NickName}</Text>
-                <View>
-                  {UserIdentityView}
-                </View>
-            </View>
-        </View> 
+          <View  style={styles.headerName}>
+              <Text style={styles.NickName}>{NickName}</Text>
+              <View>
+                {UserIdentityView}
+              </View>
+          </View> 
+        </TouchableOpacity>
     
         <DrawerItems {...this.props} items={items}/>
     
-        <View style={styles.footer}>
+        {/* <View style={styles.footer}>
           <Text onPress = {this.toLogin}>登录</Text>
-        </View> 
+        </View>  */}
       </View>
     );
     // IOS外层包裹安全区域
@@ -129,7 +158,11 @@ class MyScrollView extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, state.UserInfo, props);
+  return Object.assign({}, {
+    AvatarPath: state.UserInfo.AvatarPath, 
+    NickName: state.UserInfo.NickName, 
+    UserIdentity: state.UserInfo.UserIdentity
+  }, props);
 }
 
 const MyScrollViewWithConnect = connect(
@@ -154,7 +187,9 @@ export default class Pages extends Component{
 const SimpleAppNavigator = createDrawerNavigator({
     Home: {screen: Home},
     Login: {screen: Login},
-    Register: {screen: Register}
+    Register: {screen: Register},
+    BaseInfo: {screen: BaseInfo},
+    Membership: {screen: Membership}
 },{
      initialRouteName: 'Home',
      drawerPosition: 'left',

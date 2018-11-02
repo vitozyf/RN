@@ -1,22 +1,18 @@
-const getUserIdentity = (store) => {
-  Cloud.$get('mmhome/getusercenterinfo').then(data => {
-    if (data) {
-      const UserInfo = {};
-      UserInfo.UserIdentity = data.UserIdentityModel;
-      store.dispatch({
-        type: 'SetUserInfo',
-        UserInfo
-      })
-    }
-  })
+// 获取用户开通的服务
+const getUserIdentity = async () => {
+  return Cloud.$get('mmhome/getusercenterinfo')
 }
+// 初始化本地存储的用户数据到redux
 const initUserData = async (store) => {
-  getUserIdentity(store);
+  const UserIdentity = await getUserIdentity(store);
   const AvatarPath = await Cloud.$getStorage(Cloud.$CONFIG.AvatarPath);
   const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
   const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
   const UserInfo = {};
+  if (UserIdentity) {
+    UserInfo.UserIdentity = UserIdentity.UserIdentityModel
+  }
   if (AvatarPath) {
     UserInfo.AvatarPath = `https:${AvatarPath}`
   }

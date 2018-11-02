@@ -22,14 +22,16 @@ class SearchPage extends Component {
     }
   }
   static navigationOptions = ({ navigation }) => {
+    const method = navigation.getParam('method', {});
     return {
       headerTitle: (
         <ZnlInput 
-          style={styles.SearchInput} 
+          style={styles.SearchInputBox} 
+          inputStyle={styles.SearchInput} 
           autoFocus={true}
           returnKeyType="search"
-          onSubmitEditing={this.onSearchHandler}
-          onChangeText={this.onChangeText}
+          onSubmitEditing={method.onSearchHandler}
+          onChangeText={method.onChangeText}
           placeholder="请输入型号进行搜索">
           <FontAwesome 
             name={'search'} 
@@ -37,7 +39,7 @@ class SearchPage extends Component {
             style={styles.FontAwesome}/>
         </ZnlInput>
       ),
-      // headerRight: <HeaderRight style={styles.HeaderRight}/>,
+      headerRight: <HeaderRight style={styles.HeaderRight} title="取消" onPress={method.cancelHandler}/>,
       headerStyle: {
         backgroundColor: '#fff',
       },
@@ -101,40 +103,24 @@ class SearchPage extends Component {
       }
     })
   }
+  // 参数传递进header
+  passParameterHandler() {
+    const {navigation} = this.props;
+    const {
+      onSearchHandler,
+      onChangeText,
+      cancelHandler
+    } = this;
+    navigation.setParams({method: {
+      onSearchHandler,
+      onChangeText,
+      cancelHandler
+    }})
+  }
   render() {
     const {SearchRecord, HotModelList} = this.state;
     return (
       <View style={styles.SearchPage}>
-        {/* <ZnlHeader
-          hideLeft={true}
-          centerElement={
-            (
-              <ZnlInput 
-                style={styles.SearchInput} 
-                autoFocus={true}
-                returnKeyType="search"
-                onSubmitEditing={this.onSearchHandler}
-                onChangeText={this.onChangeText}
-                placeholder="请输入型号进行搜索">
-                <FontAwesome 
-                  name={'search'} 
-                  size={ 24 } 
-                  style={styles.FontAwesome}/>
-              </ZnlInput>
-            )
-          }
-          rightElement={
-            (
-            <TouchableOpacity 
-              onPress={ this.cancelHandler }  
-              style={styles.cancelBtn} 
-              activeOpacity={1}>
-              <Text style={styles.cancelText}>取消</Text>
-            </TouchableOpacity>
-            )
-          }
-          /> */}
-
         <SearchPane title="搜索记录" onPressDelete= {this.onPressDelete}>
           <View style={styles.searchBox}>
             {SearchRecord}
@@ -163,6 +149,7 @@ class SearchPage extends Component {
   componentWillMount() {
     this.getSearchRecord(); // 处理搜索记录
     this.gethotmodelandgdspotcheck(); // 获取热搜
+    this.passParameterHandler();
     const {SetSearchStackNav, navigation} = this.props;
     SetSearchStackNav(navigation);
   }
@@ -176,21 +163,19 @@ const styles = StyleSheet.create({
     flex: 1
   },
   HeaderRight: {
-    width: 10
+    flex: 1,
+    marginRight: 10,
   },
-  SearchBox: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingBottom: 10
+  SearchInputBox: {
+    // width: 260,
+    flex: 1,
+    height: 40,
+    flex: 1,
+    marginLeft: 10,
   },
   SearchInput: {
-    width: 260,
-    height: 40,
     borderRadius: 10,
     paddingLeft: 40,
-    flex: 1,
-    paddingRight: 20
   },
   FontAwesome: {
     position: 'absolute',
@@ -226,7 +211,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return Object.assign({}, 
     {
-      SearchStackNav: state.Navigations.SearchStackNav,
       SwitchNav: state.Navigations.SwitchNav 
     }, 
     props);

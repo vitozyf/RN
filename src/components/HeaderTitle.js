@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 class HeaderTitle extends Component {
   render() {
     const {
-      title
+      title,
+      style,
+      textStyle
     } = this.props;
     return (
-      <View style={styles.HeaderTitleView}>
-        <Text style={styles.HeaderTitleText}>
+      <View style={[styles.HeaderTitleView, style]}>
+        <Text style={[styles.HeaderTitleText, textStyle]}>
           {title}
         </Text>
       </View>
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   HeaderTitleText: {
-    color: '#fff',
+    color: '#333',
     fontSize: 20,
     textAlign: 'center'
   }

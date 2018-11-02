@@ -1,3 +1,6 @@
+/**
+ * 自定义底部渲染
+ */
 import React from 'react';
 import { Keyboard, StyleSheet } from 'react-native';
 import { BottomTabBar } from 'react-navigation-tabs';

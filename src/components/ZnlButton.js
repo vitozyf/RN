@@ -28,6 +28,9 @@ export default class ZnlButton extends Component{
         typeStyle = disabled ? styles.buttonMainDisabled : styles.buttonMain;
         typeTextStyle = disabled ? styles.textMainDisabled : styles.textMain;
         break;
+      case 'warn': 
+        typeStyle = disabled ? styles.buttonWarnDisabled : styles.buttonWarn;
+        typeTextStyle = disabled ? styles.textWarnDisabled : styles.textWarn;
       default:
         break;
     }
@@ -47,7 +50,7 @@ export default class ZnlButton extends Component{
 }
 
 ZnlButton.propTypes = {
-  type: PropTypes.string,
+  type: PropTypes.string, //default  main warn
   placeholder: PropTypes.string,
   onPress: PropTypes.func,
   style: PropTypes.object, // 按钮样式
@@ -102,5 +105,18 @@ const styles = StyleSheet.create({
   },
   textDefaultDisabled: {
     color: '#999', 
-  }
+  },
+  // 警告按钮
+  buttonWarn: {
+    backgroundColor: '#E64340',
+  },
+  textWarn: {
+    color: '#fff', 
+  },
+  buttonWarnDisabled: {
+    backgroundColor: '#E64340',
+  },
+  textWarnDisabled: {
+    color: '#fff', 
+  },
 });

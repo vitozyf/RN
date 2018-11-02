@@ -6,11 +6,12 @@ class HeaderRight extends Component {
   render() {
     const {
       title,
-      style
+      style,
+      onPress
     } = this.props;
-    console.log('right', [styles.HeaderRightView, style])
     return (
       <View style={[styles.HeaderRightView, style]}>
+      <Text onPress = {onPress}>{title}</Text>
       </View>
     )
   }
@@ -27,7 +28,8 @@ const styles = StyleSheet.create({
 
 HeaderRight.propTypes = {
   title: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
+  onPress: PropTypes.func
 }
 // HeaderRight.defaultProps = {
 //   title: ''

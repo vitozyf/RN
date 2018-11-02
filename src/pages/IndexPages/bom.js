@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {connect} from 'react-redux';
-// import {getStorage} from '@src/utils';
-// import CONFIG from '@src/utils/config';
 import {PR} from '@src/utils/system'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -42,7 +40,7 @@ class Bom extends Component {
     return {
       // title: '首页 | BomAi',
       headerTitle: (
-        <HeaderTitle title="首页 | BomAi"/>
+        <HeaderTitle title="首页 | BomAi" textStyle={{color: '#fff'}}/>
       ),
       headerLeft: <HeaderLeftCom />,
       headerRight: <HeaderRight />
@@ -50,12 +48,9 @@ class Bom extends Component {
   };
   toSearchPage = () => {
     const {SwitchNav, navigation} = this.props;
-    // SwitchNav.navigate('SearchPage');
-    navigation.navigate('SearchPage');
+    SwitchNav.navigate('SearchPage');
   }
   render() {
-    const { AvatarPath } = this.props;
-    console.log(3333, AvatarPath)
     return (
       <View style={styles.container}>
         <View style={styles.ImgBox}>
@@ -71,7 +66,8 @@ class Bom extends Component {
           onPress={this.toSearchPage}
           activeOpacity={1}>
           <ZnlInput 
-            style={styles.SearchInput} 
+            style={styles.SearchInputBoxStyle} 
+            inputStyle={styles.SearchInputStyle} 
             editable={false}>
             <FontAwesome
               name={'search'}
@@ -109,11 +105,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row'
   },
-  SearchInput: {
+  SearchInputBoxStyle: {
     width: 300,
     height: 40,
+  },
+  SearchInputStyle: {
+    paddingLeft: 40,
     borderRadius: 10,
-    paddingLeft: 40
   },
   FontAwesome: {
     position: 'absolute',
@@ -124,7 +122,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav}, state.UserInfo, props);
+  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav}, props);
 }
 
 export default connect(

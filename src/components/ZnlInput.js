@@ -16,24 +16,15 @@ class ZnlInput extends Component {
       secureTextEntry,
       onFocus,
       editable,
-      returnKeyType
+      returnKeyType,
+      inputStyle
     } = this.props;
     const {children} = this.props;
-    const filterKeys = ['width', 'height', 'flex', 'paddingRight']; // 过滤到外层的属性
-    let filterStyles = {};
-    let boxFilterStyles = {};
-    Object.keys(style).map(item => {
-      if (filterKeys.find(key => item === key)) {
-        boxFilterStyles[item] = style[item];
-      } else {
-        filterStyles[item] = style[item];
-      }
-    })
     return (
-      <View style={[styles.inputbox, boxFilterStyles]}>
+      <View style={[styles.inputbox, style]}>
         {children}
         <TextInput 
-            style={[styles.inputsty, filterStyles]}
+            style={[styles.inputsty, inputStyle]}
             placeholder={placeholder}
             maxLength={maxLength}
             onChangeText={onChangeText}
@@ -57,6 +48,7 @@ ZnlInput.propTypes = {
   onChangeText: PropTypes.func,
   maxLength: PropTypes.number,
   style: PropTypes.object,
+  inputStyle: PropTypes.object,
   autoFocus: PropTypes.bool,
   defaultValue: PropTypes.string,
   keyboardType: PropTypes.string,

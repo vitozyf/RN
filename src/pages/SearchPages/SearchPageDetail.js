@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect} from 'react-redux';
-// import CONFIG from '@src/utils/config';
+import {BackTop} from '@components';
+
 import {
   ZnlInput,
   ZnlHeader,
@@ -30,14 +31,16 @@ class SearchPage extends Component {
     }
   }
   static navigationOptions = ({ navigation }) => {
+    const method = navigation.getParam('method', {});
     return {
       headerTitle: (
         <ZnlInput 
-          style={styles.SearchInput} 
+          style={styles.SearchInputBox} 
+          inputStyle={styles.SearchInput} 
           returnKeyType="search"
-          onSubmitEditing={() => this.onSearchHandler(ActiveTab)}
-          onChangeText={this.onChangeText}
-          defaultValue={KeyWord}
+          onSubmitEditing={() => method.onSearchHandler(method.ActiveTab)}
+          onChangeText={method.onChangeText}
+          defaultValue={method.KeyWord}
           placeholder="请输入型号进行搜索">
           <FontAwesome 
             name={'search'} 
@@ -54,10 +57,6 @@ class SearchPage extends Component {
       },
     };
   };
-  cancelHandler = () => {
-    const {SwitchNav} = this.props;
-    SwitchNav.navigate('TabNav');
-  }
   onSearchHandler = (name = 'yunext', isconcat) => {
     const {
       PageIndex,
@@ -161,9 +160,6 @@ class SearchPage extends Component {
       KeyWord: value
     })
   }
-  goBack = () => {
-    this.props.navigation.goBack();
-  }
   setActiveTab = (ActiveTab = 'yunext') => {
     this.setState({
       ActiveTab
@@ -180,6 +176,24 @@ class SearchPage extends Component {
       }
     })
   }
+  // 参数传递进header
+  passParameterHandler() {
+    const {navigation} = this.props;
+    const KeyWord = navigation.getParam('KeyWord', '');
+    const {
+      ActiveTab
+    } = this.state;
+    const {
+      onChangeText,
+      onSearchHandler
+    } = this;
+    navigation.setParams({method: {
+      KeyWord,
+      onChangeText,
+      onSearchHandler,
+      ActiveTab
+    }})
+  }
   render() {
     const {
       datas,
@@ -192,36 +206,7 @@ class SearchPage extends Component {
       isLoading,
       showHeader
     } = this.state;
-    // const Header = showHeader ? (<ZnlHeader
-    //   leftIcon="md-close"
-    //   onPressIcon={this.goBack}
-    //   centerElement={
-    //     (
-    //       <ZnlInput 
-    //         style={styles.SearchInput} 
-    //         returnKeyType="search"
-    //         onSubmitEditing={() => this.onSearchHandler(ActiveTab)}
-    //         onChangeText={this.onChangeText}
-    //         defaultValue={KeyWord}
-    //         placeholder="请输入型号进行搜索">
-    //         <FontAwesome 
-    //           name={'search'} 
-    //           size={ 24 } 
-    //           style={styles.FontAwesome}/>
-    //       </ZnlInput>
-    //     )
-    //   }
-    //   rightElement={
-    //     (
-    //     <TouchableOpacity 
-    //       onPress={ this.cancelHandler }  
-    //       style={styles.cancelBtn} 
-    //       activeOpacity={1}>
-    //       <Text style={styles.cancelText}>取消</Text>
-    //     </TouchableOpacity>
-    //     )
-    //   }
-    //   />) : null
+    const {SearchStackNav} = this.props;
     return (
       <View style={styles.SearchPage}>
         {/* {Header} */}
@@ -247,19 +232,31 @@ class SearchPage extends Component {
   componentWillMount() {
     const {SetSearchStackNav, navigation} = this.props;
     SetSearchStackNav(navigation);
+    this.passParameterHandler();
     const KeyWord = navigation.getParam('KeyWord', '')
     this.setState({
       KeyWord
     }, () => {
       this.onSearchHandler();
     })
+
+    console.log(121212);
+    this.didBlurSubscription = this.props.navigation.addListener(
+      'willBlur',
+      payload => {
+        BackTop.hidden();
+      }
+    );
+  }
+  componentWillUnmount() {
+    this.didBlurSubscription.remove();
   }
 }
 const styles = StyleSheet.create({
   SearchPage: {
-    paddingTop: 20,
-    paddingLeft: 5,
-    paddingRight: 5,
+    // paddingTop: 20,
+    // paddingLeft: 5,
+    // paddingRight: 5,
     backgroundColor: '#fff',
     flex: 1,
   },
@@ -273,12 +270,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     width: 10
   },
-  SearchInput: {
+  SearchInputBox: {
+    flex: 1,
     height: 40,
+    paddingRight: 20
+  },
+  SearchInput: {
     borderRadius: 10,
     paddingLeft: 40,
     flex: 1,
-    paddingRight: 20
   },
   FontAwesome: {
     position: 'absolute',

@@ -64,7 +64,8 @@ class Login extends Component{
       <View>
         <View style={styles.InputBox}>
           <ZnlInput 
-            style={styles.Input}
+            style={styles.znlInputBox}
+            inputStyle={styles.Input}
             onChangeText={(value) => {this.onChangeText(value, 'PhoneNumber')}}
             placeholder="手机号"
             autoFocus={true}>
@@ -72,7 +73,8 @@ class Login extends Component{
         </View>
         <View style={styles.InputBox}>
           <ZnlInput 
-            style={styles.Input}
+            style={styles.znlInputBox}
+            inputStyle={styles.Input}
             onChangeText={(value) => {this.onChangeText(value, 'Password')}}
             placeholder="密码"
             secureTextEntry={true}>
@@ -83,7 +85,8 @@ class Login extends Component{
       <View>
         <View style={styles.InputBox}>
           <ZnlInput 
-            style={styles.Input}
+            style={styles.znlInputBox}
+            inputStyle={styles.Input}
             onChangeText={(value) => {this.onChangeText(value, 'ContactCompanyName')}}
             placeholder="公司名"
             autoFocus={true}>
@@ -91,14 +94,16 @@ class Login extends Component{
         </View>
         <View style={styles.InputBox}>
           <ZnlInput 
-            style={styles.Input}
+            style={styles.znlInputBox}
+            inputStyle={styles.Input}
             onChangeText={(value) => {this.onChangeText(value, 'AccountName')}}
             placeholder="账号">
           </ZnlInput>
         </View>
         <View style={styles.InputBox}>
           <ZnlInput 
-            style={styles.Input}
+            style={styles.znlInputBox}
+            inputStyle={styles.Input}
             onChangeText={(value) => {this.onChangeText(value, 'Password')}}
             placeholder="密码">
           </ZnlInput>
@@ -164,6 +169,8 @@ const styles = StyleSheet.create({
   },
   InputBox: {
     marginBottom: 16
+  },
+  znlInputBox: {
   },
   Input: {
     borderWidth: 0,

@@ -245,19 +245,20 @@ class SerchList extends PureComponent {
     )
   }
   componentWillMount() {
-    // Cloud.$Loading.show();
+    
   }
 }
 
 const styles = StyleSheet.create({
   SerchList: {
     height: '100%',
-    paddingBottom: 50
+    // paddingBottom: 50
   },
   SerchListTitle: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderColor: '#ccc'
+    borderColor: '#ccc',
+    borderWidth: 1
   },
   SerchListTitleText: {
     lineHeight: HEADER_HEIGHT,

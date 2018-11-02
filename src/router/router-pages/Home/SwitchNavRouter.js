@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import BottomTabNavRouter from './BottomTabNavRouter';
-// import SearchStackNavRouter from './SearchStackNavRouter';
+import SearchStackNavRouter from './SearchStackNavRouter';
 import { 
   createSwitchNavigator,
 } from 'react-navigation';
@@ -10,7 +10,7 @@ import {
 const SwitchNav = createSwitchNavigator(
   {
     TabNav: BottomTabNavRouter,
-    // SearchPage: SearchStackNavRouter
+    SearchPage: SearchStackNavRouter
   },
   {
     initialRouteName: 'TabNav'
