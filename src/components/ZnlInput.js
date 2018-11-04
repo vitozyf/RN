@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
     color: '#333333',
     borderWidth: 1,
     borderColor: '#ee7700',
-    width: '100%',
-    height: '100%',
     padding: 5,
+    flex: 1,
   }
 });
 

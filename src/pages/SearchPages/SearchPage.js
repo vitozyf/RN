@@ -24,6 +24,8 @@ class SearchPage extends Component {
   static navigationOptions = ({ navigation }) => {
     const method = navigation.getParam('method', {});
     return {
+      // headerLeft: null,
+      headerBackTitle: null,
       headerTitle: (
         <ZnlInput 
           style={styles.SearchInputBox} 
@@ -167,10 +169,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   SearchInputBox: {
-    // width: 260,
-    flex: 1,
     height: 40,
-    flex: 1,
+    width: '100%',
+    borderWidth: 1,
     marginLeft: 10,
   },
   SearchInput: {

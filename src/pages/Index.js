@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import BomScreen from '@pages/IndexPages/Bom';
+import BomScreen from '@pages/IndexPages/bom';
 // import SearchPageScreen from '@pages/SearchPages/SearchPage';
 // import SearchPageDetailScreen from '@pages/SearchPages/SearchPageDetail';
 

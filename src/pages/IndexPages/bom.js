@@ -16,7 +16,7 @@ class HeaderLeft extends Component {
   }
   render() {
     const { AvatarPath } = this.props;
-    console.log(22222, AvatarPath)
+    // console.log(22222, AvatarPath)
     return (
       <TouchableOpacity
       activeOpacity={0.8}
@@ -65,15 +65,15 @@ class Bom extends Component {
           style={styles.SearchBox} 
           onPress={this.toSearchPage}
           activeOpacity={1}>
-          <ZnlInput 
+          {/* <ZnlInput 
             style={styles.SearchInputBoxStyle} 
             inputStyle={styles.SearchInputStyle} 
-            editable={false}>
+            editable={false}> */}
             <FontAwesome
               name={'search'}
               size={ 24 }
               style={styles.FontAwesome}/>
-          </ZnlInput>
+          {/* </ZnlInput> */}
         </TouchableOpacity>
       </View>
     )
@@ -101,9 +101,20 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   SearchBox: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row'
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // flexDirection: 'row',
+    // borderWidth: 1,
+    // height: 50
+    paddingLeft: 40,
+    borderRadius: 10,
+    fontSize: 16,
+    color: '#333333',
+    borderWidth: 1,
+    borderColor: '#ee7700',
+    height: 40,
+    marginLeft: 30,
+    marginRight: 30,
   },
   SearchInputBoxStyle: {
     width: 300,
