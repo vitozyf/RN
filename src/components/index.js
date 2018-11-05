@@ -7,6 +7,7 @@ import CustomTabComponent from './CustomTabComponent';
 import {Loading} from './Loading';
 import {BackTop} from './BackTop';
 import ZnlModal from './ZnlModal';
+import {ZnlToast} from './ZnlToast'
 
 export {
   HeaderRight,
@@ -17,5 +18,6 @@ export {
   CustomTabComponent,
   Loading,
   BackTop,
-  ZnlModal
+  ZnlModal,
+  ZnlToast
 }

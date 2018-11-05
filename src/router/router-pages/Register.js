@@ -1,178 +1,54 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {ZnlHeader, ZnlInput, ZnlButton} from '@components';
-class Register extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-        ContactCompanyName: '', // 公司名
-        ContactName: '', // 联系人名称
-        PhoneNumber: '', // 手机号
-        SmsCode: '', // 短信验证码
-        AccountName: '', // 账号
-        Password: '', // 密码
+import RegisterScreen from '@pages/RegisterPages/Register';
+
+import {connect} from 'react-redux';
+import { 
+  createStackNavigator
+} from 'react-navigation';
+
+const IndexPages = createStackNavigator(
+  {
+    Register: {
+      screen: RegisterScreen,
+    }
+  },
+  {
+    initialRouteName: 'Register',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#fff',
+        height: 48,
+        lineHeight: 48,
+      },
+      headerTitleStyle: {
+        color: '#333',
+        fontSize: 20,
+      },
     }
   }
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: '注册',
-    };
+);
+
+const Index =  class Index extends Component{
+  static navigationOptions = {
+    drawerLabel: '注册'
   };
-  goBackHome = () => {
-    const {navigation} = this.props;
-    navigation.navigate('Home');
-  }
-  GetCode = () => {
-    console.log('messageCode')
-  }
-  RegisterHandler = () => {
-    console.log('RegisterHandler', this.state);
-    Cloud.$post('user/reg', this.state).then(data => {
-      console.log(111, data);
-    }).catch(err => {
-      console.log(222, err);
-    })
-  }
-  onChangeText = (value, name) => {
-    this.setState({
-      [name]: value
-    })
-  }
   render() {
     return (
-      <View style={styles.Page}>
-        <ZnlHeader onPressIcon={this.goBackHome}></ZnlHeader>
-        <View style={styles.Body}>
-          <View style={styles.title}>
-            <Text style={styles.titleText}>注册</Text>
-          </View>
-          <View>
-            <View style={styles.InputBox}>
-              <ZnlInput 
-                style={styles.Input}
-                onChangeText={(value) => {this.onChangeText(value, 'ContactCompanyName')}}
-                placeholder="公司名称">
-              </ZnlInput>
-            </View>
-            <View style={styles.InputBox}>
-              <ZnlInput 
-                style={styles.Input}
-                onChangeText={(value) => {this.onChangeText(value, 'ContactName')}}
-                placeholder="联系人名称">
-              </ZnlInput>
-            </View>
-            <View style={styles.InputBox}>
-              <ZnlInput 
-                style={styles.Input}
-                onChangeText={(value) => {this.onChangeText(value, 'PhoneNumber')}}
-                placeholder="手机号">
-              </ZnlInput>
-            </View>
-            <View style={styles.InputBoxMessage}>
-              <ZnlInput 
-                style={styles.InputMessage}
-                onChangeText={(value) => {this.onChangeText(value, 'SmsCode')}}
-                placeholder="短信验证码">
-              </ZnlInput>
-              <ZnlButton
-               style={styles.ButtonMessage}
-               textStyle={styles.ButtonMessageText}
-               onPress={this.GetCode}>
-                获取验证码
-              </ZnlButton>
-            </View>
-            <View style={styles.InputBox}>
-              <ZnlInput 
-                style={styles.Input}
-                onChangeText={(value) => {this.onChangeText(value, 'AccountName')}}
-                placeholder="账号">
-              </ZnlInput>
-            </View>
-            <View style={styles.InputBox}>
-              <ZnlInput 
-                style={styles.Input}
-                onChangeText={(value) => {this.onChangeText(value, 'Password')}}
-                placeholder="密码"
-                secureTextEntry={true}>
-              </ZnlInput>
-            </View>
-            <View style={styles.InputBox}>
-              <ZnlInput 
-                style={styles.Input}
-                onChangeText={(value) => {this.onChangeText(value, 'Password')}}
-                placeholder="再次输入密码"
-                secureTextEntry={true}>
-              </ZnlInput>
-            </View>
-          </View>
-        </View>
-
-        <ZnlButton
-          type="main"
-          style={styles.Button}
-          onPress={this.RegisterHandler}
-          >
-          确定
-        </ZnlButton>
-      </View>
+        <IndexPages></IndexPages>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  Page: {
-    backgroundColor: '#fff',
-    flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  Body: {
-    paddingTop: 20,
-  },
-  title: {
-    paddingBottom: 20,
-  },
-  titleText: {
-    fontSize: 28,
-  },
-  InputBox: {
-    marginBottom: 16
-  },
-  InputBoxMessage: {
-    marginBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  Input: {
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-  },
-  InputMessage: {
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-    // width: 200,
-    flex: 1
-  },
-  ButtonMessage: {
-    height: 32,
-    borderRadius: 10,
-    width: 120,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    justifyContent: 'center',
-    marginLeft: 10,
-    // flex: 1
-  },
-  ButtonMessageText: {
-    color: '#999',
-    borderColor: '#999',
-  },
-  Button: {
-    width: '100%',
-    height: 48,
-  }
-})
+const mapStateToProps = (state, props) => {
+  return props;
+}
 
-export default Register;
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Index);

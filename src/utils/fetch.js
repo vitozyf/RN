@@ -1,7 +1,7 @@
 import { getStorage, removeStorage } from './storage';
 import CONFIG from './config';
-import { Toast } from './system';
-import {Loading} from '../components';
+// import { Toast } from './system';
+import {Loading, ZnlToast} from '../components';
 // import {store} from '../../App';
 import createStore from '@src/store';
 const store = createStore();
@@ -49,10 +49,8 @@ const fetchMethods = async (method, url, data, option) => {
             if (completeData.Code === 0) {
               resolve(completeData.Data);
             } else {
-              Toast(
-                completeData.Message || '数据获取失败',
-                'SHORT',
-                'CENTER'
+              ZnlToast.show(
+                completeData.Message || '数据获取失败'
               );
               resolve(null);
             }
@@ -60,10 +58,8 @@ const fetchMethods = async (method, url, data, option) => {
             resolve(response);
           }
         } else if (response.Code === 401) {
-          Toast(
-            response.Message || '权限验证失败',
-            'SHORT',
-            'CENTER'
+          ZnlToast.show(
+            response.Message || '权限验证失败'
           );
           // 用户身份失效,清除存储
           removeStorage(CONFIG.TOKEN);
@@ -72,10 +68,8 @@ const fetchMethods = async (method, url, data, option) => {
             DrawerNav.navigate('Login');
           }
         } else {
-          Toast(
-            response.Message || '系统异常,请稍后重试',
-            'SHORT',
-            'CENTER'
+          ZnlToast.show(
+            response.Message || '系统异常,请稍后重试'
           );
         }
       })

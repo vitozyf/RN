@@ -9,15 +9,15 @@ import {
   removeAllStorage,
   clearAllStorage
 } from '@src/utils'
-import { Toast, ISDEBUG, ISANDROID, ISIOS } from '@src/utils/system';
-import {Loading} from '@src/components'
+import {ISDEBUG, ISANDROID, ISIOS } from '@src/utils/system';
+import {Loading, ZnlToast} from '@src/components'
 
 const Cloud = {};
 
 Cloud.$post = $post;
 Cloud.$get = $get;
 
-Cloud.$Toast = Toast;
+Cloud.$Toast = ZnlToast;
 Cloud.$ISANDROID = ISANDROID;
 Cloud.$ISIOS = ISIOS;
 Cloud.$ISDEBUG = ISDEBUG;
