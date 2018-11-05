@@ -77,14 +77,14 @@ const items = [
     key: "Membership",
     routeName: 'Membership'
   },
-  // {
-  //   key: "Register",
-  //   routeName: 'Register'
-  // },
-  // {
-  //   key: "Login",
-  //   routeName: 'Login'
-  // }
+  {
+    key: "Register",
+    routeName: 'Register'
+  },
+  {
+    key: "Login",
+    routeName: 'Login'
+  }
 ]
 
 
