@@ -3,6 +3,11 @@ import {
 } from 'react-native';
 import CONFIG from './config';
 
+/**
+ * 设置本地数据
+ * @param {string} key 
+ * @param {string} value 
+ */
 const setStorage = (key, value) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -14,7 +19,10 @@ const setStorage = (key, value) => {
   })
 }
 
-
+/**
+ * 获取本地数据
+ * @param {设置本地数据}key 
+ */
 const getStorage = (key) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -28,9 +36,9 @@ const getStorage = (key) => {
 
 /**
  * 将数据以数组形式存储
- * @param {*} key 
- * @param {*} value 
- * @param {*} length 数组最大长度
+ * @param {string} key 
+ * @param {string} value 
+ * @param {number} length 数组最大长度
  */
 const setArrayStorage = (key, value, length = 50) => {
   return new Promise(async (resolve, reject) => {
@@ -93,9 +101,10 @@ const removeAllStorage = () => {
     }
   })
 }
-
+/**
+ * 删除全部本地数据
+ */
 const clearAllStorage = () => {
-  console.log(123)
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.multiRemove([

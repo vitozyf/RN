@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {ZnlHeader, ZnlInput, ZnlButton, HeaderRight} from '@components';
+import {ZnlInput, ZnlButton, HeaderRight} from '@components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {AppInit} from '@src/utils/appInit'
-import { Input } from 'react-native-elements';
-console.log(1111, Input)
-
 class Register extends Component{
   constructor(props) {
     super(props);
@@ -18,6 +15,7 @@ class Register extends Component{
         SmsCode: '', // 短信验证码
         AccountName: '', // 账号
         Password: '', // 密码
+        RePassword: '',
         SmsGuid: ''
     }
   }
@@ -54,18 +52,52 @@ class Register extends Component{
   }
   GetCode = () => {
     const {PhoneNumber} = this.state;
-    Cloud.$post('user/sms-challenge', {
-        PhoneNumber
-    }).then(data => {
-      if (data) {
-        this.setState({
-          SmsGuid: data
-        })
-        Cloud.$Toast.show('短信已发送');
-      }
-    })
+    if (Cloud.$CONFIG.RegPhoneNumber.test(PhoneNumber)) {
+      Cloud.$post('user/sms-challenge', {
+          PhoneNumber
+      }).then(data => {
+        if (data) {
+          this.setState({
+            SmsGuid: data
+          })
+          Cloud.$Toast.show('短信已发送');
+        }
+      })
+    } else {
+      Cloud.$Toast.show('请输入正确的手机号');
+    }
+    
   }
   RegisterHandler = () => {
+    const {
+      ContactCompanyName,
+      ContactName,
+      PhoneNumber,
+      SmsCode,
+      AccountName,
+      Password,
+      RePassword,
+      SmsGuid
+    } = this.state;
+    let errMessage = '';
+    if (!ContactCompanyName) {
+      errMessage = '公司名不能为空';
+    } else if (!ContactName) {
+      errMessage = '联系人不能为空';
+    } else if (!PhoneNumber) {
+      errMessage = '手机号不能为空';
+    } else if (!SmsCode) {
+      errMessage = '短信验证码不能为空';
+    } else if (!AccountName) {
+      errMessage = '账号不能为空';
+    } else if (!Password) {
+      errMessage = '密码不能为空';
+    } else if (Password !== RePassword) {
+      errMessage = '两次密码输入不一致';
+    }
+    if (errMessage) {
+      return Cloud.$Toast.show(errMessage);
+    }
     Cloud.$post('user/reg', this.state).then(async (data) => {
       if (data) {
         const {SetUserInfo, DrawerNav} = this.props;
@@ -91,18 +123,8 @@ class Register extends Component{
     return (
       <KeyboardAwareScrollView>
         <View style={styles.Page}>
-          {/* <ZnlHeader onPressIcon={this.goBackHome}></ZnlHeader> */}
           <View style={styles.Body}>
-            {/* <View style={styles.title}>
-              <Text style={styles.titleText}>注册</Text>
-            </View> */}
             <View>
-              {/* <View style={styles.InputBox}>
-              <Input
-                placeholder='INPUT WITH ICON'
-                leftIcon={{ type: 'font-ionicons', name: 'md-close' }}
-              />
-              </View> */}
               <View style={styles.InputBox}>
                 <ZnlInput 
                   style={styles.Input}
@@ -163,7 +185,7 @@ class Register extends Component{
                 <ZnlInput 
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'Password')}}
+                  onChangeText={(value) => {this.onChangeText(value, 'RePassword')}}
                   placeholder="再次输入密码"
                   secureTextEntry={true}>
                 </ZnlInput>
@@ -200,12 +222,6 @@ const styles = StyleSheet.create({
   Body: {
     paddingTop: 20,
   },
-  title: {
-    paddingBottom: 20,
-  },
-  titleText: {
-    fontSize: 28,
-  },
   InputBox: {
     marginBottom: 16
   },
@@ -216,8 +232,6 @@ const styles = StyleSheet.create({
   },
   Input: {
     borderWidth: 0,
-    // borderBottomWidth: 1,
-    // borderColor: '#ccc',
   },
   inputIn: {
     borderWidth: 0,

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {connect} from 'react-redux';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import {
   HeaderTitle,
   HeaderRight,
@@ -41,10 +42,38 @@ class ErpIndex extends Component {
       headerRight: <HeaderRight />
     };
   };
+  toErpList(name) {
+    const {navigation} = this.props;
+    navigation.push('ErpList', {name});
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text>1111</Text>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => {this.toErpList('StkStock')}}>
+          <Feather style={styles.icon} name="box" size={20} />
+          <Text style={styles.title}>库存</Text>
+          <AntDesign style={styles.icon} name="right" size={20}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+          <Feather style={styles.icon} name="box" size={20} />
+          <Text style={styles.title}>入库</Text>
+          <AntDesign style={styles.icon} name="right" size={20}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+          <Feather style={styles.icon} name="box" size={20} />
+          <Text style={styles.title}>出库</Text>
+          <AntDesign style={styles.icon} name="right" size={20}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+          <Feather style={styles.icon} name="box" size={20} />
+          <Text style={styles.title}>询价</Text>
+          <AntDesign style={styles.icon} name="right" size={20}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+          <Feather style={styles.icon} name="box" size={20} />
+          <Text style={styles.title}>报价</Text>
+          <AntDesign style={styles.icon} name="right" size={20}/>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -59,6 +88,27 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginLeft: 10
+  },
+  row: {
+    borderBottomWidth: 1,
+    borderColor: '#E6E6E6',
+    height: 50,
+    flexDirection: 'row',
+    alignItems:'center',
+    justifyContent: 'space-between',
+    // paddingLeft: 20,
+    // paddingRight: 20,
+  },
+  title: {
+    flex: 1,
+    fontSize: 20,
+    // textAlign: 'left',
+  },  
+  icon: {
+    width: 50,
+    textAlign: 'center',
+    color: '#999',
+    fontWeight: 'bold',
   }
 });
 

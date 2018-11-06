@@ -11,8 +11,7 @@ class Login extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        ContactCompanyName: '', // 公司名
-        ContactName: '', // 联系人名称
+        CompanyName: '', // 公司名
         PhoneNumber: '', // 手机号
         AccountName: '', // 账号
         Password: '', // 密码
@@ -53,10 +52,10 @@ class Login extends Component{
     const {SetUserInfo} = this.props;
     Cloud.$post('user/login', this.state).then(async (data) => {
       if (data) {
-        await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath);
-        await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName);
-        await Cloud.$setStorage(Cloud.$CONFIG.PhoneNumber, this.state.PhoneNumber);
-        await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token);
+        await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath || '');
+        await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || '');
+        await Cloud.$setStorage(Cloud.$CONFIG.PhoneNumber, this.state.PhoneNumber || '');
+        await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || '');
         await AppInit({
           dispatch: SetUserInfo
         })
@@ -107,7 +106,7 @@ class Login extends Component{
           <ZnlInput 
             style={styles.znlInputBox}
             inputStyle={styles.Input}
-            onChangeText={(value) => {this.onChangeText(value, 'ContactCompanyName')}}
+            onChangeText={(value) => {this.onChangeText(value, 'CompanyName')}}
             placeholder="公司名"
             autoFocus={true}>
           </ZnlInput>

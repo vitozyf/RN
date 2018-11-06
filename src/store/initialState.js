@@ -11,6 +11,8 @@ export default {
     NickName: '',
     TOKEN: '',
     PhoneNumber: '',
-    UserIdentity: {}
+    UserIdentity: {},
+    HomeUserInfo: {},
+    HomeUserAuthors: {},
   }
 };

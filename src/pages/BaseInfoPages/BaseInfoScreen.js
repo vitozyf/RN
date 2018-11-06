@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ZnlButton, ZnlModal} from '@components';
-import Modal from "react-native-modal";
 import {
   HeaderTitle,
   HeaderRight,
@@ -61,6 +60,7 @@ class BaseInfoScreen extends Component {
     Cloud.$post('user/logout',null, {onlydata: false}).then(data => {
       if (data.Result.isSuccess) {
         this.closeModal(() => {
+          Cloud.$clearAllStorage();
           DrawerNav.navigate('Login');
         });
       }
@@ -68,26 +68,35 @@ class BaseInfoScreen extends Component {
   }
   render() {
     const {modalVisible} = this.state;
+    const {
+      NickName,
+      PhoneNumber,
+      HomeUserInfo
+    } = this.props;
+    const {
+      ExpirationDateStr,
+      CompanyName
+    } = HomeUserInfo;
     return (
       <View style={styles.container}>
         <View style={styles.baseRow}>
           <Text style={styles.baseRowTitle}>公司名</Text>
-          <Text style={styles.baseRowValue}>深圳市正能量网络技术有限公司</Text>
+          <Text style={styles.baseRowValue}>{CompanyName}</Text>
         </View>
 
         <View style={styles.baseRow}>
           <Text style={styles.baseRowTitle}>微信</Text>
-          <Text style={styles.baseRowValue}>Vito</Text>
+          <Text style={styles.baseRowValue}>{NickName}</Text>
         </View>
 
         <View style={styles.baseRow}>
           <Text style={styles.baseRowTitle}>手机号</Text>
-          <Text style={styles.baseRowValue}>13729093675</Text>
+          <Text style={styles.baseRowValue}>{PhoneNumber}</Text>
         </View>
 
         <View style={styles.baseRow}>
           <Text style={styles.baseRowTitle}>到期时间</Text>
-          <Text style={styles.baseRowValue}>2099年8月2日</Text>
+          <Text style={styles.baseRowValue}>{ExpirationDateStr}</Text>
         </View>
 
         <View style={styles.buttonBox}>
@@ -152,7 +161,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, props);
+  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, state.UserInfo, props);
 }
 
 export default connect(

@@ -7,16 +7,29 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   HeaderTitle,
   HeaderRight,
-  ZnlInput,
 } from '@components';
 class HeaderLeft extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      AvatarPath: 'http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg',
+    }
+  }
   onPress = () => {
     const {DrawerNav} = this.props;
     DrawerNav.openDrawer();
   }
+  componentWillMount() {
+    Cloud.$getStorage(Cloud.$CONFIG.AvatarPath).then(data => {
+      if (data) {
+        this.setState({
+          AvatarPath: `https:${data}`
+        })
+      }
+    })
+  }
   render() {
-    const { AvatarPath } = this.props;
-    // console.log(22222, AvatarPath)
+    const { AvatarPath } = this.state;
     return (
       <TouchableOpacity
       activeOpacity={0.8}
@@ -32,7 +45,7 @@ class HeaderLeft extends Component {
 }
 
 const HeaderLeftCom = connect((state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, state.UserInfo, props);
+  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, {AvatarPath: state.UserInfo.AvatarPath}, props);
 })(HeaderLeft)
 
 class Bom extends Component {

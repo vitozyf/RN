@@ -6,8 +6,6 @@ import {BackTop} from '@components';
 
 import {
   ZnlInput,
-  ZnlHeader,
-  HeaderRight
 } from '@components';
 import SerchList from './SerchList';
 

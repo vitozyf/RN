@@ -32,6 +32,7 @@ const Index =  class Index extends Component{
     drawerLabel: '基本信息'
   };
   render() {
+
     return (
         <IndexPages></IndexPages>
     )

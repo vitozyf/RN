@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   SearchInputBox: {
     height: 40,
     width: '100%',
-    borderWidth: 1,
+    // borderWidth: 1,
     marginLeft: 10,
   },
   SearchInput: {

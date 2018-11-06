@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ErpIndex from '@pages/ErpPages/ErpIndex';
+import ErpList from '@pages/ErpPages/ErpList';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import {connect} from 'react-redux';
@@ -11,6 +12,9 @@ const IndexPages = createStackNavigator(
   {
     ErpIndex: {
       screen: ErpIndex,
+    },
+    ErpList: {
+      screen: ErpList
     }
   },
   {

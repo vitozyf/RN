@@ -181,7 +181,6 @@ class ToastContainer extends Component {
         let {props} =  this;
         const { windowWidth } = this.state;
         let offset = props.position;
-        console.log(123, offset)
         let position = offset ? {
             [offset < 0 ? 'bottom' : 'top']: offset < 0 ? (this._keyboardHeight - offset) : offset
         } : {

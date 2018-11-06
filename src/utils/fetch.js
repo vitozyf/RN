@@ -19,13 +19,22 @@ const store = createStore();
  */
 const fetchMethods = async (method, url, data, option) => {
   let BaseUrl = CONFIG.APIBASEURL;
+
   if (option && option.loading) {
     Loading.show();
   }
+  // 搜索站地址
   if (option && option.searchApi) {
     BaseUrl = CONFIG.SEARCHAPIURL;
   }
+
   const token = await getStorage(CONFIG.TOKEN);
+  let Authorization = 'JWTAPP ' + (token === null ? '' : token);
+  // erp站地址
+  if (option && option.erpApi) {
+    BaseUrl = CONFIG.ERPAPI;
+    Authorization = `ErpApi${(token === null ? '' : token)}`
+  }
   // 是否只返回数据，默认true
   const onlydata = option ? (typeof option.onlydata === 'undefined' || option.onlydata ? true : option.onlydata) : true;
   try {
@@ -34,7 +43,7 @@ const fetchMethods = async (method, url, data, option) => {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'JWTAPP ' + (token === null ? '' : token)
+          Authorization
         },
         body: JSON.stringify(data)
       })
@@ -43,8 +52,13 @@ const fetchMethods = async (method, url, data, option) => {
         if (option && option.loading) {
           Loading.hidden();
         }
-        if (response.Code === 200) {
+        if (response.Code === 200 || response.code === 200) {
+          // erp直接返回
+          if (option && option.erpApi) {
+            return resolve(response.data);
+          }
           const completeData = response.Result.Data;
+          // bomai按通用封装时只返回数据
           if (onlydata) {
             if (completeData.Code === 0) {
               resolve(completeData.Data);
@@ -57,7 +71,7 @@ const fetchMethods = async (method, url, data, option) => {
           } else {
             resolve(response);
           }
-        } else if (response.Code === 401) {
+        } else if (response.Code === 401 || response.code === 401) {
           ZnlToast.show(
             response.Message || '权限验证失败'
           );

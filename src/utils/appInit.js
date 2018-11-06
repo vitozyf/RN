@@ -1,9 +1,15 @@
 // 获取用户开通的服务
 const getUserIdentity = async () => {
   return Cloud.$get('mmhome/getusercenterinfo')
+  // /api/v1/mmhome/gethomeinfo
+}
+const gethomeinfo = async () => {
+  const HomeInfo = await Cloud.$get('mmhome/gethomeinfo');
+  return HomeInfo;
 }
 // 初始化本地存储的用户数据到redux
 const initUserData = async (store) => {
+  const HomeInfo = await gethomeinfo();
   const UserIdentity = await getUserIdentity(store);
   const AvatarPath = await Cloud.$getStorage(Cloud.$CONFIG.AvatarPath);
   const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
@@ -24,6 +30,11 @@ const initUserData = async (store) => {
   }
   if (PhoneNumber) {
     UserInfo.PhoneNumber = PhoneNumber
+  }
+  console.log(HomeInfo)
+  if (HomeInfo) {
+    UserInfo.HomeUserInfo = HomeInfo.UserInfo;
+    UserInfo.HomeUserAuthors = HomeInfo.UserAuthors;
   }
   store.dispatch({
     type: 'SetUserInfo',
