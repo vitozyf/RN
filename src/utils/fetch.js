@@ -2,9 +2,7 @@ import { getStorage, removeStorage } from './storage';
 import CONFIG from './config';
 // import { Toast } from './system';
 import {Loading, ZnlToast} from '../components';
-// import {store} from '../../App';
-import createStore from '@src/store';
-const store = createStore();
+import {store} from '../store';
 
 /**
  * 
@@ -16,6 +14,7 @@ const store = createStore();
  *  loading 默认false
  *  onlydata 默认只包含data
  *  searchApi 启用搜索站点api
+ *  erpApi 启用erp站点
  */
 const fetchMethods = async (method, url, data, option) => {
   let BaseUrl = CONFIG.APIBASEURL;

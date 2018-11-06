@@ -174,29 +174,21 @@ const CustomDrawerContentComponent = (props) => {
   return (<MyScrollViewWithConnect mynavigation = {navigation} {...props}/>);
 };
 
-export default class Pages extends Component{
-    constructor(props){
-        super(props);
-    }
-    render(){
-        return(
-            <SimpleAppNavigator />
-        )
-    }
-}
 const SimpleAppNavigator = createDrawerNavigator({
-    Home: {screen: Home},
-    Login: {screen: Login},
-    Register: {screen: Register},
-    BaseInfo: {screen: BaseInfo},
-    Membership: {screen: Membership}
+  Home: {screen: Home},
+  Login: {screen: Login},
+  Register: {screen: Register},
+  BaseInfo: {screen: BaseInfo},
+  Membership: {screen: Membership}
 },{
-     initialRouteName: 'Home',
-     drawerPosition: 'left',
-     contentComponent: CustomDrawerContentComponent,
-     swipeEnabled: true,
-     animationEnabled: true,
-     lazy: true,
-     tabBarPosition:'bottom',
- });
+  initialRouteName: 'Home',
+  drawerPosition: 'left',
+  contentComponent: CustomDrawerContentComponent,
+  swipeEnabled: true,
+  animationEnabled: true,
+  lazy: true,
+  tabBarPosition:'bottom',
+});
+
+export default SimpleAppNavigator;
 

@@ -32,9 +32,10 @@ const Index =  class Index extends Component{
   static navigationOptions = {
     drawerLabel: '登陆'
   };
+  static router = IndexPages.router;
   render() {
     return (
-        <IndexPages></IndexPages>
+        <IndexPages navigation={this.props.navigation}></IndexPages>
     )
   }
 }

@@ -47,9 +47,7 @@ class SerchList extends PureComponent {
       this.state = {
         selected: (new Map()),
         refreshing: false,
-        datas: [{
-            test: 1
-        }],
+        datas: [],
         // ScrollOffset: 0
       }
   }

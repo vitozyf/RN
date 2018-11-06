@@ -31,10 +31,11 @@ const Index =  class Index extends Component{
   static navigationOptions = {
     drawerLabel: '基本信息'
   };
+  static router = IndexPages.router;
   render() {
 
     return (
-        <IndexPages></IndexPages>
+        <IndexPages navigation={this.props.navigation}></IndexPages>
     )
   }
 }

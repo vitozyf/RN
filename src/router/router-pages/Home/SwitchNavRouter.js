@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import BottomTabNavRouter from './BottomTabNavRouter';
 import SearchStackNavRouter from './SearchStackNavRouter';
 // import ErpList from '@pages/ErpPages/ErpList';
@@ -20,16 +19,5 @@ const SwitchNav = createSwitchNavigator(
   }
 )
 
-const SwitchNavRouter = class App extends Component {
-  render() {
-    return (
-      <SwitchNav />
-    );
-  }
-}
 
-
-
-export default connect(
-  // mapStateToProps
-)(SwitchNavRouter);
+export default SwitchNav;

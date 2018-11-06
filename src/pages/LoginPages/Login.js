@@ -132,7 +132,7 @@ class Login extends Component{
     const TitleText = LoginType === 0 ? '手机号登录' : 'ERP登录';
     const TitleNav = LoginType === 1 ? '手机号登录>>' : 'ERP登录>>';
     return (
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView style={styles.Page}>
         <View style={styles.Page}>
           {/* <ZnlHeader onPressIcon={this.goBackHome} leftIcon="md-close"></ZnlHeader> */}
           <View style={styles.Body}>
@@ -174,8 +174,6 @@ const styles = StyleSheet.create({
   Page: {
     backgroundColor: '#fff',
     flex: 1,
-    height: '100%',
-    paddingBottom: 200,
     // paddingLeft: 10,
     // paddingRight: 10
   },

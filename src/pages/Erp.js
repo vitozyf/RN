@@ -45,9 +45,10 @@ class Index extends Component{
       },
     };
   };
+  static router = IndexPages.router;
   render() {
     return (
-        <IndexPages></IndexPages>
+        <IndexPages navigation={this.props.navigation}></IndexPages>
     )
   }
 }

@@ -121,7 +121,7 @@ class Register extends Component{
   }
   render() {
     return (
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView style={styles.Page}>
         <View style={styles.Page}>
           <View style={styles.Body}>
             <View>
@@ -215,9 +215,6 @@ const styles = StyleSheet.create({
   Page: {
     backgroundColor: '#fff',
     flex: 1,
-    paddingBottom: 200,
-    paddingLeft: 10,
-    paddingRight: 10
   },
   Body: {
     paddingTop: 20,

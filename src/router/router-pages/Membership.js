@@ -36,9 +36,10 @@ const Index =  class Index extends Component{
   static navigationOptions = {
     drawerLabel: '会员身份'
   };
+  static router = IndexPages.router;
   render() {
     return (
-        <IndexPages></IndexPages>
+        <IndexPages navigation={this.props.navigation}></IndexPages>
     )
   }
 }

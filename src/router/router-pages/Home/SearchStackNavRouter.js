@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
 import { 
   createStackNavigator,
 } from 'react-navigation';
@@ -18,29 +18,12 @@ const SearchStackNav = createStackNavigator(
   }
 )
 
-const SearchStackNavRouter = class App extends Component {
-  render() {
-    return (
-      <SearchStackNav />
-    );
-  }
-}
-
-// const mapStateToProps = (state, props) => {
-//   return props;
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     SetDrawerNav : (DrawerNav) => {
-//       return dispatch({
-//         type: 'SetDrawerNav',
-//         DrawerNav
-//       })
-//     }
+// const SearchStackNavRouter = class App extends Component {
+//   render() {
+//     return (
+//       <SearchStackNav />
+//     );
 //   }
 // }
 
-export default connect(
-  // mapStateToProps
-)(SearchStackNavRouter);
+export default SearchStackNav;

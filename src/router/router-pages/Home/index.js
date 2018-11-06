@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
-import { Provider } from 'react-redux';
-import createStore from '@src/store';
 import {connect} from 'react-redux';
 import SwitchNavRouter from './SwitchNavRouter';
 
-const store = createStore()
+// const store = createStore()
 
 
-const AppIndex = class App extends Component {
+class Home extends Component {
   static navigationOptions = {
     drawerLabel: '首页'
   };
+  static router = SwitchNavRouter.router;
   render() {
     return (
-      <Provider store = { store }>
-        <SwitchNavRouter />
-      </Provider>
+        <SwitchNavRouter navigation={this.props.navigation} />
     );
   }
   componentWillMount() {
@@ -42,4 +39,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AppIndex);
+)(Home);

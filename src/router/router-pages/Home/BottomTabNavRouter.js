@@ -28,10 +28,11 @@ const TabNav = createBottomTabNavigator(
   }
 );
 
-const BottomTabNavRouter = class App extends Component {
+class BottomTabNavRouter extends Component {
+  static router = TabNav.router;
   render() {
     return (
-      <TabNav />
+      <TabNav navigation={this.props.navigation}/>
     );
   }
   componentWillMount() {
