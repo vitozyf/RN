@@ -43,6 +43,9 @@ class ErpIndex extends Component {
     };
   };
   toErpList(name) {
+    // const {SwitchNav} = this.props;
+    // SwitchNav.navigate('ErpList', {name});
+
     const {navigation} = this.props;
     navigation.push('ErpList', {name});
   }
