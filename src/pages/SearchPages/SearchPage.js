@@ -24,8 +24,7 @@ class SearchPage extends Component {
   static navigationOptions = ({ navigation }) => {
     const method = navigation.getParam('method', {});
     return {
-      // headerLeft: null,
-      headerBackTitle: null,
+      // headerBackTitle: null,
       headerTitle: (
         <ZnlInput 
           style={styles.SearchInputBox} 
@@ -42,12 +41,9 @@ class SearchPage extends Component {
         </ZnlInput>
       ),
       headerRight: <HeaderRight style={styles.HeaderRight} title="取消" onPress={method.cancelHandler}/>,
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
-      headerTitleStyle: {
-        color: '#333',
-      },
+      // headerStyle: {
+      //   backgroundColor: '#ccc',
+      // },
     };
   };
   cancelHandler = () => {
@@ -165,14 +161,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   HeaderRight: {
-    flex: 1,
     marginRight: 10,
   },
   SearchInputBox: {
     height: 40,
-    width: '100%',
-    // borderWidth: 1,
-    marginLeft: 10,
+    flex: 1,
   },
   SearchInput: {
     borderRadius: 10,

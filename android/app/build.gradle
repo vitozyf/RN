@@ -1,4 +1,7 @@
 apply plugin: "com.android.application"
+project.ext.vectoricons = [
+    iconFontNames: ['iconfont.ttf' ] //添加你需要赋值的字符文件
+]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 import com.android.build.OutputFile

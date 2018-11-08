@@ -50,6 +50,7 @@ class Login extends Component{
   }
   LoginHandler = () => {
     const {SetUserInfo} = this.props;
+    Cloud.$Loading.show();
     Cloud.$post('user/login', this.state).then(async (data) => {
       if (data) {
         await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath || '');
@@ -59,10 +60,13 @@ class Login extends Component{
         await AppInit({
           dispatch: SetUserInfo
         })
+        Cloud.$Loading.hidden()
         this.goBackHome();
+      } else {
+        Cloud.$Loading.hidden()
       }
     }).catch(err => {
-      console.log(err);
+      Cloud.$Loading.hidden()
     })
   }
   onChangeText = (value, name) => {

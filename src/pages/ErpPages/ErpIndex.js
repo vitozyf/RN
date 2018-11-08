@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import Icon from '@components/Iconfont/CloudIcon'
+
 import {
   HeaderTitle,
   HeaderRight,
@@ -49,6 +51,7 @@ class ErpIndex extends Component {
     const {navigation} = this.props;
     navigation.push('ErpList', {name});
   }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -57,22 +60,25 @@ class ErpIndex extends Component {
           <Text style={styles.title}>库存</Text>
           <AntDesign style={styles.icon} name="right" size={20}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => {this.toErpList('StkInRecord')}}>
           <Feather style={styles.icon} name="box" size={20} />
+          {/* <Icon style={styles.icon} name="icon-company_ic" size={20}></Icon> */}
+          <Text style={{fontFamily:'iconfont', fontSize: 20}}>&#xe6ee;</Text>
+          
           <Text style={styles.title}>入库</Text>
           <AntDesign style={styles.icon} name="right" size={20}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => {this.toErpList('StkOutByModel')}}>
           <Feather style={styles.icon} name="box" size={20} />
           <Text style={styles.title}>出库</Text>
           <AntDesign style={styles.icon} name="right" size={20}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => {this.toErpList('StkInquireRecord')}}>
           <Feather style={styles.icon} name="box" size={20} />
           <Text style={styles.title}>询价</Text>
           <AntDesign style={styles.icon} name="right" size={20}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.row} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => {this.toErpList('HisofferpriceByModel')}}>
           <Feather style={styles.icon} name="box" size={20} />
           <Text style={styles.title}>报价</Text>
           <AntDesign style={styles.icon} name="right" size={20}/>

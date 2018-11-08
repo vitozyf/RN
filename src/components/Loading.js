@@ -12,7 +12,7 @@ const Loading = {
     sibling = new RootSiblings(
       <View style={styles.maskStyle}>
         <View style={styles.backViewStyle}>
-          <ActivityIndicator size="large" color="white" />
+          <ActivityIndicator size="large" color="#000" />
         </View>
       </View>
     )
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     },
     backViewStyle: {
-      backgroundColor: '#111',
+      backgroundColor: 'transparent',
       width: 120,
       height: 80,
       justifyContent: 'center',

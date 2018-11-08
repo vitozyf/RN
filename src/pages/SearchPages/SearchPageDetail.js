@@ -237,8 +237,6 @@ class SearchPage extends Component {
     }, () => {
       this.onSearchHandler();
     })
-
-    console.log(121212);
     this.didBlurSubscription = this.props.navigation.addListener(
       'willBlur',
       payload => {
