@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import Icon from '@components/Iconfont/CloudIcon'
+// import Icon from '@components/Iconfont/CloudIcon'
 
 import {
   HeaderTitle,
@@ -45,11 +45,14 @@ class ErpIndex extends Component {
     };
   };
   toErpList(name) {
-    // const {SwitchNav} = this.props;
-    // SwitchNav.navigate('ErpList', {name});
+    // const {DrawerNav} = this.props;
+    // console.log(DrawerNav)
+    // SwitchNav.push('ErpList', {name});
 
     const {navigation} = this.props;
+    // navigation.dispatch('keyboardDidHide');
     navigation.push('ErpList', {name});
+    // console.log('keyboardDidHide', navigation)
   }
   
   render() {
@@ -62,8 +65,7 @@ class ErpIndex extends Component {
         </TouchableOpacity>
         <TouchableOpacity style={styles.row} activeOpacity={0.8} onPress={() => {this.toErpList('StkInRecord')}}>
           <Feather style={styles.icon} name="box" size={20} />
-          {/* <Icon style={styles.icon} name="icon-company_ic" size={20}></Icon> */}
-          <Text style={{fontFamily:'iconfont', fontSize: 20}}>&#xe6ee;</Text>
+          {/* <Text style={{fontFamily:'iconfont', fontSize: 20}}>&#xe6ee;</Text> */}
           
           <Text style={styles.title}>入库</Text>
           <AntDesign style={styles.icon} name="right" size={20}/>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav}, props);
+  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, props);
 }
 
 export default connect(

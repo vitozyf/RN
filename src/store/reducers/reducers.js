@@ -22,3 +22,12 @@ export const Navigations = (state = {}, action) => {
       return state;
   }
 }
+
+export const IsTabBarShow = (state, action) => {
+  switch (action.type) {
+    case 'SetIsTabBarShow':
+      return action.IsTabBarShow;
+    default:
+      return true;
+  }
+}

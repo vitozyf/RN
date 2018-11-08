@@ -14,5 +14,6 @@ export default {
     UserIdentity: {},
     HomeUserInfo: {},
     HomeUserAuthors: {},
-  }
+  },
+  IsTabBarShow: true
 };

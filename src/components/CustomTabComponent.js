@@ -4,15 +4,16 @@
 import React from 'react';
 import { Keyboard, StyleSheet } from 'react-native';
 import { BottomTabBar } from 'react-navigation-tabs';
+import {connect} from 'react-redux';
 
 
-export default class CustomTabComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: true
-    }
-  }
+class CustomTabComponent extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     visible: true
+  //   }
+  // }
 
   componentDidMount() {
     this.kbShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
@@ -20,11 +21,15 @@ export default class CustomTabComponent extends React.Component {
   }
 
   keyboardWillShow = () => {
-    this.setState({ visible: false });
+    const {SetIsTabBarShow} = this.props;
+    // this.setState({ visible: false });
+    SetIsTabBarShow(false);
   };
 
   keyboardWillHide = () => {
-    this.setState({ visible: true });
+    // this.setState({ visible: true });
+    const {SetIsTabBarShow} = this.props;
+    SetIsTabBarShow(true);
   };
 
   componentWillUnmount() {
@@ -33,7 +38,9 @@ export default class CustomTabComponent extends React.Component {
   }
 
   render() {
-    return this.state.visible && <BottomTabBar style={styles.BottomTabBar} {...this.props} />;
+    const {IsTabBarShow} = this.props;
+    // return this.state.visible && <BottomTabBar style={styles.BottomTabBar} {...this.props} />;
+    return IsTabBarShow && <BottomTabBar style={styles.BottomTabBar} {...this.props} />;
   }
 }
 
@@ -42,3 +49,24 @@ const styles = StyleSheet.create({
     // borderTopColor: '#ee7700',
   }
 })
+
+// export default CustomTabComponent;
+const mapStateToProps = (state, props) => {
+  return Object.assign({}, {IsTabBarShow: state.IsTabBarShow}, props);
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    SetIsTabBarShow: (IsTabBarShow) => {
+      return dispatch({
+        type: 'SetIsTabBarShow',
+        IsTabBarShow
+      })
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomTabComponent);

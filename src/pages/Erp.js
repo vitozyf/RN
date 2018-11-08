@@ -35,7 +35,9 @@ const IndexPages = createStackNavigator(
 
 class Index extends Component{
   static navigationOptions = ({ navigation }) => {
+    let tabBarVisible = true;
     return {
+      tabBarVisible,
       title: 'ERP',
       activeTintColor: '#ee7700',
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -58,5 +60,5 @@ const mapStateToProps = (state, props) => {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
 )(Index);

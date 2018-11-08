@@ -2,7 +2,7 @@ import { getStorage, removeStorage } from './storage';
 import CONFIG from './config';
 // import { Toast } from './system';
 import {Loading, ZnlToast} from '../components';
-import {store} from '../store';
+import store from '../store';
 
 /**
  * 

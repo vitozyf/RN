@@ -5,6 +5,7 @@ import {BackTop} from '@components';
 import Feather from 'react-native-vector-icons/Feather';
 import Modal from "react-native-modal";
 import FilterScreen from './FilterScreen';
+import {connect} from 'react-redux';
 
 const ITEM_HEIGHT = 40; // list行高
 class ListRow extends PureComponent {
@@ -159,6 +160,7 @@ class SerchList extends PureComponent {
                 backgroundColor: '#fff',
             },
             headerTitleStyle: {
+                alignSelf:'center',
                 color: '#333',
             },
         };
@@ -179,13 +181,25 @@ class SerchList extends PureComponent {
     }
     // 点击数量
     qtyHandler = () => {
-        const {InvQty} = this.state;
+        const {InvQty, name} = this.state;
+        let qtyKey = 'InvQty';
+        switch (name) {
+            case 'StkInRecord':
+            case 'StkOutByModel':
+            case 'StkInquireRecord':
+            case 'HisofferpriceByModel':
+                qtyKey = 'Qty';
+                break;
+        
+            default:
+                break;
+        }
         let newInvQty = '';
         if (!InvQty) {
-            newInvQty = 'InvQty ASC'
-        } else if (InvQty === 'InvQty ASC') {
-            newInvQty = 'InvQty DESC'
-        } else if (InvQty === 'InvQty ASC') {
+            newInvQty = `${qtyKey} ASC`
+        } else if (InvQty === `${qtyKey} ASC`) {
+            newInvQty = `${qtyKey} DESC`
+        } else if (InvQty === `${qtyKey} ASC`) {
             newInvQty = ''
         }
         this.onSearch({
@@ -194,13 +208,28 @@ class SerchList extends PureComponent {
     }
     // 点击更新时间
     createdTimeHandler = () => {
-        const {UpdatedTime} = this.state;
+        const {UpdatedTime, name} = this.state;
+        let TimeKey = 'UpdatedTime';
+        switch (name) {
+            case 'StkInRecord':
+                TimeKey = 'ReceiveTime';
+                break;
+            case 'StkOutByModel':
+            case 'HisofferpriceByModel':
+                TimeKey = 'ShipTime';
+                break;
+            case 'StkInquireRecord':
+                TimeKey = 'CreatedTime';
+                break;
+            default:
+                break;
+        }
         let newUpdatedTime = '';
         if (!UpdatedTime) {
-            newUpdatedTime = 'UpdatedTime ASC'
-        } else if (UpdatedTime === 'UpdatedTime ASC') {
-            newUpdatedTime = 'UpdatedTime DESC'
-        } else if (UpdatedTime === 'UpdatedTime ASC') {
+            newUpdatedTime = `${TimeKey} ASC`
+        } else if (UpdatedTime === `${TimeKey} ASC`) {
+            newUpdatedTime = `${TimeKey} DESC`
+        } else if (UpdatedTime === `${TimeKey} ASC`) {
             newUpdatedTime = ''
         }
         this.onSearch({
@@ -273,7 +302,25 @@ class SerchList extends PureComponent {
             InvQty,
             UpdatedTime,
             showComprehensiveRanking,
-            FieldWhereString} = this.state;
+            FieldWhereString,
+            name} = this.state;
+            let TimeTitle = '更新时间'
+            switch (name) {
+                case 'StkInRecord':
+                    TimeTitle = '收获日期';
+                    break;
+                case 'StkOutByModel':
+                    TimeTitle = '出货日期';
+                    break;
+                case 'StkInquireRecord':
+                    TimeTitle = '询价时间';
+                    break;
+                case 'HisofferpriceByModel':
+                    TimeTitle = '报价时间';
+                    break;
+                default:
+                    break;
+            }
         return (
             <View style={styles.SerchListTitle}> 
                 {/* <ScrollView 
@@ -282,7 +329,7 @@ class SerchList extends PureComponent {
                     > */}
                 <Text style={[styles.SerchTitleBlock, MakeYear ? styles.colorMain : null]} onPress={() => {this.showComprehensiveRankingHandler(!showComprehensiveRanking)}}>综合排序</Text>
                 <Text style={[styles.SerchTitleBlock, InvQty ? styles.colorMain : null]} onPress={this.qtyHandler}>数量</Text>
-                <Text style={[styles.SerchTitleBlock, UpdatedTime ? styles.colorMain : null]} onPress={this.createdTimeHandler}>更新时间</Text>
+                <Text style={[styles.SerchTitleBlock, UpdatedTime ? styles.colorMain : null]} onPress={this.createdTimeHandler}>{TimeTitle}</Text>
                 <Text style={[styles.SerchTitleBlock, (FieldWhereString && FieldWhereString !== '{}') ? styles.colorMain : null]} onPress={() => {this.setState({isFilterScreenShow: true})}}>筛选</Text>
                 {/* </ScrollView> */}
                 {this._renderComprehensiveRanking()}
@@ -391,7 +438,7 @@ class SerchList extends PureComponent {
             PageIndex,
             PageSize,
             isZero: true
-        },{erpApi: true, loading: true}).then(data => {
+        },{erpApi: true, loading: false}).then(data => {
             this.setState({
                 loading: false
             })
@@ -459,6 +506,7 @@ class SerchList extends PureComponent {
         )
     }
     componentWillMount() {
+        const {SetIsTabBarShow, navigation} = this.props;
         const name = this.props.navigation.getParam('name');
         this.setState({
             name
@@ -467,6 +515,21 @@ class SerchList extends PureComponent {
         if (name === 'StkStock') {
             this.getStkWarehouse();
         }
+
+        this.willBlurListener = navigation.addListener('willBlur', this.willBlurHandler);
+        this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
+    }
+    componentWillUnmount() {
+        this.willBlurListener.remove();
+        this.willFocusListener.remove();
+    }
+    willBlurHandler = () =>{
+        const {SetIsTabBarShow} = this.props;
+        SetIsTabBarShow(true);
+    }
+    willFocusHandler = () => {
+        const {SetIsTabBarShow} = this.props;
+        SetIsTabBarShow(false);
     }
 }
 
@@ -600,4 +663,22 @@ SerchList.propTypes = {
   style: PropTypes.object
 }
 
-export default SerchList;
+const mapStateToProps = (state, props) => {
+    return props;
+  }
+  
+const mapDispatchToProps = (dispatch) => {
+    return {
+        SetIsTabBarShow: (IsTabBarShow) => {
+        return dispatch({
+            type: 'SetIsTabBarShow',
+            IsTabBarShow
+        })
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SerchList);
