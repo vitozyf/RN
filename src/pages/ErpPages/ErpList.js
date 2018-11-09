@@ -438,7 +438,7 @@ class SerchList extends PureComponent {
             PageIndex,
             PageSize,
             isZero: true
-        },{erpApi: true, loading: false}).then(data => {
+        },{erpApi: true, loading: true}).then(data => {
             this.setState({
                 loading: false
             })
@@ -506,7 +506,7 @@ class SerchList extends PureComponent {
         )
     }
     componentWillMount() {
-        const {SetIsTabBarShow, navigation} = this.props;
+        const {navigation} = this.props;
         const name = this.props.navigation.getParam('name');
         this.setState({
             name
@@ -515,22 +515,16 @@ class SerchList extends PureComponent {
         if (name === 'StkStock') {
             this.getStkWarehouse();
         }
-
-        this.willBlurListener = navigation.addListener('willBlur', this.willBlurHandler);
         this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
     }
     componentWillUnmount() {
-        this.willBlurListener.remove();
         this.willFocusListener.remove();
-    }
-    willBlurHandler = () =>{
-        const {SetIsTabBarShow} = this.props;
-        SetIsTabBarShow(true);
     }
     willFocusHandler = () => {
         const {SetIsTabBarShow} = this.props;
         SetIsTabBarShow(false);
     }
+
 }
 
 const styles = StyleSheet.create({
@@ -665,15 +659,14 @@ SerchList.propTypes = {
 
 const mapStateToProps = (state, props) => {
     return props;
-  }
-  
+}
 const mapDispatchToProps = (dispatch) => {
     return {
         SetIsTabBarShow: (IsTabBarShow) => {
-        return dispatch({
-            type: 'SetIsTabBarShow',
-            IsTabBarShow
-        })
+            return dispatch({
+                type: 'SetIsTabBarShow',
+                IsTabBarShow
+            })
         }
     }
 }

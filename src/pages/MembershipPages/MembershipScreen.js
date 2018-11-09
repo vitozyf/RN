@@ -11,8 +11,7 @@ import {
 class MembershipScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
-      const DrawerNav = navigation.getParam('DrawerNav', {});
-      DrawerNav.navigate('Home');
+      navigation.navigate('Home');
     }
     return {
       headerTitle: (
@@ -79,13 +78,6 @@ class MembershipScreen extends Component {
         </View>
       </View>
     )
-  }
-  componentWillMount() {
-    const {
-      navigation,
-      DrawerNav
-    } = this.props
-    navigation.setParams({DrawerNav});
   }
 }
 
@@ -159,7 +151,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, props) => {
   return Object.assign({}, {
-    DrawerNav: state.Navigations.DrawerNav,
     UserIdentity: state.UserInfo.UserIdentity
   }, props);
 }

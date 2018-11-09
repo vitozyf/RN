@@ -148,8 +148,16 @@ class SearchPage extends Component {
     this.getSearchRecord(); // 处理搜索记录
     this.gethotmodelandgdspotcheck(); // 获取热搜
     this.passParameterHandler();
-    const {SetSearchStackNav, navigation} = this.props;
-    SetSearchStackNav(navigation);
+    const {navigation} = this.props;
+    // SetSearchStackNav(navigation);
+    this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
+  }
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+  willFocusHandler = () => {
+      const {SetIsTabBarShow} = this.props;
+      SetIsTabBarShow(false);
   }
 }
 const styles = StyleSheet.create({
@@ -211,11 +219,11 @@ const mapStateToProps = (state, props) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    SetSearchStackNav : (SearchStackNav) => {
-      return dispatch({
-        type: 'SetSearchStackNav',
-        SearchStackNav
-      })
+    SetIsTabBarShow: (IsTabBarShow) => {
+        return dispatch({
+            type: 'SetIsTabBarShow',
+            IsTabBarShow
+        })
     }
   }
 }

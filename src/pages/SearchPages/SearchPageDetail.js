@@ -228,8 +228,7 @@ class SearchPage extends Component {
     )
   }
   componentWillMount() {
-    const {SetSearchStackNav, navigation} = this.props;
-    SetSearchStackNav(navigation);
+    const {navigation} = this.props;
     this.passParameterHandler();
     const KeyWord = navigation.getParam('KeyWord', '')
     this.setState({
@@ -304,15 +303,5 @@ const mapStateToProps = (state, props) => {
     }, 
     props);
 }
-const mapDispatchToProps = (dispatch) => {
-  return {
-    SetSearchStackNav : (SearchStackNav) => {
-      return dispatch({
-        type: 'SetSearchStackNav',
-        SearchStackNav
-      })
-    }
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+export default connect(mapStateToProps)(SearchPage);

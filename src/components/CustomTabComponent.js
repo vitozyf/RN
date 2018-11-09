@@ -15,27 +15,27 @@ class CustomTabComponent extends React.Component {
   //   }
   // }
 
-  componentDidMount() {
-    this.kbShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
-    this.kbHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
-  }
+  // componentDidMount() {
+  //   this.kbShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
+  //   this.kbHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
+  // }
 
-  keyboardWillShow = () => {
-    const {SetIsTabBarShow} = this.props;
-    // this.setState({ visible: false });
-    SetIsTabBarShow(false);
-  };
+  // keyboardWillShow = () => {
+  //   const {SetIsTabBarShow} = this.props;
+  //   // this.setState({ visible: false });
+  //   SetIsTabBarShow(false);
+  // };
 
-  keyboardWillHide = () => {
-    // this.setState({ visible: true });
-    const {SetIsTabBarShow} = this.props;
-    SetIsTabBarShow(true);
-  };
+  // keyboardWillHide = () => {
+  //   // this.setState({ visible: true });
+  //   const {SetIsTabBarShow} = this.props;
+  //   SetIsTabBarShow(true);
+  // };
 
-  componentWillUnmount() {
-    this.kbShowListener.remove();
-    this.kbHideListener.remove();
-  }
+  // componentWillUnmount() {
+  //   this.kbShowListener.remove();
+  //   this.kbHideListener.remove();
+  // }
 
   render() {
     const {IsTabBarShow} = this.props;

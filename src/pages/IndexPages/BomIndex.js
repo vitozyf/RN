@@ -16,8 +16,8 @@ class HeaderLeft extends Component {
     }
   }
   onPress = () => {
-    const {DrawerNav} = this.props;
-    DrawerNav.openDrawer();
+    const {navigation} = this.props;
+    navigation.openDrawer();
   }
   componentWillMount() {
     Cloud.$getStorage(Cloud.$CONFIG.AvatarPath).then(data => {
@@ -45,7 +45,7 @@ class HeaderLeft extends Component {
 }
 
 const HeaderLeftCom = connect((state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, {AvatarPath: state.UserInfo.AvatarPath}, props);
+  return Object.assign({}, {AvatarPath: state.UserInfo.AvatarPath}, props);
 })(HeaderLeft)
 
 class Bom extends Component {
@@ -55,13 +55,13 @@ class Bom extends Component {
       headerTitle: (
         <HeaderTitle title="首页 | BomAi" textStyle={{color: '#fff'}}/>
       ),
-      headerLeft: <HeaderLeftCom />,
+      headerLeft: <HeaderLeftCom navigation={navigation}/>,
       headerRight: <HeaderRight />
     };
   };
   toSearchPage = () => {
-    const {SwitchNav, navigation} = this.props;
-    SwitchNav.navigate('SearchPage');
+    const {navigation} = this.props;
+    navigation.navigate('SearchPage');
   }
   render() {
     return (
@@ -90,6 +90,18 @@ class Bom extends Component {
         </TouchableOpacity>
       </View>
     )
+  }
+  componentWillMount() {
+    const {navigation} = this.props;
+    this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
+  }
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+  willFocusHandler = () => {
+      const {SetIsTabBarShow} = this.props;
+      SetIsTabBarShow(true);
+
   }
 }
 const styles = StyleSheet.create({
@@ -146,9 +158,20 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {SwitchNav: state.Navigations.SwitchNav}, props);
+  return props;
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+      SetIsTabBarShow: (IsTabBarShow) => {
+      return dispatch({
+          type: 'SetIsTabBarShow',
+          IsTabBarShow
+      })
+      }
+  }
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Bom);

@@ -25,7 +25,9 @@ class Register extends Component{
 //     };
 //   };
   static navigationOptions = ({ navigation }) => {
-    const goBackHome = navigation.getParam('goBackHome');
+    const goBackHome = () => {
+      navigation.navigate('Home');
+    }
     const HeaderLeft = (
       <TouchableOpacity
         onPress={goBackHome}
@@ -46,10 +48,6 @@ class Register extends Component{
       headerRight: (<HeaderRight />),
     };
   };
-  goBackHome = () => {
-    const {DrawerNav} = this.props;
-    DrawerNav.navigate('Home');
-  }
   GetCode = () => {
     const {PhoneNumber} = this.state;
     if (Cloud.$CONFIG.RegPhoneNumber.test(PhoneNumber)) {
@@ -204,11 +202,6 @@ class Register extends Component{
       </KeyboardAwareScrollView>
     )
   }
-  componentWillMount() {
-    this.props.navigation.setParams({
-      goBackHome: this.goBackHome
-    })
-  }
 }
 
 const styles = StyleSheet.create({
@@ -272,7 +265,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, props);
+  return props;
 }
 const mapDispatchToProps = (dispatch) => {
   return {

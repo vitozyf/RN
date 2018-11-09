@@ -19,7 +19,9 @@ class Login extends Component{
     }
   }
   static navigationOptions = ({ navigation }) => {
-    const goBackHome = navigation.getParam('goBackHome');
+    const goBackHome = () => {
+      navigation.navigate('Home');
+    };
     const HeaderLeft = (
       <TouchableOpacity
         onPress={goBackHome}
@@ -40,10 +42,6 @@ class Login extends Component{
       headerRight: (<HeaderRight />),
     };
   };
-  goBackHome = () => {
-    const {DrawerNav} = this.props;
-    DrawerNav.navigate('Home');
-  }
   ToRegister = () => {
     const {DrawerNav} = this.props;
     DrawerNav.navigate('Register');
@@ -167,11 +165,6 @@ class Login extends Component{
       
     )
   }
-  componentWillMount() {
-    this.props.navigation.setParams({
-      goBackHome: this.goBackHome
-    })
-  }
 }
 
 const styles = StyleSheet.create({
@@ -230,7 +223,7 @@ const styles = StyleSheet.create({
    }
 })
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, props);
+  return props;
 }
 const mapDispatchToProps = (dispatch) => {
   return {

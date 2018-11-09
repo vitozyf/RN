@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 // import Icon from '@components/Iconfont/CloudIcon'
 
+
 import {
   HeaderTitle,
   HeaderRight,
@@ -45,14 +46,8 @@ class ErpIndex extends Component {
     };
   };
   toErpList(name) {
-    // const {DrawerNav} = this.props;
-    // console.log(DrawerNav)
-    // SwitchNav.push('ErpList', {name});
-
     const {navigation} = this.props;
-    // navigation.dispatch('keyboardDidHide');
     navigation.push('ErpList', {name});
-    // console.log('keyboardDidHide', navigation)
   }
   
   render() {
@@ -87,6 +82,24 @@ class ErpIndex extends Component {
         </TouchableOpacity>
       </View>
     )
+  }
+  componentWillMount() {
+    const {navigation} = this.props;
+    // this.willBlurListener = navigation.addListener('willBlur', this.willBlurHandler);
+    this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
+  }
+  componentWillUnmount() {
+    // this.willBlurListener.remove();
+    this.willFocusListener.remove();
+  }
+  // willBlurHandler = () =>{
+  //     const {SetIsTabBarShow} = this.props;
+  //     SetIsTabBarShow(false);
+  // }
+  willFocusHandler = () => {
+      const {SetIsTabBarShow} = this.props;
+      SetIsTabBarShow(true);
+
   }
 }
 const styles = StyleSheet.create({
@@ -126,7 +139,18 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, props);
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+      SetIsTabBarShow: (IsTabBarShow) => {
+      return dispatch({
+          type: 'SetIsTabBarShow',
+          IsTabBarShow
+      })
+      }
+  }
+}
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ErpIndex);

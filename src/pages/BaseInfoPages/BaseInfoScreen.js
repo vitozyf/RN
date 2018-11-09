@@ -11,8 +11,7 @@ import {
 class BaseInfoScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
-      const DrawerNav = navigation.getParam('DrawerNav', {});
-      DrawerNav.navigate('Home');
+      navigation.navigate('Home');
     }
     return {
       headerTitle: (
@@ -116,13 +115,6 @@ class BaseInfoScreen extends Component {
       </View>
     )
   }
-  componentWillMount() {
-    const {
-      navigation,
-      DrawerNav
-    } = this.props
-    navigation.setParams({DrawerNav});
-  }
 }
 const styles = StyleSheet.create({
   container: {
@@ -161,7 +153,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, state.UserInfo, props);
+  return Object.assign({}, state.UserInfo, props);
 }
 
 export default connect(

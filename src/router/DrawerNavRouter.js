@@ -89,12 +89,6 @@ const items = [
 
 
 class MyScrollView extends Component {
-  // toLogin = () => {
-  //   const {mynavigation} = this.props;
-  //   Cloud.$clearAllStorage().then(() => {
-  //     mynavigation.navigate('Login'); 
-  //   });
-  // }
   toBaseInfo = () => {
     const {mynavigation} = this.props;
     mynavigation.navigate('BaseInfo'); 
@@ -136,10 +130,7 @@ class MyScrollView extends Component {
         </TouchableOpacity>
     
         <DrawerItems {...this.props} items={items}/>
-    
-        {/* <View style={styles.footer}>
-          <Text onPress = {this.toLogin}>登录</Text>
-        </View>  */}
+
       </View>
     );
     // IOS外层包裹安全区域
