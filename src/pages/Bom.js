@@ -12,12 +12,15 @@ const IndexPages = createStackNavigator(
   {
     Bom: {
       screen: BomScreen,
+      path: '/Home/Bom/Index'
     },
     SearchPage: {
-      screen: SearchPageScreen
+      screen: SearchPageScreen,
+      path: '/Home/Bom/SearchPage'
     },
     SearchPageDetail: {
-      screen: SearchPageDetailScreen
+      screen: SearchPageDetailScreen,
+      path: '/Home/Bom/SearchPageDetail'
     }
   },
   {
@@ -25,8 +28,8 @@ const IndexPages = createStackNavigator(
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#ee7700',
-        height: 48,
-        lineHeight: 48,
+        height: 60,
+        lineHeight: 60,
       },
       headerTitleStyle: {
         color: '#fff',

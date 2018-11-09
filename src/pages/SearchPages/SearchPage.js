@@ -40,10 +40,11 @@ class SearchPage extends Component {
             style={styles.FontAwesome}/>
         </ZnlInput>
       ),
-      headerRight: <HeaderRight style={styles.HeaderRight} title="取消" onPress={method.cancelHandler}/>,
-      // headerStyle: {
-      //   backgroundColor: '#ccc',
-      // },
+      // headerRight: <HeaderRight style={styles.HeaderRight} title="取消" onPress={method.cancelHandler}/>,
+      headerStyle: {
+        backgroundColor: '#fff',
+        borderWidth: 0
+      },
     };
   };
   cancelHandler = () => {
@@ -174,10 +175,13 @@ const styles = StyleSheet.create({
   SearchInputBox: {
     height: 40,
     flex: 1,
+    paddingRight: 20
   },
   SearchInput: {
     borderRadius: 10,
     paddingLeft: 40,
+    // borderWidth: 0,
+    // borderBottomWidth: 1,
   },
   FontAwesome: {
     position: 'absolute',

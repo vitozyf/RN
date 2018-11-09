@@ -12,13 +12,16 @@ const IndexPages = createStackNavigator(
   {
     ErpIndex: {
       screen: ErpIndex,
+      path: '/Home/Erp/Index'
     },
     ErpList: {
-      screen: ErpList
+      screen: ErpList,
+      path: '/Home/Erp/ErpList'
     }
   },
   {
     initialRouteName: 'ErpIndex',
+    headerLayoutPreset: 'center',
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#ee7700',

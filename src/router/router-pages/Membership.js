@@ -11,9 +11,11 @@ const IndexPages = createStackNavigator(
   {
     Membership: {
       screen: MembershipScreen,
+      path: '/Membership/Index'      
     },
     HelpPage: {
       screen: HelpPage,
+      path: '/Membership/HelpPage'      
     }
   },
   {

@@ -9,6 +9,7 @@ const IndexPages = createStackNavigator(
   {
     BaseInfo: {
       screen: BaseInfoScreen,
+      path: '/BaseInfo/Index'
     }
   },
   {

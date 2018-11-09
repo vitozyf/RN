@@ -18,8 +18,14 @@ const navigationOptions = {
 
 const TabNav = createBottomTabNavigator(
   {
-    Home: IndexScreen,
-    Erp: ErpScreen
+    Home: {
+      screen: IndexScreen,
+      path: '/Home/Bom'
+    },
+    Erp: {
+      screen: ErpScreen,
+      path: '/Home/Erp'
+    },
   },
   {
     initialRouteName: 'Home',
@@ -35,29 +41,12 @@ class BottomTabNavRouter extends Component {
       <TabNav navigation={this.props.navigation}/>
     );
   }
-  // componentWillMount() {
-  //   const {SetSwitchNav, navigation} = this.props;
-  //   SetSwitchNav(navigation);
-  // }
 }
 
 const mapStateToProps = (state, props) => {
   return props;
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     SetSwitchNav : (SwitchNav) => {
-//       return dispatch({
-//         type: 'SetSwitchNav',
-//         SwitchNav
-//       })
-//     }
-//   }
-// }
-
-
 export default connect(
   mapStateToProps,
-  // mapDispatchToProps
 )(BottomTabNavRouter);

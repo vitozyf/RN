@@ -10,6 +10,7 @@ const IndexPages = createStackNavigator(
   {
     Register: {
       screen: RegisterScreen,
+      path: '/Register/Index'
     }
   },
   {

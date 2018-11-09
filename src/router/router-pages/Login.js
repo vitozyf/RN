@@ -10,6 +10,8 @@ const IndexPages = createStackNavigator(
   {
     Login: {
       screen: LoginScreen,
+      path: '/Login/Index'
+
     }
   },
   {

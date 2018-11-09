@@ -516,9 +516,16 @@ class SerchList extends PureComponent {
             this.getStkWarehouse();
         }
         this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
+        this.didBlurSubscription = navigation.addListener(
+            'willBlur',
+            payload => {
+              BackTop.hidden();
+            }
+          );
     }
     componentWillUnmount() {
         this.willFocusListener.remove();
+        this.didBlurSubscription.remove();
     }
     willFocusHandler = () => {
         const {SetIsTabBarShow} = this.props;
