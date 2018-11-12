@@ -28,8 +28,8 @@ const IndexPages = createStackNavigator(
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#ee7700',
-        height: 60,
-        lineHeight: 60,
+        height: 48,
+        lineHeight: 48,
       },
       headerTitleStyle: {
         color: '#fff',

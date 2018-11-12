@@ -55,12 +55,12 @@ class BaseInfoScreen extends Component {
     })
   }
   logoutHandler = () => {
-    const {DrawerNav} = this.props;
+    const {navigation} = this.props;
     Cloud.$post('user/logout',null, {onlydata: false}).then(data => {
       if (data.Result.isSuccess) {
         this.closeModal(() => {
           Cloud.$clearAllStorage();
-          DrawerNav.navigate('Login');
+          navigation.navigate('Login');
         });
       }
     })

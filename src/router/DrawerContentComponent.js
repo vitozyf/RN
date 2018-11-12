@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { DrawerItems, SafeAreaView } from 'react-navigation';
 import {connect} from 'react-redux';
+import {ISDEBUG} from '@src/utils/system';
 
 const Height = Dimensions.get('window').height;
 
@@ -66,15 +67,25 @@ const items = [
     key: "Membership",
     routeName: 'Membership'
   },
-  {
+  // {
+  //   key: "Register",
+  //   routeName: 'Register'
+  // },
+  // {
+  //   key: "Login",
+  //   routeName: 'Login'
+  // }
+]
+if (ISDEBUG) {
+  items.push({
     key: "Register",
     routeName: 'Register'
-  },
-  {
+  });
+  items.push({
     key: "Login",
     routeName: 'Login'
-  }
-]
+  })
+}
 
 
 class MyScrollView extends Component {

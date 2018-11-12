@@ -98,18 +98,18 @@ class Register extends Component{
     }
     Cloud.$post('user/reg', this.state).then(async (data) => {
       if (data) {
-        const {SetUserInfo, DrawerNav} = this.props;
+        const {SetUserInfo, navigation} = this.props;
         await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || '');
         await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath || '');
         await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || '');
         await AppInit({
           dispatch: SetUserInfo
         })
-        DrawerNav.navigate('Home');
+        navigation.navigate('Home');
       }
       
     }).catch(err => {
-      console.log(222, err);
+      // console.log(222, err);
     })
   }
   onChangeText = (value, name) => {

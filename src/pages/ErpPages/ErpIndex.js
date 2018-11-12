@@ -12,8 +12,8 @@ import {
 } from '@components';
 class HeaderLeft extends Component {
   onPress = () => {
-    const {DrawerNav} = this.props;
-    DrawerNav.openDrawer();
+    const {navigation} = this.props;
+    navigation.openDrawer();
   }
   render() {
     const { AvatarPath } = this.props;
@@ -32,7 +32,7 @@ class HeaderLeft extends Component {
 }
 
 const HeaderLeftCom = connect((state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, state.UserInfo, props);
+  return Object.assign({}, {AvatarPath: state.UserInfo.AvatarPath}, props);
 })(HeaderLeft)
 
 class ErpIndex extends Component {
@@ -41,7 +41,7 @@ class ErpIndex extends Component {
       headerTitle: (
         <HeaderTitle title="ERP" textStyle={{color: '#fff'}}/>
       ),
-      headerLeft: <HeaderLeftCom />,
+      headerLeft: <HeaderLeftCom navigation={navigation}/>,
       headerRight: <HeaderRight />
     };
   };
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {DrawerNav: state.Navigations.DrawerNav}, props);
+  return Object.assign({}, props);
 }
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -43,12 +43,16 @@ class Login extends Component{
     };
   };
   ToRegister = () => {
-    const {DrawerNav} = this.props;
-    DrawerNav.navigate('Register');
+    const {navigation} = this.props;
+    navigation.navigate('Register');
+  }
+  goBackHome = () => {
+    const {navigation} = this.props;
+    navigation.navigate('Home');
   }
   LoginHandler = () => {
     const {SetUserInfo} = this.props;
-    Cloud.$Loading.show();
+    // Cloud.$Loading.show();
     Cloud.$post('user/login', this.state).then(async (data) => {
       if (data) {
         await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath || '');
@@ -58,10 +62,10 @@ class Login extends Component{
         await AppInit({
           dispatch: SetUserInfo
         })
-        Cloud.$Loading.hidden()
+        // Cloud.$Loading.hidden()
         this.goBackHome();
       } else {
-        Cloud.$Loading.hidden()
+        // Cloud.$Loading.hidden()
       }
     }).catch(err => {
       Cloud.$Loading.hidden()

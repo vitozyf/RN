@@ -1,7 +1,7 @@
 // 统一声明默认State
 export default {
   Navigations: {
-    DrawerNav: null,
+    // DrawerNav: null,
     SwitchNav: null,
     BottomTabNav: null,
     SearchStackNav: null

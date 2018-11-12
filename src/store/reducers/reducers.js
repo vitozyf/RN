@@ -10,8 +10,8 @@ export const UserInfo = (state = {}, action) => {
 
 export const Navigations = (state = {}, action) => {
   switch (action.type) {
-    case 'SetDrawerNav':
-      return Object.assign(state, {DrawerNav: action.DrawerNav});
+    // case 'SetDrawerNav':
+    //   return Object.assign(state, {DrawerNav: action.DrawerNav});
     case 'SetSwitchNav':
       return Object.assign(state, {SwitchNav: action.SwitchNav});
     case 'SetBottomTabNav':

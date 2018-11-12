@@ -7,7 +7,8 @@ import {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  clearAllStorage
+  clearAllStorage,
+  CustomStore
 } from '@src/utils'
 import {ISDEBUG, ISANDROID, ISIOS } from '@src/utils/system';
 import {Loading, ZnlToast} from '@src/components'
@@ -29,5 +30,6 @@ Cloud.$setArrayStorage = setArrayStorage;
 Cloud.$removeAllStorage = removeAllStorage;
 Cloud.$clearAllStorage = clearAllStorage;
 Cloud.$Loading = Loading;
+Cloud.$CustomStore = CustomStore;
 
 global.Cloud = Cloud;
