@@ -5,8 +5,11 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
+    "bundle-android": "./gradlew assembleRelease",
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
-    "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle"
+    "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
+    "flow": "flow",
+    "flow-stop": "flow stop"
   },
   "dependencies": {
     "react": "16.5.0",
@@ -22,7 +25,13 @@
     "redux": "^4.0.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
     "babel-jest": "23.6.0",
+    "babel-plugin-syntax-flow": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "eslint": "^5.9.0",
+    "eslint-plugin-flowtype": "^3.2.0",
     "flow-bin": "0.78.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.48.0",
