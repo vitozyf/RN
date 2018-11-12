@@ -130,7 +130,8 @@ class Login extends Component{
             style={styles.znlInputBox}
             inputStyle={styles.Input}
             onChangeText={(value) => {this.onChangeText(value, 'Password')}}
-            placeholder="密码">
+            placeholder="密码"
+            secureTextEntry={true}>
           </ZnlInput>
         </View>
       </View>
