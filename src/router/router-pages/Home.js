@@ -36,6 +36,11 @@ const TabNav = createBottomTabNavigator(
 
 class BottomTabNavRouter extends Component {
   static router = TabNav.router;
+  static navigationOptions = ({ navigation }) => {
+    return {
+      drawerLockMode:'unlocked'
+    };
+  };
   render() {
     return (
       <TabNav navigation={this.props.navigation}/>

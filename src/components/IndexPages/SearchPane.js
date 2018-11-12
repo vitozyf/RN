@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
 
   },
   SearchPaneTitle: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

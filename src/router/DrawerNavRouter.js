@@ -13,7 +13,7 @@ import CustomDrawerContentComponent from './DrawerContentComponent';
 const SimpleAppNavigator = createDrawerNavigator({
   Home: {
     screen: Home,
-    path: '/Home'
+    path: '/Home',
   },
   Login: {
     screen: Login,
@@ -39,6 +39,7 @@ const SimpleAppNavigator = createDrawerNavigator({
   animationEnabled: true,
   lazy: true,
   tabBarPosition:'bottom',
+  drawerLockMode:'locked-closed' 
 });
 
 export default SimpleAppNavigator;

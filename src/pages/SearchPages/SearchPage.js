@@ -7,9 +7,6 @@ import CONFIG from '@src/utils/config';
 import {
   ZnlInput,
   ZnlButton,
-  ZnlHeader,
-  HeaderTitle,
-  HeaderRight,
 } from '@components';
 
 class SearchPage extends Component {
@@ -48,8 +45,8 @@ class SearchPage extends Component {
     };
   };
   cancelHandler = () => {
-    const {SwitchNav} = this.props;
-    SwitchNav.navigate('TabNav');
+    const {navigation} = this.props;
+    navigation.navigate('TabNav');
   }
   onPressDelete = () => {
     Cloud.$removeStorage(CONFIG.KeyWords).then(() => {
@@ -163,7 +160,7 @@ class SearchPage extends Component {
 }
 const styles = StyleSheet.create({
   SearchPage: {
-    paddingTop: 20,
+    // paddingTop: 20,
     paddingLeft: 5,
     paddingRight: 5,
     backgroundColor: '#fff',
@@ -204,7 +201,10 @@ const styles = StyleSheet.create({
   searchBoxTag: {
     marginRight: 10,
     backgroundColor: '#ddd',
-    padding: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 2,
+    paddingBottom: 2,
     borderRadius: 2,
     marginBottom: 10,
     width: 'auto'
@@ -215,11 +215,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, 
-    {
-      SwitchNav: state.Navigations.SwitchNav 
-    }, 
-    props);
+  return props;
 }
 const mapDispatchToProps = (dispatch) => {
   return {

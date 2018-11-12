@@ -55,7 +55,7 @@ class BaseInfoScreen extends Component {
     })
   }
   logoutHandler = () => {
-    const {navigation} = this.props;
+    const {navigation, ClearUserInfo} = this.props;
     Cloud.$post('user/logout',null, {onlydata: false}).then(data => {
       if (data.Result.isSuccess) {
         this.closeModal(() => {
@@ -63,6 +63,7 @@ class BaseInfoScreen extends Component {
           navigation.navigate('Login');
         });
       }
+      ClearUserInfo();
     })
   }
   render() {
@@ -155,7 +156,17 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return Object.assign({}, state.UserInfo, props);
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+      ClearUserInfo: () => {
+        return dispatch({
+            type: 'ClearUserInfo'
+        })
+      }
+  }
+}
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(BaseInfoScreen);

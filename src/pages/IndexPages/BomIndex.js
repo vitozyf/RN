@@ -66,28 +66,23 @@ class Bom extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.ImgBox}>
-          <Image 
-          style={styles.HomeLogo}
-          source={{
-            uri: 'http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/eBPk33_1539748592007.png',
-            cache: 'force-cache'
-            }} />
-        </View>
-        <TouchableOpacity 
-          style={styles.SearchBox} 
-          onPress={this.toSearchPage}
-          activeOpacity={1}>
-          {/* <ZnlInput 
-            style={styles.SearchInputBoxStyle} 
-            inputStyle={styles.SearchInputStyle} 
-            editable={false}> */}
-            <FontAwesome
-              name={'search'}
-              size={ 24 }
-              style={styles.FontAwesome}/>
-          {/* </ZnlInput> */}
-        </TouchableOpacity>
+          <View style={styles.ImgBox}>
+            <Image 
+            style={styles.HomeLogo}
+            source={{
+              uri: 'http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/eBPk33_1539748592007.png',
+              cache: 'force-cache'
+              }} />
+          </View>
+          <TouchableOpacity 
+            style={styles.SearchBox} 
+            onPress={this.toSearchPage}
+            activeOpacity={1}>
+              <FontAwesome
+                name={'search'}
+                size={ 24 }
+                style={styles.FontAwesome}/>
+          </TouchableOpacity>
       </View>
     )
   }
@@ -107,7 +102,8 @@ class Bom extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   headerLeftImg: {
     width: 40, 
@@ -115,22 +111,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 10
   },
-  HomeLogo: {
-    width: 432 / PR, 
-    height: 80 / PR,
-  },
   ImgBox: {
     justifyContent: 'flex-end',
     alignItems: 'center',
-    height: 150,
+    height: 40,
     paddingBottom: 30
   },
+  HomeLogo: {
+    width: 240, 
+    height: 40,
+  },
   SearchBox: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // flexDirection: 'row',
-    // borderWidth: 1,
-    // height: 50
     paddingLeft: 40,
     borderRadius: 10,
     fontSize: 16,
@@ -140,14 +131,6 @@ const styles = StyleSheet.create({
     height: 40,
     marginLeft: 30,
     marginRight: 30,
-  },
-  SearchInputBoxStyle: {
-    width: 300,
-    height: 40,
-  },
-  SearchInputStyle: {
-    paddingLeft: 40,
-    borderRadius: 10,
   },
   FontAwesome: {
     position: 'absolute',

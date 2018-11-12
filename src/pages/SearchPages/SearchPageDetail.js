@@ -202,9 +202,7 @@ class SearchPage extends Component {
       TotalCount,
       showFoot,
       isLoading,
-      showHeader
     } = this.state;
-    const {SearchStackNav} = this.props;
     return (
       <View style={styles.SearchPage}>
         {/* {Header} */}
@@ -296,12 +294,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, 
-    {
-      SearchStackNav: state.Navigations.SearchStackNav,
-      SwitchNav: state.Navigations.SwitchNav 
-    }, 
-    props);
+  return props;
 }
 
 export default connect(mapStateToProps)(SearchPage);

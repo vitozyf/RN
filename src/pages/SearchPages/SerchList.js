@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   FlatListRowTopTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   FlatListRowTopConteneBox: {

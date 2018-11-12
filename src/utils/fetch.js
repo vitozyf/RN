@@ -2,6 +2,7 @@ import { getStorage, removeStorage } from './storage';
 import CONFIG from './config';
 // import { Toast } from './system';
 import {Loading, ZnlToast} from '../components';
+import store from '../store';
 import CustomStore from './jumpUtils';
 
 /**
@@ -77,7 +78,7 @@ const fetchMethods = async (method, url, data, option) => {
           );
           // 用户身份失效,清除存储
           removeStorage(CONFIG.TOKEN);
-          // DrawerNavOpenPage('Login');
+          store.dispatch({type: 'ClearUserInfo'});
           setTimeout(() => {
             if (CustomStore.navigator) {
               CustomStore.navigator._navigation.navigate('Login');  
