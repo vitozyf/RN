@@ -4,14 +4,15 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-// type testObj = {
-//   a: string,
-//   b: ?number,
-//   c?: booleal,
-// };
-
 import { HeaderTitle, HeaderRight } from "@components";
-class HeaderLeft extends Component {
+
+type Props = {
+  navigation: any,
+};
+type State = {
+  AvatarPath: string,
+};
+class HeaderLeft extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +52,11 @@ const HeaderLeftCom = connect((state, props) => {
   return Object.assign({}, { AvatarPath: state.UserInfo.AvatarPath }, props);
 })(HeaderLeft);
 
-class Bom extends Component {
+type BonProps = {
+  navigation: any,
+  SetIsTabBarShow: any,
+};
+class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
     return {
       // title: '首页 | BomAi',
@@ -89,6 +94,7 @@ class Bom extends Component {
       </View>
     );
   }
+  willFocusListener: any = null;
   componentWillMount() {
     const { navigation } = this.props;
     this.willFocusListener = navigation.addListener(

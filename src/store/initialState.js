@@ -1,3 +1,12 @@
+type UserInfo = {
+  AvatarPath: string,
+  NickName: string,
+  TOKEN: string,
+  PhoneNumber: string,
+  UserIdentity: any,
+  HomeUserInfo: any,
+  HomeUserAuthors: any,
+};
 // 统一声明默认State
 export default {
   // Navigations: {
@@ -7,13 +16,14 @@ export default {
   //   SearchStackNav: null
   // },
   UserInfo: {
-    AvatarPath: 'http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg',
-    NickName: '',
-    TOKEN: '',
-    PhoneNumber: '',
+    AvatarPath:
+      "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
+    NickName: "",
+    TOKEN: "",
+    PhoneNumber: "",
     UserIdentity: {},
     HomeUserInfo: {},
     HomeUserAuthors: {},
   },
-  IsTabBarShow: true
+  IsTabBarShow: true,
 };
