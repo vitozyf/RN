@@ -1,170 +1,179 @@
-import React, {Component} from 'react';
-import {View, StyleSheet,TextInput, TouchableOpacity, Text} from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {connect} from 'react-redux';
-import SearchPane from '@components/IndexPages/SearchPane';
-import CONFIG from '@src/utils/config';
+import React, { Component } from "react";
 import {
-  ZnlInput,
-  ZnlButton,
-} from '@components';
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { connect } from "react-redux";
+import SearchPane from "@components/IndexPages/SearchPane";
+import CONFIG from "@src/utils/config";
+import { ZnlInput, ZnlButton } from "@components";
 
 class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      KeyWord: '',
+      KeyWord: "",
       SearchRecord: null,
-      HotModelList: []
-    }
+      HotModelList: [],
+    };
   }
   static navigationOptions = ({ navigation }) => {
-    const method = navigation.getParam('method', {});
+    const method = navigation.getParam("method", {});
     return {
       // headerBackTitle: null,
       headerTitle: (
-        <ZnlInput 
-          style={styles.SearchInputBox} 
-          inputStyle={styles.SearchInput} 
+        <ZnlInput
+          style={styles.SearchInputBox}
+          inputStyle={styles.SearchInput}
           autoFocus={true}
           returnKeyType="search"
           onSubmitEditing={method.onSearchHandler}
           onChangeText={method.onChangeText}
-          placeholder="请输入型号进行搜索">
-          <FontAwesome 
-            name={'search'} 
-            size={ 24 } 
-            style={styles.FontAwesome}/>
+          placeholder="请输入型号进行搜索"
+        >
+          <FontAwesome name={"search"} size={24} style={styles.FontAwesome} />
         </ZnlInput>
       ),
       // headerRight: <HeaderRight style={styles.HeaderRight} title="取消" onPress={method.cancelHandler}/>,
       headerStyle: {
-        backgroundColor: '#fff',
-        borderWidth: 0
+        backgroundColor: "#fff",
+        borderWidth: 0,
       },
     };
   };
   cancelHandler = () => {
-    const {navigation} = this.props;
-    navigation.navigate('TabNav');
-  }
+    const { navigation } = this.props;
+    navigation.navigate("TabNav");
+  };
   onPressDelete = () => {
     Cloud.$removeStorage(CONFIG.KeyWords).then(() => {
       this.getSearchRecord();
-    })
-  }
-  onPressKeywords = (KeyWord) => {
-    this.setState({KeyWord}, () => {
+    });
+  };
+  onPressKeywords = KeyWord => {
+    this.setState({ KeyWord }, () => {
       this.onSearchHandler();
     });
-  }
+  };
   onSearchHandler = () => {
-    const {KeyWord} = this.state;
+    const { KeyWord } = this.state;
     Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8).then(() => {
       this.getSearchRecord();
     });
-    this.props.navigation.push('SearchPageDetail', {KeyWord});
-  }
-  onChangeText = (value) => {
+    this.props.navigation.push("SeatchRes", { KeyWord });
+    this.props.SetBomSearchInfo({
+      KeyWord,
+    });
+  };
+  onChangeText = value => {
     this.setState({
-      KeyWord: value
-    })
-  }
+      KeyWord: value,
+    });
+  };
   getSearchRecord() {
     let SearchRecord = null;
     Cloud.$getStorage(CONFIG.KeyWords).then(data => {
       if (data) {
         SearchRecord = JSON.parse(data).map((item, index) => {
           return (
-            <ZnlButton 
+            <ZnlButton
               onPress={() => this.onPressKeywords(item)}
-              style={styles.searchBoxTag} 
+              style={styles.searchBoxTag}
               textStyle={styles.searchBoxTagText}
-              key={index}>
+              key={index}
+            >
               {item}
             </ZnlButton>
-          )
-        })
+          );
+        });
       }
-      this.setState({SearchRecord})
-    })
+      this.setState({ SearchRecord });
+    });
   }
   // 热搜
   gethotmodelandgdspotcheck() {
-    Cloud.$post('appget/gethotmodelandgdspotcheck?count=10', null, {onlydata: false}).then(data => {
+    Cloud.$post("appget/gethotmodelandgdspotcheck?count=10", null, {
+      onlydata: false,
+    }).then(data => {
       if (data.Code === 200) {
         this.setState({
-          HotModelList: data.Result.HotModelList
-        })
+          HotModelList: data.Result.HotModelList,
+        });
       }
-    })
+    });
   }
   // 参数传递进header
   passParameterHandler() {
-    const {navigation} = this.props;
-    const {
-      onSearchHandler,
-      onChangeText,
-      cancelHandler
-    } = this;
-    navigation.setParams({method: {
-      onSearchHandler,
-      onChangeText,
-      cancelHandler
-    }})
+    const { navigation } = this.props;
+    const { onSearchHandler, onChangeText, cancelHandler } = this;
+    navigation.setParams({
+      method: {
+        onSearchHandler,
+        onChangeText,
+        cancelHandler,
+      },
+    });
   }
   render() {
-    const {SearchRecord, HotModelList} = this.state;
+    const { SearchRecord, HotModelList } = this.state;
     return (
       <View style={styles.SearchPage}>
-        <SearchPane title="搜索记录" onPressDelete= {this.onPressDelete}>
-          <View style={styles.searchBox}>
-            {SearchRecord}
-          </View>
+        <SearchPane title="搜索记录" onPressDelete={this.onPressDelete}>
+          <View style={styles.searchBox}>{SearchRecord}</View>
         </SearchPane>
         <SearchPane title="热搜型号" showDeleteIcon={false}>
           <View style={styles.searchBox}>
-            {
-              HotModelList.map((item, index) => {
-                return (
-                  <ZnlButton 
-                    onPress={() => this.onPressKeywords(item)}
-                    style={styles.searchBoxTag} 
-                    textStyle={styles.searchBoxTagText}
-                    key={index}>
-                    {item}
-                  </ZnlButton>
-                )
-              })
-            }
+            {HotModelList.map((item, index) => {
+              return (
+                <ZnlButton
+                  onPress={() => this.onPressKeywords(item)}
+                  style={styles.searchBoxTag}
+                  textStyle={styles.searchBoxTagText}
+                  key={index}
+                >
+                  {item}
+                </ZnlButton>
+              );
+            })}
           </View>
         </SearchPane>
       </View>
-    )
+    );
   }
   componentWillMount() {
     this.getSearchRecord(); // 处理搜索记录
     this.gethotmodelandgdspotcheck(); // 获取热搜
     this.passParameterHandler();
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     // SetSearchStackNav(navigation);
-    this.willFocusListener = navigation.addListener('willFocus', this.willFocusHandler);
+    // this.willFocusListener = navigation.addListener(
+    //   "willFocus",
+    //   this.willFocusHandler
+    // );
+    this.props.SetIsTabBarShow(
+      this.props.navigation.state.routeName === "Bom" ||
+        this.props.navigation.state.routeName === "ErpIndex"
+    );
   }
-  componentWillUnmount() {
-    this.willFocusListener.remove();
-  }
-  willFocusHandler = () => {
-      const {SetIsTabBarShow} = this.props;
-      SetIsTabBarShow(false);
-  }
+  // componentWillUnmount() {
+  //   this.willFocusListener.remove();
+  // }
+  // willFocusHandler = () => {
+  //   const { SetIsTabBarShow } = this.props;
+  //   SetIsTabBarShow(false);
+  // };
 }
 const styles = StyleSheet.create({
   SearchPage: {
     // paddingTop: 20,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: '#fff',
-    flex: 1
+    backgroundColor: "#fff",
+    flex: 1,
   },
   HeaderRight: {
     marginRight: 10,
@@ -172,7 +181,7 @@ const styles = StyleSheet.create({
   SearchInputBox: {
     height: 40,
     flex: 1,
-    paddingRight: 20
+    paddingRight: 20,
   },
   SearchInput: {
     borderRadius: 10,
@@ -181,10 +190,10 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
   },
   FontAwesome: {
-    position: 'absolute',
+    position: "absolute",
     left: 10,
     top: 8,
-    color: '#999'
+    color: "#999",
   },
   // cancelBtn: {
   //   marginLeft: 10
@@ -194,38 +203,47 @@ const styles = StyleSheet.create({
     lineHeight: 46,
   },
   searchBox: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: '100%',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
   },
   searchBoxTag: {
     marginRight: 10,
-    backgroundColor: '#ddd',
+    backgroundColor: "#ddd",
     paddingLeft: 5,
     paddingRight: 5,
     paddingTop: 2,
     paddingBottom: 2,
     borderRadius: 2,
     marginBottom: 10,
-    width: 'auto'
+    width: "auto",
   },
   searchBoxTagText: {
-    color: '#666'
-  }
+    color: "#666",
+  },
 });
 
 const mapStateToProps = (state, props) => {
   return props;
-}
-const mapDispatchToProps = (dispatch) => {
+};
+const mapDispatchToProps = dispatch => {
   return {
-    SetIsTabBarShow: (IsTabBarShow) => {
-        return dispatch({
-            type: 'SetIsTabBarShow',
-            IsTabBarShow
-        })
-    }
-  }
-}
+    SetIsTabBarShow: IsTabBarShow => {
+      return dispatch({
+        type: "SetIsTabBarShow",
+        IsTabBarShow,
+      });
+    },
+    SetBomSearchInfo: BomSearchInfo => {
+      return dispatch({
+        type: "SetBomSearchInfo",
+        BomSearchInfo,
+      });
+    },
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchPage);

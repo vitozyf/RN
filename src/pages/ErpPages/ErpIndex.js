@@ -119,8 +119,10 @@ class ErpIndex extends Component {
     this.willFocusListener.remove();
   }
   willFocusHandler = () => {
-    const { SetIsTabBarShow } = this.props;
-    SetIsTabBarShow(true);
+    this.props.SetIsTabBarShow(
+      this.props.navigation.state.routeName === "Bom" ||
+        this.props.navigation.state.routeName === "ErpIndex"
+    );
   };
 }
 const styles = StyleSheet.create({
