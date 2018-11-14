@@ -1,18 +1,26 @@
-import React, { Component } from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { DrawerItems, SafeAreaView } from 'react-navigation';
-import {connect} from 'react-redux';
-import {ISDEBUG} from '@src/utils/system';
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { DrawerItems, SafeAreaView } from "react-navigation";
+import { connect } from "react-redux";
+import { ISDEBUG } from "@src/utils/system";
 
-const Height = Dimensions.get('window').height;
+const Height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   containerbox: {
     height: Height,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     height: 80,
     paddingRight: 10,
   },
@@ -23,19 +31,17 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
   },
-  headerName: {
-
-  },
+  headerName: {},
   NickName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingBottom: 5,
   },
   UserIdentity: {
     paddingLeft: 3,
     paddingRight: 3,
-    backgroundColor: '#048FE0',
-    color: '#fff',
+    backgroundColor: "#048FE0",
+    color: "#fff",
     borderRadius: 3,
   },
   ioscontainer: {
@@ -48,10 +54,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     // backgroundColor: '#f2f2f2',
-    position: 'absolute',
+    position: "absolute",
     bottom: 1,
     height: 50,
-  }
+  },
 });
 
 const items = [
@@ -61,11 +67,11 @@ const items = [
   // },
   {
     key: "BaseInfo",
-    routeName: 'BaseInfo'
+    routeName: "BaseInfo",
   },
   {
     key: "Membership",
-    routeName: 'Membership'
+    routeName: "Membership",
   },
   // {
   //   key: "Register",
@@ -75,39 +81,45 @@ const items = [
   //   key: "Login",
   //   routeName: 'Login'
   // }
-]
+];
 if (ISDEBUG) {
   items.push({
     key: "Register",
-    routeName: 'Register'
+    routeName: "Register",
   });
   items.push({
     key: "Login",
-    routeName: 'Login'
-  })
+    routeName: "Login",
+  });
 }
-
 
 class MyScrollView extends Component {
   toBaseInfo = () => {
-    const {navigation} = this.props;
-    navigation.navigate('BaseInfo'); 
-  }
+    const { navigation } = this.props;
+    navigation.navigate("BaseInfo");
+  };
   toMembership = () => {
-    const {navigation} = this.props;
-    navigation.navigate('Membership'); 
-  }
+    const { navigation } = this.props;
+    navigation.navigate("Membership");
+  };
   render() {
-    const {AvatarPath, NickName, UserIdentity} = this.props;
+    const { AvatarPath, NickName, UserIdentity } = this.props;
     // console.log(11111, AvatarPath)
     // 用户身份
     let UserIdentityView = [];
-     for (const key in UserIdentity) {
-       if (UserIdentity[key]) {
+    for (const key in UserIdentity) {
+      if (UserIdentity[key]) {
         // UserIdentityView.push(<Text style={styles.UserIdentity} key={key}>{key}</Text>)
-        UserIdentityView[0] = (<Text onPress={this.toMembership} style={styles.UserIdentity} key={key}>{key}</Text>)
-       }
-
+        UserIdentityView[0] = (
+          <Text
+            onPress={this.toMembership}
+            style={styles.UserIdentity}
+            key={key}
+          >
+            {key}
+          </Text>
+        );
+      }
     }
     // 自定义区域
     const CustomDrawer = (
@@ -115,56 +127,56 @@ class MyScrollView extends Component {
         <TouchableOpacity
           onPress={this.toBaseInfo}
           activeOpacity={1}
-          style={styles.header}>
-          <Image 
+          style={styles.header}
+        >
+          <Image
             style={styles.headerLeftImg}
             source={{
-              uri: AvatarPath
-            }} />
-          <View  style={styles.headerName}>
-              <Text style={styles.NickName}>{NickName}</Text>
-              <View>
-                {UserIdentityView}
-              </View>
-          </View> 
+              uri: AvatarPath,
+            }}
+          />
+          <View style={styles.headerName}>
+            <Text style={styles.NickName}>{NickName}</Text>
+            <View>{UserIdentityView}</View>
+          </View>
         </TouchableOpacity>
-    
-        <DrawerItems {...this.props} items={items}/>
 
+        <DrawerItems {...this.props} items={items} />
       </View>
     );
     // IOS外层包裹安全区域
     const Container = Cloud.$ISIOS ? (
-      <SafeAreaView style={styles.ioscontainer} forceInset={{ top: 'always', horizontal: 'never' }}>
+      <SafeAreaView
+        style={styles.ioscontainer}
+        forceInset={{ top: "always", horizontal: "never" }}
+      >
         {CustomDrawer}
       </SafeAreaView>
-    ) : CustomDrawer;
+    ) : (
+      CustomDrawer
+    );
 
-    return (
-      <ScrollView style={styles.containerbox}>
-        {Container}
-      </ScrollView>
-    )
+    return <ScrollView style={styles.containerbox}>{Container}</ScrollView>;
   }
 }
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, {
-    AvatarPath: state.UserInfo.AvatarPath, 
-    NickName: state.UserInfo.NickName, 
-    UserIdentity: state.UserInfo.UserIdentity
-  }, props);
-}
-
-const MyScrollViewWithConnect = connect(
-  mapStateToProps
-)(MyScrollView);
-
-const CustomDrawerContentComponent = (props) => {
-  const {navigation} = props;
-  return (<MyScrollViewWithConnect navigation = {navigation} {...props}/>);
+  return Object.assign(
+    {},
+    {
+      AvatarPath: state.UserInfo.AvatarPath,
+      NickName: state.UserInfo.NickName,
+      UserIdentity: state.UserInfo.UserIdentity,
+    },
+    props
+  );
 };
 
+const MyScrollViewWithConnect = connect(mapStateToProps)(MyScrollView);
+
+const CustomDrawerContentComponent = props => {
+  const { navigation } = props;
+  return <MyScrollViewWithConnect navigation={navigation} {...props} />;
+};
 
 export default CustomDrawerContentComponent;
-

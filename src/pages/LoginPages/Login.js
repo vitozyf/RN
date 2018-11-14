@@ -58,22 +58,23 @@ class Login extends Component<Props, Stateå> {
   LoginHandler = () => {
     const { SetUserInfo } = this.props;
     // Cloud.$Loading.show();
-    Cloud.$post("user/login", this.state)
-      .then(async data => {
+    Cloud.$post("user/login", this.state, { loading: true })
+      .then(data => {
+        console.log(11111, data);
         if (data) {
-          await Cloud.$setStorage(
-            Cloud.$CONFIG.AvatarPath,
-            data.AvatarPath || ""
-          );
-          await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
-          await Cloud.$setStorage(
-            Cloud.$CONFIG.PhoneNumber,
-            this.state.PhoneNumber || ""
-          );
-          await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-          await AppInit({
-            dispatch: SetUserInfo,
-          });
+          // await Cloud.$setStorage(
+          //   Cloud.$CONFIG.AvatarPath,
+          //   data.AvatarPath || ""
+          // );
+          // await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
+          // await Cloud.$setStorage(
+          //   Cloud.$CONFIG.PhoneNumber,
+          //   this.state.PhoneNumber || ""
+          // );
+          // await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
+          // await AppInit({
+          //   dispatch: SetUserInfo,
+          // });
           // Cloud.$Loading.hidden()
           this.goBackHome();
         } else {

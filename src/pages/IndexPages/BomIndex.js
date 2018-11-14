@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
+    paddingBottom: 50,
   },
   headerLeftImg: {
     width: 40,
@@ -131,8 +132,8 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   HomeLogo: {
-    width: 240,
-    height: 40,
+    width: 260,
+    height: 50,
   },
   SearchBox: {
     paddingLeft: 40,

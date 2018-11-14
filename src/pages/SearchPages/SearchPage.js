@@ -99,7 +99,7 @@ class SearchPage extends Component {
     Cloud.$post("appget/gethotmodelandgdspotcheck?count=10", null, {
       onlydata: false,
     }).then(data => {
-      if (data.Code === 200) {
+      if (data && data.Code === 200) {
         this.setState({
           HotModelList: data.Result.HotModelList,
         });

@@ -69,7 +69,7 @@ class Yunext extends Component<Props> {
   render() {
     const { navigation, datas, SetBomSearchInfo } = this.props;
     return (
-      <View style={StyleSheet.viewbox}>
+      <View style={styles.viewbox}>
         <SerchList
           datas={datas}
           ActiveTab="yunext"
@@ -98,10 +98,7 @@ class Yunext extends Component<Props> {
   };
 }
 const styles = StyleSheet.create({
-  viewbox: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
+  viewbox: {},
 });
 const mapStateToProps = (state, props) => {
   return Object.assign(
