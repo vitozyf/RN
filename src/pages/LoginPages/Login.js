@@ -59,26 +59,23 @@ class Login extends Component<Props, Stateå> {
     const { SetUserInfo } = this.props;
     // Cloud.$Loading.show();
     Cloud.$post("user/login", this.state, { loading: true })
-      .then(data => {
-        console.log(11111, data);
+      .then(async data => {
+        Cloud.$Loading.hidden();
         if (data) {
-          // await Cloud.$setStorage(
-          //   Cloud.$CONFIG.AvatarPath,
-          //   data.AvatarPath || ""
-          // );
-          // await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
-          // await Cloud.$setStorage(
-          //   Cloud.$CONFIG.PhoneNumber,
-          //   this.state.PhoneNumber || ""
-          // );
-          // await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-          // await AppInit({
-          //   dispatch: SetUserInfo,
-          // });
-          // Cloud.$Loading.hidden()
+          await Cloud.$setStorage(
+            Cloud.$CONFIG.AvatarPath,
+            data.AvatarPath || ""
+          );
+          await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
+          await Cloud.$setStorage(
+            Cloud.$CONFIG.PhoneNumber,
+            this.state.PhoneNumber || ""
+          );
+          await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
+          await AppInit({
+            dispatch: SetUserInfo,
+          });
           this.goBackHome();
-        } else {
-          // Cloud.$Loading.hidden()
         }
       })
       .catch(err => {
@@ -162,7 +159,7 @@ class Login extends Component<Props, Stateå> {
         </View>
       );
     const TitleText = LoginType === 0 ? "手机号登录" : "ERP登录";
-    const TitleNav = LoginType === 1 ? "手机号登录>>" : "ERP登录>>";
+    const TitleNav = LoginType === 1 ? "手机号登录 >>" : "ERP登录 >>";
     return (
       <KeyboardAwareScrollView style={styles.Page}>
         <View style={styles.Page}>

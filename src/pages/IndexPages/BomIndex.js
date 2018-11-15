@@ -8,33 +8,35 @@ import { HeaderTitle, HeaderRight } from "@components";
 
 type Props = {
   navigation: any,
+  AvatarPath: string,
 };
 type State = {
   AvatarPath: string,
 };
 class HeaderLeft extends Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      AvatarPath:
-        "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     AvatarPath:
+  //       "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
+  //   };
+  // }
   onPress = () => {
     const { navigation } = this.props;
     navigation.openDrawer();
   };
-  componentWillMount() {
-    Cloud.$getStorage(Cloud.$CONFIG.AvatarPath).then(data => {
-      if (data) {
-        this.setState({
-          AvatarPath: `https:${data}`,
-        });
-      }
-    });
-  }
+  // componentWillMount() {
+  //   console.log(1111111, this.state, this.props);
+  //   Cloud.$getStorage(Cloud.$CONFIG.AvatarPath).then(data => {
+  //     if (data) {
+  //       this.setState({
+  //         AvatarPath: `https:${data}`,
+  //       });
+  //     }
+  //   });
+  // }
   render() {
-    const { AvatarPath } = this.state;
+    const { AvatarPath } = this.props;
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={this.onPress}>
         <Image
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   HomeLogo: {
-    width: 260,
+    width: 270,
     height: 50,
   },
   SearchBox: {

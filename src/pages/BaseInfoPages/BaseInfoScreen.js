@@ -14,7 +14,7 @@ type Props = {
   ClearUserInfo: Function,
   NickName: string,
   PhoneNumber: string,
-  HomeUserInfo: Object,
+  HomeUserInfo?: Object,
 };
 class BaseInfoScreen extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
@@ -73,13 +73,13 @@ class BaseInfoScreen extends Component<Props, State> {
           navigation.navigate("Login");
         });
       }
-      ClearUserInfo();
+      ClearUserInfo && ClearUserInfo();
     });
   };
   render() {
     const { modalVisible } = this.state;
     const { NickName, PhoneNumber, HomeUserInfo } = this.props;
-    const { ExpirationDateStr, CompanyName } = HomeUserInfo;
+    const { ExpirationDateStr, CompanyName } = HomeUserInfo || {};
     return (
       <View style={styles.container}>
         <View style={styles.baseRow}>

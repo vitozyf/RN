@@ -81,6 +81,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -112,7 +113,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -136,10 +137,14 @@ android {
         }
     }
     buildTypes {
+        releaseStaging {
+            buildConfigField "String", "CODEPUSH_KEY", '"kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d"'
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            buildConfigField "String", "CODEPUSH_KEY", '"x2D2xLa-NGE1OsbFXTZRwGFNgS-vd2879c22-c96e-4d6e-bef4-b597a869454d"'
         }
     }
     // applicationVariants are e.g. debug, release
@@ -158,6 +163,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-code-push')
     compile project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"

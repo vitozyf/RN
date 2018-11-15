@@ -126,7 +126,7 @@ const $post = (url, data, option) => {
 
 const $get = (url, data, option) => {
   const fetch_promise = fetchMethods("get", url, data, option);
-  return Promise.race([fetch_promise, abort_promise]);
+  return Promise.race([fetch_promise, abort_promise()]);
 };
 
 export { fetchMethods, $post, $get };
