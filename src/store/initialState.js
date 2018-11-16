@@ -26,6 +26,7 @@ export default {
     HomeUserAuthors: {},
   },
   IsTabBarShow: false,
+  StatusBarStyle: "light-content",
   BomSearchInfo: {
     KeyWord: "",
     RouterName: "yunext",

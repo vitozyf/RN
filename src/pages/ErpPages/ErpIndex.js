@@ -119,6 +119,7 @@ class ErpIndex extends Component {
     this.willFocusListener.remove();
   }
   willFocusHandler = () => {
+    this.props.SetStatusBarStyle("light-content");
     this.props.SetIsTabBarShow(
       this.props.navigation.state.routeName === "Bom" ||
         this.props.navigation.state.routeName === "ErpIndex"
@@ -131,9 +132,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   headerLeftImg: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     marginLeft: 10,
   },
   row: {
@@ -168,6 +169,12 @@ const mapDispatchToProps = dispatch => {
       return dispatch({
         type: "SetIsTabBarShow",
         IsTabBarShow,
+      });
+    },
+    SetStatusBarStyle: StatusBarStyle => {
+      return dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle,
       });
     },
   };

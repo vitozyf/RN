@@ -1,3 +1,6 @@
+import { StatusBar } from "react-native";
+import { ISANDROID } from "@src/utils/system";
+
 export const UserInfo = (state = {}, action) => {
   switch (action.type) {
     case "SetUserInfo":
@@ -22,6 +25,20 @@ export const IsTabBarShow = (state = false, action) => {
   switch (action.type) {
     case "SetIsTabBarShow":
       return action.IsTabBarShow;
+    default:
+      return state;
+  }
+};
+export const StatusBarStyle = (state = "light-content", action) => {
+  switch (action.type) {
+    case "SetStatusBarStyle":
+      StatusBar.setBarStyle(action.StatusBarStyle, false);
+      if (ISANDROID && action.StatusBarStyle === "light-content") {
+        StatusBar.setBackgroundColor("#2C2D31", false);
+      } else if (ISANDROID && action.StatusBarStyle === "dark-content") {
+        StatusBar.setBackgroundColor("#fff", false);
+      }
+      return action.StatusBarStyle;
     default:
       return state;
   }

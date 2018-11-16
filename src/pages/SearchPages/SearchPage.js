@@ -158,6 +158,7 @@ class SearchPage extends Component {
       this.props.navigation.state.routeName === "Bom" ||
         this.props.navigation.state.routeName === "ErpIndex"
     );
+    this.props.SetStatusBarStyle("dark-content");
   }
   // componentWillUnmount() {
   //   this.willFocusListener.remove();
@@ -238,6 +239,12 @@ const mapDispatchToProps = dispatch => {
       return dispatch({
         type: "SetBomSearchInfo",
         BomSearchInfo,
+      });
+    },
+    SetStatusBarStyle: StatusBarStyle => {
+      return dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle,
       });
     },
   };

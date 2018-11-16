@@ -31,9 +31,9 @@ const IndexPages = createStackNavigator(
     initialRouteName: "Bom",
     navigationOptions: {
       headerStyle: {
-        backgroundColor: "#ee7700",
-        height: 48,
-        lineHeight: 48,
+        backgroundColor: "#2C2D31",
+        height: 44,
+        lineHeight: 44,
       },
       headerTitleStyle: {
         color: "#fff",

@@ -7,6 +7,12 @@ import { AppInit } from "@src/utils/appInit";
 import CustomStore from "./src/utils/jumpUtils";
 import codePush from "react-native-code-push";
 
+const MyStatusBar = ({ backgroundColor, ...props }) => (
+  <View style={[styles.statusBar, { backgroundColor }]}>
+    <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+  </View>
+);
+
 let codePushOptions;
 if (Cloud.$ISANDROID && !Cloud.$ISDEBUG) {
   codePushOptions = {
@@ -18,9 +24,7 @@ if (Cloud.$ISANDROID && !Cloud.$ISDEBUG) {
   };
 }
 
-// const store = createStore();
 class App extends Component {
-  //如果有更新的提示
   syncImmediate() {
     codePush.sync({
       //安装模式

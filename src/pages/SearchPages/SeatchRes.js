@@ -158,7 +158,6 @@ class SeatchRes extends Component<Props, State> {
     let searchApi = { searchApi: false };
     let onlydata = { onlydata: true };
     let url = "";
-    console.log(11111, RouterName);
     const CurrentName = name ? name : RouterName;
     switch (CurrentName) {
       case "yunext":

@@ -1,11 +1,22 @@
 /* @flow */
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  // StatusBar,
+} from "react-native";
 import { connect } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+// import { ISANDROID } from "@src/utils/system";
 
 import { HeaderTitle, HeaderRight } from "@components";
-
+// StatusBar.setBarStyle("light-content", false);
+// if (ISANDROID) {
+//   StatusBar.setBackgroundColor("#2C2D31", false);
+// }
 type Props = {
   navigation: any,
   AvatarPath: string,
@@ -57,6 +68,7 @@ const HeaderLeftCom = connect((state, props) => {
 type BonProps = {
   navigation: any,
   SetIsTabBarShow: any,
+  SetStatusBarStyle: Function,
 };
 class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
@@ -108,6 +120,7 @@ class Bom extends Component<BonProps> {
     this.willFocusListener.remove();
   }
   willFocusHandler = () => {
+    this.props.SetStatusBarStyle("light-content");
     this.props.SetIsTabBarShow(
       this.props.navigation.state.routeName === "Bom" ||
         this.props.navigation.state.routeName === "ErpIndex"
@@ -122,9 +135,9 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   headerLeftImg: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     marginLeft: 10,
   },
   ImgBox: {
@@ -165,6 +178,12 @@ const mapDispatchToProps = dispatch => {
       return dispatch({
         type: "SetIsTabBarShow",
         IsTabBarShow,
+      });
+    },
+    SetStatusBarStyle: StatusBarStyle => {
+      return dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle,
       });
     },
   };
