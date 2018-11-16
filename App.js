@@ -6,6 +6,7 @@ import "./Global";
 import { AppInit } from "@src/utils/appInit";
 import CustomStore from "./src/utils/jumpUtils";
 import codePush from "react-native-code-push";
+import { ISANDROID } from "@src/utils/system";
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
@@ -14,7 +15,7 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 let codePushOptions;
-if (Cloud.$ISANDROID && !Cloud.$ISDEBUG) {
+if (ISANDROID && !__DEV__) {
   codePushOptions = {
     //设置检查更新的频率
     //ON_APP_RESUME APP恢复到前台的时候
@@ -63,7 +64,7 @@ class App extends Component {
     // codePush.disallowRestart(); //禁止重启
   }
   componentDidMount() {
-    if (Cloud.$ISANDROID && !Cloud.$ISDEBUG) {
+    if (ISANDROID && !__DEV__) {
       this.syncImmediate(); //开始检查更新
     }
   }
@@ -80,7 +81,7 @@ class App extends Component {
   }
 }
 
-if (Cloud.$ISANDROID && !Cloud.$ISDEBUG) {
+if (ISANDROID && !__DEV__) {
   App = codePush(codePushOptions)(App);
 }
 
