@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Yunext from "./Yunext";
 import Stocks from "./Stocks";
 import { View, StyleSheet, Text } from "react-native";
-import { ZnlInput } from "@components";
+import { ZnlInput, ZnlHeader, HeaderRight } from "@components";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { WithSearchHandler } from "@components/HOC";
 import { createMaterialTopTabNavigator } from "react-navigation";
@@ -11,20 +11,31 @@ import { connect } from "react-redux";
 
 const styles = StyleSheet.create({
   SearchInputBox: {
+    height: 32,
     flex: 1,
-    height: 40,
-    paddingRight: 20,
+    marginRight: 10,
   },
   SearchInput: {
-    borderRadius: 10,
-    paddingLeft: 40,
-    flex: 1,
+    borderRadius: 0,
+  },
+  HeaderRight: {
+    marginRight: 10,
   },
   FontAwesome: {
-    position: "absolute",
-    left: 10,
-    top: 8,
+    paddingLeft: 5,
+    paddingRight: 5,
     color: "#999",
+  },
+  lineBox: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  verticalline: {
+    width: 1,
+    height: 20,
+    backgroundColor: "#E6E6E6",
+    marginLeft: 4,
+    marginRight: 8,
   },
 
   tabBarStyle: {
@@ -106,27 +117,48 @@ class SeatchRes extends Component<Props, State> {
     const KeyWord = navigation.getParam("KeyWord", "");
     const onSearchHandler: Function = navigation.getParam("onSearchHandler");
     const onChangeText: Function = navigation.getParam("onChangeText");
-    return {
-      headerTitle: (
+    const inputRenderLeft = () => {
+      return (
+        <View style={styles.lineBox}>
+          <FontAwesome name={"search"} size={18} style={styles.FontAwesome} />
+          <View style={styles.verticalline} />
+        </View>
+      );
+    };
+    const renderCenter = () => {
+      return (
         <ZnlInput
           style={styles.SearchInputBox}
           inputStyle={styles.SearchInput}
           returnKeyType="search"
           onSubmitEditing={() => onSearchHandler()}
           onChangeText={onChangeText}
-          defaultValue={KeyWord}
           placeholder="请输入型号进行搜索"
-        >
-          <FontAwesome name={"search"} size={24} style={styles.FontAwesome} />
-        </ZnlInput>
+          renderLeft={inputRenderLeft}
+          defaultValue={KeyWord}
+        />
+      );
+    };
+    return {
+      header: (
+        <ZnlHeader
+          renderCenter={renderCenter}
+          onPressIcon={() => {
+            navigation.goBack();
+          }}
+          renderRight={() => {
+            return (
+              <HeaderRight
+                style={styles.HeaderRight}
+                title="取消"
+                onPress={() => {
+                  navigation.navigate("Bom");
+                }}
+              />
+            );
+          }}
+        />
       ),
-      // headerRight: <HeaderRight style={styles.HeaderRight}/>,
-      headerStyle: {
-        backgroundColor: "#fff",
-      },
-      headerTitleStyle: {
-        color: "#333",
-      },
     };
   };
 
@@ -148,6 +180,9 @@ class SeatchRes extends Component<Props, State> {
       KeyWord,
       RouterName,
     } = this.props;
+    // 修改搜索记录
+    Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8);
+    // 处理搜索
     this.setState({ isLoading: true });
     const serchData = {
       PageSize,
@@ -228,9 +263,6 @@ class SeatchRes extends Component<Props, State> {
       });
   };
   onChangeText = (value: string) => {
-    // this.setState({
-    //   KeyWord: value,
-    // });
     this.props.SetBomSearchInfo({
       KeyWord: value,
     });
@@ -275,6 +307,12 @@ const mapDispatchToProps = dispatch => {
       return dispatch({
         type: "SetBomSearchInfo",
         BomSearchInfo,
+      });
+    },
+    SetSearchRecord: SearchRecord => {
+      return dispatch({
+        type: "SetSearchRecord",
+        SearchRecord,
       });
     },
   };

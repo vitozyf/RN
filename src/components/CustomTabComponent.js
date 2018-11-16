@@ -29,7 +29,7 @@ class CustomTabComponent extends React.Component {
 
 const styles = StyleSheet.create({
   BottomTabBar: {
-    // borderTopColor: '#ee7700',
+    backgroundColor: "rgba(248,248,248,0.82)",
   },
   heightnone: {
     height: 0,

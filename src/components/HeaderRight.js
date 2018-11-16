@@ -1,36 +1,39 @@
-import React, {Component} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
 
 class HeaderRight extends Component {
   render() {
-    const {
-      title,
-      style,
-      onPress
-    } = this.props;
+    const { title, style, onPress } = this.props;
     return (
-      <View style={[styles.HeaderRightView, style]}>
-      <Text onPress = {onPress}>{title}</Text>
-      </View>
-    )
+      <TouchableOpacity
+        style={[styles.HeaderRightView, style]}
+        activeOpacity={0.8}
+        onPress={onPress}
+      >
+        <Text style={[styles.title]}>{title}</Text>
+      </TouchableOpacity>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   HeaderRightView: {
-    alignItems:'center',
-    justifyContent: 'center',
-    width: 40, 
-    height: 40,
-  }
-})
+    alignItems: "center",
+    justifyContent: "center",
+    height: 44,
+    marginRight: 10,
+  },
+  title: {
+    fontSize: 16,
+  },
+});
 
 HeaderRight.propTypes = {
   title: PropTypes.string,
   style: PropTypes.object,
-  onPress: PropTypes.func
-}
+  onPress: PropTypes.func,
+};
 // HeaderRight.defaultProps = {
 //   title: ''
 // }

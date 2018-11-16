@@ -103,36 +103,6 @@ class SerchList extends PureComponent {
       // ScrollOffset: 0
     };
   }
-  // 渲染头部
-  // _renderHeader = () => {
-  //   const { ActiveTab } = this.props;
-  //   return (
-  //     <View style={styles.SerchListTitle}>
-  //       <Text
-  //         style={[
-  //           styles.SerchListTitleText,
-  //           ActiveTab === "yunext" ? styles.ActiveTab : null,
-  //         ]}
-  //         onPress={() => {
-  //           this.setActiveTabHandler("yunext");
-  //         }}
-  //       >
-  //         云价格
-  //       </Text>
-  //       <Text
-  //         style={[
-  //           styles.SerchListTitleText,
-  //           ActiveTab === "getyunexttopstocks" ? styles.ActiveTab : null,
-  //         ]}
-  //         onPress={() => {
-  //           this.setActiveTabHandler("getyunexttopstocks");
-  //         }}
-  //       >
-  //         现货库存
-  //       </Text>
-  //     </View>
-  //   );
-  // };
   // 渲染底部
   _renderFooter = () => {
     const { showFoot, datas } = this.props;
@@ -287,20 +257,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     // paddingBottom: 50
   },
-  // SerchListTitle: {
-  //   flexDirection: "row",
-  //   borderBottomWidth: 1,
-  //   borderColor: "#ccc",
-  //   borderWidth: 1,
-  // },
-  // SerchListTitleText: {
-  //   lineHeight: HEADER_HEIGHT,
-  //   fontSize: 18,
-  //   color: "#666",
-  //   marginLeft: 10,
-  //   marginRight: 10,
-  //   fontWeight: "100",
-  // },
   // 分割组件
   ItemSeparatorComponent: {
     height: 1,
@@ -333,6 +289,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     marginLeft: 5,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   TextRed: {
     color: "red",

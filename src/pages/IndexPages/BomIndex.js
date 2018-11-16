@@ -1,22 +1,9 @@
 /* @flow */
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  // StatusBar,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-// import { ISANDROID } from "@src/utils/system";
-
 import { HeaderTitle, HeaderRight } from "@components";
-// StatusBar.setBarStyle("light-content", false);
-// if (ISANDROID) {
-//   StatusBar.setBackgroundColor("#2C2D31", false);
-// }
 type Props = {
   navigation: any,
   AvatarPath: string,
@@ -37,7 +24,6 @@ class HeaderLeft extends Component<Props, State> {
     navigation.openDrawer();
   };
   // componentWillMount() {
-  //   console.log(1111111, this.state, this.props);
   //   Cloud.$getStorage(Cloud.$CONFIG.AvatarPath).then(data => {
   //     if (data) {
   //       this.setState({
@@ -74,9 +60,7 @@ class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
     return {
       // title: '首页 | BomAi',
-      headerTitle: (
-        <HeaderTitle title="首页 | BomAi" textStyle={{ color: "#fff" }} />
-      ),
+      headerTitle: <HeaderTitle title="BomAi" textStyle={{ color: "#fff" }} />,
       headerLeft: <HeaderLeftCom navigation={navigation} />,
       headerRight: <HeaderRight />,
     };
@@ -103,7 +87,9 @@ class Bom extends Component<BonProps> {
           onPress={this.toSearchPage}
           activeOpacity={1}
         >
-          <FontAwesome name={"search"} size={24} style={styles.FontAwesome} />
+          <View style={styles.FontAwesomeBox}>
+            <FontAwesome name={"search"} size={18} style={styles.FontAwesome} />
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -147,12 +133,12 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   HomeLogo: {
-    width: 270,
-    height: 50,
+    width: 264,
+    height: 48,
   },
   SearchBox: {
     paddingLeft: 40,
-    borderRadius: 10,
+    borderRadius: 4,
     fontSize: 16,
     color: "#333333",
     borderWidth: 1,
@@ -161,11 +147,18 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
   },
-  FontAwesome: {
+  FontAwesomeBox: {
     position: "absolute",
-    left: 10,
-    top: 8,
-    color: "#999",
+    right: 0,
+    top: 0,
+    backgroundColor: "#ee7700",
+    height: 38,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  FontAwesome: {
+    color: "#fff",
   },
 });
 

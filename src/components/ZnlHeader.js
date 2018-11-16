@@ -1,8 +1,10 @@
-import React, {Component} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Ionicons';
-class ZnlHeader extends Component{
+import React, { Component } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
+import Icon from "react-native-vector-icons/Ionicons";
+// import { StatusBar } from "react-native";
+import { ISIOS } from "@src/utils/system";
+class ZnlHeader extends Component {
   render() {
     const {
       style,
@@ -10,46 +12,38 @@ class ZnlHeader extends Component{
       hideLeft,
       leftIcon,
       onPressIcon,
-      centerElement,
-      rightElement,
+      renderLeft,
+      renderCenter,
+      renderRight,
     } = this.props;
 
-    const Left = hideLeft ? null : (
+    const Left = hideLeft ? null : renderLeft ? (
+      renderLeft()
+    ) : (
       <TouchableOpacity
         onPress={onPressIcon || null}
         activeOpacity={0.8}
-        style={styles.iconbox}>
-        <Icon 
-          name={leftIcon}
-          color="#999"
-          size={30}
-          style={styles.icon}
-          >
-        </Icon>
+        style={styles.iconbox}
+      >
+        <Icon name={leftIcon} color="#999" size={22} style={styles.icon} />
       </TouchableOpacity>
-    )
-
-    const CenEle = centerElement ? centerElement : (
-      <Text style={ styles.Title }>
-        {title}
-      </Text>
     );
 
-    const RightEle = rightElement
+    const CenEle = renderCenter ? (
+      renderCenter()
+    ) : (
+      <Text style={styles.Title}>{title}</Text>
+    );
+
+    const RightEle = renderRight && renderRight();
 
     return (
-      <View style={ [styles.Header, style] }>
-        {
-          Left
-        }
-        {
-          CenEle
-        }
-        {
-          RightEle
-        }
+      <View style={[styles.Header, style]}>
+        {Left}
+        {CenEle}
+        {RightEle}
       </View>
-    )
+    );
   }
 }
 
@@ -59,39 +53,40 @@ ZnlHeader.propTypes = {
   hideLeft: PropTypes.bool,
   leftIcon: PropTypes.string,
   onPressIcon: PropTypes.func,
-  centerElement: PropTypes.element,
-  rightElement: PropTypes.element,
+  renderLeft: PropTypes.func,
+  renderCenter: PropTypes.func,
+  renderRight: PropTypes.func,
 };
 
 ZnlHeader.defaultProps = {
-  placeholder: '请输入内容',
-  leftIcon: 'ios-arrow-back'
+  leftIcon: "ios-arrow-back",
 };
 
 const styles = StyleSheet.create({
- Header: {
-  height: 48,
-  lineHeight: 48,
-  backgroundColor: '#fff',
-  flexDirection: 'row',
-  // alignItems: 'stretch'
-  // justifyContent: 'space-around'
- },
- Title: {
-  lineHeight: 48,
-  textAlign: 'center',
-  fontSize: 20,
-  flex: 1
- },
- iconbox: {
-  //  borderWidth: 1,
-  marginLeft: 5,
-  width: 30,
-  marginRight: 10
- },
- icon: {
-  lineHeight: 48,
-  textAlign: 'center'
- }
-})
+  Header: {
+    paddingTop: ISIOS ? 20 : 0,
+    height: ISIOS ? 64 : 44,
+    lineHeight: ISIOS ? 64 : 44,
+    backgroundColor: "rgba(248,248,248,0.82)",
+    flexDirection: "row",
+    paddingLeft: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "center",
+  },
+  Title: {
+    lineHeight: 44,
+    textAlign: "center",
+    fontSize: 18,
+    flex: 1,
+  },
+  iconbox: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 30,
+    height: 44,
+    marginRight: 5,
+  },
+  icon: {},
+});
 export default ZnlHeader;

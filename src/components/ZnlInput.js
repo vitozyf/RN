@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import { TextInput, View, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { TextInput, View, StyleSheet } from "react-native";
 class ZnlInput extends Component {
   render() {
-    const { 
+    const {
       onChangeText,
       placeholder,
       maxLength,
@@ -17,29 +17,32 @@ class ZnlInput extends Component {
       onFocus,
       editable,
       returnKeyType,
-      inputStyle
+      inputStyle,
+      renderLeft,
+      renderRight,
     } = this.props;
-    const {children} = this.props;
+    const { children } = this.props;
     return (
       <View style={[styles.inputbox, style]}>
-        {children}
-        <TextInput 
-            style={[styles.inputsty, inputStyle]}
-            placeholder={placeholder}
-            maxLength={maxLength}
-            onChangeText={onChangeText}
-            autoFocus={autoFocus}
-            defaultValue={defaultValue}
-            keyboardType={keyboardType}
-            multiline={multiline}
-            onSubmitEditing={onSubmitEditing}
-            secureTextEntry={secureTextEntry}
-            onFocus={onFocus}
-            editable={editable}
-            returnKeyType={returnKeyType}
-            />
+        {renderLeft && renderLeft()}
+        <TextInput
+          style={[styles.inputsty, inputStyle]}
+          placeholder={placeholder}
+          maxLength={maxLength}
+          onChangeText={onChangeText}
+          autoFocus={autoFocus}
+          defaultValue={defaultValue}
+          keyboardType={keyboardType}
+          multiline={multiline}
+          onSubmitEditing={onSubmitEditing}
+          secureTextEntry={secureTextEntry}
+          onFocus={onFocus}
+          editable={editable}
+          returnKeyType={returnKeyType}
+        />
+        {renderRight && renderRight()}
       </View>
-    )
+    );
   }
 }
 
@@ -54,34 +57,40 @@ ZnlInput.propTypes = {
   keyboardType: PropTypes.string,
   multiline: PropTypes.bool,
   onSubmitEditing: PropTypes.func,
+  renderLeft: PropTypes.func,
+  renderRight: PropTypes.func,
   onFocus: PropTypes.func,
   secureTextEntry: PropTypes.bool, // 密码类型
   editable: PropTypes.bool,
-  returnKeyType: PropTypes.string
+  returnKeyType: PropTypes.string,
 };
 
 ZnlInput.defaultProps = {
-  placeholder: '',
+  placeholder: "",
   maxLength: 20,
   autoFocus: false,
-  defaultValue: '',
-  keyboardType: 'default',
-  multiline: false
+  defaultValue: "",
+  keyboardType: "default",
+  multiline: false,
 };
 
 const styles = StyleSheet.create({
   inputbox: {
     // width: 300,
+    flexDirection: "row",
+    alignItems: "center",
     height: 40,
+    borderWidth: 1,
+    borderColor: "#e6e6e6",
+    backgroundColor: "#fff",
   },
   inputsty: {
     fontSize: 16,
-    color: '#333333',
-    borderWidth: 1,
-    borderColor: '#ee7700',
-    padding: 5,
+    color: "#333333",
+    borderWidth: 0,
     flex: 1,
-  }
+    padding: 0,
+  },
 });
 
 export default ZnlInput;

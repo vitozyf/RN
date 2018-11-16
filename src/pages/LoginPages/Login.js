@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { ZnlHeader, ZnlInput, ZnlButton, HeaderRight } from "@components";
+import { ZnlInput, ZnlButton, HeaderRight } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppInit } from "@src/utils/appInit";
 import { connect } from "react-redux";
@@ -163,7 +163,6 @@ class Login extends Component<Props, Stateå> {
     return (
       <KeyboardAwareScrollView style={styles.Page}>
         <View style={styles.Page}>
-          {/* <ZnlHeader onPressIcon={this.goBackHome} leftIcon="md-close"></ZnlHeader> */}
           <View style={styles.Body}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{TitleText}</Text>

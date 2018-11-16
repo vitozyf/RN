@@ -10,22 +10,28 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from "react-redux";
 import SearchPane from "@components/IndexPages/SearchPane";
 import CONFIG from "@src/utils/config";
-import { ZnlInput, ZnlButton } from "@components";
+import { ZnlHeader, ZnlInput, ZnlButton, HeaderRight } from "@components";
 
 class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       KeyWord: "",
-      SearchRecord: null,
       HotModelList: [],
     };
   }
   static navigationOptions = ({ navigation }) => {
     const method = navigation.getParam("method", {});
-    return {
-      // headerBackTitle: null,
-      headerTitle: (
+    const inputRenderLeft = () => {
+      return (
+        <View style={styles.lineBox}>
+          <FontAwesome name={"search"} size={18} style={styles.FontAwesome} />
+          <View style={styles.verticalline} />
+        </View>
+      );
+    };
+    const renderCenter = () => {
+      return (
         <ZnlInput
           style={styles.SearchInputBox}
           inputStyle={styles.SearchInput}
@@ -34,20 +40,29 @@ class SearchPage extends Component {
           onSubmitEditing={method.onSearchHandler}
           onChangeText={method.onChangeText}
           placeholder="请输入型号进行搜索"
-        >
-          <FontAwesome name={"search"} size={24} style={styles.FontAwesome} />
-        </ZnlInput>
-      ),
-      // headerRight: <HeaderRight style={styles.HeaderRight} title="取消" onPress={method.cancelHandler}/>,
-      headerStyle: {
-        backgroundColor: "#fff",
-        borderWidth: 0,
-      },
+          renderLeft={inputRenderLeft}
+        />
+      );
     };
-  };
-  cancelHandler = () => {
-    const { navigation } = this.props;
-    navigation.navigate("TabNav");
+    return {
+      header: (
+        <ZnlHeader
+          hideLeft={true}
+          renderCenter={renderCenter}
+          renderRight={() => {
+            return (
+              <HeaderRight
+                style={styles.HeaderRight}
+                title="取消"
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            );
+          }}
+        />
+      ),
+    };
   };
   onPressDelete = () => {
     Cloud.$removeStorage(CONFIG.KeyWords).then(() => {
@@ -64,7 +79,7 @@ class SearchPage extends Component {
     Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8).then(() => {
       this.getSearchRecord();
     });
-    this.props.navigation.push("SeatchRes", { KeyWord });
+    this.props.navigation.push("SeatchRes");
     this.props.SetBomSearchInfo({
       KeyWord,
     });
@@ -75,8 +90,9 @@ class SearchPage extends Component {
     });
   };
   getSearchRecord() {
-    let SearchRecord = null;
-    Cloud.$getStorage(CONFIG.KeyWords).then(data => {
+    let SearchRecord = [];
+    const SetSearchRecord = this.props.SetSearchRecord;
+    return Cloud.$getStorage(CONFIG.KeyWords).then(data => {
       if (data) {
         SearchRecord = JSON.parse(data).map((item, index) => {
           return (
@@ -90,8 +106,8 @@ class SearchPage extends Component {
             </ZnlButton>
           );
         });
+        SetSearchRecord && SetSearchRecord(SearchRecord);
       }
-      this.setState({ SearchRecord });
     });
   }
   // 热搜
@@ -109,17 +125,17 @@ class SearchPage extends Component {
   // 参数传递进header
   passParameterHandler() {
     const { navigation } = this.props;
-    const { onSearchHandler, onChangeText, cancelHandler } = this;
+    const { onSearchHandler, onChangeText } = this;
     navigation.setParams({
       method: {
         onSearchHandler,
         onChangeText,
-        cancelHandler,
       },
     });
   }
   render() {
-    const { SearchRecord, HotModelList } = this.state;
+    const { HotModelList } = this.state;
+    const { SearchRecord } = this.props;
     return (
       <View style={styles.SearchPage}>
         <SearchPane title="搜索记录" onPressDelete={this.onPressDelete}>
@@ -149,52 +165,45 @@ class SearchPage extends Component {
     this.gethotmodelandgdspotcheck(); // 获取热搜
     this.passParameterHandler();
     const { navigation } = this.props;
-    // SetSearchStackNav(navigation);
-    // this.willFocusListener = navigation.addListener(
-    //   "willFocus",
-    //   this.willFocusHandler
-    // );
     this.props.SetIsTabBarShow(
       this.props.navigation.state.routeName === "Bom" ||
         this.props.navigation.state.routeName === "ErpIndex"
     );
     this.props.SetStatusBarStyle("dark-content");
   }
-  // componentWillUnmount() {
-  //   this.willFocusListener.remove();
-  // }
-  // willFocusHandler = () => {
-  //   const { SetIsTabBarShow } = this.props;
-  //   SetIsTabBarShow(false);
-  // };
 }
 const styles = StyleSheet.create({
   SearchPage: {
-    // paddingTop: 20,
-    paddingLeft: 5,
-    paddingRight: 5,
-    backgroundColor: "#fff",
+    backgroundColor: "#f8f8f8",
     flex: 1,
   },
   HeaderRight: {
     marginRight: 10,
   },
   SearchInputBox: {
-    height: 40,
+    height: 32,
     flex: 1,
-    paddingRight: 20,
+    marginRight: 10,
   },
   SearchInput: {
-    borderRadius: 10,
-    paddingLeft: 40,
-    // borderWidth: 0,
-    // borderBottomWidth: 1,
+    borderRadius: 0,
+    lineHeight: 32,
   },
   FontAwesome: {
-    position: "absolute",
-    left: 10,
-    top: 8,
+    paddingLeft: 5,
+    paddingRight: 5,
     color: "#999",
+  },
+  lineBox: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  verticalline: {
+    width: 1,
+    height: 20,
+    backgroundColor: "#E6E6E6",
+    marginLeft: 4,
+    marginRight: 8,
   },
   // cancelBtn: {
   //   marginLeft: 10
@@ -207,16 +216,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   searchBoxTag: {
     marginRight: 10,
-    backgroundColor: "#ddd",
+    backgroundColor: "#f5f5f5",
     paddingLeft: 5,
     paddingRight: 5,
-    paddingTop: 2,
-    paddingBottom: 2,
+    // paddingTop: 2,
+    // paddingBottom: 2,
     borderRadius: 2,
-    marginBottom: 10,
+    marginBottom: 8,
+    height: 32,
+    lineHeight: 32,
+    borderWidth: 0,
     width: "auto",
   },
   searchBoxTagText: {
@@ -225,7 +239,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return props;
+  return Object.assign({}, { SearchRecord: state.SearchRecord }, props);
 };
 const mapDispatchToProps = dispatch => {
   return {
@@ -245,6 +259,12 @@ const mapDispatchToProps = dispatch => {
       return dispatch({
         type: "SetStatusBarStyle",
         StatusBarStyle,
+      });
+    },
+    SetSearchRecord: SearchRecord => {
+      return dispatch({
+        type: "SetSearchRecord",
+        SearchRecord,
       });
     },
   };

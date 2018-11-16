@@ -4,7 +4,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from "react-redux";
 import { BackTop } from "@components";
 
-import { ZnlInput } from "@components";
+import { ZnlInput, ZnlHeader } from "@components";
 import SerchList from "./SerchList";
 
 type Props = {

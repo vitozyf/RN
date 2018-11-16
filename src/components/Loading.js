@@ -1,56 +1,55 @@
-import React, {Component} from 'react'
-import {View, StyleSheet, ActivityIndicator, Dimensions} from 'react-native'
-import RootSiblings from 'react-native-root-siblings'
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
+import React, { Component } from "react";
+import { View, StyleSheet, ActivityIndicator, Dimensions } from "react-native";
+import RootSiblings from "react-native-root-siblings";
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
-let sibling = undefined
+let sibling = undefined;
 
 const Loading = {
-
   show: () => {
     sibling = new RootSiblings(
-      <View style={styles.maskStyle}>
-        <View style={styles.backViewStyle}>
-          <ActivityIndicator size="large" color="#000" />
+      (
+        <View style={styles.maskStyle}>
+          <View style={styles.backViewStyle}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>
         </View>
-      </View>
-    )
+      )
+    );
 
-    // const TimeId = setTimeout(() => {
-    //   if (sibling instanceof RootSiblings) {
-    //     sibling.destroy()
-    //   }
-    //   clearTimeout(TimeId);
-    // }, 5000);
+    const TimeId = setTimeout(() => {
+      if (sibling instanceof RootSiblings) {
+        sibling.destroy();
+      }
+      clearTimeout(TimeId);
+    }, 8000);
   },
 
-  hidden: ()=> {
+  hidden: () => {
     if (sibling instanceof RootSiblings) {
-      sibling.destroy()
+      sibling.destroy();
     }
-  }
-
-}
+  },
+};
 
 const styles = StyleSheet.create({
-    maskStyle: {
-      position: 'absolute',
-      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-      width: width,
-      height: height,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    backViewStyle: {
-      backgroundColor: 'transparent',
-      width: 120,
-      height: 80,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 5,
-    }
-  }
-)
+  maskStyle: {
+    position: "absolute",
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    width: width,
+    height: height,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backViewStyle: {
+    backgroundColor: "transparent",
+    width: 120,
+    height: 80,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+  },
+});
 
-export {Loading}
+export { Loading };

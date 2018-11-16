@@ -25,8 +25,10 @@ export default {
     HomeUserInfo: {},
     HomeUserAuthors: {},
   },
-  IsTabBarShow: false,
-  StatusBarStyle: "light-content",
+  IsTabBarShow: false, // 是否隐藏tabbar
+  StatusBarStyle: "light-content", // 状态栏
+  SearchRecord: [], // 本地搜索记录
+  // 搜索页信息
   BomSearchInfo: {
     KeyWord: "",
     RouterName: "yunext",
