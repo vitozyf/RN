@@ -197,8 +197,8 @@ const styles = StyleSheet.create({
   Page: {
     backgroundColor: "#fff",
     flex: 1,
-    // paddingLeft: 10,
-    // paddingRight: 10
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   Body: {
     paddingTop: 20,
@@ -225,8 +225,9 @@ const styles = StyleSheet.create({
   },
   Input: {
     borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
+    paddingLeft: 5,
+    // borderBottomWidth: 1,
+    // borderColor: "#ccc",
   },
   Button: {
     width: "100%",

@@ -29,7 +29,7 @@ const IndexPages = createStackNavigator(
 
 const Index = class Index extends Component {
   static navigationOptions = {
-    drawerLabel: "登陆",
+    drawerLabel: "登录",
   };
   static router = IndexPages.router;
   render() {

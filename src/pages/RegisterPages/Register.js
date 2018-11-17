@@ -1,71 +1,65 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {ZnlInput, ZnlButton, HeaderRight} from '@components';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {connect} from 'react-redux';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {AppInit} from '@src/utils/appInit'
-class Register extends Component{
+import React, { Component } from "react";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { ZnlInput, ZnlButton, HeaderRight } from "@components";
+import Icon from "react-native-vector-icons/Ionicons";
+import { connect } from "react-redux";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { AppInit } from "@src/utils/appInit";
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        ContactCompanyName: '', // 公司名
-        ContactName: '', // 联系人名称
-        PhoneNumber: '', // 手机号
-        SmsCode: '', // 短信验证码
-        AccountName: '', // 账号
-        Password: '', // 密码
-        RePassword: '',
-        SmsGuid: ''
-    }
+      ContactCompanyName: "", // 公司名
+      ContactName: "", // 联系人名称
+      PhoneNumber: "", // 手机号
+      SmsCode: "", // 短信验证码
+      AccountName: "", // 账号
+      Password: "", // 密码
+      RePassword: "",
+      SmsGuid: "",
+    };
   }
-//   static navigationOptions = ({ navigation }) => {
-//     return {
-//       title: '注册',
-//     };
-//   };
+  //   static navigationOptions = ({ navigation }) => {
+  //     return {
+  //       title: '注册',
+  //     };
+  //   };
   static navigationOptions = ({ navigation }) => {
     const goBackHome = () => {
-      navigation.navigate('Home');
-    }
+      navigation.navigate("Home");
+    };
     const HeaderLeft = (
       <TouchableOpacity
         onPress={goBackHome}
         activeOpacity={0.8}
-        style={styles.iconbox}>
-        <Icon 
-          name='md-close'
-          color="#999"
-          size={26}
-          style={styles.icon}
-          >
-        </Icon>
+        style={styles.iconbox}
+      >
+        <Icon name="md-close" color="#999" size={26} style={styles.icon} />
       </TouchableOpacity>
-    )
+    );
     return {
       headerLeft: HeaderLeft,
-      title: '注册',
-      headerRight: (<HeaderRight />),
+      title: "注册",
+      headerRight: <HeaderRight />,
     };
   };
   GetCode = () => {
-    const {PhoneNumber} = this.state;
+    const { PhoneNumber } = this.state;
     if (Cloud.$CONFIG.RegPhoneNumber.test(PhoneNumber)) {
-      Cloud.$post('user/sms-challenge', {
-          PhoneNumber
+      Cloud.$post("user/sms-challenge", {
+        PhoneNumber,
       }).then(data => {
         if (data) {
           this.setState({
-            SmsGuid: data
-          })
-          Cloud.$Toast.show('短信已发送');
+            SmsGuid: data,
+          });
+          Cloud.$Toast.show("短信已发送");
         }
-      })
+      });
     } else {
-      Cloud.$Toast.show('请输入正确的手机号');
+      Cloud.$Toast.show("请输入正确的手机号");
     }
-    
-  }
+  };
   RegisterHandler = () => {
     const {
       ContactCompanyName,
@@ -75,48 +69,52 @@ class Register extends Component{
       AccountName,
       Password,
       RePassword,
-      SmsGuid
+      SmsGuid,
     } = this.state;
-    let errMessage = '';
+    let errMessage = "";
     if (!ContactCompanyName) {
-      errMessage = '公司名不能为空';
+      errMessage = "公司名不能为空";
     } else if (!ContactName) {
-      errMessage = '联系人不能为空';
+      errMessage = "联系人不能为空";
     } else if (!PhoneNumber) {
-      errMessage = '手机号不能为空';
+      errMessage = "手机号不能为空";
     } else if (!SmsCode) {
-      errMessage = '短信验证码不能为空';
+      errMessage = "短信验证码不能为空";
     } else if (!AccountName) {
-      errMessage = '账号不能为空';
+      errMessage = "账号不能为空";
     } else if (!Password) {
-      errMessage = '密码不能为空';
+      errMessage = "密码不能为空";
     } else if (Password !== RePassword) {
-      errMessage = '两次密码输入不一致';
+      errMessage = "两次密码输入不一致";
     }
     if (errMessage) {
       return Cloud.$Toast.show(errMessage);
     }
-    Cloud.$post('user/reg', this.state).then(async (data) => {
-      if (data) {
-        const {SetUserInfo, navigation} = this.props;
-        await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || '');
-        await Cloud.$setStorage(Cloud.$CONFIG.AvatarPath, data.AvatarPath || '');
-        await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || '');
-        await AppInit({
-          dispatch: SetUserInfo
-        })
-        navigation.navigate('Home');
-      }
-      
-    }).catch(err => {
-      // console.log(222, err);
-    })
-  }
+    Cloud.$post("user/reg", this.state)
+      .then(async data => {
+        if (data) {
+          const { SetUserInfo, navigation } = this.props;
+          await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
+          await Cloud.$setStorage(
+            Cloud.$CONFIG.AvatarPath,
+            data.AvatarPath || ""
+          );
+          await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
+          await AppInit({
+            dispatch: SetUserInfo,
+          });
+          navigation.navigate("Home");
+        }
+      })
+      .catch(err => {
+        // console.log(222, err);
+      });
+  };
   onChangeText = (value, name) => {
     this.setState({
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
   render() {
     return (
       <KeyboardAwareScrollView style={styles.Page}>
@@ -124,69 +122,84 @@ class Register extends Component{
           <View style={styles.Body}>
             <View>
               <View style={styles.InputBox}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'ContactCompanyName')}}
+                  onChangeText={value => {
+                    this.onChangeText(value, "ContactCompanyName");
+                  }}
                   placeholder="公司名称"
-                  autoFocus={true}>
-                </ZnlInput>
+                  autoFocus={true}
+                />
               </View>
               <View style={styles.InputBox}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'ContactName')}}
-                  placeholder="联系人名称">
-                </ZnlInput>
+                  onChangeText={value => {
+                    this.onChangeText(value, "ContactName");
+                  }}
+                  placeholder="联系人名称"
+                />
               </View>
               <View style={styles.InputBox}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'PhoneNumber')}}
-                  placeholder="手机号">
-                </ZnlInput>
+                  onChangeText={value => {
+                    this.onChangeText(value, "PhoneNumber");
+                  }}
+                  placeholder="手机号"
+                />
               </View>
               <View style={styles.InputBoxMessage}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.InputMessage}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'SmsCode')}}
-                  placeholder="短信验证码">
-                </ZnlInput>
+                  onChangeText={value => {
+                    this.onChangeText(value, "SmsCode");
+                  }}
+                  placeholder="短信验证码"
+                />
                 <ZnlButton
-                style={styles.ButtonMessage}
-                textStyle={styles.ButtonMessageText}
-                onPress={this.GetCode}>
+                  style={styles.ButtonMessage}
+                  textStyle={styles.ButtonMessageText}
+                  onPress={this.GetCode}
+                >
                   获取验证码
                 </ZnlButton>
               </View>
               <View style={styles.InputBox}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'AccountName')}}
-                  placeholder="账号">
-                </ZnlInput>
+                  onChangeText={value => {
+                    this.onChangeText(value, "AccountName");
+                  }}
+                  placeholder="账号"
+                />
               </View>
               <View style={styles.InputBox}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'Password')}}
+                  onChangeText={value => {
+                    this.onChangeText(value, "Password");
+                  }}
                   placeholder="密码"
-                  secureTextEntry={true}>
-                </ZnlInput>
+                  secureTextEntry={true}
+                />
               </View>
               <View style={styles.InputBox}>
-                <ZnlInput 
+                <ZnlInput
                   style={styles.Input}
                   inputStyle={styles.inputIn}
-                  onChangeText={(value) => {this.onChangeText(value, 'RePassword')}}
+                  onChangeText={value => {
+                    this.onChangeText(value, "RePassword");
+                  }}
                   placeholder="再次输入密码"
-                  secureTextEntry={true}>
-                </ZnlInput>
+                  secureTextEntry={true}
+                />
               </View>
             </View>
           </View>
@@ -195,84 +208,89 @@ class Register extends Component{
             type="main"
             style={styles.Button}
             onPress={this.RegisterHandler}
-            >
+          >
             确定
           </ZnlButton>
         </View>
       </KeyboardAwareScrollView>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   Page: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     flex: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   Body: {
     paddingTop: 20,
   },
   InputBox: {
-    marginBottom: 16
+    marginBottom: 16,
   },
   InputBoxMessage: {
     marginBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   Input: {
-    borderWidth: 0,
+    // borderWidth: 0,
   },
   inputIn: {
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
+    // borderWidth: 0,
+    // borderBottomWidth: 1,
+    // borderColor: '#ccc',
   },
   InputMessage: {
-    borderWidth: 0,
+    // borderWidth: 0,
     // borderBottomWidth: 1,
     // borderColor: '#ccc',
     // width: 200,
-    flex: 1
+    flex: 1,
   },
   ButtonMessage: {
     height: 32,
     borderRadius: 10,
     width: 120,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderWidth: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginLeft: 10,
     // flex: 1
   },
   ButtonMessageText: {
-    color: '#999',
-    borderColor: '#999',
+    color: "#999",
+    borderColor: "#999",
   },
   Button: {
-    width: '100%',
+    width: "100%",
     height: 48,
   },
   iconbox: {
     marginLeft: 5,
     width: 30,
-    marginRight: 10
+    marginRight: 10,
   },
   icon: {
     lineHeight: 48,
-    textAlign: 'center'
-  }
-})
+    textAlign: "center",
+  },
+});
 
 const mapStateToProps = (state, props) => {
   return props;
-}
-const mapDispatchToProps = (dispatch) => {
+};
+const mapDispatchToProps = dispatch => {
   return {
-    SetUserInfo: (SetUserInfo) => {
-      return dispatch(SetUserInfo)
-    }
-  }
-}
+    SetUserInfo: SetUserInfo => {
+      return dispatch(SetUserInfo);
+    },
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);
