@@ -50,7 +50,8 @@
 		85B54EAC143C43708B2D0A59 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFECF401FAC54A74B0C4FE00 /* libRNVectorIcons-tvOS.a */; };
 		94BC5A1921943913005367BB /* fontello.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94BC59F121943913005367BB /* fontello.ttf */; };
 		94BC5A1B21943E2D005367BB /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94BC5A1A21943E2D005367BB /* iconfont.ttf */; };
-		94D30D7721995C540027A111 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 94D30D4F21995C540027A111 /* bundle */; };
+		94D7D31C21A285B800E96D3E /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 94D7D2F321A285B800E96D3E /* bundle */; };
+		94D7D32221A289FA00E96D3E /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 94D7D32121A289F900E96D3E /* bundle */; };
 		A830EBB5C69D4F989C493872 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8E4555A126540DE906454ED /* libSplashScreen.a */; };
 		AA4370E8700549009EEBC648 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61BAEDB453D34C78A7048B9D /* Zocial.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -396,7 +397,8 @@
 		84179DA322284561B8AF9BDD /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		94BC59F121943913005367BB /* fontello.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fontello.ttf; sourceTree = "<group>"; };
 		94BC5A1A21943E2D005367BB /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
-		94D30D4F21995C540027A111 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
+		94D7D2F321A285B800E96D3E /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
+		94D7D32121A289F900E96D3E /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		A63D9639BCAF4E9F8F569382 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		A9D1FDF5CED84DF7BED464CA /* Iconfont.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Iconfont.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Iconfont.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -550,7 +552,7 @@
 		13B07FAE1A68108700A75B9A /* ZnlICloud */ = {
 			isa = PBXGroup;
 			children = (
-				94D30D4F21995C540027A111 /* bundle */,
+				94D7D32121A289F900E96D3E /* bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -644,6 +646,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				94D7D2F321A285B800E96D3E /* bundle */,
 				13B07FAE1A68108700A75B9A /* ZnlICloud */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ZnlICloudTests */,
@@ -1206,8 +1209,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94D7D32221A289FA00E96D3E /* bundle in Resources */,
+				94D7D31C21A285B800E96D3E /* bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				94D30D7721995C540027A111 /* bundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				6F3C6F874202483FBEDD96F6 /* AntDesign.ttf in Resources */,
 				F48332C03E754DA4B2703742 /* Entypo.ttf in Resources */,
