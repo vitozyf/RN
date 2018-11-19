@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   },
   FlatListRowTopTitleBox: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     flex: 1,
     flexWrap: "wrap",
@@ -289,8 +289,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     marginLeft: 5,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   TextRed: {
     color: "red",
@@ -307,14 +307,14 @@ const styles = StyleSheet.create({
   // },
   // 现货类型
   StockTypeTextEleBox: {
-    width: 80,
+    // width: 80,
   },
   StockTypeCommon: {
-    fontSize: 16,
+    fontSize: 14,
     // lineHeight: 20,
     paddingLeft: 2,
     paddingRight: 2,
-    fontWeight: "bold",
+    // fontWeight: "bold",
     borderWidth: 1,
     textAlign: "center",
   },

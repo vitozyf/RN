@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   indicatorStyle: {
-    height: 0,
+    height: 2,
+    backgroundColor: "#ee7700",
   },
 });
 

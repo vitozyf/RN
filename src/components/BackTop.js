@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import RootSiblings from "react-native-root-siblings";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 let sibling = undefined;
 
@@ -12,7 +12,12 @@ const BackTop = {
       <View style={styles.maskStyle}>
         <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
           <Text>
-            <Ionicons name={"ios-arrow-dropup"} size={30} color={"#666"} />
+            <MaterialCommunityIcons
+              name={"arrow-collapse-up"}
+              size={30}
+              color={"#666"}
+              style={styles.MaterialCommunityIcons}
+            />
           </Text>
         </TouchableOpacity>
       </View>
@@ -42,6 +47,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: "#999",
+  },
+  MaterialCommunityIcons: {
+    paddingTop: 2,
   },
 });
 
