@@ -7,6 +7,7 @@ import { AppInit } from "@src/utils/appInit";
 import CustomStore from "./src/utils/jumpUtils";
 import codePush from "react-native-code-push";
 import { ISANDROID } from "@src/utils/system";
+import SplashScreen from "react-native-splash-screen";
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
@@ -67,6 +68,7 @@ class App extends Component {
     if (ISANDROID && !__DEV__) {
       this.syncImmediate(); //开始检查更新
     }
+    SplashScreen.hide();
   }
   render() {
     return (
