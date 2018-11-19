@@ -84,6 +84,9 @@ class MembershipScreen extends Component {
       </View>
     );
   }
+  componentWillMount() {
+    this.props.SetStatusBarStyle("dark-content");
+  }
 }
 
 const styles = StyleSheet.create({
@@ -163,5 +166,17 @@ const mapStateToProps = (state, props) => {
     props
   );
 };
-
-export default connect(mapStateToProps)(MembershipScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    SetStatusBarStyle: StatusBarStyle => {
+      return dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle,
+      });
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MembershipScreen);

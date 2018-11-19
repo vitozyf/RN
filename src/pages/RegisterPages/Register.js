@@ -215,6 +215,9 @@ class Register extends Component {
       </KeyboardAwareScrollView>
     );
   }
+  componentWillMount() {
+    this.props.SetStatusBarStyle("dark-content");
+  }
 }
 
 const styles = StyleSheet.create({
@@ -286,6 +289,12 @@ const mapDispatchToProps = dispatch => {
   return {
     SetUserInfo: SetUserInfo => {
       return dispatch(SetUserInfo);
+    },
+    SetStatusBarStyle: StatusBarStyle => {
+      return dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle,
+      });
     },
   };
 };

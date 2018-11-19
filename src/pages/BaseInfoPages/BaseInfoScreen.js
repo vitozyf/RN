@@ -15,6 +15,7 @@ type Props = {
   NickName: string,
   PhoneNumber: string,
   HomeUserInfo?: Object,
+  SetStatusBarStyle: Function,
 };
 class BaseInfoScreen extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
@@ -118,6 +119,9 @@ class BaseInfoScreen extends Component<Props, State> {
       </View>
     );
   }
+  componentWillMount() {
+    this.props.SetStatusBarStyle("dark-content");
+  }
 }
 const styles = StyleSheet.create({
   container: {
@@ -163,6 +167,12 @@ const mapDispatchToProps = dispatch => {
     ClearUserInfo: () => {
       return dispatch({
         type: "ClearUserInfo",
+      });
+    },
+    SetStatusBarStyle: StatusBarStyle => {
+      return dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle,
       });
     },
   };
