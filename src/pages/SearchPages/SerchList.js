@@ -2,9 +2,11 @@ import React, { PureComponent } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import PropTypes from "prop-types";
 import { BackTop } from "@components";
-
+import { connect } from "react-redux";
 const ITEM_HEIGHT = 40; // list行高
 const HEADER_HEIGHT = 50; // 头部高
+import { ISIOS } from "@src/utils/system";
+
 class ListRow extends PureComponent {
   render() {
     const { value, ActiveTab } = this.props;
@@ -182,7 +184,14 @@ class SerchList extends PureComponent {
   // 滚动
   onScroll = event => {
     const that = this;
+    const { SetHeaderHeight } = this.props;
     let newScrollOffset = event.nativeEvent.contentOffset.y;
+    // SetHeaderHeight(100);
+
+    // if (newScrollOffset <= 60 && newScrollOffset >= 0) {
+    //   SetHeaderHeight((ISIOS ? 64 : 44) - newScrollOffset);
+    //   console.log((ISIOS ? 64 : 44) - newScrollOffset);
+    // }
     if (newScrollOffset > 100) {
       BackTop.show({
         onPress() {
@@ -361,4 +370,22 @@ SerchList.propTypes = {
   style: PropTypes.object,
 };
 
-export default SerchList;
+const mapStateToProps = (state, props) => {
+  return props;
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    SetHeaderHeight: HeaderHeight => {
+      return dispatch({
+        type: "SetHeaderHeight",
+        HeaderHeight,
+      });
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SerchList);
+// export default SerchList;

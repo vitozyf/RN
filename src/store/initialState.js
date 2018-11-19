@@ -7,6 +7,8 @@
 //   HomeUserInfo: any,
 //   HomeUserAuthors: any,
 // };
+import { ISIOS } from "@src/utils/system";
+
 // 统一声明默认State
 export default {
   // Navigations: {
@@ -26,6 +28,7 @@ export default {
     HomeUserAuthors: {},
   },
   IsTabBarShow: false, // 是否隐藏tabbar
+  HeaderHeight: ISIOS ? 64 : 44,
   StatusBarStyle: "light-content", // 状态栏
   SearchRecord: [], // 本地搜索记录
   // 搜索页信息

@@ -1,5 +1,6 @@
 import { StatusBar } from "react-native";
 import { ISANDROID } from "@src/utils/system";
+import { ISIOS } from "@src/utils/system";
 
 export const UserInfo = (state = {}, action) => {
   switch (action.type) {
@@ -25,6 +26,14 @@ export const IsTabBarShow = (state = false, action) => {
   switch (action.type) {
     case "SetIsTabBarShow":
       return action.IsTabBarShow;
+    default:
+      return state;
+  }
+};
+export const HeaderHeight = (state = ISIOS ? 64 : 44, action) => {
+  switch (action.type) {
+    case "SetHeaderHeight":
+      return action.HeaderHeight;
     default:
       return state;
   }

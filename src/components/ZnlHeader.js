@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 // import { StatusBar } from "react-native";
+import { connect } from "react-redux";
 import { ISIOS } from "@src/utils/system";
 class ZnlHeader extends Component {
   render() {
@@ -15,6 +16,7 @@ class ZnlHeader extends Component {
       renderLeft,
       renderCenter,
       renderRight,
+      HeaderHeight,
     } = this.props;
 
     const Left = hideLeft ? null : renderLeft ? (
@@ -38,7 +40,15 @@ class ZnlHeader extends Component {
     const RightEle = renderRight && renderRight();
 
     return (
-      <View style={[styles.Header, style]}>
+      <View
+        style={[
+          styles.Header,
+          style,
+          {
+            height: HeaderHeight,
+          },
+        ]}
+      >
         {Left}
         {CenEle}
         {RightEle}
@@ -65,10 +75,8 @@ ZnlHeader.defaultProps = {
 const styles = StyleSheet.create({
   Header: {
     paddingTop: ISIOS ? 20 : 0,
-    height: ISIOS ? 64 : 44,
-    lineHeight: ISIOS ? 64 : 44,
+    // height: ISIOS ? 64 : 44,
     backgroundColor: "rgba(248,248,248,0.82)",
-    flexDirection: "row",
     paddingLeft: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -89,4 +97,30 @@ const styles = StyleSheet.create({
   },
   icon: {},
 });
-export default ZnlHeader;
+
+const mapStateToProps = (state, props) => {
+  return Object.assign(
+    {},
+    {
+      HeaderHeight: state.HeaderHeight,
+    },
+    props
+  );
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    SetHeaderHeight: HeaderHeight => {
+      return dispatch({
+        type: "SetHeaderHeight",
+        HeaderHeight,
+      });
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ZnlHeader);
+
+// export default ZnlHeader;
