@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
+import DeviceInfo from "react-native-device-info";
 // import { StatusBar } from "react-native";
 import { connect } from "react-redux";
 import { ISIOS } from "@src/utils/system";
+
 class ZnlHeader extends Component {
   render() {
     const {
@@ -74,8 +76,11 @@ ZnlHeader.defaultProps = {
 
 const styles = StyleSheet.create({
   Header: {
-    paddingTop: ISIOS ? 20 : 0,
-    // height: ISIOS ? 64 : 44,
+    paddingTop: ISIOS
+      ? DeviceInfo.getDeviceName() === "iPhone X"
+        ? 44
+        : 20
+      : 0,
     backgroundColor: "rgba(248,248,248,0.82)",
     paddingLeft: 10,
     flexDirection: "row",

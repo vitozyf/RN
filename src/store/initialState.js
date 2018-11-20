@@ -8,6 +8,7 @@
 //   HomeUserAuthors: any,
 // };
 import { ISIOS } from "@src/utils/system";
+import DeviceInfo from "react-native-device-info";
 
 // 统一声明默认State
 export default {
@@ -28,7 +29,11 @@ export default {
     HomeUserAuthors: {},
   },
   IsTabBarShow: false, // 是否隐藏tabbar
-  HeaderHeight: ISIOS ? 64 : 44,
+  HeaderHeight: ISIOS
+    ? DeviceInfo.getDeviceName() === "iPhone X"
+      ? 88
+      : 64
+    : 44,
   StatusBarStyle: "light-content", // 状态栏
   SearchRecord: [], // 本地搜索记录
   // 搜索页信息

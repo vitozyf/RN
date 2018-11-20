@@ -10,15 +10,17 @@ const BackTop = {
     const { onPress } = params ? params : {};
     const SiblingEle = (
       <View style={styles.maskStyle}>
-        <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
-          <Text>
-            <MaterialCommunityIcons
-              name={"arrow-collapse-up"}
-              size={30}
-              color={"#666"}
-              style={styles.MaterialCommunityIcons}
-            />
-          </Text>
+        <TouchableOpacity
+          onPress={onPress}
+          activeOpacity={0.9}
+          style={styles.box}
+        >
+          <MaterialCommunityIcons
+            name={"arrow-collapse-up"}
+            size={30}
+            color={"#666"}
+            style={styles.MaterialCommunityIcons}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -47,6 +49,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: "#999",
+  },
+  box: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   MaterialCommunityIcons: {
     paddingTop: 2,
