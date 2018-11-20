@@ -38,7 +38,7 @@ class Stocks extends Component<Props> {
     let searchApi = { searchApi: true };
     let onlydata = { onlydata: false };
     let url = `getyunexttopstocks`;
-    Cloud.$post(url, serchData, { loading: true, ...searchApi, ...onlydata })
+    Cloud.$post(url, serchData, { loading: false, ...searchApi, ...onlydata })
       .then(data => {
         if (data) {
           let PageIndex: number;

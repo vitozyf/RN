@@ -38,7 +38,7 @@ class Yunext extends Component<Props> {
     let searchApi = { searchApi: false };
     let onlydata = { onlydata: true };
     let url = `appget/yunext`;
-    Cloud.$post(url, serchData, { loading: true, ...searchApi, ...onlydata })
+    Cloud.$post(url, serchData, { loading: false, ...searchApi, ...onlydata })
       .then(data => {
         if (data) {
           let PageIndex: number;

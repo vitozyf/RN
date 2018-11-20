@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, FlatList } from "react-native";
 import PropTypes from "prop-types";
 import { BackTop } from "@components";
 import { connect } from "react-redux";
-const ITEM_HEIGHT = 40; // list行高
+const ITEM_HEIGHT = 30; // list行高
 const HEADER_HEIGHT = 50; // 头部高
 import { ISIOS } from "@src/utils/system";
 
@@ -78,7 +78,13 @@ class ListRow extends PureComponent {
           </View>
 
           <View style={styles.FlatListRowTopConteneBox}>
-            <Text style={[styles.TextRed, styles.TextCommon]}>
+            <Text
+              style={[
+                styles.TextRed,
+                styles.TextCommon,
+                styles.TextCommonBottom,
+              ]}
+            >
               <Text>({ComputedData.QuotedPhrase}) </Text>
               <Text>{value.QuantityPhrase} </Text>
               <Text style={styles.TextMain}>{ComputedData.UnitPriceText}</Text>
@@ -86,10 +92,12 @@ class ListRow extends PureComponent {
           </View>
         </View>
         <View style={styles.FlatListRowBottom}>
-          <Text style={[styles.TextCommon]}>
+          <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
             {value.Brand} | {value.Package} | {value.MakeAges}
           </Text>
-          <Text style={[styles.TextCommon]}>{value.SupplierName}</Text>
+          <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
+            {value.SupplierName}
+          </Text>
         </View>
       </View>
     );
@@ -277,7 +285,10 @@ const styles = StyleSheet.create({
   },
   TextCommon: {
     lineHeight: ITEM_HEIGHT,
-    fontSize: 16,
+    fontSize: 15,
+  },
+  TextCommonBottom: {
+    fontSize: 13,
   },
   FlatListRowTop: {
     flexDirection: "row",
