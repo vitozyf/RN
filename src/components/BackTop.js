@@ -7,6 +7,7 @@ let sibling = undefined;
 
 const BackTop = {
   show: params => {
+    sibling && sibling.destroy();
     const { onPress } = params ? params : {};
     const SiblingEle = (
       <View style={styles.maskStyle}>

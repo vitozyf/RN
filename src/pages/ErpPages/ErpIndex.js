@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Feather from "react-native-vector-icons/Feather";
-// import Icon from '@components/Iconfont/CloudIcon'
+// import Icon from "@components/Iconfont/CloudIcon";
 
 import { HeaderTitle, HeaderRight } from "@components";
 class HeaderLeft extends Component {
@@ -71,7 +70,8 @@ class ErpIndex extends Component {
             style={styles.titleicon}
             source={require("./img/list-into-wh_ic.png")}
           />
-          {/* <Text style={{fontFamily:'iconfont', fontSize: 20}}>&#xe6ee;</Text> */}
+          {/* <Text style={{ fontFamily: "iconfont", fontSize: 20 }}>&#xe75e;</Text>
+          <Icon style={styles.icon} name="true" size={20} /> */}
 
           <Text style={styles.title}>入库</Text>
           <AntDesign style={styles.icon} name="right" size={20} />

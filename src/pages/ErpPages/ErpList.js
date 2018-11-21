@@ -17,8 +17,8 @@ import FilterScreen from "./FilterScreen";
 import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import { ISIOS } from "@src/utils/system";
+import Icon from "@components/Iconfont/CloudIcon";
 
-const ITEM_HEIGHT = 30; // list行高
 class ListRow extends PureComponent {
   render() {
     const { value, name } = this.props;
@@ -50,19 +50,43 @@ class ListRow extends PureComponent {
         {/* center */}
         <View style={[styles.FlatListRowTBody, styles.ViewHeight]}>
           <View style={styles.FlatListRowBodyLeft}>
-            <Text style={styles.TextCommon}>{value.Brand}</Text>
+            <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
+              {value.Brand}
+            </Text>
             {value.Brand ? (
-              <Text style={[styles.line, styles.TextCommon]}>|</Text>
+              <Text
+                style={[
+                  styles.line,
+                  styles.TextCommon,
+                  styles.TextCommonCenter,
+                ]}
+              >
+                |
+              </Text>
             ) : null}
-            <Text style={styles.TextCommon}>{value.Packaging}</Text>
+            <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
+              {value.Packaging}
+            </Text>
             {value.Packaging ? (
-              <Text style={[styles.line, styles.TextCommon]}>|</Text>
+              <Text
+                style={[
+                  styles.line,
+                  styles.TextCommon,
+                  styles.TextCommonCenter,
+                ]}
+              >
+                |
+              </Text>
             ) : null}
-            <Text style={styles.TextCommon}>{value.MakeYear}</Text>
+            <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
+              {value.MakeYear}
+            </Text>
           </View>
 
           <View>
-            <Text style={styles.TextCommon}>¥{value.BuyPrice}</Text>
+            <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
+              ¥{value.BuyPrice}
+            </Text>
           </View>
         </View>
       </View>
@@ -93,17 +117,35 @@ class ListRow extends PureComponent {
     const OtherView = (
       <View style={[styles.FlatListRow, styles.ViewHeight]}>
         <View style={styles.FlatListRowTitle}>
-          <Text style={[styles.FlatListRowModel, styles.TextCommon]}>
+          <Text
+            style={[
+              styles.FlatListRowModel,
+              styles.TextCommon,
+              styles.TextCommonBottom,
+            ]}
+          >
             {value.Model}
           </Text>
           <View style={styles.FlatListRowRightBox}>
             <View style={styles.FlatListRowInvTypeBox}>
               {typeof value[PriceKey] !== "undefined" && (
-                <Text style={[styles.FlatListRowInvQtyIcon, styles.TextCommon]}>
+                <Text
+                  style={[
+                    styles.FlatListRowInvQtyIcon,
+                    styles.TextCommon,
+                    styles.TextCommonBottom,
+                  ]}
+                >
                   ¥
                 </Text>
               )}
-              <Text style={[styles.FlatListRowInvQty, styles.TextCommon]}>
+              <Text
+                style={[
+                  styles.FlatListRowInvQty,
+                  styles.TextCommon,
+                  styles.TextCommonBottom,
+                ]}
+              >
                 {value[PriceKey]}
               </Text>
             </View>
@@ -112,11 +154,25 @@ class ListRow extends PureComponent {
 
         <View style={styles.FlatListRowTBody}>
           <View style={styles.FlatListRowBodyLeft}>
-            <Text style={styles.TextCommon}>{value.Brand}</Text>
-            <Text style={[styles.line, styles.TextCommon]}>|</Text>
-            <Text style={styles.TextCommon}>{value.Packaging}</Text>
-            <Text style={[styles.line, styles.TextCommon]}>|</Text>
-            <Text style={styles.TextCommon}>{value.MakeYear}</Text>
+            <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
+              {value.Brand}
+            </Text>
+            <Text
+              style={[styles.line, styles.TextCommon, styles.TextCommonBottom]}
+            >
+              |
+            </Text>
+            <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
+              {value.Packaging}
+            </Text>
+            <Text
+              style={[styles.line, styles.TextCommon, styles.TextCommonBottom]}
+            >
+              |
+            </Text>
+            <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
+              {value.MakeYear}
+            </Text>
           </View>
 
           <View style={styles.FlatListRowInvTypeBox}>
@@ -156,14 +212,14 @@ class SerchList extends PureComponent {
       InvQty: "", // 数量条件 InvQty ASC， InvQty DESC
       UpdatedTime: "", // 更新时间条件 UpdatedTime ASC， UpdatedTime DESC
       PageIndex: 1,
-      PageSize: 20,
+      PageSize: 50,
       TotalCount: 0,
       TotalPage: 0,
       DataOver: false, // 无更多数据
       loading: false,
       isFilterScreenShow: false, // 显示筛选条件
       StkWarehouse: [], // 仓库地址
-      // FieldWhereString: "", // 筛选条件
+      FieldWhereString: "", // 筛选条件
       Model: "",
       FieldWhereParams: {}, // 筛选条件对象
     };
@@ -278,7 +334,7 @@ class SerchList extends PureComponent {
 
   // 渲染综合排序
   _renderComprehensiveRanking = () => {
-    const { showComprehensiveRanking } = this.state;
+    const { showComprehensiveRanking, MakeYear } = this.state;
     return (
       <Modal
         isVisible={showComprehensiveRanking}
@@ -301,10 +357,23 @@ class SerchList extends PureComponent {
               this.onSearch({ MakeYear: "" });
             }}
           >
-            <Text style={styles.ComprehensiveRankingText}>综合排序</Text>
-            <Text style={{ fontFamily: "iconfont", fontSize: 20 }}>
-              &#xe6ee;
+            <Text
+              style={[
+                styles.ComprehensiveRankingText,
+                MakeYear === "" ? styles.colorMain : null,
+              ]}
+            >
+              综合排序
             </Text>
+            {MakeYear === "" && (
+              <Text>
+                <Icon
+                  style={[styles.icon, styles.colorMain]}
+                  name="true"
+                  size={16}
+                />
+              </Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.ComprehensiveRankingRow}
@@ -313,7 +382,23 @@ class SerchList extends PureComponent {
               this.onSearch({ MakeYear: "MakeYear ASC" });
             }}
           >
-            <Text style={styles.ComprehensiveRankingText}>批号由近到远</Text>
+            <Text
+              style={[
+                styles.ComprehensiveRankingText,
+                MakeYear === "MakeYear ASC" ? styles.colorMain : null,
+              ]}
+            >
+              批号由近到远
+            </Text>
+            {MakeYear === "MakeYear ASC" && (
+              <Text>
+                <Icon
+                  style={[styles.icon, styles.colorMain]}
+                  name="true"
+                  size={16}
+                />
+              </Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.ComprehensiveRankingRow}
@@ -322,7 +407,23 @@ class SerchList extends PureComponent {
               this.onSearch({ MakeYear: "MakeYear DESC" });
             }}
           >
-            <Text style={styles.ComprehensiveRankingText}>批号由远到近</Text>
+            <Text
+              style={[
+                styles.ComprehensiveRankingText,
+                MakeYear === "MakeYear DESC" ? styles.colorMain : null,
+              ]}
+            >
+              批号由远到近
+            </Text>
+            {MakeYear === "MakeYear DESC" && (
+              <Text>
+                <Icon
+                  style={[styles.icon, styles.colorMain]}
+                  name="true"
+                  size={16}
+                />
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
       </Modal>
@@ -427,48 +528,142 @@ class SerchList extends PureComponent {
               this.setState({ Model: value });
             }}
             onSubmitEditing={() => this.getDatas(this.state.name)}
-            placeholder="请输入关键字进行搜索"
+            placeholder="型号"
             renderLeft={inputRenderLeft}
             renderRight={renderRight}
           />
         </View>
         <View style={styles.SerchListTitleHeader}>
-          <Text
-            style={[styles.SerchTitleBlock, MakeYear ? styles.colorMain : null]}
-            onPress={() => {
-              this.showComprehensiveRankingHandler(!showComprehensiveRanking);
-            }}
-          >
-            综合排序
-          </Text>
-          <Text
-            style={[styles.SerchTitleBlock, InvQty ? styles.colorMain : null]}
-            onPress={this.qtyHandler}
-          >
-            数量
-          </Text>
-          <Text
+          <View
             style={[
-              styles.SerchTitleBlock,
-              UpdatedTime ? styles.colorMain : null,
+              styles.SerchListTitleHeaderView,
+              { width: 110, flex: null },
             ]}
-            onPress={this.createdTimeHandler}
           >
-            {TimeTitle}
-          </Text>
-          <Text
+            <Text
+              style={[
+                styles.SerchTitleBlock,
+                MakeYear ? styles.colorMain : null,
+              ]}
+              onPress={() => {
+                this.showComprehensiveRankingHandler(!showComprehensiveRanking);
+              }}
+            >
+              综合排序
+            </Text>
+            <View style={styles.iconBox}>
+              <Icon
+                style={[
+                  styles.icon,
+                  MakeYear === "MakeYear ASC" ? styles.colorMain : null,
+                  styles.iconTop,
+                ]}
+                name="arrow_up"
+                size={20}
+              />
+              <Icon
+                style={[
+                  styles.icon,
+                  MakeYear === "MakeYear DESC" ? styles.colorMain : null,
+                  styles.iconBottom,
+                ]}
+                name="arrow_down"
+                size={20}
+              />
+            </View>
+          </View>
+          <View style={styles.SerchListTitleHeaderView}>
+            <Text
+              style={[styles.SerchTitleBlock, InvQty ? styles.colorMain : null]}
+              onPress={this.qtyHandler}
+            >
+              数量
+            </Text>
+            <View style={styles.iconBox}>
+              <Icon
+                style={[
+                  styles.icon,
+                  InvQty.indexOf("ASC") > -1 ? styles.colorMain : null,
+                  styles.iconTop,
+                ]}
+                name="arrow_up"
+                size={20}
+              />
+              <Icon
+                style={[
+                  styles.icon,
+                  InvQty.indexOf("DESC") > -1 ? styles.colorMain : null,
+                  styles.iconBottom,
+                ]}
+                name="arrow_down"
+                size={20}
+              />
+            </View>
+          </View>
+          <View
             style={[
-              styles.SerchTitleBlock,
-              FieldWhereString && FieldWhereString !== "{}"
-                ? styles.colorMain
-                : null,
+              styles.SerchListTitleHeaderView,
+              { width: 110, flex: null },
             ]}
-            onPress={() => {
-              this.setState({ isFilterScreenShow: true });
-            }}
           >
-            筛选
-          </Text>
+            <Text
+              style={[
+                styles.SerchTitleBlock,
+                UpdatedTime ? styles.colorMain : null,
+              ]}
+              onPress={this.createdTimeHandler}
+            >
+              {TimeTitle}
+            </Text>
+            <View style={styles.iconBox}>
+              <Icon
+                style={[
+                  styles.icon,
+                  UpdatedTime.indexOf("ASC") > -1 ? styles.colorMain : null,
+                  styles.iconTop,
+                ]}
+                name="arrow_up"
+                size={20}
+              />
+              <Icon
+                style={[
+                  styles.icon,
+                  UpdatedTime.indexOf("DESC") > -1 ? styles.colorMain : null,
+                  styles.iconBottom,
+                ]}
+                name="arrow_down"
+                size={20}
+              />
+            </View>
+          </View>
+          <View style={styles.SerchListTitleHeaderView}>
+            <Text
+              style={[
+                styles.SerchTitleBlock,
+                FieldWhereString && FieldWhereString !== "{}"
+                  ? styles.colorMain
+                  : null,
+              ]}
+              onPress={() => {
+                this.setState({ isFilterScreenShow: true });
+              }}
+            >
+              筛选
+            </Text>
+            <View style={styles.iconBox}>
+              <Icon
+                style={[
+                  styles.icon,
+                  FieldWhereString && FieldWhereString !== "{}"
+                    ? styles.colorMain
+                    : null,
+                  { marginLeft: -4 },
+                ]}
+                name="filter_o"
+                size={20}
+              />
+            </View>
+          </View>
         </View>
         {this._renderComprehensiveRanking()}
       </View>
@@ -595,6 +790,9 @@ class SerchList extends PureComponent {
       }
     }
     const FieldWhereString = `{${fieldArray.join(",")}}`;
+    this.setState({
+      FieldWhereString,
+    });
 
     Cloud.$post(
       `${name}/Search`,
@@ -623,8 +821,14 @@ class SerchList extends PureComponent {
               TotalPage: data.TotalPage,
             },
             () => {
-              // 当前请求页为最后一页时设置DataOver为true
-              if (data.PageIndex >= this.state.TotalPage) {
+              // 当前请求页为最后一页且无筛选条件时设置DataOver为true
+              if (
+                data.PageIndex >= this.state.TotalPage &&
+                MakeYear === "" &&
+                InvQty === "" &&
+                UpdatedTime === "" &&
+                FieldWhereString === ""
+              ) {
                 this.setState({
                   DataOver: true,
                 });
@@ -650,7 +854,8 @@ class SerchList extends PureComponent {
     });
   }
   render() {
-    const { refreshing, selected, datas } = this.state;
+    const { refreshing, selected, datas, name } = this.state;
+    const LINE_HEIGHT = name === "StkStock" ? 48 : 70;
     return (
       <View style={[styles.SerchList]}>
         {this._renderHeader()}
@@ -660,8 +865,8 @@ class SerchList extends PureComponent {
           ref={ref => (this.flatList = ref)}
           keyExtractor={this._keyExtractor}
           getItemLayout={(data, index) => ({
-            length: ITEM_HEIGHT,
-            offset: (ITEM_HEIGHT + 1) * index,
+            length: LINE_HEIGHT,
+            offset: (LINE_HEIGHT + 1) * index,
             index,
           })}
           renderItem={this._renderItem}
@@ -713,15 +918,38 @@ const styles = StyleSheet.create({
     color: "#ee7700",
   },
   TextCommon: {
-    lineHeight: ITEM_HEIGHT,
+    lineHeight: 26,
+  },
+  TextCommonCenter: {
+    lineHeight: 22,
+  },
+  TextCommonBottom: {
+    lineHeight: 22,
   },
   // 组件
   SerchList: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  ViewHeight: {
-    height: ITEM_HEIGHT,
+  ViewHeight: {},
+  iconBox: {
+    width: 12,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginLeft: 3,
+  },
+  icon: {},
+  iconTop: {
+    position: "absolute",
+    right: 0,
+    top: -14,
+    fontWeight: "bold",
+  },
+  iconBottom: {
+    position: "absolute",
+    right: 0,
+    bottom: -14,
+    fontWeight: "bold",
   },
   // header
   SerchListTitle: {
@@ -739,10 +967,17 @@ const styles = StyleSheet.create({
   SerchListTitleHeader: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     height: 40,
     backgroundColor: "#f5f5f5",
     borderTopWidth: 1,
     borderColor: "#ccc",
+  },
+  SerchListTitleHeaderView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
   lineBox: {
     flexDirection: "row",
@@ -774,8 +1009,8 @@ const styles = StyleSheet.create({
     height: 30,
   },
   SerchTitleBlock: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 10,
+    // paddingRight: -10,
     fontSize: 16,
   },
   // 分割组件
@@ -862,6 +1097,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   ComprehensiveRankingText: {},
 });
