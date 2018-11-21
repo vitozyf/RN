@@ -185,7 +185,11 @@ class Login extends Component<Props, Stateå> {
             登录
           </ZnlButton>
 
-          <ZnlButton style={styles.ButtonReg} onPress={this.ToRegister}>
+          <ZnlButton
+            type="light"
+            style={styles.ButtonReg}
+            onPress={this.ToRegister}
+          >
             注册
           </ZnlButton>
         </View>
@@ -203,6 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10,
+    paddingTop: 10,
   },
   Body: {
     paddingTop: 20,
@@ -215,7 +220,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleText: {
-    fontSize: 28,
+    fontSize: 24,
   },
   otherLoginTitle: {
     fontSize: 16,
@@ -226,6 +231,8 @@ const styles = StyleSheet.create({
   },
   znlInputBox: {
     // width: 360
+    borderWidth: 0,
+    borderBottomWidth: 1,
   },
   Input: {
     borderWidth: 0,
@@ -236,10 +243,12 @@ const styles = StyleSheet.create({
   Button: {
     width: "100%",
     height: 48,
+    borderRadius: 2,
   },
   ButtonReg: {
     width: "100%",
     height: 48,
+    borderRadius: 2,
     marginTop: 20,
   },
 
