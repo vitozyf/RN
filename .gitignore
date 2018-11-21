@@ -60,3 +60,4 @@ src/utils/config.js
 *.log
 
 transfont/
+ios/bundle/
