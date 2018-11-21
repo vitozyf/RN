@@ -7,6 +7,7 @@ import SeatchResScreen from "@pages/SearchPages/SeatchRes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
+import { Image } from "react-native";
 
 const IndexPages = createStackNavigator(
   {
@@ -52,13 +53,11 @@ const Index = class Index extends Component<Props> {
       title: "BOM.AI",
       activeTintColor: "#ee7700",
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        return (
-          <Ionicons
-            name={"md-home"}
-            size={20}
-            color={focused ? "#ee7700" : "#333"}
-          />
-        );
+        console.log(111, focused);
+        const Icon = focused
+          ? require("./assets/img/tab_bomai_p.png")
+          : require("./assets/img/tab_bomai_n.png");
+        return <Image source={Icon} />;
       },
     };
   };

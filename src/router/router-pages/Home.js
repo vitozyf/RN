@@ -12,6 +12,9 @@ import ErpScreen from "@pages/Erp";
 // tab导航
 const navigationOptions = {
   activeTintColor: "#ee7700",
+  style: {
+    height: 50,
+  },
 };
 
 const TabNav = createBottomTabNavigator(

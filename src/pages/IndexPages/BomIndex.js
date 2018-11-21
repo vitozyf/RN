@@ -1,6 +1,13 @@
 /* @flow */
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import { connect } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { HeaderTitle, HeaderRight } from "@components";
@@ -73,14 +80,23 @@ class Bom extends Component<BonProps> {
     return (
       <View style={styles.container}>
         <View style={styles.ImgBox}>
-          <Image
+          {/* <Image
             style={styles.HomeLogo}
             source={{
               uri:
                 "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/eBPk33_1539748592007.png",
               cache: "force-cache",
             }}
-          />
+          /> */}
+          <ImageBackground
+            source={require("./img/bg_texture.png")}
+            style={styles.ImageBackground}
+          >
+            <Image
+              source={require("./img/bomai_logo.png")}
+              style={styles.HomeLogo}
+            />
+          </ImageBackground>
         </View>
         <TouchableOpacity
           style={styles.SearchBox}
@@ -118,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
-    paddingBottom: 50,
+    paddingBottom: 100,
   },
   headerLeftImg: {
     width: 40,
@@ -129,12 +145,19 @@ const styles = StyleSheet.create({
   ImgBox: {
     justifyContent: "flex-end",
     alignItems: "center",
-    height: 40,
-    paddingBottom: 30,
+    // height: 40,
+    // paddingBottom: 30,
+  },
+  ImageBackground: {
+    width: 320,
+    height: 105,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   HomeLogo: {
-    width: 264,
-    height: 48,
+    position: "absolute",
+    bottom: 10,
   },
   SearchBox: {
     paddingLeft: 40,

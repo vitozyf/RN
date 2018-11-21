@@ -137,9 +137,9 @@ const styles = StyleSheet.create({
     color: "#ED9E00",
   },
   buttonLightDisabled: {
-    backgroundColor: "#FFE4D0",
+    backgroundColor: "rgba(238, 119, 0, 0.5)",
   },
   textLightDisabled: {
-    color: "#ED9E00",
+    color: "#fff",
   },
 });

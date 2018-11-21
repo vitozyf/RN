@@ -5,6 +5,7 @@ import ErpList from "@pages/ErpPages/ErpList";
 import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
+import { Image } from "react-native";
 
 const IndexPages = createStackNavigator(
   {
@@ -42,13 +43,10 @@ class Index extends Component {
       title: "ERP",
       activeTintColor: "#ee7700",
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        return (
-          <Entypo
-            name={"icloud"}
-            size={20}
-            color={focused ? "#ee7700" : "#333"}
-          />
-        );
+        const Icon = focused
+          ? require("./assets/img/tab_erp_ic_p.png")
+          : require("./assets/img/tab_erp_ic_n.png");
+        return <Image source={Icon} />;
       },
     };
   };

@@ -119,6 +119,9 @@ class Register extends Component {
     return (
       <KeyboardAwareScrollView style={styles.Page}>
         <View style={styles.Page}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>注册账号</Text>
+          </View>
           <View style={styles.Body}>
             <View>
               <View style={styles.InputBox}>
@@ -226,6 +229,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10,
+    paddingTop: 20,
+  },
+  title: {
+    paddingBottom: 20,
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  titleText: {
+    fontSize: 24,
   },
   Body: {
     paddingTop: 20,
@@ -239,7 +253,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   Input: {
-    // borderWidth: 0,
+    borderWidth: 0,
+    borderBottomWidth: 1,
   },
   inputIn: {
     // borderWidth: 0,
@@ -247,15 +262,15 @@ const styles = StyleSheet.create({
     // borderColor: '#ccc',
   },
   InputMessage: {
-    // borderWidth: 0,
-    // borderBottomWidth: 1,
+    borderWidth: 0,
+    borderBottomWidth: 1,
     // borderColor: '#ccc',
     // width: 200,
     flex: 1,
   },
   ButtonMessage: {
-    height: 32,
-    borderRadius: 10,
+    height: 40,
+    borderRadius: 2,
     width: 120,
     backgroundColor: "#fff",
     borderWidth: 1,
@@ -270,6 +285,7 @@ const styles = StyleSheet.create({
   Button: {
     width: "100%",
     height: 48,
+    borderRadius: 2,
   },
   iconbox: {
     marginLeft: 5,
