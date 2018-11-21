@@ -45,17 +45,20 @@ class ListRow extends PureComponent {
       default:
         break;
     }
-    // 数据区分
+    // 数据、样式区分
     let ComputedData = {};
+    let ActiveStyle = {};
     switch (ActiveTab) {
       case "yunext":
         ComputedData.UnitPriceText = value.UnitPriceText; // 价格
         ComputedData.QuotedPhrase = value.QuotedPhrase; // 发布时间
         StockTypeTextEle = null;
+        ActiveStyle = styles.yunextTitle;
         break;
       case "getyunexttopstocks":
         ComputedData.UnitPriceText = value.Properties;
         ComputedData.QuotedPhrase = value.PDatePhrase;
+        ActiveStyle = styles.stocksTitle;
         break;
       default:
         break;
@@ -63,13 +66,15 @@ class ListRow extends PureComponent {
 
     return (
       <View style={styles.FlatListRow}>
-        <View style={styles.FlatListRowTop}>
+        {/* top */}
+        <View style={[styles.FlatListRowTop]}>
           <View style={styles.FlatListRowTopTitleBox}>
             <Text
               style={[
                 styles.TextRed,
                 styles.TextCommon,
                 styles.FlatListRowTopTitle,
+                ActiveStyle,
               ]}
             >
               <Text>{value.PartNo}&nbsp;</Text>
@@ -85,13 +90,18 @@ class ListRow extends PureComponent {
                 styles.TextCommonBottom,
               ]}
             >
-              <Text>({ComputedData.QuotedPhrase}) </Text>
+              {ComputedData.QuotedPhrase && (
+                <Text style={styles.TextColor333}>
+                  ({ComputedData.QuotedPhrase}){" "}
+                </Text>
+              )}
               <Text>{value.QuantityPhrase} </Text>
               <Text style={styles.TextMain}>{ComputedData.UnitPriceText}</Text>
             </Text>
           </View>
         </View>
-        <View style={styles.FlatListRowBottom}>
+        {/* bottom */}
+        <View style={[styles.FlatListRowBottom, styles.ViewHeight]}>
           <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
             {value.Brand} | {value.Package} | {value.MakeAges}
           </Text>
@@ -282,6 +292,11 @@ const styles = StyleSheet.create({
   FlatListRow: {
     // borderBottomWidth: 1,
     // borderColor: '#E6E6E6'
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  ViewHeight: {
+    height: ITEM_HEIGHT,
   },
   TextCommon: {
     lineHeight: ITEM_HEIGHT,
@@ -289,6 +304,10 @@ const styles = StyleSheet.create({
   },
   TextCommonBottom: {
     fontSize: 13,
+  },
+  yunextTitle: {},
+  stocksTitle: {
+    color: "#000",
   },
   FlatListRowTop: {
     flexDirection: "row",
@@ -315,6 +334,9 @@ const styles = StyleSheet.create({
   TextRed: {
     color: "red",
   },
+  TextColor333: {
+    color: "#333",
+  },
   TextMain: {
     color: "#EF7609",
   },
@@ -330,7 +352,7 @@ const styles = StyleSheet.create({
     // width: 80,
   },
   StockTypeCommon: {
-    fontSize: 14,
+    fontSize: 12,
     // lineHeight: 20,
     paddingLeft: 2,
     paddingRight: 2,

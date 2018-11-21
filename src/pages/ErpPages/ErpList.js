@@ -14,17 +14,22 @@ import Modal from "react-native-modal";
 import FilterScreen from "./FilterScreen";
 import { connect } from "react-redux";
 
-const ITEM_HEIGHT = 40; // list行高
+const ITEM_HEIGHT = 30; // list行高
 class ListRow extends PureComponent {
   render() {
     const { value, name } = this.props;
     const StkStockView = (
       <View style={styles.FlatListRow}>
-        <View style={styles.FlatListRowTitle}>
-          <Text style={styles.FlatListRowModel}>{value.Model}</Text>
+        {/* top */}
+        <View style={[styles.FlatListRowTitle, styles.ViewHeight]}>
+          <Text style={[styles.FlatListRowModel, styles.TextCommon]}>
+            {value.Model}
+          </Text>
           <View style={styles.FlatListRowRightBox}>
             <View>
-              <Text style={styles.FlatListRowInvType}>{value.InvType}</Text>
+              <Text style={[styles.FlatListRowInvType, styles.TextCommon]}>
+                {value.InvType}
+              </Text>
             </View>
             <View style={styles.FlatListRowInvTypeBox}>
               <Feather
@@ -32,22 +37,28 @@ class ListRow extends PureComponent {
                 name="database"
                 style={styles.FlatListRowInvQtyIcon}
               />
-              <Text style={styles.FlatListRowInvQty}>{value.InvQty}</Text>
+              <Text style={[styles.FlatListRowInvQty, styles.TextCommon]}>
+                {value.InvQty}
+              </Text>
             </View>
           </View>
         </View>
-
-        <View style={styles.FlatListRowTBody}>
+        {/* center */}
+        <View style={[styles.FlatListRowTBody, styles.ViewHeight]}>
           <View style={styles.FlatListRowBodyLeft}>
-            <Text>{value.Brand}</Text>
-            <Text style={styles.line}>|</Text>
-            <Text>{value.Packaging}</Text>
-            <Text style={styles.line}>|</Text>
-            <Text>{value.MakeYear}</Text>
+            <Text style={styles.TextCommon}>{value.Brand}</Text>
+            {value.Brand ? (
+              <Text style={[styles.line, styles.TextCommon]}>|</Text>
+            ) : null}
+            <Text style={styles.TextCommon}>{value.Packaging}</Text>
+            {value.Packaging ? (
+              <Text style={[styles.line, styles.TextCommon]}>|</Text>
+            ) : null}
+            <Text style={styles.TextCommon}>{value.MakeYear}</Text>
           </View>
 
           <View>
-            <Text>¥{value.BuyPrice}</Text>
+            <Text style={styles.TextCommon}>¥{value.BuyPrice}</Text>
           </View>
         </View>
       </View>
@@ -74,40 +85,51 @@ class ListRow extends PureComponent {
       default:
         break;
     }
+    // bottom
     const OtherView = (
-      <View style={styles.FlatListRow}>
+      <View style={[styles.FlatListRow, styles.ViewHeight]}>
         <View style={styles.FlatListRowTitle}>
-          <Text style={styles.FlatListRowModel}>{value.Model}</Text>
+          <Text style={[styles.FlatListRowModel, styles.TextCommon]}>
+            {value.Model}
+          </Text>
           <View style={styles.FlatListRowRightBox}>
             <View style={styles.FlatListRowInvTypeBox}>
-              <Text style={styles.FlatListRowInvQtyIcon}>¥</Text>
-              <Text style={styles.FlatListRowInvQty}>{value[PriceKey]}</Text>
+              {typeof value[PriceKey] !== "undefined" && (
+                <Text style={[styles.FlatListRowInvQtyIcon, styles.TextCommon]}>
+                  ¥
+                </Text>
+              )}
+              <Text style={[styles.FlatListRowInvQty, styles.TextCommon]}>
+                {value[PriceKey]}
+              </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.FlatListRowTBody}>
           <View style={styles.FlatListRowBodyLeft}>
-            <Text>{value.Brand}</Text>
-            <Text style={styles.line}>|</Text>
-            <Text>{value.Packaging}</Text>
-            <Text style={styles.line}>|</Text>
-            <Text>{value.MakeYear}</Text>
+            <Text style={styles.TextCommon}>{value.Brand}</Text>
+            <Text style={[styles.line, styles.TextCommon]}>|</Text>
+            <Text style={styles.TextCommon}>{value.Packaging}</Text>
+            <Text style={[styles.line, styles.TextCommon]}>|</Text>
+            <Text style={styles.TextCommon}>{value.MakeYear}</Text>
           </View>
 
           <View style={styles.FlatListRowInvTypeBox}>
             <Feather size={14} name="database" />
-            <Text>{value.Qty}</Text>
+            <Text style={styles.TextCommon}>{value.Qty}</Text>
           </View>
         </View>
 
         <View style={styles.FlatListRowTBody}>
           <View style={styles.FlatListRowBodyLeft}>
-            <Text>{value[CompanyKey]}</Text>
+            <Text style={styles.TextCommon}>{value[CompanyKey]}</Text>
           </View>
 
           <View style={styles.FlatListRowInvTypeBox}>
-            <Text>{value[TimeKey] ? value[TimeKey].substr(0, 10) : null}</Text>
+            <Text style={styles.TextCommon}>
+              {value[TimeKey] ? value[TimeKey].substr(0, 10) : null}
+            </Text>
           </View>
         </View>
       </View>
@@ -517,7 +539,7 @@ class SerchList extends PureComponent {
         PageSize,
         isZero: true,
       },
-      { erpApi: true, loading: true }
+      { erpApi: true, loading: PageIndex === 1 }
     )
       .then(data => {
         this.setState({
@@ -624,10 +646,16 @@ const styles = StyleSheet.create({
   colorMain: {
     color: "#ee7700",
   },
+  TextCommon: {
+    lineHeight: ITEM_HEIGHT,
+  },
   // 组件
   SerchList: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  ViewHeight: {
+    height: ITEM_HEIGHT,
   },
   SerchListTitle: {
     flexDirection: "row",
@@ -648,8 +676,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#E6E6E6",
   },
   FlatListRow: {
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 8,
+    paddingRight: 8,
     // borderBottomWidth: 1,
     // borderColor: '#E6E6E6'
   },
@@ -657,10 +685,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    height: 40,
   },
   FlatListRowModel: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
   },
   FlatListRowRightBox: {
@@ -673,8 +700,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   FlatListRowInvType: {
-    color: "#ee7700",
-    fontSize: 16,
+    // color: "#ee7700",
+    fontSize: 15,
   },
   FlatListRowInvQtyIcon: {
     color: "#ee7700",
@@ -682,14 +709,13 @@ const styles = StyleSheet.create({
   },
   FlatListRowInvQty: {
     color: "#ee7700",
-    fontSize: 16,
+    fontSize: 15,
   },
 
   FlatListRowTBody: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    height: 30,
   },
   FlatListRowBodyLeft: {
     flexDirection: "row",
@@ -699,15 +725,6 @@ const styles = StyleSheet.create({
   line: {
     paddingLeft: 5,
     paddingRight: 5,
-  },
-
-  footer: {
-    flexDirection: "row",
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 10,
-    // backgroundColor: 'red'
   },
   // 空数据
   EmptyView: {

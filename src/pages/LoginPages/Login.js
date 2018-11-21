@@ -44,7 +44,7 @@ class Login extends Component<Props, Stateå> {
     );
     return {
       headerLeft: HeaderLeft,
-      title: "登录",
+      title: "",
       headerRight: <HeaderRight />,
     };
   };
