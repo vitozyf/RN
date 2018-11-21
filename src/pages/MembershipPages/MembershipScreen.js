@@ -31,7 +31,6 @@ class MembershipScreen extends Component {
   };
   render() {
     const { UserIdentity } = this.props;
-    console.log(111, UserIdentity);
     let UserIdentityEle = [];
     for (const key in UserIdentity) {
       let titleClass = "textTitle4";
@@ -47,6 +46,9 @@ class MembershipScreen extends Component {
           break;
         case "优势推广":
           titleClass = "textTitle9";
+          break;
+        case "品牌替代":
+          titleClass = "textTitle7";
           break;
         case "Erp会员":
           titleClass = "textTitleErp";
@@ -113,8 +115,11 @@ const styles = StyleSheet.create({
     paddingLeft: 3,
     paddingRight: 3,
     borderRadius: 3,
-    width: 90,
+    width: 64,
+    borderRadius: 2,
+    lineHeight: 24,
     textAlign: "center",
+    fontSize: 14,
   },
   textTitle4: {
     backgroundColor: "#FF2200",
@@ -130,12 +135,17 @@ const styles = StyleSheet.create({
     borderColor: "#FF0000",
   },
   textTitle9: {
-    backgroundColor: "#009DD9",
-    borderColor: "#009DD9",
+    backgroundColor: "#00BEDB",
+    borderColor: "#00BEDB",
+  },
+  textTitle7: {
+    color: "#006DCC",
+    backgroundColor: "#CCE7FF",
+    borderColor: "#006DCC",
   },
   textTitleErp: {
-    backgroundColor: "#33CC99",
-    borderColor: "#33CC99",
+    backgroundColor: "#009DD9",
+    borderColor: "#009DD9",
   },
   textTrue: {
     color: "#09BB07",
@@ -150,7 +160,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    paddingBottom: 30,
+    paddingBottom: 50,
   },
   helpText: {
     color: "#576B95",

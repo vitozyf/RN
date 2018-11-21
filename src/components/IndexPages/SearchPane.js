@@ -21,9 +21,7 @@ class SearchPane extends Component {
             />
           )}
         </View>
-        <View>
-          <View style={styles.SearchPaneBody}>{children}</View>
-        </View>
+        <View style={styles.SearchPaneBody}>{children}</View>
       </View>
     );
   }
@@ -60,7 +58,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#007AFF'
   },
   SearchPaneBody: {
-    paddingTop: 0,
+    paddingTop: 5,
     paddingBottom: 0,
   },
 });

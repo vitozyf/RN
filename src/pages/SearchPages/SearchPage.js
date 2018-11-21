@@ -232,6 +232,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     borderWidth: 0,
     width: "auto",
+    fontSize: 14,
   },
   searchBoxTagText: {
     color: "#666",

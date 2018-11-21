@@ -53,7 +53,10 @@ class ErpIndex extends Component {
             this.toErpList("StkStock");
           }}
         >
-          <Feather style={styles.icon} name="box" size={20} />
+          <Image
+            style={styles.titleicon}
+            source={require("./img/list-wh_ic.png")}
+          />
           <Text style={styles.title}>库存</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
         </TouchableOpacity>
@@ -64,7 +67,10 @@ class ErpIndex extends Component {
             this.toErpList("StkInRecord");
           }}
         >
-          <Feather style={styles.icon} name="box" size={20} />
+          <Image
+            style={styles.titleicon}
+            source={require("./img/list-into-wh_ic.png")}
+          />
           {/* <Text style={{fontFamily:'iconfont', fontSize: 20}}>&#xe6ee;</Text> */}
 
           <Text style={styles.title}>入库</Text>
@@ -77,7 +83,10 @@ class ErpIndex extends Component {
             this.toErpList("StkOutByModel");
           }}
         >
-          <Feather style={styles.icon} name="box" size={20} />
+          <Image
+            style={styles.titleicon}
+            source={require("./img/list-go-out-wh_ic.png")}
+          />
           <Text style={styles.title}>出库</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
         </TouchableOpacity>
@@ -88,7 +97,10 @@ class ErpIndex extends Component {
             this.toErpList("StkInquireRecord");
           }}
         >
-          <Feather style={styles.icon} name="box" size={20} />
+          <Image
+            style={styles.titleicon}
+            source={require("./img/list-askprice_ic.png")}
+          />
           <Text style={styles.title}>询价</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
         </TouchableOpacity>
@@ -99,7 +111,10 @@ class ErpIndex extends Component {
             this.toErpList("HisofferpriceByModel");
           }}
         >
-          <Feather style={styles.icon} name="box" size={20} />
+          <Image
+            style={styles.titleicon}
+            source={require("./img/list-quote_ic.png")}
+          />
           <Text style={styles.title}>报价</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
         </TouchableOpacity>
@@ -140,7 +155,7 @@ const styles = StyleSheet.create({
   row: {
     borderBottomWidth: 1,
     borderColor: "#E6E6E6",
-    height: 50,
+    height: 44,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -149,8 +164,12 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 20,
+    fontSize: 15,
     // textAlign: 'left',
+  },
+  titleicon: {
+    marginLeft: 16,
+    marginRight: 8,
   },
   icon: {
     width: 50,

@@ -27,6 +27,7 @@ export default {
     UserIdentity: {},
     HomeUserInfo: {},
     HomeUserAuthors: {},
+    Sales: {},
   },
   IsTabBarShow: false, // 是否隐藏tabbar
   HeaderHeight: ISIOS

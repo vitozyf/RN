@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { DrawerItems, SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
@@ -19,17 +20,26 @@ const styles = StyleSheet.create({
     height: Height,
   },
   header: {
+    // flexDirection: "row",
+    // alignItems: "center",
+    height: 120,
+    borderBottomWidth: 1,
+    borderColor: "#f0f0f0",
+    // paddingRight: 10,
+  },
+  ImageBackground: {
+    width: "100%",
+    height: 112,
     flexDirection: "row",
     alignItems: "center",
-    height: 80,
-    paddingRight: 10,
   },
   headerLeftImg: {
     marginLeft: 10,
     marginRight: 10,
-    width: 50,
-    height: 50,
-    borderRadius: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 4,
+    marginTop: -20,
   },
   headerName: {},
   NickName: {
@@ -37,12 +47,63 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 5,
   },
-  UserIdentity: {
-    paddingLeft: 3,
-    paddingRight: 3,
+  // UserIdentity: {
+  //   paddingLeft: 3,
+  //   paddingRight: 3,
+  //   backgroundColor: "#048FE0",
+  //   color: "#fff",
+  //   borderRadius: 3,
+  // },
+  StockTypeBox: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: 230,
+    marginLeft: -5,
+  },
+  StockTypeCommon: {
+    fontSize: 12,
+    paddingLeft: 2,
+    paddingRight: 2,
+    borderWidth: 1,
+    textAlign: "center",
+    marginLeft: 5,
+    marginBottom: 5,
+    lineHeight: 16,
+  },
+  StockType4: {
+    color: "#fff",
+    backgroundColor: "#FF0000",
+    borderColor: "#FF0000",
+  },
+  StockType6: {
+    color: "#ff2200",
+    backgroundColor: "#fdf7a0",
+    borderColor: "#ffaa00",
+  },
+  StockType8: {
+    color: "#fff",
+    backgroundColor: "#ff6200",
+    borderColor: "#ff6200",
+  },
+  StockType9: {
+    color: "#FFF",
+    backgroundColor: "#00bedb",
+    borderColor: "#00bedb",
+  },
+  StockType7: {
+    color: "#006DCC",
+    backgroundColor: "#CCE7FF",
+    borderColor: "#006DCC",
+  },
+  StockTypeErp: {
     backgroundColor: "#048FE0",
     color: "#fff",
-    borderRadius: 3,
+    borderColor: "#048FE0",
+  },
+  StockTypeDis: {
+    backgroundColor: "#ccc",
+    color: "#666",
+    borderColor: "#ccc",
   },
   ioscontainer: {
     // height: '100%'
@@ -108,18 +169,41 @@ class MyScrollView extends Component {
     // 用户身份
     let UserIdentityView = [];
     for (const key in UserIdentity) {
-      if (UserIdentity[key]) {
-        // UserIdentityView.push(<Text style={styles.UserIdentity} key={key}>{key}</Text>)
-        UserIdentityView[0] = (
-          <Text
-            onPress={this.toMembership}
-            style={styles.UserIdentity}
-            key={key}
-          >
-            {key}
-          </Text>
-        );
+      // console.log(key, UserIdentity[key]);
+      let titleClass = "";
+      switch (key) {
+        case "正品企业":
+          titleClass = UserIdentity[key] ? "StockType4" : "StockTypeDis";
+          break;
+        case "正品物料":
+          titleClass = UserIdentity[key] ? "StockType8" : "StockTypeDis";
+          break;
+        case "保证有料":
+          titleClass = UserIdentity[key] ? "StockType6" : "StockTypeDis";
+          break;
+        case "优势推广":
+          titleClass = UserIdentity[key] ? "StockType9" : "StockTypeDis";
+          break;
+        case "品牌替代":
+          titleClass = UserIdentity[key] ? "StockType7" : "StockTypeDis";
+          break;
+        case "Erp会员":
+          titleClass = UserIdentity[key] ? "StockTypeErp" : "StockTypeDis";
+          break;
+        default:
+          break;
       }
+      // if (UserIdentity[key]) {
+      UserIdentityView.push(
+        <Text
+          onPress={this.toMembership}
+          style={[styles.StockTypeCommon, styles[titleClass]]}
+          key={key}
+        >
+          {key}
+        </Text>
+      );
+      // }
     }
     // 自定义区域
     const CustomDrawer = (
@@ -129,16 +213,21 @@ class MyScrollView extends Component {
           activeOpacity={1}
           style={styles.header}
         >
-          <Image
-            style={styles.headerLeftImg}
-            source={{
-              uri: AvatarPath,
-            }}
-          />
-          <View style={styles.headerName}>
-            <Text style={styles.NickName}>{NickName}</Text>
-            <View>{UserIdentityView}</View>
-          </View>
+          <ImageBackground
+            source={require("./img/center_bg_texture.png")}
+            style={styles.ImageBackground}
+          >
+            <Image
+              style={styles.headerLeftImg}
+              source={{
+                uri: AvatarPath,
+              }}
+            />
+            <View style={styles.headerName}>
+              <Text style={styles.NickName}>{NickName}</Text>
+              <View style={styles.StockTypeBox}>{UserIdentityView}</View>
+            </View>
+          </ImageBackground>
         </TouchableOpacity>
 
         <DrawerItems {...this.props} items={items} />

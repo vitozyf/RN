@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   baseRow: {
-    height: 48,
+    height: 44,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -139,11 +139,11 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   baseRowTitle: {
-    fontSize: 18,
+    fontSize: 15,
   },
   baseRowValue: {
     maxWidth: 280,
-    fontSize: 18,
+    fontSize: 15,
     color: "#999",
   },
   buttonBox: {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    height: 40,
+    height: 48,
     // backgroundColor: '#E64340',
     // color: '#ccc'
   },

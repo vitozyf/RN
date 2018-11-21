@@ -15,9 +15,11 @@ const initUserData = async store => {
   const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
   const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
-  const UserInfo = {};
+  const UserInfo = { Sales: {} };
   if (UserIdentity) {
     UserInfo.UserIdentity = UserIdentity.UserIdentityModel;
+    UserInfo.Sales.SalesName = UserIdentity.SalesName;
+    UserInfo.Sales.telephone = UserIdentity.telephone;
   }
   if (AvatarPath) {
     UserInfo.AvatarPath = `https:${AvatarPath}`;

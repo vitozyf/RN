@@ -6,13 +6,17 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import PropTypes from "prop-types";
-import { BackTop } from "@components";
+import { BackTop, ZnlInput } from "@components";
 import Feather from "react-native-vector-icons/Feather";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Modal from "react-native-modal";
 import FilterScreen from "./FilterScreen";
 import { connect } from "react-redux";
+import DeviceInfo from "react-native-device-info";
+import { ISIOS } from "@src/utils/system";
 
 const ITEM_HEIGHT = 30; // list行高
 class ListRow extends PureComponent {
@@ -159,7 +163,9 @@ class SerchList extends PureComponent {
       loading: false,
       isFilterScreenShow: false, // 显示筛选条件
       StkWarehouse: [], // 仓库地址
-      FieldWhereString: "", // 筛选条件
+      // FieldWhereString: "", // 筛选条件
+      Model: "",
+      FieldWhereParams: {}, // 筛选条件对象
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -191,6 +197,9 @@ class SerchList extends PureComponent {
       },
       headerTitleStyle: {
         alignSelf: "center",
+        color: "#333",
+      },
+      headerBackTitleStyle: {
         color: "#333",
       },
     };
@@ -280,7 +289,9 @@ class SerchList extends PureComponent {
         onSwipe={() => this.setState({ showComprehensiveRanking: false })}
         style={styles.ComprehensiveRankingContainer}
         backdropOpacity={0.3}
-        animationInTiming={100}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        animationInTiming={50}
       >
         <View style={styles.ComprehensiveRankingBox}>
           <TouchableOpacity
@@ -291,6 +302,9 @@ class SerchList extends PureComponent {
             }}
           >
             <Text style={styles.ComprehensiveRankingText}>综合排序</Text>
+            <Text style={{ fontFamily: "iconfont", fontSize: 20 }}>
+              &#xe6ee;
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.ComprehensiveRankingRow}
@@ -334,16 +348,23 @@ class SerchList extends PureComponent {
   // 处理筛选条件
   FieldWhereStringHandler = params => {
     const { name } = this.state;
-    let fieldArray = [];
-    for (const key in params) {
-      if (params.hasOwnProperty(key) && params[key]) {
-        fieldArray.push(`"${key}":"${params[key]}"`);
+    // let fieldArray = [];
+    // for (const key in params) {
+    //   if (params.hasOwnProperty(key) && params[key]) {
+    //     fieldArray.push(`"${key}":"${params[key]}"`);
+    //   }
+    // }
+    this.setState(
+      {
+        FieldWhereParams: params,
+      },
+      () => {
+        this.getDatas(name);
       }
-    }
+    );
     this.setState({ isFilterScreenShow: false });
-    this.setState({ FieldWhereString: `{${fieldArray.join(",")}}` }, () => {
-      this.getDatas(name);
-    });
+    // this.setState({ FieldWhereString: `{${fieldArray.join(",")}}` }, () => {
+    // });
   };
   // 渲染头部
   _renderHeader = () => {
@@ -372,49 +393,83 @@ class SerchList extends PureComponent {
       default:
         break;
     }
+    const inputRenderLeft = () => {
+      return (
+        <View style={styles.lineBox}>
+          <FontAwesome name={"search"} size={18} style={styles.FontAwesome} />
+          <View style={styles.verticalline} />
+        </View>
+      );
+    };
+    const renderRight = () => {
+      return (
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            this.getDatas(this.state.name);
+          }}
+        >
+          <Image
+            style={styles.titleicon}
+            source={require("./img/s-bar_refresh_ic.png")}
+          />
+        </TouchableOpacity>
+      );
+    };
     return (
       <View style={styles.SerchListTitle}>
-        {/* <ScrollView 
-                    keyboardDismissMode={true} // 滚动隐藏软键盘
-                    horizontal={true}
-                    > */}
-        <Text
-          style={[styles.SerchTitleBlock, MakeYear ? styles.colorMain : null]}
-          onPress={() => {
-            this.showComprehensiveRankingHandler(!showComprehensiveRanking);
-          }}
-        >
-          综合排序
-        </Text>
-        <Text
-          style={[styles.SerchTitleBlock, InvQty ? styles.colorMain : null]}
-          onPress={this.qtyHandler}
-        >
-          数量
-        </Text>
-        <Text
-          style={[
-            styles.SerchTitleBlock,
-            UpdatedTime ? styles.colorMain : null,
-          ]}
-          onPress={this.createdTimeHandler}
-        >
-          {TimeTitle}
-        </Text>
-        <Text
-          style={[
-            styles.SerchTitleBlock,
-            FieldWhereString && FieldWhereString !== "{}"
-              ? styles.colorMain
-              : null,
-          ]}
-          onPress={() => {
-            this.setState({ isFilterScreenShow: true });
-          }}
-        >
-          筛选
-        </Text>
-        {/* </ScrollView> */}
+        <View style={styles.SerchListTitleSearch}>
+          <ZnlInput
+            style={styles.SearchInputBox}
+            inputStyle={styles.SearchInput}
+            returnKeyType="search"
+            onChangeText={value => {
+              this.setState({ Model: value });
+            }}
+            onSubmitEditing={() => this.getDatas(this.state.name)}
+            placeholder="请输入关键字进行搜索"
+            renderLeft={inputRenderLeft}
+            renderRight={renderRight}
+          />
+        </View>
+        <View style={styles.SerchListTitleHeader}>
+          <Text
+            style={[styles.SerchTitleBlock, MakeYear ? styles.colorMain : null]}
+            onPress={() => {
+              this.showComprehensiveRankingHandler(!showComprehensiveRanking);
+            }}
+          >
+            综合排序
+          </Text>
+          <Text
+            style={[styles.SerchTitleBlock, InvQty ? styles.colorMain : null]}
+            onPress={this.qtyHandler}
+          >
+            数量
+          </Text>
+          <Text
+            style={[
+              styles.SerchTitleBlock,
+              UpdatedTime ? styles.colorMain : null,
+            ]}
+            onPress={this.createdTimeHandler}
+          >
+            {TimeTitle}
+          </Text>
+          <Text
+            style={[
+              styles.SerchTitleBlock,
+              FieldWhereString && FieldWhereString !== "{}"
+                ? styles.colorMain
+                : null,
+            ]}
+            onPress={() => {
+              this.setState({ isFilterScreenShow: true });
+            }}
+          >
+            筛选
+          </Text>
+        </View>
         {this._renderComprehensiveRanking()}
       </View>
     );
@@ -507,7 +562,9 @@ class SerchList extends PureComponent {
       datas,
       DataOver,
       loading,
-      FieldWhereString,
+      // FieldWhereString,
+      Model,
+      FieldWhereParams,
     } = this.state;
     const searchParams = [];
     if (MakeYear) {
@@ -529,6 +586,15 @@ class SerchList extends PureComponent {
     this.setState({
       loading: true,
     });
+
+    let fieldArray = [];
+    const FWParams = Object.assign(FieldWhereParams, { Model });
+    for (const key in FieldWhereParams) {
+      if (FieldWhereParams.hasOwnProperty(key) && FieldWhereParams[key]) {
+        fieldArray.push(`"${key}":"${FieldWhereParams[key]}"`);
+      }
+    }
+    const FieldWhereString = `{${fieldArray.join(",")}}`;
 
     Cloud.$post(
       `${name}/Search`,
@@ -657,13 +723,55 @@ const styles = StyleSheet.create({
   ViewHeight: {
     height: ITEM_HEIGHT,
   },
+  // header
   SerchListTitle: {
+    height: 84,
+    backgroundColor: "#f8f8f8",
+  },
+  SerchListTitleSearch: {
+    height: 44,
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
+    justifyContent: "space-between",
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  SerchListTitleHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 40,
+    backgroundColor: "#f5f5f5",
+    borderTopWidth: 1,
     borderColor: "#ccc",
-    borderWidth: 1,
-    height: 50,
+  },
+  lineBox: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  FontAwesome: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    color: "#999",
+  },
+  verticalline: {
+    width: 1,
+    height: 20,
+    backgroundColor: "#E6E6E6",
+    marginLeft: 4,
+    marginRight: 8,
+  },
+  SearchInputBox: {
+    width: "100%",
+    height: 32,
+    flex: 1,
+    // borderWidth: 1,
+  },
+  SearchInput: {
+    borderRadius: 0,
+  },
+  titleicon: {
+    width: 30,
+    height: 30,
   },
   SerchTitleBlock: {
     paddingLeft: 20,
@@ -743,7 +851,7 @@ const styles = StyleSheet.create({
   },
   ComprehensiveRankingBox: {
     position: "absolute",
-    top: 110,
+    top: ISIOS ? (DeviceInfo.getDeviceName() === "iPhone X" ? 168 : 142) : 142,
     width: "100%",
     // left: -18,
     // width: 360,

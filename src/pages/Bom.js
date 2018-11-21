@@ -53,7 +53,6 @@ const Index = class Index extends Component<Props> {
       title: "BOM.AI",
       activeTintColor: "#ee7700",
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        console.log(111, focused);
         const Icon = focused
           ? require("./assets/img/tab_bomai_p.png")
           : require("./assets/img/tab_bomai_n.png");

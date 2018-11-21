@@ -42,6 +42,13 @@ class ListRow extends PureComponent {
           </Text>
         );
         break;
+      case 7:
+        StockTypeTextEle = (
+          <Text style={[styles.StockTypeCommon, styles.StockType7]}>
+            品牌替代
+          </Text>
+        );
+        break;
       default:
         break;
     }
@@ -379,6 +386,11 @@ const styles = StyleSheet.create({
     color: "#FFF",
     backgroundColor: "#00bedb",
     borderColor: "#00bedb",
+  },
+  StockType7: {
+    color: "#006DCC",
+    backgroundColor: "#CCE7FF",
+    borderColor: "#006DCC",
   },
   footer: {
     flexDirection: "row",
