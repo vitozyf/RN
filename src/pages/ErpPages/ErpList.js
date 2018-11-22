@@ -204,6 +204,7 @@ class SerchList extends PureComponent {
     this.state = {
       selected: new Map(),
       refreshing: false,
+      viewFocus: false,
       datas: [],
       name: "",
       // ScrollOffset: 0
@@ -720,6 +721,10 @@ class SerchList extends PureComponent {
   };
   // 滚动
   onScroll = event => {
+    const { viewFocus } = this.state;
+    if (!viewFocus) {
+      return null;
+    }
     const that = this;
     let newScrollOffset = event.nativeEvent.contentOffset.y;
     if (newScrollOffset > 100) {
@@ -884,6 +889,9 @@ class SerchList extends PureComponent {
     );
   }
   componentWillMount() {
+    this.setState({
+      viewFocus: true,
+    });
     const { navigation } = this.props;
     const name = this.props.navigation.getParam("name");
     this.setState({
@@ -898,6 +906,9 @@ class SerchList extends PureComponent {
       this.willFocusHandler
     );
     this.didBlurSubscription = navigation.addListener("willBlur", payload => {
+      this.setState({
+        viewFocus: false,
+      });
       BackTop.hidden();
     });
   }

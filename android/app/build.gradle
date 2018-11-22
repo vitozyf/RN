@@ -138,7 +138,10 @@ android {
     }
     buildTypes {
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", '"kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d"'
+            // 测试
+            // buildConfigField "String", "CODEPUSH_KEY", '"kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d"'
+            // 正式
+            buildConfigField "String", "CODEPUSH_KEY", '"x2D2xLa-NGE1OsbFXTZRwGFNgS-vd2879c22-c96e-4d6e-bef4-b597a869454d"'
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds

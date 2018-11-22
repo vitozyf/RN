@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
+  private final String CODEPUSH_KEY_PRODUCTIO = "x2D2xLa-NGE1OsbFXTZRwGFNgS-vd2879c22-c96e-4d6e-bef4-b597a869454d";
+  private final String CODEPUSH_KEY_STAGING = "kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d";
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -35,7 +37,9 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNDeviceInfo(),
             new SplashScreenReactPackage(),
-            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
+            // new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
+            // new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
+            new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG),
             new VectorIconsPackage()
       );
     }
