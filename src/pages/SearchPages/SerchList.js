@@ -150,7 +150,7 @@ class SerchList extends PureComponent {
               marginBottom: 5,
             }}
           >
-            没有更多数据了
+            没有更多数据了...
           </Text>
         </View>
       );
@@ -255,8 +255,8 @@ class SerchList extends PureComponent {
           ref={ref => (this.flatList = ref)}
           keyExtractor={this._keyExtractor}
           getItemLayout={(data, index) => ({
-            length: ITEM_HEIGHT,
-            offset: (ITEM_HEIGHT + 1) * index,
+            length: 48,
+            offset: (48 + 1) * index,
             index,
           })}
           renderItem={this._renderItem}

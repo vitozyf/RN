@@ -165,7 +165,6 @@ class MyScrollView extends Component {
   };
   render() {
     const { AvatarPath, NickName, UserIdentity } = this.props;
-    // console.log(11111, AvatarPath)
     // 用户身份
     let UserIdentityView = [];
     for (const key in UserIdentity) {
