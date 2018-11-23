@@ -7,7 +7,7 @@ build.gradle 修改新的版本号
 MainApplication.java CODE_PUSH_KEY 更改为 CODEPUSH_KEY_PRODUCTIO
 config.js API更改为正式
 strings.xml 更改为正式名称： 正能量电子网
-code-push 发布正式版
+修改版本号记录 package.json
 执行打包apk， 传入服务器
 
 ### 测试环境
@@ -15,7 +15,7 @@ build.gradle 修改新的版本号
 MainApplication.java CODE_PUSH_KEY 更改为 CODEPUSH_KEY_STAGING
 config.js API更改测试API
 strings.xml 更改为正式名称： 正能量测试
-code-push 发布STAGING版
+修改版本号记录 package.json
 执行打包apk， 传入服务器
 
 
