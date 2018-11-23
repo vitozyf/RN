@@ -9,12 +9,6 @@ import codePush from "react-native-code-push";
 import { ISANDROID } from "@src/utils/system";
 import SplashScreen from "react-native-splash-screen";
 
-const MyStatusBar = ({ backgroundColor, ...props }) => (
-  <View style={[styles.statusBar, { backgroundColor }]}>
-    <StatusBar translucent backgroundColor={backgroundColor} {...props} />
-  </View>
-);
-
 let codePushOptions;
 if (ISANDROID && !__DEV__) {
   codePushOptions = {
@@ -27,6 +21,12 @@ if (ISANDROID && !__DEV__) {
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+    };
+  }
   syncImmediate() {
     codePush.sync({
       //安装模式
@@ -57,11 +57,7 @@ class App extends Component {
   }
   componentWillMount() {
     AppInit(store);
-    // Cloud.$get("appget/getversioninfo", null, { onlydata: false }).then(
-    //   data => {
-    //     console.log(121212, data);
-    //   }
-    // );
+
     // codePush.disallowRestart(); //禁止重启
   }
   componentDidMount() {
@@ -71,6 +67,7 @@ class App extends Component {
     SplashScreen.hide();
   }
   render() {
+    const { visible } = this.state;
     return (
       <Provider store={store}>
         <DrawerNavRouter

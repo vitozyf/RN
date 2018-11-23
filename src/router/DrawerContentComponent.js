@@ -8,10 +8,14 @@ import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
+  Platform,
+  Linking,
 } from "react-native";
 import { DrawerItems, SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
-import { ISDEBUG } from "@src/utils/system";
+import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
+import { ZnlModal } from "@components";
+import DdeviceInfo from "react-native-device-info";
 
 const Height = Dimensions.get("window").height;
 
@@ -155,6 +159,15 @@ if (ISDEBUG) {
 }
 
 class MyScrollView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false,
+      title: "",
+      value: "",
+      DownloadUrl: "",
+    };
+  }
   toBaseInfo = () => {
     const { navigation } = this.props;
     navigation.navigate("BaseInfo");
@@ -163,8 +176,56 @@ class MyScrollView extends Component {
     const { navigation } = this.props;
     navigation.navigate("Membership");
   };
+  getVersionApp() {
+    const Version = DdeviceInfo.getVersion();
+    const Url = ISDEBUG
+      ? "appget/getversioninfo?isDebug=true"
+      : "appget/getversioninfo";
+    Cloud.$get(Url, null, { onlydata: false }).then(data => {
+      if (data.Code === 200) {
+        const ResData = data.Result;
+        const downloadUrl = Platform.select({
+          ios:
+            "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
+          android: ResData.DownloadUrl,
+        });
+        if (ResData.Version !== Version) {
+          const ValueHandler = () => {
+            return (
+              <View style={{ paddingLeft: 8 }}>
+                {ResData.UpdateLog.Content.map((item, index) => {
+                  return (
+                    <Text style={{ fontSize: 16 }} key={index}>
+                      {item}
+                    </Text>
+                  );
+                })}
+              </View>
+            );
+          };
+          if (ISANDROID) {
+            this.setState({
+              visible: true,
+              title: ResData.UpdateLog.Title,
+              value: ValueHandler,
+              DownloadUrl: downloadUrl,
+            });
+          }
+        }
+      }
+    });
+  }
+  confirmHandler = () => {
+    this.setState({
+      visible: false,
+    });
+    Linking.openURL(this.state.DownloadUrl).catch(err => {
+      console.log(err);
+    });
+  };
   render() {
     const { AvatarPath, NickName, UserIdentity } = this.props;
+    const { visible, title, value } = this.state;
     // 用户身份
     let UserIdentityView = [];
     for (const key in UserIdentity) {
@@ -229,6 +290,18 @@ class MyScrollView extends Component {
           </ImageBackground>
         </TouchableOpacity>
 
+        <ZnlModal
+          visible={visible}
+          title={title}
+          value={value}
+          cancelText="下次更新"
+          confirmText="去更新"
+          confirmHandler={this.confirmHandler}
+          cancelHandler={() => {
+            this.setState({ visible: false });
+          }}
+        />
+
         <DrawerItems {...this.props} items={items} />
       </View>
     );
@@ -245,6 +318,9 @@ class MyScrollView extends Component {
     );
 
     return <ScrollView style={styles.containerbox}>{Container}</ScrollView>;
+  }
+  componentDidMount() {
+    this.getVersionApp();
   }
 }
 

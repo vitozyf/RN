@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class ZnlModal extends Component {
   render() {
@@ -10,99 +10,118 @@ class ZnlModal extends Component {
       value,
       confirmHandler,
       cancelHandler,
-      visible
+      visible,
+      cancelText,
+      confirmText,
     } = this.props;
     return (
       <Modal
-          isVisible={visible}
-          useNativeDriver={true}
-          onBackButtonPress={cancelHandler}
-        >
+        isVisible={visible}
+        useNativeDriver={true}
+        onBackButtonPress={cancelHandler}
+      >
         <View style={styles.modalView}>
           <View style={styles.modalTitleView}>
-            <Text style={styles.modalTitle}>
-              {title}
-            </Text>
+            <Text style={styles.modalTitle}>{title}</Text>
           </View>
           <View style={styles.modalValueView}>
-            <Text style={styles.modalValue}>
-              {value}
-            </Text>
+            {typeof value === "function" ? (
+              value()
+            ) : (
+              <Text style={styles.modalValue}>{value}</Text>
+            )}
           </View>
           <View style={styles.modalFooterView}>
-            <TouchableOpacity 
-              activeOpacity={0.8} 
-              style={styles.modalFooterButton} 
-              onPress={cancelHandler}>
-              <Text style={[styles.modalFooterButtonText, styles.modalFooterButtonTextLeft]}>取消</Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.modalFooterButton}
+              onPress={cancelHandler}
+            >
+              <Text
+                style={[
+                  styles.modalFooterButtonText,
+                  styles.modalFooterButtonTextLeft,
+                ]}
+              >
+                {cancelText}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-              activeOpacity={0.8} 
-              style={styles.modalFooterButton} 
-              onPress={confirmHandler}>
-              <Text style={styles.modalFooterButtonText}>确定</Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.modalFooterButton}
+              onPress={confirmHandler}
+            >
+              <Text style={styles.modalFooterButtonText}>{confirmText}</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-    )
+    );
   }
 }
 ZnlModal.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+    PropTypes.func,
+  ]),
   confirmHandler: PropTypes.func,
   cancelHandler: PropTypes.func,
   visible: PropTypes.bool,
-}
+  cancelText: PropTypes.string,
+  confirmText: PropTypes.string,
+};
 ZnlModal.defaultProps = {
-  title: '',
-  value: '',
-  visible: false
+  title: "",
+  value: "",
+  visible: false,
+  cancelText: "取消",
+  confirmText: "确定",
 };
 const styles = StyleSheet.create({
   modalView: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
   },
   modalTitleView: {
     height: 48,
-    flexDirection: 'row',
-    alignItems:'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalTitle: {
-    fontSize: 22,
-    textAlign: 'center'
+    fontSize: 18,
+    textAlign: "center",
   },
   modalValueView: {
     paddingTop: 16,
-    paddingBottom: 16
+    paddingBottom: 16,
   },
   modalValue: {
-    fontSize: 18,
-    textAlign: 'center',
+    fontSize: 16,
+    textAlign: "center",
   },
   modalFooterView: {
-    flexDirection: 'row',
-    alignItems:'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderTopWidth: 1,
-    borderColor: '#E6E6E6'
+    borderColor: "#E6E6E6",
   },
   modalFooterButton: {
-    flex: 1
+    flex: 1,
   },
   modalFooterButtonText: {
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 48,
-    fontSize: 18
+    fontSize: 18,
   },
   modalFooterButtonTextLeft: {
     borderRightWidth: 1,
-    borderColor: '#E6E6E6'
-  }
+    borderColor: "#E6E6E6",
+  },
 });
 export default ZnlModal;
