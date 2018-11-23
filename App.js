@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 import store from "@src/store";
@@ -19,9 +20,13 @@ if (ISANDROID && !__DEV__) {
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
   };
 }
+type Props = {};
+type State = {
+  visible: boolean,
+};
 
-class App extends Component {
-  constructor(props) {
+class App extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       visible: false,

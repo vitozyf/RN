@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
@@ -5,7 +6,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { HeaderTitle, HeaderRight } from "@components";
 
-class MembershipScreen extends Component {
+type Props = {
+  navigation: INavigation,
+  UserIdentity: Object,
+  SetStatusBarStyle: Function,
+};
+class MembershipScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
       navigation.navigate("Home");

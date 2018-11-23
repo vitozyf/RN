@@ -1,9 +1,26 @@
+// @flow
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
 import PropTypes from "prop-types";
 
-class ZnlModal extends Component {
+type Props = {
+  title: string,
+  value: mixed,
+  confirmHandler: Function,
+  cancelHandler: Function,
+  visible: boolean,
+  cancelText: string,
+  confirmText: string,
+};
+class ZnlModal extends Component<Props> {
+  static defaultProps = {
+    title: "",
+    value: "",
+    visible: false,
+    cancelText: "取消",
+    confirmText: "确定",
+  };
   render() {
     const {
       title,
@@ -28,7 +45,9 @@ class ZnlModal extends Component {
             {typeof value === "function" ? (
               value()
             ) : (
-              <Text style={styles.modalValue}>{value}</Text>
+              <Text style={styles.modalValue}>
+                {typeof value === "string" ? value : ""}
+              </Text>
             )}
           </View>
           <View style={styles.modalFooterView}>
@@ -59,26 +78,6 @@ class ZnlModal extends Component {
     );
   }
 }
-ZnlModal.propTypes = {
-  title: PropTypes.string,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.element,
-    PropTypes.func,
-  ]),
-  confirmHandler: PropTypes.func,
-  cancelHandler: PropTypes.func,
-  visible: PropTypes.bool,
-  cancelText: PropTypes.string,
-  confirmText: PropTypes.string,
-};
-ZnlModal.defaultProps = {
-  title: "",
-  value: "",
-  visible: false,
-  cancelText: "取消",
-  confirmText: "确定",
-};
 const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "#fff",

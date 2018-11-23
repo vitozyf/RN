@@ -1,10 +1,14 @@
+/* @flow */
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import { HeaderTitle, HeaderRight } from "@components";
 
-class MembershipScreen extends Component {
+type Props = {
+  Sales: Object,
+};
+class MembershipScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
       navigation.goBack();

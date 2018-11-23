@@ -1,9 +1,19 @@
+/* @flow */
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/AntDesign";
 
-class SearchPane extends Component {
+type Props = {
+  title: string,
+  children: any,
+  showDeleteIcon: boolean,
+  onPressDelete?: Function,
+};
+class SearchPane extends Component<Props> {
+  static defaultProps = {
+    showDeleteIcon: true,
+  };
   render() {
     const { title, children, showDeleteIcon, onPressDelete } = this.props;
     return (
@@ -26,15 +36,6 @@ class SearchPane extends Component {
     );
   }
 }
-
-SearchPane.propTypes = {
-  title: PropTypes.string,
-  showDeleteIcon: PropTypes.bool,
-  onPressDelete: PropTypes.func,
-};
-SearchPane.defaultProps = {
-  showDeleteIcon: true,
-};
 
 const styles = StyleSheet.create({
   SearchPane: {

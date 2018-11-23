@@ -1,3 +1,4 @@
+/* @flow */
 import React, { PureComponent } from "react";
 import {
   View,
@@ -8,7 +9,6 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import PropTypes from "prop-types";
 import { BackTop, ZnlInput } from "@components";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -19,7 +19,11 @@ import DeviceInfo from "react-native-device-info";
 import { ISIOS } from "@src/utils/system";
 import Icon from "@components/Iconfont/CloudIcon";
 
-class ListRow extends PureComponent {
+type Props = {
+  value: Object,
+  name: string,
+};
+class ListRow extends PureComponent<Props> {
   render() {
     const { value, name } = this.props;
     const StkStockView = (
@@ -198,7 +202,37 @@ class ListRow extends PureComponent {
   }
 }
 
-class SerchList extends PureComponent {
+type SerchListProps = {
+  ActiveTab: string,
+  setActiveTab: Function,
+  datas: Array<any>,
+  navigation: INavigation,
+  SetIsTabBarShow: Function,
+  SetStatusBarStyle: Function,
+};
+type SerchListState = {
+  selected: any,
+  refreshing: boolean,
+  viewFocus: boolean,
+  datas: Array<any>,
+  name: string,
+  showComprehensiveRanking: boolean, // 综合排序是否显示
+  MakeYear: string, // 综合排序条件 MakeYear ASC， MakeYear DESC
+  InvQty: string, // 数量条件 InvQty ASC， InvQty DESC
+  UpdatedTime: string, // 更新时间条件 UpdatedTime ASC， UpdatedTime DESC
+  PageIndex: number,
+  PageSize: number,
+  TotalCount: number,
+  TotalPage: number,
+  DataOver: boolean, // 无更多数据
+  loading: boolean,
+  isFilterScreenShow: boolean, // 显示筛选条件
+  StkWarehouse: Array<any>, // 仓库地址
+  FieldWhereString: string, // 筛选条件
+  Model: string,
+  FieldWhereParams: Object, // 筛选条件对象
+};
+class SerchList extends PureComponent<SerchListProps, SerchListState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -208,21 +242,21 @@ class SerchList extends PureComponent {
       datas: [],
       name: "",
       // ScrollOffset: 0
-      showComprehensiveRanking: false, // 综合排序是否显示
-      MakeYear: "", // 综合排序条件 MakeYear ASC， MakeYear DESC
-      InvQty: "", // 数量条件 InvQty ASC， InvQty DESC
-      UpdatedTime: "", // 更新时间条件 UpdatedTime ASC， UpdatedTime DESC
+      showComprehensiveRanking: false,
+      MakeYear: "",
+      InvQty: "",
+      UpdatedTime: "",
       PageIndex: 1,
       PageSize: 50,
       TotalCount: 0,
       TotalPage: 0,
-      DataOver: false, // 无更多数据
+      DataOver: false,
       loading: false,
-      isFilterScreenShow: false, // 显示筛选条件
-      StkWarehouse: [], // 仓库地址
-      FieldWhereString: "", // 筛选条件
+      isFilterScreenShow: false,
+      StkWarehouse: [],
+      FieldWhereString: "",
       Model: "",
-      FieldWhereParams: {}, // 筛选条件对象
+      FieldWhereParams: {},
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -858,6 +892,7 @@ class SerchList extends PureComponent {
       }
     });
   }
+  flatList: any;
   render() {
     const { refreshing, selected, datas, name } = this.state;
     const LINE_HEIGHT = name === "StkStock" ? 48 : 70;
@@ -888,6 +923,8 @@ class SerchList extends PureComponent {
       </View>
     );
   }
+  willFocusListener: any;
+  didBlurSubscription: any;
   componentWillMount() {
     this.setState({
       viewFocus: true,
@@ -1113,11 +1150,6 @@ const styles = StyleSheet.create({
   },
   ComprehensiveRankingText: {},
 });
-
-SerchList.propTypes = {
-  datas: PropTypes.array,
-  style: PropTypes.object,
-};
 
 const mapStateToProps = (state, props) => {
   return props;

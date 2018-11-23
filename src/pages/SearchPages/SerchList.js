@@ -1,13 +1,18 @@
+/* @flow */
 import React, { PureComponent } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
-import PropTypes from "prop-types";
 import { BackTop } from "@components";
 import { connect } from "react-redux";
+import { ISIOS } from "@src/utils/system";
 const ITEM_HEIGHT = 30; // list行高
 const HEADER_HEIGHT = 50; // 头部高
-import { ISIOS } from "@src/utils/system";
 
-class ListRow extends PureComponent {
+type Props = {
+  value: Object,
+  ActiveTab: string,
+};
+
+class ListRow extends PureComponent<Props> {
   render() {
     const { value, ActiveTab } = this.props;
     // 现货类型
@@ -121,7 +126,26 @@ class ListRow extends PureComponent {
   }
 }
 
-class SerchList extends PureComponent {
+type SerchListProps = {
+  showFoot: boolean,
+  datas: Array<any>,
+  onSearchHandler: Function,
+  SetHeaderHeight: Function,
+  setActiveTab: Function,
+  PageIndex: number,
+  ActiveTab: string,
+  StartIndex: number,
+  TotalCount: number,
+  isLoading: boolean,
+  TotalPage: number,
+  PageSize: number,
+  navigation: INavigation,
+};
+type SerchListState = {
+  selected: any,
+  refreshing: boolean,
+};
+class SerchList extends PureComponent<SerchListProps, SerchListState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -243,6 +267,7 @@ class SerchList extends PureComponent {
     const { ActiveTab } = this.props;
     return <ListRow value={item} ActiveTab={ActiveTab} />;
   };
+  flatList: any;
   render() {
     const { datas } = this.props;
     const { refreshing } = this.state;
@@ -272,6 +297,7 @@ class SerchList extends PureComponent {
       </View>
     );
   }
+  didBlurSubscription: any;
   componentWillMount() {
     this.didBlurSubscription = this.props.navigation.addListener(
       "willBlur",
@@ -409,11 +435,6 @@ const styles = StyleSheet.create({
     lineHeight: 100,
   },
 });
-
-SerchList.propTypes = {
-  datas: PropTypes.array,
-  style: PropTypes.object,
-};
 
 const mapStateToProps = (state, props) => {
   return props;

@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import BomScreen from "@pages/IndexPages/BomIndex";
 import SearchPageScreen from "@pages/SearchPages/SearchPage";
-import SearchPageDetailScreen from "@pages/SearchPages/SearchPageDetail";
 import SeatchResScreen from "@pages/SearchPages/SeatchRes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
@@ -18,10 +17,6 @@ const IndexPages = createStackNavigator(
     SearchPage: {
       screen: SearchPageScreen,
       path: "/Home/Bom/SearchPage",
-    },
-    SearchPageDetail: {
-      screen: SearchPageDetailScreen,
-      path: "/Home/Bom/SearchPageDetail",
     },
     SeatchRes: {
       screen: SeatchResScreen,

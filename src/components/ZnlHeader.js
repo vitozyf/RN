@@ -1,13 +1,26 @@
+// @flow
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/Ionicons";
 import DeviceInfo from "react-native-device-info";
-// import { StatusBar } from "react-native";
 import { connect } from "react-redux";
 import { ISIOS } from "@src/utils/system";
 
-class ZnlHeader extends Component {
+type Props = {
+  style: Object,
+  title: string,
+  hideLeft: boolean,
+  leftIcon: string,
+  onPressIcon: Function,
+  renderLeft: Function,
+  renderCenter: Function,
+  renderRight: Function,
+  HeaderHeight: number,
+};
+class ZnlHeader extends Component<Props> {
+  static defaultProps = {
+    leftIcon: "ios-arrow-back",
+  };
   render() {
     const {
       style,
@@ -58,21 +71,6 @@ class ZnlHeader extends Component {
     );
   }
 }
-
-ZnlHeader.propTypes = {
-  style: PropTypes.object,
-  title: PropTypes.string,
-  hideLeft: PropTypes.bool,
-  leftIcon: PropTypes.string,
-  onPressIcon: PropTypes.func,
-  renderLeft: PropTypes.func,
-  renderCenter: PropTypes.func,
-  renderRight: PropTypes.func,
-};
-
-ZnlHeader.defaultProps = {
-  leftIcon: "ios-arrow-back",
-};
 
 const styles = StyleSheet.create({
   Header: {

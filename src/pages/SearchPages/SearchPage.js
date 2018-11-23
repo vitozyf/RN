@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from "react";
 import {
   View,
@@ -12,7 +13,19 @@ import SearchPane from "@components/IndexPages/SearchPane";
 import CONFIG from "@src/utils/config";
 import { ZnlHeader, ZnlInput, ZnlButton, HeaderRight } from "@components";
 
-class SearchPage extends Component {
+type Props = {
+  navigation: INavigation,
+  SetBomSearchInfo: Function,
+  SetSearchRecord: Function,
+  SetIsTabBarShow: Function,
+  SetStatusBarStyle: Function,
+  SearchRecord: Array<any>,
+};
+type State = {
+  KeyWord: string,
+  HotModelList: Array<any>,
+};
+class SearchPage extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

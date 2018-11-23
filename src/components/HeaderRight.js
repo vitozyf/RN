@@ -1,8 +1,13 @@
+// @flow
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import PropTypes from "prop-types";
 
-class HeaderRight extends Component {
+type Props = {
+  title: string,
+  style: Object,
+  onPress: Function,
+};
+class HeaderRight extends Component<Props> {
   render() {
     const { title, style, onPress } = this.props;
     return (
@@ -28,14 +33,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-HeaderRight.propTypes = {
-  title: PropTypes.string,
-  style: PropTypes.object,
-  onPress: PropTypes.func,
-};
-// HeaderRight.defaultProps = {
-//   title: ''
-// }
 
 export default HeaderRight;

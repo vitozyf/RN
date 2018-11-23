@@ -59,7 +59,7 @@ class BaseInfoScreen extends Component<Props, State> {
         modalVisible: false,
       },
       () => {
-        if (cb) {
+        if (typeof cb === "function") {
           cb();
         }
       }

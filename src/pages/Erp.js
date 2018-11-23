@@ -1,7 +1,7 @@
+/* @flow */
 import React, { Component } from "react";
 import ErpIndex from "@pages/ErpPages/ErpIndex";
 import ErpList from "@pages/ErpPages/ErpList";
-
 import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -34,8 +34,10 @@ const IndexPages = createStackNavigator(
     },
   }
 );
-
-class Index extends Component {
+type Props = {
+  navigation: INavigation,
+};
+class Index extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     return {

@@ -1,11 +1,15 @@
+/* @flow */
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import AntDesign from "react-native-vector-icons/AntDesign";
-// import Icon from "@components/Iconfont/CloudIcon";
-
 import { HeaderTitle, HeaderRight } from "@components";
-class HeaderLeft extends Component {
+
+type Props = {
+  navigation: INavigation,
+  AvatarPath: string,
+};
+class HeaderLeft extends Component<Props> {
   onPress = () => {
     const { navigation } = this.props;
     navigation.openDrawer();
@@ -29,7 +33,13 @@ const HeaderLeftCom = connect((state, props) => {
   return Object.assign({}, { AvatarPath: state.UserInfo.AvatarPath }, props);
 })(HeaderLeft);
 
-class ErpIndex extends Component {
+type ErpIndexProps = {
+  navigation: INavigation,
+  SetStatusBarStyle: Function,
+  SetIsTabBarShow: Function,
+};
+
+class ErpIndex extends Component<ErpIndexProps> {
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: <HeaderTitle title="ERP" textStyle={{ color: "#fff" }} />,
@@ -121,6 +131,7 @@ class ErpIndex extends Component {
       </View>
     );
   }
+  willFocusListener: any;
   componentWillMount() {
     const { navigation } = this.props;
     // this.willBlurListener = navigation.addListener('willBlur', this.willBlurHandler);

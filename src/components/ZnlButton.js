@@ -1,11 +1,25 @@
+// @flow
 import React, { Component } from "react";
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
-import PropTypes from "prop-types";
 
-export default class ZnlButton extends Component {
-  constructor(props) {
-    super(props);
-  }
+type Props = {
+  type: string, //default  main warn
+  placeholder: string,
+  onPress: Function,
+  style: Object, // 按钮样式
+  textStyle: Object, // 文本样式
+  activeOpacity: number,
+  disabled: boolean,
+  children: any,
+};
+export default class ZnlButton extends Component<Props> {
+  static defaultProps = {
+    type: "default",
+    placeholder: "请输入内容",
+    maxLength: 20,
+    activeOpacity: 0.8,
+    disabled: false,
+  };
   render() {
     const {
       type,
@@ -56,24 +70,6 @@ export default class ZnlButton extends Component {
     );
   }
 }
-
-ZnlButton.propTypes = {
-  type: PropTypes.string, //default  main warn
-  placeholder: PropTypes.string,
-  onPress: PropTypes.func,
-  style: PropTypes.object, // 按钮样式
-  textStyle: PropTypes.object, // 文本样式
-  activeOpacity: PropTypes.number,
-  disabled: PropTypes.bool,
-};
-
-ZnlButton.defaultProps = {
-  type: "default",
-  placeholder: "请输入内容",
-  maxLength: 20,
-  activeOpacity: 0.8,
-  disabled: false,
-};
 
 const styles = StyleSheet.create({
   Button: {

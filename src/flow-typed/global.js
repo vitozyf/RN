@@ -46,4 +46,6 @@ declare type INavigation = {
   getParam: Function,
   dispatch: Function,
   dangerouslyGetParent: Function,
+  openDrawer: Function,
+  push: Function,
 };

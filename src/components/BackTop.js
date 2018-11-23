@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import RootSiblings from "react-native-root-siblings";
@@ -5,8 +6,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 let sibling = undefined;
 
+type IParams = {
+  onPress?: Function,
+};
 const BackTop = {
-  show: params => {
+  show: (params: IParams) => {
     sibling && sibling.destroy();
     const { onPress } = params ? params : {};
     const SiblingEle = (

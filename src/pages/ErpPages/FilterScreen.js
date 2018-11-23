@@ -1,23 +1,16 @@
+/* @flow */
 import React, { Component } from "react";
 import Modal from "react-native-modal";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from "react-native";
-import PropTypes from "prop-types";
+import { View, StyleSheet, Text, TextInput, ScrollView } from "react-native";
 import DatePicker from "react-native-datepicker";
 import { ISIOS } from "@src/utils/system";
 import { ZnlButton } from "@components";
 
-class Pane extends Component {
-  static propTypes = {
-    title: PropTypes.string,
-    renderBody: PropTypes.func,
-  };
+type Props = {
+  title: string,
+  renderBody: Function,
+};
+class Pane extends Component<Props> {
   render() {
     const { title, renderBody } = this.props;
     return (
@@ -31,18 +24,26 @@ class Pane extends Component {
   }
 }
 
-class FilterScreen extends Component {
-  static propTypes = {
-    isVisible: PropTypes.bool,
-    closeModal: PropTypes.func,
-    confirmHandler: PropTypes.func,
-    StkWarehouse: PropTypes.array, // 仓库数据
-  };
-  static defaultProps = {
-    isVisible: false,
-    StkWarehouse: [],
-  };
-  constructor(props) {
+type FilterScreenProps = {
+  isVisible: boolean,
+  closeModal: Function,
+  confirmHandler: Function,
+  StkWarehouse: Array<any>,
+  name: string,
+};
+type FilterScreenState = {
+  InvType: string,
+  InvPosition: string,
+  Brand: string,
+  MakeYear: string,
+  StorageName: string,
+  QuotedTimeByStart: string,
+  QuotedTimeByEnd: string,
+  SupplierName: string, // 供应商名称
+  CustomerName: string, // 客户名称
+};
+class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
+  constructor(props: FilterScreenProps) {
     super(props);
     this.state = {
       InvType: "",
@@ -52,8 +53,8 @@ class FilterScreen extends Component {
       StorageName: "",
       QuotedTimeByStart: "",
       QuotedTimeByEnd: "",
-      SupplierName: "", // 供应商名称
-      CustomerName: "", // 客户名称
+      SupplierName: "",
+      CustomerName: "",
     };
   }
   // 库存类型
@@ -310,20 +311,6 @@ class FilterScreen extends Component {
               <Pane title="报价时间" renderBody={this._renderBodyQuotedTime} />
             )}
             <View style={styles.footer}>
-              {/* <TouchableOpacity
-                activeOpacity={0.8}
-                style={[styles.footerButton, styles.footerButtonCancel]}
-                onPress={closeModal}
-              >
-                <Text
-                  style={[
-                    styles.footerButtonText,
-                    styles.footerButtonTextCancel,
-                  ]}
-                >
-                  取消
-                </Text>
-              </TouchableOpacity> */}
               <ZnlButton
                 onPress={() => {
                   this.resetHandler();
@@ -332,22 +319,6 @@ class FilterScreen extends Component {
               >
                 重置
               </ZnlButton>
-              {/* <TouchableOpacity
-                activeOpacity={0.8}
-                style={[styles.footerButton, styles.footerButtonConfirm]}
-                onPress={() => {
-                  confirmHandler && confirmHandler(this.state);
-                }}
-              >
-                <Text
-                  style={[
-                    styles.footerButtonText,
-                    styles.footerButtonTextConfirm,
-                  ]}
-                >
-                  确定
-                </Text>
-              </TouchableOpacity> */}
               <ZnlButton
                 type="main"
                 onPress={() => {
@@ -404,20 +375,6 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 2,
   },
-  //   footerButtonCancel: {
-  //     backgroundColor: "#f2f2f2",
-  //   },
-  //   footerButtonConfirm: {
-  //     backgroundColor: "#ed9e00",
-  //   },
-  //   footerButtonText: {
-  //     textAlign: "center",
-  //     lineHeight: 50,
-  //   },
-  //   footerButtonTextCancel: {},
-  //   footerButtonTextConfirm: {
-  //     color: "#fff",
-  //   },
   // pane body
   StockTypeBody: {
     flexDirection: "row",

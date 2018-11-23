@@ -19,26 +19,10 @@ type State = {
   AvatarPath: string,
 };
 class HeaderLeft extends Component<Props, State> {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     AvatarPath:
-  //       "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
-  //   };
-  // }
   onPress = () => {
     const { navigation } = this.props;
     navigation.openDrawer();
   };
-  // componentWillMount() {
-  //   Cloud.$getStorage(Cloud.$CONFIG.AvatarPath).then(data => {
-  //     if (data) {
-  //       this.setState({
-  //         AvatarPath: `https:${data}`,
-  //       });
-  //     }
-  //   });
-  // }
   render() {
     const { AvatarPath } = this.props;
     return (
@@ -80,14 +64,6 @@ class Bom extends Component<BonProps> {
     return (
       <View style={styles.container}>
         <View style={styles.ImgBox}>
-          {/* <Image
-            style={styles.HomeLogo}
-            source={{
-              uri:
-                "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/eBPk33_1539748592007.png",
-              cache: "force-cache",
-            }}
-          /> */}
           <ImageBackground
             source={require("./img/bg_texture.png")}
             style={styles.ImageBackground}
@@ -145,8 +121,6 @@ const styles = StyleSheet.create({
   ImgBox: {
     justifyContent: "flex-end",
     alignItems: "center",
-    // height: 40,
-    // paddingBottom: 30,
   },
   ImageBackground: {
     width: 320,

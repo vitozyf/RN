@@ -1,7 +1,64 @@
+// @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { TextInput, View, StyleSheet } from "react-native";
-class ZnlInput extends Component {
+
+type TKeyboardType =
+  | "default"
+  | "email-address"
+  | "numeric"
+  | "phone-pad"
+  | "ascii-capable"
+  | "numbers-and-punctuation"
+  | "url"
+  | "number-pad"
+  | "name-phone-pad"
+  | "decimal-pad"
+  | "twitter"
+  | "web-search"
+  | "visible-password";
+
+type TReturnKeyType =
+  | "done"
+  | "go"
+  | "next"
+  | "search"
+  | "send"
+  | "none"
+  | "previous"
+  | "default"
+  | "emergency-call"
+  | "google"
+  | "join"
+  | "route"
+  | "yahoo";
+
+type Props = {
+  placeholder: string,
+  onChangeText: Function,
+  maxLength: number,
+  style: Object,
+  inputStyle: Object,
+  autoFocus: boolean,
+  defaultValue: string,
+  keyboardType: TKeyboardType,
+  multiline: boolean,
+  onSubmitEditing: Function,
+  renderLeft: Function,
+  renderRight: Function,
+  onFocus: Function,
+  secureTextEntry: boolean, // 密码类型
+  editable: boolean,
+  returnKeyType: TReturnKeyType,
+  children: any,
+};
+class ZnlInput extends Component<Props> {
+  static defaultProps = {
+    placeholder: "",
+    autoFocus: false,
+    defaultValue: "",
+    keyboardType: "default",
+    multiline: false,
+  };
   render() {
     const {
       onChangeText,
@@ -45,34 +102,6 @@ class ZnlInput extends Component {
     );
   }
 }
-
-ZnlInput.propTypes = {
-  placeholder: PropTypes.string,
-  onChangeText: PropTypes.func,
-  maxLength: PropTypes.number,
-  style: PropTypes.object,
-  inputStyle: PropTypes.object,
-  autoFocus: PropTypes.bool,
-  defaultValue: PropTypes.string,
-  keyboardType: PropTypes.string,
-  multiline: PropTypes.bool,
-  onSubmitEditing: PropTypes.func,
-  renderLeft: PropTypes.func,
-  renderRight: PropTypes.func,
-  onFocus: PropTypes.func,
-  secureTextEntry: PropTypes.bool, // 密码类型
-  editable: PropTypes.bool,
-  returnKeyType: PropTypes.string,
-};
-
-ZnlInput.defaultProps = {
-  placeholder: "",
-  maxLength: 20,
-  autoFocus: false,
-  defaultValue: "",
-  keyboardType: "default",
-  multiline: false,
-};
 
 const styles = StyleSheet.create({
   inputbox: {

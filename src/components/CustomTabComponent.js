@@ -1,3 +1,4 @@
+// @flow
 /**
  * 自定义底部渲染
  */
@@ -6,7 +7,10 @@ import { Keyboard, StyleSheet } from "react-native";
 import { BottomTabBar } from "react-navigation-tabs";
 import { connect } from "react-redux";
 
-class CustomTabComponent extends React.Component {
+type Props = {
+  IsTabBarShow: boolean,
+};
+class CustomTabComponent extends React.Component<Props> {
   // constructor(props) {
   //   super(props);
   //   this.state = {
