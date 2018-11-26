@@ -310,12 +310,6 @@ const mapDispatchToProps = dispatch => {
         BomSearchInfo,
       });
     },
-    SetSearchRecord: SearchRecord => {
-      return dispatch({
-        type: "SetSearchRecord",
-        SearchRecord,
-      });
-    },
   };
 };
 

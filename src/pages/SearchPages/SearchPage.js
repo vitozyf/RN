@@ -106,16 +106,20 @@ class SearchPage extends Component<Props, State> {
     return Cloud.$getStorage(CONFIG.KeyWords).then(data => {
       if (data) {
         SearchRecord = JSON.parse(data).map((item, index) => {
-          return (
-            <ZnlButton
-              onPress={() => this.onPressKeywords(item)}
-              style={styles.searchBoxTag}
-              textStyle={styles.searchBoxTagText}
-              key={index}
-            >
-              {item}
-            </ZnlButton>
-          );
+          if (item) {
+            return (
+              <ZnlButton
+                onPress={() => this.onPressKeywords(item)}
+                style={styles.searchBoxTag}
+                textStyle={styles.searchBoxTagText}
+                key={index}
+              >
+                {item}
+              </ZnlButton>
+            );
+          } else {
+            return null;
+          }
         });
         SetSearchRecord && SetSearchRecord(SearchRecord);
       } else {

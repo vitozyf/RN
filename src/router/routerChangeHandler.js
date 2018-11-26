@@ -1,5 +1,10 @@
 import store from "@src/store";
+import { BackTop } from "@components";
 
+/**
+ * 获取当前路由名称
+ * @param {*} navigationState
+ */
 export function getActiveRouteName(navigationState) {
   if (!navigationState) {
     return null;
@@ -29,5 +34,12 @@ export function setIsTabBarShow(routerName, currentState) {
       type: "SetStatusBarStyle",
       StatusBarStyle,
     });
+  }
+  if (
+    routerName !== "ErpList" &&
+    routerName !== "Yunext" &&
+    routerName !== "Stocks"
+  ) {
+    BackTop.hidden();
   }
 }

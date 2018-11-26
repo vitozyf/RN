@@ -13,7 +13,11 @@ import {
   getActiveRouteName,
   setIsTabBarShow,
 } from "@router/routerChangeHandler";
-
+import { View, Text } from "react-native";
+// 深圳市正能量网络技术有限公司
+// 调试模式下刷新到本页
+const navigationPersistenceKey = __DEV__ ? "NavigationStateDEV" : null;
+// codepush配置
 let codePushOptions;
 if (ISANDROID && !__DEV__) {
   codePushOptions = {
@@ -25,17 +29,8 @@ if (ISANDROID && !__DEV__) {
   };
 }
 type Props = {};
-type State = {
-  visible: boolean,
-};
 
-class App extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      visible: false,
-    };
-  }
+class App extends Component<Props> {
   syncImmediate() {
     codePush.sync({
       //安装模式
@@ -67,6 +62,11 @@ class App extends Component<Props, State> {
   componentWillMount() {
     AppInit(store);
     // codePush.disallowRestart(); //禁止重启
+
+    store.dispatch({
+      type: "SetStatusBarStyle",
+      StatusBarStyle: "light-content",
+    });
   }
   componentDidMount() {
     if (ISANDROID && !__DEV__) {
@@ -75,7 +75,6 @@ class App extends Component<Props, State> {
     SplashScreen.hide();
   }
   render() {
-    const { visible } = this.state;
     return (
       <Provider store={store}>
         <DrawerNavRouter
@@ -83,6 +82,7 @@ class App extends Component<Props, State> {
             const currentScreen = getActiveRouteName(currentState);
             setIsTabBarShow(currentScreen, store.getState());
           }}
+          persistenceKey={navigationPersistenceKey}
           ref={navigator => {
             CustomStore.navigator = navigator;
           }}
