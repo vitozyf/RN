@@ -29,7 +29,7 @@ export default {
     HomeUserAuthors: {},
     Sales: {},
   },
-  IsTabBarShow: false, // 是否隐藏tabbar
+  IsTabBarShow: true, // 是否隐藏tabbar
   HeaderHeight: ISIOS
     ? DeviceInfo.getDeviceName() === "iPhone X"
       ? 88

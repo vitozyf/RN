@@ -1,6 +1,5 @@
 import { StatusBar } from "react-native";
-import { ISANDROID } from "@src/utils/system";
-import { ISIOS } from "@src/utils/system";
+import { ISANDROID, ISIOS } from "@src/utils/system";
 
 export const UserInfo = (state = {}, action) => {
   switch (action.type) {
@@ -21,7 +20,6 @@ export const UserInfo = (state = {}, action) => {
       return state;
   }
 };
-
 export const IsTabBarShow = (state = false, action) => {
   switch (action.type) {
     case "SetIsTabBarShow":

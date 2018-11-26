@@ -17,8 +17,6 @@ type Props = {
   navigation: INavigation,
   SetBomSearchInfo: Function,
   SetSearchRecord: Function,
-  SetIsTabBarShow: Function,
-  SetStatusBarStyle: Function,
   SearchRecord: Array<any>,
 };
 type State = {
@@ -120,6 +118,8 @@ class SearchPage extends Component<Props, State> {
           );
         });
         SetSearchRecord && SetSearchRecord(SearchRecord);
+      } else {
+        SetSearchRecord(null);
       }
     });
   }
@@ -178,11 +178,6 @@ class SearchPage extends Component<Props, State> {
     this.gethotmodelandgdspotcheck(); // 获取热搜
     this.passParameterHandler();
     const { navigation } = this.props;
-    this.props.SetIsTabBarShow(
-      this.props.navigation.state.routeName === "Bom" ||
-        this.props.navigation.state.routeName === "ErpIndex"
-    );
-    this.props.SetStatusBarStyle("dark-content");
   }
 }
 const styles = StyleSheet.create({
@@ -257,22 +252,10 @@ const mapStateToProps = (state, props) => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    SetIsTabBarShow: IsTabBarShow => {
-      return dispatch({
-        type: "SetIsTabBarShow",
-        IsTabBarShow,
-      });
-    },
     SetBomSearchInfo: BomSearchInfo => {
       return dispatch({
         type: "SetBomSearchInfo",
         BomSearchInfo,
-      });
-    },
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
       });
     },
     SetSearchRecord: SearchRecord => {

@@ -35,8 +35,6 @@ const HeaderLeftCom = connect((state, props) => {
 
 type ErpIndexProps = {
   navigation: INavigation,
-  SetStatusBarStyle: Function,
-  SetIsTabBarShow: Function,
 };
 
 class ErpIndex extends Component<ErpIndexProps> {
@@ -80,8 +78,6 @@ class ErpIndex extends Component<ErpIndexProps> {
             style={styles.titleicon}
             source={require("./img/list-into-wh_ic.png")}
           />
-          {/* <Text style={{ fontFamily: "iconfont", fontSize: 20 }}>&#xe75e;</Text>
-          <Icon style={styles.icon} name="true" size={20} /> */}
 
           <Text style={styles.title}>入库</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
@@ -131,26 +127,6 @@ class ErpIndex extends Component<ErpIndexProps> {
       </View>
     );
   }
-  willFocusListener: any;
-  componentWillMount() {
-    const { navigation } = this.props;
-    // this.willBlurListener = navigation.addListener('willBlur', this.willBlurHandler);
-    this.willFocusListener = navigation.addListener(
-      "willFocus",
-      this.willFocusHandler
-    );
-  }
-  componentWillUnmount() {
-    // this.willBlurListener.remove();
-    this.willFocusListener.remove();
-  }
-  willFocusHandler = () => {
-    this.props.SetStatusBarStyle("light-content");
-    this.props.SetIsTabBarShow(
-      this.props.navigation.state.routeName === "Bom" ||
-        this.props.navigation.state.routeName === "ErpIndex"
-    );
-  };
 }
 const styles = StyleSheet.create({
   container: {
@@ -193,24 +169,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return Object.assign({}, props);
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    SetIsTabBarShow: IsTabBarShow => {
-      return dispatch({
-        type: "SetIsTabBarShow",
-        IsTabBarShow,
-      });
-    },
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
-      });
-    },
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ErpIndex);
+export default connect(mapStateToProps)(ErpIndex);

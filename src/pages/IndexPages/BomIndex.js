@@ -44,8 +44,6 @@ const HeaderLeftCom = connect((state, props) => {
 
 type BonProps = {
   navigation: any,
-  SetIsTabBarShow: any,
-  SetStatusBarStyle: Function,
 };
 class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
@@ -86,24 +84,6 @@ class Bom extends Component<BonProps> {
       </View>
     );
   }
-  willFocusListener: any = null;
-  componentWillMount() {
-    const { navigation } = this.props;
-    this.willFocusListener = navigation.addListener(
-      "willFocus",
-      this.willFocusHandler
-    );
-  }
-  componentWillUnmount() {
-    this.willFocusListener.remove();
-  }
-  willFocusHandler = () => {
-    this.props.SetStatusBarStyle("light-content");
-    this.props.SetIsTabBarShow(
-      this.props.navigation.state.routeName === "Bom" ||
-        this.props.navigation.state.routeName === "ErpIndex"
-    );
-  };
 }
 const styles = StyleSheet.create({
   container: {
@@ -162,24 +142,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return props;
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    SetIsTabBarShow: IsTabBarShow => {
-      return dispatch({
-        type: "SetIsTabBarShow",
-        IsTabBarShow,
-      });
-    },
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
-      });
-    },
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bom);
+export default connect(mapStateToProps)(Bom);

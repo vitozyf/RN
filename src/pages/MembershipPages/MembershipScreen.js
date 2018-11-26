@@ -9,7 +9,6 @@ import { HeaderTitle, HeaderRight } from "@components";
 type Props = {
   navigation: INavigation,
   UserIdentity: Object,
-  SetStatusBarStyle: Function,
 };
 class MembershipScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
@@ -91,9 +90,6 @@ class MembershipScreen extends Component<Props> {
         </View>
       </View>
     );
-  }
-  componentWillMount() {
-    this.props.SetStatusBarStyle("dark-content");
   }
 }
 
@@ -182,17 +178,4 @@ const mapStateToProps = (state, props) => {
     props
   );
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
-      });
-    },
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MembershipScreen);
+export default connect(mapStateToProps)(MembershipScreen);

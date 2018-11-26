@@ -207,8 +207,6 @@ type SerchListProps = {
   setActiveTab: Function,
   datas: Array<any>,
   navigation: INavigation,
-  SetIsTabBarShow: Function,
-  SetStatusBarStyle: Function,
 };
 type SerchListState = {
   selected: any,
@@ -923,7 +921,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       </View>
     );
   }
-  willFocusListener: any;
+  // willFocusListener: any;
   didBlurSubscription: any;
   componentWillMount() {
     this.setState({
@@ -938,10 +936,6 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     if (name === "StkStock") {
       this.getStkWarehouse();
     }
-    this.willFocusListener = navigation.addListener(
-      "willFocus",
-      this.willFocusHandler
-    );
     this.didBlurSubscription = navigation.addListener("willBlur", payload => {
       this.setState({
         viewFocus: false,
@@ -950,14 +944,8 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     });
   }
   componentWillUnmount() {
-    this.willFocusListener.remove();
     this.didBlurSubscription.remove();
   }
-  willFocusHandler = () => {
-    const { SetIsTabBarShow } = this.props;
-    SetIsTabBarShow(false);
-    this.props.SetStatusBarStyle("dark-content");
-  };
 }
 
 const styles = StyleSheet.create({
@@ -1154,24 +1142,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return props;
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    SetIsTabBarShow: IsTabBarShow => {
-      return dispatch({
-        type: "SetIsTabBarShow",
-        IsTabBarShow,
-      });
-    },
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
-      });
-    },
-  };
-};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SerchList);
+export default connect(mapStateToProps)(SerchList);

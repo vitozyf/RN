@@ -60,28 +60,10 @@ const Index = class Index extends Component<Props> {
   render() {
     return <IndexPages navigation={this.props.navigation} />;
   }
-  // componentWillMount() {
-  //   const {SetBottomTabNav, navigation} = this.props;
-  //   SetBottomTabNav(navigation);
-  // }
 };
 
 const mapStateToProps = (state, props) => {
   return props;
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     SetBottomTabNav : (BottomTabNav) => {
-//       return dispatch({
-//         type: 'SetBottomTabNav',
-//         BottomTabNav
-//       })
-//     }
-//   }
-// }
-
-export default connect(
-  mapStateToProps
-  // mapDispatchToProps
-)(Index);
+export default connect(mapStateToProps)(Index);

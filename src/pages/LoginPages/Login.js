@@ -9,7 +9,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 type Props = {
   navigation: INavigation,
   SetUserInfo: Function,
-  SetStatusBarStyle: Function,
 };
 type State = {
   CompanyName: string,
@@ -196,9 +195,6 @@ class Login extends Component<Props, State> {
       </KeyboardAwareScrollView>
     );
   }
-  componentWillMount() {
-    this.props.SetStatusBarStyle("dark-content");
-  }
 }
 
 const styles = StyleSheet.create({
@@ -269,12 +265,6 @@ const mapDispatchToProps = dispatch => {
   return {
     SetUserInfo: SetUserInfo => {
       return dispatch(SetUserInfo);
-    },
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
-      });
     },
   };
 };

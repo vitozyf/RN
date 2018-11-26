@@ -19,11 +19,6 @@ class Register extends Component {
       SmsGuid: "",
     };
   }
-  //   static navigationOptions = ({ navigation }) => {
-  //     return {
-  //       title: '注册',
-  //     };
-  //   };
   static navigationOptions = ({ navigation }) => {
     const goBackHome = () => {
       navigation.navigate("Home");
@@ -218,9 +213,6 @@ class Register extends Component {
       </KeyboardAwareScrollView>
     );
   }
-  componentWillMount() {
-    this.props.SetStatusBarStyle("dark-content");
-  }
 }
 
 const styles = StyleSheet.create({
@@ -256,11 +248,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 1,
   },
-  inputIn: {
-    // borderWidth: 0,
-    // borderBottomWidth: 1,
-    // borderColor: '#ccc',
-  },
+  inputIn: {},
   InputMessage: {
     borderWidth: 0,
     borderBottomWidth: 1,
@@ -305,12 +293,6 @@ const mapDispatchToProps = dispatch => {
   return {
     SetUserInfo: SetUserInfo => {
       return dispatch(SetUserInfo);
-    },
-    SetStatusBarStyle: StatusBarStyle => {
-      return dispatch({
-        type: "SetStatusBarStyle",
-        StatusBarStyle,
-      });
     },
   };
 };

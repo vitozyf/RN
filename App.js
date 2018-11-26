@@ -9,6 +9,10 @@ import CustomStore from "./src/utils/jumpUtils";
 import codePush from "react-native-code-push";
 import { ISANDROID } from "@src/utils/system";
 import SplashScreen from "react-native-splash-screen";
+import {
+  getActiveRouteName,
+  setIsTabBarShow,
+} from "@router/routerChangeHandler";
 
 let codePushOptions;
 if (ISANDROID && !__DEV__) {
@@ -62,7 +66,6 @@ class App extends Component<Props, State> {
   }
   componentWillMount() {
     AppInit(store);
-
     // codePush.disallowRestart(); //禁止重启
   }
   componentDidMount() {
@@ -76,6 +79,10 @@ class App extends Component<Props, State> {
     return (
       <Provider store={store}>
         <DrawerNavRouter
+          onNavigationStateChange={(prevState, currentState) => {
+            const currentScreen = getActiveRouteName(currentState);
+            setIsTabBarShow(currentScreen, store.getState());
+          }}
           ref={navigator => {
             CustomStore.navigator = navigator;
           }}
