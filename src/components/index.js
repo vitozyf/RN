@@ -1,13 +1,14 @@
-import HeaderRight from './HeaderRight';
-import HeaderTitle from './HeaderTitle';
-import ZnlButton from './ZnlButton';
-import ZnlHeader from './ZnlHeader';
-import ZnlInput from './ZnlInput';
-import CustomTabComponent from './CustomTabComponent';
-import {Loading} from './Loading';
-import {BackTop} from './BackTop';
-import ZnlModal from './ZnlModal';
-import {ZnlToast} from './ZnlToast'
+import HeaderRight from "./HeaderRight";
+import HeaderTitle from "./HeaderTitle";
+import ZnlButton from "./ZnlButton";
+import ZnlHeader from "./ZnlHeader";
+import ZnlInput from "./ZnlInput";
+import CustomTabComponent from "./CustomTabComponent";
+import DashLine from "./DashLine";
+import { Loading } from "./Loading";
+import { BackTop } from "./BackTop";
+import ZnlModal from "./ZnlModal";
+import { ZnlToast } from "./ZnlToast";
 
 export {
   HeaderRight,
@@ -19,5 +20,6 @@ export {
   Loading,
   BackTop,
   ZnlModal,
-  ZnlToast
-}
+  ZnlToast,
+  DashLine,
+};

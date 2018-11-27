@@ -29,6 +29,7 @@ export function setIsTabBarShow(routerName, currentState) {
     routerName === "Bom" || routerName === "ErpIndex"
       ? "light-content"
       : "dark-content";
+
   if (currentState.StatusBarStyle !== StatusBarStyle) {
     store.dispatch({
       type: "SetStatusBarStyle",

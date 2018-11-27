@@ -1,34 +1,7 @@
-// type UserInfo = {
-//   AvatarPath: string,
-//   NickName: string,
-//   TOKEN: string,
-//   PhoneNumber: string,
-//   UserIdentity: any,
-//   HomeUserInfo: any,
-//   HomeUserAuthors: any,
-// };
 import { ISIOS } from "@src/utils/system";
 import DeviceInfo from "react-native-device-info";
-
 // 统一声明默认State
 export default {
-  // Navigations: {
-  //   // DrawerNav: null,
-  //   SwitchNav: null,
-  //   BottomTabNav: null,
-  //   SearchStackNav: null
-  // },
-  UserInfo: {
-    AvatarPath:
-      "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
-    NickName: "",
-    TOKEN: "",
-    PhoneNumber: "",
-    UserIdentity: {},
-    HomeUserInfo: {},
-    HomeUserAuthors: {},
-    Sales: {},
-  },
   IsTabBarShow: true, // 是否隐藏tabbar
   HeaderHeight: ISIOS
     ? DeviceInfo.getDeviceName() === "iPhone X"

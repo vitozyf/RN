@@ -1,6 +1,12 @@
 /* @flow */
 import React, { PureComponent } from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { BackTop } from "@components";
 import { connect } from "react-redux";
 import { ISIOS } from "@src/utils/system";
@@ -10,9 +16,15 @@ const HEADER_HEIGHT = 50; // 头部高
 type Props = {
   value: Object,
   ActiveTab: string,
+  navigation: INavigation,
 };
 
 class ListRow extends PureComponent<Props> {
+  toCompanyDetail = info => {
+    // console.log(info);
+    const { navigation } = this.props;
+    navigation.push("CompanyInfo");
+  };
   render() {
     const { value, ActiveTab } = this.props;
     // 现货类型
@@ -77,7 +89,13 @@ class ListRow extends PureComponent<Props> {
     }
 
     return (
-      <View style={styles.FlatListRow}>
+      <TouchableOpacity
+        style={styles.FlatListRow}
+        activeOpacity={0.8}
+        onPress={() => {
+          this.toCompanyDetail(value);
+        }}
+      >
         {/* top */}
         <View style={[styles.FlatListRowTop]}>
           <View style={styles.FlatListRowTopTitleBox}>
@@ -121,7 +139,7 @@ class ListRow extends PureComponent<Props> {
             {value.SupplierName}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -233,9 +251,9 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   // 滚动
   onScroll = event => {
     const that = this;
-    const { SetHeaderHeight } = this.props;
+    // const { SetHeaderHeight } = this.props;
     let newScrollOffset = event.nativeEvent.contentOffset.y;
-    // SetHeaderHeight(100);
+    // console.log(newScrollOffset);
 
     // if (newScrollOffset <= 60 && newScrollOffset >= 0) {
     //   SetHeaderHeight((ISIOS ? 64 : 44) - newScrollOffset);
@@ -264,8 +282,10 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   };
   // 渲染行
   _renderItem = ({ item }) => {
-    const { ActiveTab } = this.props;
-    return <ListRow value={item} ActiveTab={ActiveTab} />;
+    const { ActiveTab, navigation } = this.props;
+    return (
+      <ListRow value={item} ActiveTab={ActiveTab} navigation={navigation} />
+    );
   };
   flatList: any;
   render() {

@@ -1,0 +1,349 @@
+/**
+ * 公司详情
+ * @flow
+ */
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  Linking,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { ZnlHeader, DashLine } from "@components";
+import Pane from "./Pane";
+import Swiper from "./Swiper";
+
+const WindowWidth = Dimensions.get("window").width;
+const PaddingLR = 14;
+type Props = {
+  CompanyInfo: Object,
+};
+type State = {
+  isVisible: boolean,
+};
+class CompanyInfo extends Component<Props, State> {
+  static navigationOptions = ({ navigation }: any) => {
+    return {
+      header: (
+        <ZnlHeader
+          onPressIcon={() => {
+            navigation.goBack();
+          }}
+        />
+      ),
+    };
+  };
+  static defaultProps = {
+    CompanyInfo: {},
+  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isVisible: false,
+    };
+  }
+  render() {
+    const { CompanyInfo } = this.props;
+    // testdata
+    CompanyInfo.Telephone =
+      "0755-61329358 蔡小姐,0755-23947880 只做进口原装现货,";
+    CompanyInfo.Name = "深圳市正能量网络技术有限公司";
+    CompanyInfo.Address = "深圳市福田区中航路新亚洲电子城1期5楼523室";
+    CompanyInfo.AuthenticationInfo = [
+      {
+        Description: "经营场所实景照片 前台",
+        Url:
+          "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/h3Zzm2_1530156784919.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
+      },
+      {
+        Description: "经营场所实景照片 内景",
+        Url:
+          "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/YeFNdQ_1530156813319.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
+      },
+    ];
+    CompanyInfo.Labellist = [
+      {
+        Id: 0,
+        IsMine: true,
+        Label: "置顶",
+        Qty: 10,
+      },
+      {
+        Id: 0,
+        IsMine: false,
+        Label: "原装",
+        Qty: 20,
+      },
+      {
+        Id: 0,
+        IsMine: false,
+        Label: "现货",
+        Qty: 28,
+      },
+    ];
+    // 联系人
+    const Tels = CompanyInfo.Telephone ? CompanyInfo.Telephone.split(",") : [];
+    const ContactEle = Tels.map((item, index) => {
+      if (item) {
+        return (
+          <Text key={index} style={[styles.lineHeight30, styles.companyInfo]}>
+            <Text
+              style={[styles.telText]}
+              onPress={() => {
+                Linking.openURL(`tel:${item.split(" ")[0]}`);
+              }}
+            >
+              {item.split(" ")[0]}
+            </Text>
+            <Text>&nbsp;</Text>
+            {item.split(" ")[1]}
+          </Text>
+        );
+      }
+      return null;
+    });
+    // 标签
+    const Labellist = CompanyInfo.Labellist || [];
+    const LabelEle = Labellist.map((item, index) => {
+      return (
+        <Text
+          style={[styles.label, item.IsMine ? styles.IsMine : null]}
+          key={index}
+        >
+          {item.Label}({item.Qty})
+        </Text>
+      );
+    });
+    // 认证资料
+    const AuthenticationInfo = CompanyInfo.AuthenticationInfo || [];
+    const AuthenticationInfoEle = AuthenticationInfo.map((item, index) => {
+      return (
+        <TouchableOpacity
+          style={styles.AuthenticationInfoItem}
+          key={index}
+          activeOpacity={1}
+          onPress={() => {
+            this.setState({ isVisible: true });
+          }}
+        >
+          <View>
+            <Text style={styles.Description}>{item.Description}</Text>
+          </View>
+          <Image
+            style={styles.AuthenticationInfoImg}
+            source={{
+              uri: item.Url,
+            }}
+          />
+        </TouchableOpacity>
+      );
+    });
+
+    const { isVisible } = this.state;
+    return (
+      <ScrollView style={styles.container}>
+        <Swiper
+          isVisible={isVisible}
+          closeModal={() => {
+            this.setState({ isVisible: false });
+          }}
+        />
+        {/* header */}
+        <View style={styles.header}>
+          <View style={[styles.titleTop, styles.title]}>
+            <Text style={styles.titleText}>LM358ST</Text>
+            <Text>
+              <Text>50</Text>
+              <Text>&nbsp;&nbsp;</Text>
+              <Text style={[styles.colorMain, styles.fontBold]}>¥10</Text>
+            </Text>
+          </View>
+          <View style={[styles.titleBottom, styles.title]}>
+            <Text style={[styles.textCommon]}>ST</Text>
+            <Text style={[styles.textCommon, styles.line]}>|</Text>
+            <Text style={[styles.textCommon]}>MINISO8</Text>
+            <Text style={[styles.textCommon, styles.line]}>|</Text>
+            <Text style={[styles.textCommon]}>17+</Text>
+            <DashLine width={WindowWidth - PaddingLR * 2} />
+          </View>
+          <View style={styles.offerBox}>
+            <View>
+              <Text style={styles.lineHeight30}>
+                我的备注 {CompanyInfo.commentContent}
+              </Text>
+            </View>
+            <View style={styles.offer}>
+              <Text style={styles.lineHeight30}>
+                <Text>最近一次报价 {CompanyInfo.lastQuotePrice || "-"}</Text>
+              </Text>
+              {/* {CompanyInfo.lastQuoteDate && (
+                <Text>({CompanyInfo.lastQuoteDate})</Text>
+              )} */}
+              <Text style={styles.lineHeight30}>&nbsp;;&nbsp;&nbsp;&nbsp;</Text>
+              <Text style={styles.lineHeight30}>
+                <Text>历史报价共</Text>
+                {CompanyInfo.quoteSumCount || 0}次
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View />
+        {/* company */}
+        <Pane>
+          <View style={styles.company}>
+            <View style={styles.companyLeft}>
+              <View>
+                <Text style={styles.companyTitle}>{CompanyInfo.Name}</Text>
+              </View>
+              <View style={styles.companyInfoBox}>
+                <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
+                  电话：
+                </Text>
+                <View>{ContactEle}</View>
+              </View>
+              <View style={styles.companyInfoBox}>
+                <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
+                  地址：
+                </Text>
+                <Text style={[styles.lineHeight30, styles.companyInfo]}>
+                  {CompanyInfo.Address}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.companyRight} />
+          </View>
+        </Pane>
+        <Pane title="TA的标签">
+          <View style={styles.labelBox}>{LabelEle}</View>
+        </Pane>
+        <Pane title="认证资料">
+          <View style={styles.labelBox}>
+            <ScrollView horizontal={true}>{AuthenticationInfoEle}</ScrollView>
+          </View>
+        </Pane>
+      </ScrollView>
+    );
+  }
+}
+export default CompanyInfo;
+
+const styles = StyleSheet.create({
+  // common
+  colorMain: {
+    color: "#ee7700",
+  },
+  line: {
+    color: "#ccc",
+  },
+  fontBold: {
+    fontWeight: "bold",
+  },
+  lineHeight30: {
+    lineHeight: 30,
+  },
+  telText: {
+    color: "#2288CC",
+  },
+  // page
+  container: {
+    backgroundColor: "rgba(248,248,248,0.82)",
+  },
+  // header
+  header: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: "#fff",
+  },
+  title: {
+    paddingLeft: PaddingLR,
+    paddingRight: PaddingLR,
+    flexDirection: "row",
+  },
+  titleTop: {
+    justifyContent: "space-between",
+  },
+  titleText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    lineHeight: 30,
+  },
+  titleBottom: {
+    justifyContent: "flex-start",
+  },
+  textCommon: {
+    lineHeight: 30,
+    marginRight: 10,
+  },
+  // 报价
+  offerBox: {
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  offer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  // 公司
+  company: {
+    flexDirection: "row",
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  companyLeft: {
+    flex: 1,
+  },
+  companyRight: {
+    width: 100,
+  },
+  companyTitle: {
+    lineHeight: 60,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  companyInfoBox: {
+    flexDirection: "row",
+  },
+  companyInfoTitle: {
+    width: 50,
+  },
+  companyInfo: {
+    flex: 1,
+  },
+  // 标签
+  labelBox: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    paddingBottom: 10,
+    paddingLeft: 20,
+  },
+  label: {
+    lineHeight: 26,
+    paddingLeft: 6,
+    paddingRight: 6,
+    color: "#0f9321",
+    borderWidth: 1,
+    borderColor: "#0f9321",
+    marginRight: 6,
+  },
+  IsMine: {
+    color: "#ee7700",
+    borderWidth: 1,
+    borderColor: "#ee7700",
+  },
+  // 认证资料
+  AuthenticationInfoItem: {
+    marginRight: 10,
+  },
+  Description: {
+    lineHeight: 30,
+    fontWeight: "bold",
+  },
+  AuthenticationInfoImg: {
+    width: 320,
+    height: 240,
+  },
+});
