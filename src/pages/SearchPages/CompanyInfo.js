@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { ZnlHeader, DashLine } from "@components";
 import Pane from "./Pane";
-import Swiper from "./Swiper";
+import SwiperModal from "./Swiper";
 
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 14;
@@ -24,6 +24,7 @@ type Props = {
 };
 type State = {
   isVisible: boolean,
+  index: number,
 };
 class CompanyInfo extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -44,6 +45,7 @@ class CompanyInfo extends Component<Props, State> {
     super(props);
     this.state = {
       isVisible: false,
+      index: 0,
     };
   }
   render() {
@@ -83,6 +85,29 @@ class CompanyInfo extends Component<Props, State> {
         IsMine: false,
         Label: "现货",
         Qty: 28,
+      },
+    ];
+    CompanyInfo.spotChecklist = {};
+    CompanyInfo.spotChecklist.SpotCheckGroup = [
+      {
+        SpotCheckDate: "2018年09月29日",
+        WareHouse: "深圳",
+        listSpotCheckList: [
+          {
+            Brand: "VISHAY",
+            Model: "SMBJ33CA-E3/52",
+            Num: 20302,
+            Reson: null,
+            Result: true,
+          },
+          {
+            Brand: "VISHAY",
+            Model: "SMBJ33CA",
+            Num: 2032,
+            Reson: null,
+            Result: false,
+          },
+        ],
       },
     ];
     // 联系人
@@ -127,7 +152,7 @@ class CompanyInfo extends Component<Props, State> {
           key={index}
           activeOpacity={1}
           onPress={() => {
-            this.setState({ isVisible: true });
+            this.setState({ isVisible: true, index: index });
           }}
         >
           <View>
@@ -142,15 +167,91 @@ class CompanyInfo extends Component<Props, State> {
         </TouchableOpacity>
       );
     });
+    // 抽查记录
+    const SpotCheckGroup = CompanyInfo.spotChecklist
+      ? CompanyInfo.spotChecklist.SpotCheckGroup
+        ? CompanyInfo.spotChecklist.SpotCheckGroup
+        : []
+      : [];
+    const SpotCheckGroupEle = SpotCheckGroup.map((item, index) => {
+      const listSpotCheckList = item.listSpotCheckList || [];
+      return (
+        <View key={`SpotCheckGroup${index}`} style={styles.SpotCheckGroup}>
+          <View style={styles.SpotCheckGroupTitleBox}>
+            <Text style={styles.SpotCheckGroupTitle}>{item.SpotCheckDate}</Text>
+            <Text style={styles.SpotCheckGroupTitle}>{item.WareHouse}</Text>
+          </View>
+          <View>
+            {listSpotCheckList.map((data, j) => {
+              return (
+                <View
+                  key={`listSpotCheckList${j}`}
+                  style={styles.listSpotCheckList}
+                >
+                  <View style={styles.listSpotCheckListLeft}>
+                    <View
+                      style={[
+                        styles.listSpotCheckListLineMini,
+                        !data.Result ? styles.pointNot : null,
+                        j === 0 ? { backgroundColor: "transparent" } : null,
+                      ]}
+                    />
+                    <View style={styles.listSpotCheckListPointBox}>
+                      <View
+                        style={[
+                          styles.point,
+                          styles.listSpotCheckListPoint,
+                          !data.Result ? styles.pointNot : null,
+                        ]}
+                      />
+                    </View>
+                    <View
+                      style={[
+                        styles.listSpotCheckListLine,
+                        !data.Result ? styles.pointNot : null,
+                      ]}
+                    />
+                  </View>
+                  <View style={styles.listSpotCheckListRight}>
+                    <Text style={styles.listSpotCheckListTitle}>
+                      型号：{data.Model}
+                    </Text>
+                    <Text style={styles.listSpotCheckListRow}>
+                      品牌 / 数量： {data.Brand} / {data.Num}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      );
+    });
+    const renderHeaderRight = () => {
+      return (
+        <View style={styles.headerRight}>
+          <View style={styles.rightRow}>
+            <View style={[styles.point]} />
+            <Text style={[styles.results]}>合格</Text>
+          </View>
+          <View style={styles.rightRow}>
+            <View style={[styles.point, styles.pointNot]} />
+            <Text style={[styles.results, styles.resultsNot]}>不合格</Text>
+          </View>
+        </View>
+      );
+    };
 
-    const { isVisible } = this.state;
+    const { isVisible, index } = this.state;
     return (
       <ScrollView style={styles.container}>
-        <Swiper
+        <SwiperModal
           isVisible={isVisible}
           closeModal={() => {
             this.setState({ isVisible: false });
           }}
+          AuthenticationInfo={AuthenticationInfo}
+          index={index}
         />
         {/* header */}
         <View style={styles.header}>
@@ -224,6 +325,14 @@ class CompanyInfo extends Component<Props, State> {
           <View style={styles.labelBox}>
             <ScrollView horizontal={true}>{AuthenticationInfoEle}</ScrollView>
           </View>
+        </Pane>
+        {/* <Pane title="经营分析">
+          <View>
+            <Text>经营分析</Text>
+          </View>
+        </Pane> */}
+        <Pane title="抽查记录" renderHeaderRight={renderHeaderRight}>
+          {SpotCheckGroupEle}
         </Pane>
       </ScrollView>
     );
@@ -345,5 +454,82 @@ const styles = StyleSheet.create({
   AuthenticationInfoImg: {
     width: 320,
     height: 240,
+  },
+  headerRight: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  rightRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  point: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#1bb934",
+    marginRight: 5,
+  },
+  results: {
+    color: "#1bb934",
+  },
+  pointNot: {
+    backgroundColor: "#ee2929",
+  },
+  resultsNot: {
+    color: "#ee2929",
+  },
+  // 抽查记录
+  SpotCheckGroup: {
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  SpotCheckGroupTitleBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  SpotCheckGroupTitle: {
+    color: "#999",
+    lineHeight: 30,
+  },
+  listSpotCheckList: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  listSpotCheckListLeft: {
+    width: 20,
+    alignItems: "center",
+    height: 66,
+  },
+  listSpotCheckListPointBox: {
+    // paddingTop: 10,
+  },
+  listSpotCheckListPoint: {
+    marginRight: 0,
+  },
+  listSpotCheckListLineMini: {
+    width: 1,
+    height: 10,
+    backgroundColor: "#1bb934",
+  },
+  listSpotCheckListLine: {
+    width: 1,
+    flex: 1,
+    backgroundColor: "#1bb934",
+  },
+  listSpotCheckListRight: {
+    flex: 1,
+  },
+  listSpotCheckListTitle: {
+    lineHeight: 36,
+    fontWeight: "bold",
+  },
+  listSpotCheckListRow: {
+    color: "#666",
+    lineHeight: 30,
   },
 });

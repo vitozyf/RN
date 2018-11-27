@@ -8,16 +8,20 @@ import { View, Text, StyleSheet } from "react-native";
 type Props = {
   children?: any,
   title?: string,
+  renderHeaderRight?: Function,
 };
 class Pane extends Component<Props> {
   render() {
-    const { children, title } = this.props;
+    const { children, title, renderHeaderRight } = this.props;
     return (
       <View>
         {title && (
           <View style={styles.header}>
-            <View style={styles.line} />
-            <Text style={styles.title}>{title}</Text>
+            <View style={styles.headerLeft}>
+              <View style={styles.line} />
+              <Text style={styles.title}>{title}</Text>
+            </View>
+            {renderHeaderRight && renderHeaderRight()}
           </View>
         )}
         {children}
@@ -38,9 +42,14 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingLeft: 10,
+  },
+  headerLeft: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   line: {
     width: 6,
