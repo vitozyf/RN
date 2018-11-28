@@ -55,6 +55,7 @@ class CompanyInfo extends Component<Props, State> {
       "0755-61329358 蔡小姐,0755-23947880 只做进口原装现货,";
     CompanyInfo.Name = "深圳市正能量网络技术有限公司";
     CompanyInfo.Address = "深圳市福田区中航路新亚洲电子城1期5楼523室";
+    CompanyInfo.Mobile = "13729093675";
     CompanyInfo.AuthenticationInfo = [
       {
         Description: "经营场所实景照片 前台",
@@ -106,6 +107,26 @@ class CompanyInfo extends Component<Props, State> {
             Num: 2032,
             Reson: null,
             Result: false,
+          },
+        ],
+      },
+      {
+        SpotCheckDate: "2018年09月29日",
+        WareHouse: "深圳",
+        listSpotCheckList: [
+          {
+            Brand: "VISHAY",
+            Model: "SMBJ33CA-E3/52",
+            Num: 20302,
+            Reson: null,
+            Result: true,
+          },
+          {
+            Brand: "VISHAY",
+            Model: "SMBJ33CA",
+            Num: 2032,
+            Reson: null,
+            Result: true,
           },
         ],
       },
@@ -256,7 +277,7 @@ class CompanyInfo extends Component<Props, State> {
         {/* header */}
         <View style={styles.header}>
           <View style={[styles.titleTop, styles.title]}>
-            <Text style={styles.titleText}>LM358ST</Text>
+            <Text style={styles.titleText}>型号？</Text>
             <Text>
               <Text>50</Text>
               <Text>&nbsp;&nbsp;</Text>
@@ -264,30 +285,40 @@ class CompanyInfo extends Component<Props, State> {
             </Text>
           </View>
           <View style={[styles.titleBottom, styles.title]}>
-            <Text style={[styles.textCommon]}>ST</Text>
+            <Text style={[styles.textCommon]}>
+              {CompanyInfo.tradeInfo ? CompanyInfo.tradeInfo.Brand : ""}
+            </Text>
             <Text style={[styles.textCommon, styles.line]}>|</Text>
-            <Text style={[styles.textCommon]}>MINISO8</Text>
+            <Text style={[styles.textCommon]}>封装？</Text>
             <Text style={[styles.textCommon, styles.line]}>|</Text>
-            <Text style={[styles.textCommon]}>17+</Text>
+            <Text style={[styles.textCommon]}>年份？</Text>
             <DashLine width={WindowWidth - PaddingLR * 2} />
           </View>
           <View style={styles.offerBox}>
             <View>
               <Text style={styles.lineHeight30}>
-                我的备注 {CompanyInfo.commentContent}
+                我的备注{" "}
+                {CompanyInfo.tradeInfo
+                  ? CompanyInfo.tradeInfo.CommentContent
+                  : ""}
               </Text>
             </View>
             <View style={styles.offer}>
               <Text style={styles.lineHeight30}>
-                <Text>最近一次报价 {CompanyInfo.lastQuotePrice || "-"}</Text>
+                <Text>
+                  最近一次报价{" "}
+                  {CompanyInfo.tradeInfo
+                    ? CompanyInfo.tradeInfo.LastQuotePrice
+                    : "-"}
+                </Text>
               </Text>
-              {/* {CompanyInfo.lastQuoteDate && (
-                <Text>({CompanyInfo.lastQuoteDate})</Text>
-              )} */}
               <Text style={styles.lineHeight30}>&nbsp;;&nbsp;&nbsp;&nbsp;</Text>
               <Text style={styles.lineHeight30}>
                 <Text>历史报价共</Text>
-                {CompanyInfo.quoteSumCount || 0}次
+                {CompanyInfo.tradeInfo
+                  ? CompanyInfo.tradeInfo.QuoteSumCount
+                  : 0}
+                次
               </Text>
             </View>
           </View>
@@ -305,6 +336,23 @@ class CompanyInfo extends Component<Props, State> {
                   电话：
                 </Text>
                 <View>{ContactEle}</View>
+              </View>
+              <View style={styles.companyInfoBox}>
+                <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
+                  手机：
+                </Text>
+                <Text
+                  style={[
+                    styles.lineHeight30,
+                    styles.companyInfo,
+                    styles.telText,
+                  ]}
+                  onPress={() => {
+                    Linking.openURL(`tel:${CompanyInfo.Mobile}`);
+                  }}
+                >
+                  {CompanyInfo.Mobile}
+                </Text>
               </View>
               <View style={styles.companyInfoBox}>
                 <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
@@ -326,11 +374,11 @@ class CompanyInfo extends Component<Props, State> {
             <ScrollView horizontal={true}>{AuthenticationInfoEle}</ScrollView>
           </View>
         </Pane>
-        {/* <Pane title="经营分析">
+        <Pane title="经营分析">
           <View>
             <Text>经营分析</Text>
           </View>
-        </Pane> */}
+        </Pane>
         <Pane title="抽查记录" renderHeaderRight={renderHeaderRight}>
           {SpotCheckGroupEle}
         </Pane>
@@ -529,7 +577,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   listSpotCheckListRow: {
-    color: "#666",
+    color: "#333",
     lineHeight: 30,
   },
 });
