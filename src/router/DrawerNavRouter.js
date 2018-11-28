@@ -4,6 +4,7 @@ import Login from "@router/router-pages/Login"; // 登录
 import Register from "@router/router-pages/Register"; // 注册
 import BaseInfo from "@router/router-pages/BaseInfo"; // 基本信息
 import Membership from "@router/router-pages/Membership"; // 会员身份
+import TestPageScreen from "./router-pages/TestPage"; // 测试页
 import { createDrawerNavigator } from "react-navigation";
 
 import CustomDrawerContentComponent from "./DrawerContentComponent";
@@ -30,16 +31,16 @@ const SimpleAppNavigator = createDrawerNavigator(
       screen: Membership,
       path: "/Membership",
     },
+    TestPage: TestPageScreen,
   },
   {
     initialRouteName: "Home",
     drawerPosition: "left",
     contentComponent: CustomDrawerContentComponent,
-    swipeEnabled: false,
-    animationEnabled: true,
-    lazy: true,
-    tabBarPosition: "bottom",
     drawerLockMode: "locked-closed",
+    contentOptions: {
+      activeTintColor: "#ee7700",
+    },
   }
 );
 

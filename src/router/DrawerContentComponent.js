@@ -156,6 +156,10 @@ if (ISDEBUG) {
     key: "Login",
     routeName: "Login",
   });
+  items.push({
+    key: "TestPage",
+    routeName: "TestPage",
+  });
 }
 
 class MyScrollView extends Component {
