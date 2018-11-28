@@ -20,13 +20,15 @@ import SwiperModal from "./Swiper";
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 14;
 type Props = {
-  CompanyInfo: Object,
+  navigation: INavigation,
 };
 type State = {
   isVisible: boolean,
   index: number,
+  CompanyInfo: Object,
+  listRow: Object,
 };
-class CompanyInfo extends Component<Props, State> {
+class CompanyInfoPage extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
     return {
       header: (
@@ -38,99 +40,120 @@ class CompanyInfo extends Component<Props, State> {
       ),
     };
   };
-  static defaultProps = {
-    CompanyInfo: {},
-  };
   constructor(props: Props) {
     super(props);
     this.state = {
       isVisible: false,
       index: 0,
+      CompanyInfo: {},
+      listRow: {},
     };
   }
+  getData = () => {
+    const listRow = this.props.navigation.getParam("listRow");
+    this.setState(listRow);
+    const Brand = listRow.Brand;
+    const Model = listRow.PartNo;
+    const companyId = listRow.Supplier.Id;
+    const companyName = listRow.SupplierName;
+
+    if ((companyId || companyName) && !listRow.IsInvisibleSupplier) {
+      Cloud.$post("companycard/appget/company", {
+        Brand,
+        Model,
+        companyId,
+        companyName,
+      }).then(CompanyInfo => {
+        this.setState(CompanyInfo);
+      });
+    }
+  };
+  componentWillMount() {
+    this.getData();
+  }
   render() {
-    const { CompanyInfo } = this.props;
+    const { CompanyInfo, listRow } = this.state;
     // testdata
-    CompanyInfo.Telephone =
-      "0755-61329358 蔡小姐,0755-23947880 只做进口原装现货,";
-    CompanyInfo.Name = "深圳市正能量网络技术有限公司";
-    CompanyInfo.Address = "深圳市福田区中航路新亚洲电子城1期5楼523室";
-    CompanyInfo.Mobile = "13729093675";
-    CompanyInfo.AuthenticationInfo = [
-      {
-        Description: "经营场所实景照片 前台",
-        Url:
-          "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/h3Zzm2_1530156784919.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
-      },
-      {
-        Description: "经营场所实景照片 内景",
-        Url:
-          "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/YeFNdQ_1530156813319.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
-      },
-    ];
-    CompanyInfo.Labellist = [
-      {
-        Id: 0,
-        IsMine: true,
-        Label: "置顶",
-        Qty: 10,
-      },
-      {
-        Id: 0,
-        IsMine: false,
-        Label: "原装",
-        Qty: 20,
-      },
-      {
-        Id: 0,
-        IsMine: false,
-        Label: "现货",
-        Qty: 28,
-      },
-    ];
-    CompanyInfo.spotChecklist = {};
-    CompanyInfo.spotChecklist.SpotCheckGroup = [
-      {
-        SpotCheckDate: "2018年09月29日",
-        WareHouse: "深圳",
-        listSpotCheckList: [
-          {
-            Brand: "VISHAY",
-            Model: "SMBJ33CA-E3/52",
-            Num: 20302,
-            Reson: null,
-            Result: true,
-          },
-          {
-            Brand: "VISHAY",
-            Model: "SMBJ33CA",
-            Num: 2032,
-            Reson: null,
-            Result: false,
-          },
-        ],
-      },
-      {
-        SpotCheckDate: "2018年09月29日",
-        WareHouse: "深圳",
-        listSpotCheckList: [
-          {
-            Brand: "VISHAY",
-            Model: "SMBJ33CA-E3/52",
-            Num: 20302,
-            Reson: null,
-            Result: true,
-          },
-          {
-            Brand: "VISHAY",
-            Model: "SMBJ33CA",
-            Num: 2032,
-            Reson: null,
-            Result: true,
-          },
-        ],
-      },
-    ];
+    // CompanyInfo.Telephone =
+    //   "0755-61329358 蔡小姐,0755-23947880 只做进口原装现货,";
+    // CompanyInfo.Name = "深圳市正能量网络技术有限公司";
+    // CompanyInfo.Address = "深圳市福田区中航路新亚洲电子城1期5楼523室";
+    // CompanyInfo.Mobile = "13729093675";
+    // CompanyInfo.AuthenticationInfo = [
+    //   {
+    //     Description: "经营场所实景照片 前台",
+    //     Url:
+    //       "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/h3Zzm2_1530156784919.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
+    //   },
+    //   {
+    //     Description: "经营场所实景照片 内景",
+    //     Url:
+    //       "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/YeFNdQ_1530156813319.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
+    //   },
+    // ];
+    // CompanyInfo.Labellist = [
+    //   {
+    //     Id: 0,
+    //     IsMine: true,
+    //     Label: "置顶",
+    //     Qty: 10,
+    //   },
+    //   {
+    //     Id: 0,
+    //     IsMine: false,
+    //     Label: "原装",
+    //     Qty: 20,
+    //   },
+    //   {
+    //     Id: 0,
+    //     IsMine: false,
+    //     Label: "现货",
+    //     Qty: 28,
+    //   },
+    // ];
+    // CompanyInfo.spotChecklist = {};
+    // CompanyInfo.spotChecklist.SpotCheckGroup = [
+    //   {
+    //     SpotCheckDate: "2018年09月29日",
+    //     WareHouse: "深圳",
+    //     listSpotCheckList: [
+    //       {
+    //         Brand: "VISHAY",
+    //         Model: "SMBJ33CA-E3/52",
+    //         Num: 20302,
+    //         Reson: null,
+    //         Result: true,
+    //       },
+    //       {
+    //         Brand: "VISHAY",
+    //         Model: "SMBJ33CA",
+    //         Num: 2032,
+    //         Reson: null,
+    //         Result: false,
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     SpotCheckDate: "2018年09月29日",
+    //     WareHouse: "深圳",
+    //     listSpotCheckList: [
+    //       {
+    //         Brand: "VISHAY",
+    //         Model: "SMBJ33CA-E3/52",
+    //         Num: 20302,
+    //         Reson: null,
+    //         Result: true,
+    //       },
+    //       {
+    //         Brand: "VISHAY",
+    //         Model: "SMBJ33CA",
+    //         Num: 2032,
+    //         Reson: null,
+    //         Result: true,
+    //       },
+    //     ],
+    //   },
+    // ];
     // 联系人
     const Tels = CompanyInfo.Telephone ? CompanyInfo.Telephone.split(",") : [];
     const ContactEle = Tels.map((item, index) => {
@@ -277,7 +300,7 @@ class CompanyInfo extends Component<Props, State> {
         {/* header */}
         <View style={styles.header}>
           <View style={[styles.titleTop, styles.title]}>
-            <Text style={styles.titleText}>型号？</Text>
+            <Text style={styles.titleText}>{listRow.PartNo}</Text>
             <Text>
               <Text>50</Text>
               <Text>&nbsp;&nbsp;</Text>
@@ -285,13 +308,11 @@ class CompanyInfo extends Component<Props, State> {
             </Text>
           </View>
           <View style={[styles.titleBottom, styles.title]}>
-            <Text style={[styles.textCommon]}>
-              {CompanyInfo.tradeInfo ? CompanyInfo.tradeInfo.Brand : ""}
-            </Text>
+            <Text style={[styles.textCommon]}>{listRow.Brand}</Text>
             <Text style={[styles.textCommon, styles.line]}>|</Text>
-            <Text style={[styles.textCommon]}>封装？</Text>
+            <Text style={[styles.textCommon]}>{listRow.Package}</Text>
             <Text style={[styles.textCommon, styles.line]}>|</Text>
-            <Text style={[styles.textCommon]}>年份？</Text>
+            <Text style={[styles.textCommon]}>{listRow.MakeAges}</Text>
             <DashLine width={WindowWidth - PaddingLR * 2} />
           </View>
           <View style={styles.offerBox}>
@@ -374,11 +395,11 @@ class CompanyInfo extends Component<Props, State> {
             <ScrollView horizontal={true}>{AuthenticationInfoEle}</ScrollView>
           </View>
         </Pane>
-        <Pane title="经营分析">
+        {/* <Pane title="经营分析">
           <View>
             <Text>经营分析</Text>
           </View>
-        </Pane>
+        </Pane> */}
         <Pane title="抽查记录" renderHeaderRight={renderHeaderRight}>
           {SpotCheckGroupEle}
         </Pane>
@@ -386,7 +407,7 @@ class CompanyInfo extends Component<Props, State> {
     );
   }
 }
-export default CompanyInfo;
+export default CompanyInfoPage;
 
 const styles = StyleSheet.create({
   // common

@@ -82,7 +82,7 @@ class MembershipScreen extends Component<Props> {
     }
     return (
       <View style={styles.container}>
-        {UserIdentityEle}
+        <View style={styles.UserIdentityBox}>{UserIdentityEle}</View>
         <View style={styles.helpBox}>
           <Text style={styles.helpText} onPress={this.toHelpPage}>
             我要帮助
@@ -96,6 +96,10 @@ class MembershipScreen extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F5F5F5",
+  },
+  UserIdentityBox: {
+    marginTop: 8,
     backgroundColor: "#fff",
   },
   rowView: {
@@ -105,7 +109,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomWidth: 1,
     borderColor: "#e6e6e6",
-    paddingLeft: 10,
+    // paddingLeft: 10,
+    marginLeft: 12,
     paddingRight: 10,
   },
   textCommon: {

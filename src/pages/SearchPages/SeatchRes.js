@@ -55,6 +55,9 @@ const navigationOptions = {
   inactiveTintColor: "#333",
   pressOpacity: 1,
   style: styles.tabBarStyle,
+  tabStyle: {
+    height: 44,
+  },
   labelStyle: styles.labelStyle,
   indicatorStyle: styles.indicatorStyle,
 };

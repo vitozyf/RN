@@ -82,24 +82,26 @@ class BaseInfoScreen extends Component<Props, State> {
     const { ExpirationDateStr, CompanyName } = HomeUserInfo || {};
     return (
       <View style={styles.container}>
-        <View style={styles.baseRow}>
-          <Text style={styles.baseRowTitle}>公司名</Text>
-          <Text style={styles.baseRowValue}>{CompanyName}</Text>
-        </View>
+        <View style={styles.rowBox}>
+          <View style={styles.baseRow}>
+            <Text style={styles.baseRowTitle}>公司名</Text>
+            <Text style={styles.baseRowValue}>{CompanyName}</Text>
+          </View>
 
-        <View style={styles.baseRow}>
-          <Text style={styles.baseRowTitle}>微信</Text>
-          <Text style={styles.baseRowValue}>{NickName}</Text>
-        </View>
+          <View style={styles.baseRow}>
+            <Text style={styles.baseRowTitle}>微信</Text>
+            <Text style={styles.baseRowValue}>{NickName}</Text>
+          </View>
 
-        <View style={styles.baseRow}>
-          <Text style={styles.baseRowTitle}>手机号</Text>
-          <Text style={styles.baseRowValue}>{PhoneNumber}</Text>
-        </View>
+          <View style={styles.baseRow}>
+            <Text style={styles.baseRowTitle}>手机号</Text>
+            <Text style={styles.baseRowValue}>{PhoneNumber}</Text>
+          </View>
 
-        <View style={styles.baseRow}>
-          <Text style={styles.baseRowTitle}>到期时间</Text>
-          <Text style={styles.baseRowValue}>{ExpirationDateStr}</Text>
+          <View style={styles.baseRow}>
+            <Text style={styles.baseRowTitle}>到期时间</Text>
+            <Text style={styles.baseRowValue}>{ExpirationDateStr}</Text>
+          </View>
         </View>
 
         <View style={styles.buttonBox}>
@@ -122,7 +124,11 @@ class BaseInfoScreen extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  rowBox: {
     backgroundColor: "#fff",
+    marginTop: 8,
   },
   baseRow: {
     height: 44,
@@ -130,8 +136,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderBottomWidth: 1,
-    borderColor: "#e6e6e6",
-    paddingLeft: 10,
+    borderColor: "#f0f0f0",
+    // paddingLeft: 10,
+    marginLeft: 12,
     paddingRight: 10,
   },
   baseRowTitle: {
@@ -150,6 +157,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 48,
+    borderRadius: 2,
     // backgroundColor: '#E64340',
     // color: '#ccc'
   },

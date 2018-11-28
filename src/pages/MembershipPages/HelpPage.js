@@ -9,6 +9,9 @@ type Props = {
   Sales: Object,
 };
 class MembershipScreen extends Component<Props> {
+  static defaultProps = {
+    Sales: {},
+  };
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
       navigation.goBack();
@@ -97,7 +100,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomWidth: 1,
     borderColor: "#e6e6e6",
-    paddingLeft: 10,
+    // paddingLeft: 10,
+    marginLeft: 12,
     paddingRight: 10,
   },
   textCommon: {

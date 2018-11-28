@@ -18,12 +18,23 @@ type Props = {
   ActiveTab: string,
   navigation: INavigation,
 };
+type State = {
+  listRow: Object | null,
+};
 
 class ListRow extends PureComponent<Props> {
-  toCompanyDetail = info => {
-    // console.log(info);
+  toCompanyDetail = listRow => {
     const { navigation } = this.props;
-    navigation.push("CompanyInfo");
+    navigation.push("CompanyInfo", {
+      listRow,
+    });
+  };
+  RowClickHandler = value => {
+    const companyId = value.Supplier.Id;
+    const companyName = value.SupplierName;
+    if ((companyId || companyName) && !value.IsInvisibleSupplier) {
+      this.toCompanyDetail(value);
+    }
   };
   render() {
     const { value, ActiveTab } = this.props;
@@ -93,7 +104,7 @@ class ListRow extends PureComponent<Props> {
         style={styles.FlatListRow}
         activeOpacity={0.8}
         onPress={() => {
-          this.toCompanyDetail(value);
+          this.RowClickHandler(value);
         }}
       >
         {/* top */}
@@ -101,13 +112,13 @@ class ListRow extends PureComponent<Props> {
           <View style={styles.FlatListRowTopTitleBox}>
             <Text
               style={[
-                styles.TextRed,
+                value.SType === 3 ? styles.TextRed : null,
                 styles.TextCommon,
                 styles.FlatListRowTopTitle,
                 ActiveStyle,
               ]}
             >
-              <Text>{value.PartNo}&nbsp;</Text>
+              {value.PartNo}&nbsp;
             </Text>
             <View style={[styles.StockTypeTextEleBox]}>{StockTypeTextEle}</View>
           </View>
@@ -117,25 +128,49 @@ class ListRow extends PureComponent<Props> {
               style={[
                 styles.TextRed,
                 styles.TextCommon,
-                styles.TextCommonBottom,
+                value.SType === 3 ? styles.TextRed : null,
               ]}
             >
               {ComputedData.QuotedPhrase && (
-                <Text style={styles.TextColor333}>
+                <Text
+                  style={[
+                    styles.TextColor333,
+                    styles.TextSize12,
+                    value.SType === 3 ? styles.TextRed : null,
+                  ]}
+                >
                   ({ComputedData.QuotedPhrase}){" "}
                 </Text>
               )}
               <Text>{value.QuantityPhrase} </Text>
-              <Text style={styles.TextMain}>{ComputedData.UnitPriceText}</Text>
+              <Text
+                style={[
+                  styles.ColorMain,
+                  styles.FontBold,
+                  value.SType === 3 ? styles.TextRed : null,
+                ]}
+              >
+                {ComputedData.UnitPriceText}
+              </Text>
             </Text>
           </View>
         </View>
         {/* bottom */}
-        <View style={[styles.FlatListRowBottom, styles.ViewHeight]}>
-          <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
+        <View style={[styles.FlatListRowBottom]}>
+          <Text
+            style={[
+              styles.TextCommonBottom,
+              value.SType === 3 ? styles.TextRed : null,
+            ]}
+          >
             {value.Brand} | {value.Package} | {value.MakeAges}
           </Text>
-          <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
+          <Text
+            style={[
+              styles.TextCommonBottom,
+              value.SType === 3 ? styles.TextRed : null,
+            ]}
+          >
             {value.SupplierName}
           </Text>
         </View>
@@ -348,15 +383,14 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 8,
   },
-  ViewHeight: {
-    height: ITEM_HEIGHT,
-  },
   TextCommon: {
-    lineHeight: ITEM_HEIGHT,
+    lineHeight: 22,
     fontSize: 15,
   },
   TextCommonBottom: {
     fontSize: 13,
+    lineHeight: 18,
+    color: "#666",
   },
   yunextTitle: {},
   stocksTitle: {
@@ -365,20 +399,20 @@ const styles = StyleSheet.create({
   FlatListRowTop: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingTop: 4,
+    paddingBottom: 4,
   },
   FlatListRowTopTitleBox: {
     flexDirection: "row",
     // justifyContent: "space-between",
     alignItems: "center",
-    flex: 1,
+
     flexWrap: "wrap",
   },
   FlatListRowTopTitle: {
-    fontSize: 16,
     fontWeight: "bold",
   },
   FlatListRowTopConteneBox: {
-    flex: 1,
     flexWrap: "wrap",
     marginLeft: 5,
     flexDirection: "row",
@@ -390,25 +424,30 @@ const styles = StyleSheet.create({
   TextColor333: {
     color: "#333",
   },
-  TextMain: {
+  TextSize12: {
+    fontSize: 12,
+  },
+  ColorMain: {
     color: "#EF7609",
+  },
+  FontBold: {
+    fontWeight: "bold",
   },
   FlatListRowBottom: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingBottom: 3,
   },
-  // ActiveTab: {
-  //   color: "#ee7700",
-  // },
   // 现货类型
   StockTypeTextEleBox: {
     // width: 80,
   },
   StockTypeCommon: {
     fontSize: 12,
-    // lineHeight: 20,
+    lineHeight: 16,
     paddingLeft: 2,
     paddingRight: 2,
+    borderRadius: 2,
     // fontWeight: "bold",
     borderWidth: 1,
     textAlign: "center",

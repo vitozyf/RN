@@ -35,7 +35,6 @@ class SwiperModal extends Component<Props, State> {
   render() {
     const { isVisible, closeModal, AuthenticationInfo, index } = this.props;
     const { pageIndex } = this.state;
-    console.log(AuthenticationInfo);
     const AuthenticationInfoEle = AuthenticationInfo.map((item, index) => {
       return (
         <TouchableOpacity

@@ -232,22 +232,19 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   searchBoxTag: {
-    marginRight: 10,
+    marginRight: 8,
     backgroundColor: "#f5f5f5",
-    paddingLeft: 5,
-    paddingRight: 5,
-    // paddingTop: 2,
-    // paddingBottom: 2,
+    paddingLeft: 4,
+    paddingRight: 4,
     borderRadius: 2,
     marginBottom: 8,
     height: 32,
-    lineHeight: 32,
     borderWidth: 0,
     width: "auto",
-    fontSize: 14,
   },
   searchBoxTagText: {
     color: "#666",
+    fontSize: 14,
   },
 });
 
