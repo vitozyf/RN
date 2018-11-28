@@ -166,6 +166,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-charts-wrapper')
     implementation project(':react-native-device-info')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-code-push')

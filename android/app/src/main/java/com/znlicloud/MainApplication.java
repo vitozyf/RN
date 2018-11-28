@@ -3,6 +3,7 @@ package com.znlicloud;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.wuxudong.rncharts.MPAndroidChartPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -11,6 +12,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+
+import com.facebook.react.bridge.ReadableNativeArray;
+import com.facebook.react.bridge.ReadableNativeMap;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +39,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNDeviceInfo(),
-            new SplashScreenReactPackage(),
-            // new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
-            // new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
-            new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG),
-            new VectorIconsPackage()
+          new MPAndroidChartPackage(),
+          new RNDeviceInfo(),
+          new SplashScreenReactPackage(),
+          // new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
+          // new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
+          new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG),
+          new VectorIconsPackage()
       );
     }
 
@@ -59,5 +64,8 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+
+    ReadableNativeArray.setUseNativeAccessor(true);
+    ReadableNativeMap.setUseNativeAccessor(true);
   }
 }
