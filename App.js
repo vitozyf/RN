@@ -82,7 +82,7 @@ class App extends Component<Props> {
             const currentScreen = getActiveRouteName(currentState);
             setIsTabBarShow(currentScreen, store.getState());
           }}
-          persistenceKey={navigationPersistenceKey}
+          // persistenceKey={navigationPersistenceKey}
           ref={navigator => {
             CustomStore.navigator = navigator;
           }}

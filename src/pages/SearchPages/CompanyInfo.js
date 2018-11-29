@@ -25,7 +25,7 @@ type Props = {
 type State = {
   isVisible: boolean,
   index: number,
-  CompanyInfo: Object,
+  CompanyInfo: Object | null,
   listRow: Object,
 };
 class CompanyInfoPage extends Component<Props, State> {
@@ -45,13 +45,13 @@ class CompanyInfoPage extends Component<Props, State> {
     this.state = {
       isVisible: false,
       index: 0,
-      CompanyInfo: {},
+      CompanyInfo: null,
       listRow: {},
     };
   }
   getData = () => {
     const listRow = this.props.navigation.getParam("listRow");
-    this.setState(listRow);
+    this.setState({ listRow });
     const Brand = listRow.Brand;
     const Model = listRow.PartNo;
     const companyId = listRow.Supplier.Id;
@@ -64,7 +64,10 @@ class CompanyInfoPage extends Component<Props, State> {
         companyId,
         companyName,
       }).then(CompanyInfo => {
-        this.setState(CompanyInfo);
+        if (!CompanyInfo) {
+          this.props.navigation.goBack();
+        }
+        this.setState({ CompanyInfo });
       });
     }
   };
@@ -73,6 +76,13 @@ class CompanyInfoPage extends Component<Props, State> {
   }
   render() {
     const { CompanyInfo, listRow } = this.state;
+    if (!CompanyInfo) {
+      return (
+        <View style={styles.noinfo}>
+          <Text>暂无公司信息</Text>
+        </View>
+      );
+    }
     // testdata
     // CompanyInfo.Telephone =
     //   "0755-61329358 蔡小姐,0755-23947880 只做进口原装现货,";
@@ -302,9 +312,11 @@ class CompanyInfoPage extends Component<Props, State> {
           <View style={[styles.titleTop, styles.title]}>
             <Text style={styles.titleText}>{listRow.PartNo}</Text>
             <Text>
-              <Text>50</Text>
+              <Text>{listRow.QuantityPhrase}</Text>
               <Text>&nbsp;&nbsp;</Text>
-              <Text style={[styles.colorMain, styles.fontBold]}>¥10</Text>
+              <Text style={[styles.colorMain, styles.fontBold]}>
+                {listRow.UnitPriceText}
+              </Text>
             </Text>
           </View>
           <View style={[styles.titleBottom, styles.title]}>
@@ -330,6 +342,8 @@ class CompanyInfoPage extends Component<Props, State> {
                   最近一次报价{" "}
                   {CompanyInfo.tradeInfo
                     ? CompanyInfo.tradeInfo.LastQuotePrice
+                      ? CompanyInfo.tradeInfo.LastQuotePrice
+                      : "-"
                     : "-"}
                 </Text>
               </Text>
@@ -358,23 +372,25 @@ class CompanyInfoPage extends Component<Props, State> {
                 </Text>
                 <View>{ContactEle}</View>
               </View>
-              <View style={styles.companyInfoBox}>
-                <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
-                  手机：
-                </Text>
-                <Text
-                  style={[
-                    styles.lineHeight30,
-                    styles.companyInfo,
-                    styles.telText,
-                  ]}
-                  onPress={() => {
-                    Linking.openURL(`tel:${CompanyInfo.Mobile}`);
-                  }}
-                >
-                  {CompanyInfo.Mobile}
-                </Text>
-              </View>
+              {CompanyInfo.Mobile && (
+                <View style={styles.companyInfoBox}>
+                  <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
+                    手机：
+                  </Text>
+                  <Text
+                    style={[
+                      styles.lineHeight30,
+                      styles.companyInfo,
+                      styles.telText,
+                    ]}
+                    onPress={() => {
+                      Linking.openURL(`tel:${CompanyInfo.Mobile}`);
+                    }}
+                  >
+                    {CompanyInfo.Mobile}
+                  </Text>
+                </View>
+              )}
               <View style={styles.companyInfoBox}>
                 <Text style={[styles.lineHeight30, styles.companyInfoTitle]}>
                   地址：
@@ -387,22 +403,28 @@ class CompanyInfoPage extends Component<Props, State> {
             <View style={styles.companyRight} />
           </View>
         </Pane>
-        <Pane title="TA的标签">
-          <View style={styles.labelBox}>{LabelEle}</View>
-        </Pane>
-        <Pane title="认证资料">
-          <View style={styles.labelBox}>
-            <ScrollView horizontal={true}>{AuthenticationInfoEle}</ScrollView>
-          </View>
-        </Pane>
+        {Labellist.length > 0 && (
+          <Pane title="TA的标签">
+            <View style={styles.labelBox}>{LabelEle}</View>
+          </Pane>
+        )}
+        {AuthenticationInfo.length > 0 && (
+          <Pane title="认证资料">
+            <View style={styles.labelBox}>
+              <ScrollView horizontal={true}>{AuthenticationInfoEle}</ScrollView>
+            </View>
+          </Pane>
+        )}
         {/* <Pane title="经营分析">
           <View>
             <Text>经营分析</Text>
           </View>
         </Pane> */}
-        <Pane title="抽查记录" renderHeaderRight={renderHeaderRight}>
-          {SpotCheckGroupEle}
-        </Pane>
+        {SpotCheckGroup.length > 0 && (
+          <Pane title="抽查记录" renderHeaderRight={renderHeaderRight}>
+            {SpotCheckGroupEle}
+          </Pane>
+        )}
       </ScrollView>
     );
   }
@@ -600,5 +622,12 @@ const styles = StyleSheet.create({
   listSpotCheckListRow: {
     color: "#333",
     lineHeight: 30,
+  },
+  // 暂无公司信息
+  noinfo: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
