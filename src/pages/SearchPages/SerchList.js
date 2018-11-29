@@ -10,6 +10,8 @@ import {
 import { BackTop } from "@components";
 import { connect } from "react-redux";
 import { ISIOS } from "@src/utils/system";
+import Icon from "@components/Iconfont/CloudIcon";
+
 const ITEM_HEIGHT = 30; // list行高
 const HEADER_HEIGHT = 50; // 头部高
 
@@ -38,6 +40,9 @@ class ListRow extends PureComponent<Props> {
   };
   render() {
     const { value, ActiveTab } = this.props;
+    const IsInvisibleSupplierStyle = value.IsInvisibleSupplier
+      ? styles.colorccc
+      : null;
     // 现货类型
     const StockType = value.StockType;
     let StockTypeTextEle = null;
@@ -83,17 +88,20 @@ class ListRow extends PureComponent<Props> {
     // 数据、样式区分
     let ComputedData = {};
     let ActiveStyle = {};
+    let ViewQty = "";
     switch (ActiveTab) {
       case "yunext":
         ComputedData.UnitPriceText = value.UnitPriceText; // 价格
         ComputedData.QuotedPhrase = value.QuotedPhrase; // 发布时间
         StockTypeTextEle = null;
         ActiveStyle = styles.yunextTitle;
+        ViewQty = value.QuantityPhrase;
         break;
       case "getyunexttopstocks":
         ComputedData.UnitPriceText = value.Properties;
         ComputedData.QuotedPhrase = value.PDatePhrase;
         ActiveStyle = styles.stocksTitle;
+        ViewQty = value.Qty;
         break;
       default:
         break;
@@ -112,8 +120,8 @@ class ListRow extends PureComponent<Props> {
           <View style={styles.FlatListRowTopTitleBox}>
             <Text
               style={[
-                value.SType === 3 ? styles.TextRed : null,
                 styles.TextCommon,
+                value.SType === 3 ? styles.TextRed : null,
                 styles.FlatListRowTopTitle,
                 ActiveStyle,
               ]}
@@ -126,7 +134,7 @@ class ListRow extends PureComponent<Props> {
           <View style={styles.FlatListRowTopConteneBox}>
             <Text
               style={[
-                styles.TextRed,
+                styles.TextColor333,
                 styles.TextCommon,
                 value.SType === 3 ? styles.TextRed : null,
               ]}
@@ -142,7 +150,18 @@ class ListRow extends PureComponent<Props> {
                   ({ComputedData.QuotedPhrase}){" "}
                 </Text>
               )}
-              <Text>{value.QuantityPhrase} </Text>
+              <Text
+                style={[
+                  styles.TextColor333,
+                  ActiveTab === "getyunexttopstocks" ? styles.colorMain : null,
+                  ActiveTab === "getyunexttopstocks" ? styles.FontBold : null,
+                ]}
+              >
+                {ActiveTab === "getyunexttopstocks" && (
+                  <Icon name="jinbi" size={12} />
+                )}
+                {ViewQty}
+              </Text>
               <Text
                 style={[
                   styles.ColorMain,
@@ -161,6 +180,8 @@ class ListRow extends PureComponent<Props> {
             style={[
               styles.TextCommonBottom,
               value.SType === 3 ? styles.TextRed : null,
+              IsInvisibleSupplierStyle,
+              styles.fontSize13,
             ]}
           >
             {value.Brand} | {value.Package} | {value.MakeAges}
@@ -169,11 +190,36 @@ class ListRow extends PureComponent<Props> {
             style={[
               styles.TextCommonBottom,
               value.SType === 3 ? styles.TextRed : null,
+              IsInvisibleSupplierStyle,
+              styles.fontSize13,
             ]}
           >
             {value.SupplierName}
           </Text>
         </View>
+        {/* getyunexttopstocks */}
+        {ActiveTab === "getyunexttopstocks" && (
+          <View style={styles.stocksBottom}>
+            <Text
+              style={[
+                styles.color666,
+                styles.stocksBottomText,
+                styles.fontSize13,
+              ]}
+            >
+              {value.Description}
+            </Text>
+            <Text
+              style={[
+                styles.color666,
+                styles.stocksBottomText,
+                styles.fontSize13,
+              ]}
+            >
+              {value.Depot}
+            </Text>
+          </View>
+        )}
       </TouchableOpacity>
     );
   }
@@ -367,6 +413,19 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
 }
 
 const styles = StyleSheet.create({
+  // common
+  colorMain: {
+    color: "#ee7700",
+  },
+  colorccc: {
+    color: "#ccc",
+  },
+  color666: {
+    color: "#666",
+  },
+  fontSize13: {
+    fontSize: 13,
+  },
   SerchList: {
     height: "100%",
     backgroundColor: "#fff",
@@ -492,6 +551,15 @@ const styles = StyleSheet.create({
   EmptyText: {
     textAlign: "center",
     lineHeight: 100,
+  },
+  // 现货
+  stocksBottom: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 4,
+  },
+  stocksBottomText: {
+    lineHeight: 18,
   },
 });
 

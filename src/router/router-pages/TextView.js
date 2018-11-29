@@ -14,7 +14,7 @@ import { HeaderTitle, HeaderRight } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { StackNavigator, SafeAreaView } from "react-navigation";
 
-// import { PieChart } from "react-native-charts-wrapper";
+import { PieChart } from "react-native-charts-wrapper";
 
 type Props = {};
 type IV = {
@@ -67,11 +67,13 @@ class TextPage extends Component<Props> {
             label: "Pie dataset",
             config: {
               colors: [
-                processColor("#C0FF8C"),
-                processColor("#FFF78C"),
-                processColor("#FFD08C"),
+                // ['#7cb5ec', '#434348', '#90ed7d', '#f7a35c', '#8085e9',
+                // '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']
+                processColor("#7cb5ec"),
+                processColor("#434348"),
+                processColor("#f7a35c"),
                 processColor("#8CEAFF"),
-                processColor("#FF8C9D"),
+                processColor("#8085e9"),
               ],
               valueTextSize: 20,
               valueTextColor: processColor("green"),
@@ -114,7 +116,7 @@ class TextPage extends Component<Props> {
           <Text> {this.state.selectedEntry}</Text>
         </View>
 
-        {/* <View style={styles.container}>
+        <View style={styles.container}>
           <PieChart
             style={styles.chart}
             logEnabled={true}
@@ -143,7 +145,7 @@ class TextPage extends Component<Props> {
             onSelect={this.handleSelect.bind(this)}
             onChange={event => console.log(event.nativeEvent)}
           />
-        </View> */}
+        </View>
       </SafeAreaView>
     );
   }
