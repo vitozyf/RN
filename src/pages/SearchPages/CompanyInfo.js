@@ -528,6 +528,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#0f9321",
     marginRight: 6,
+    marginBottom: 3,
   },
   IsMine: {
     color: "#ee7700",

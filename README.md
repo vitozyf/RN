@@ -31,6 +31,7 @@ code-push热更新测试和正式对于APP的测试和正式版本
 ### IOS
 
 clear
+config.js
 bundle-ios
 Archive
 upload

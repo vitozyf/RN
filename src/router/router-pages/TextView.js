@@ -48,102 +48,112 @@ class TextPage extends Component<Props> {
         enabled: true,
         textSize: 15,
         form: "CIRCLE",
-
-        horizontalAlignment: "RIGHT",
+        formSize: 15,
+        horizontalAlignment: "LEFT",
         verticalAlignment: "CENTER",
         orientation: "VERTICAL",
         wordWrapEnabled: true,
+        formToTextSpace: 10,
+        yEntrySpace: 5,
       },
       data: {
         dataSets: [
           {
+            label: "品牌分布",
             values: [
-              { value: 45, label: "Sandwiches" },
-              { value: 21, label: "Salads" },
-              { value: 15, label: "Soup" },
-              { value: 9, label: "Beverages" },
-              { value: 15, label: "Desserts" },
+              { value: 45, label: "TI(德州仪器)" },
+              { value: 15, label: "Maxim(美信)" },
+              { value: 21, label: "ST(意法)" },
+              { value: 15, label: "ON(安森美)" },
+              { value: 9, label: "EXAR(艾科嘉)" },
+              { value: 45, label: "TI(德州仪器)1" },
+              { value: 15, label: "Maxim(美信)1" },
+              { value: 21, label: "ST(意法)1" },
+              { value: 15, label: "ON(安森美)1" },
+              { value: 9, label: "EXAR(艾科嘉)1" },
             ],
-            label: "Pie dataset",
             config: {
+              // common
               colors: [
-                // ['#7cb5ec', '#434348', '#90ed7d', '#f7a35c', '#8085e9',
-                // '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1']
                 processColor("#7cb5ec"),
                 processColor("#434348"),
+                processColor("#90ed7d"),
                 processColor("#f7a35c"),
-                processColor("#8CEAFF"),
                 processColor("#8085e9"),
+                processColor("#f15c80"),
+                processColor("#e4d354"),
+                processColor("#2b908f"),
+                processColor("#f45b5b"),
+                processColor("#91e8e1"),
               ],
-              valueTextSize: 20,
-              valueTextColor: processColor("green"),
-              sliceSpace: 5,
-              selectionShift: 13,
-              // xValuePosition: "OUTSIDE_SLICE",
-              // yValuePosition: "OUTSIDE_SLICE",
+              //   highlightEnabled: true,
+              //   drawValues: false,
+              //   visible: false,
+              //   valueFormatterPattern: string or 'largeValue' or 'percent' or 'date',
+              //   axisDependency: string,
+              valueTextSize: 15,
+              valueTextColor: processColor("#fff"),
               valueFormatter: "#.#'%'",
-              valueLineColor: processColor("green"),
-              valueLinePart1Length: 0.5,
+              // pie
+              sliceSpace: 3, // 间隙
+              selectionShift: 5, // 选中时延长
+              //   xValuePosition: "OUTSIDE_SLICE",
+              //   yValuePosition: "OUTSIDE_SLICE",
             },
           },
         ],
       },
+      currentData: "", // 当前选中的数据内容
       highlights: [{ x: 2 }],
       description: {
-        text: "This is Pie chart description",
+        text: "",
         textSize: 15,
         textColor: processColor("darkgray"),
       },
     };
   }
-
-  handleSelect(event) {
+  handleSelect = event => {
     let entry = event.nativeEvent;
     if (entry == null) {
-      this.setState({ ...this.state, selectedEntry: null });
+      this.setState({ currentData: "" });
     } else {
-      this.setState({ ...this.state, selectedEntry: JSON.stringify(entry) });
+      this.setState({ currentData: `${entry.label} ${entry.value}` });
     }
 
     console.log(event.nativeEvent);
-  }
+  };
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <View>
-          <Text>selected:</Text>
-          <Text> {this.state.selectedEntry}</Text>
-        </View>
-
+      <SafeAreaView style={styles.SafeAreaView}>
         <View style={styles.container}>
           <PieChart
             style={styles.chart}
-            logEnabled={true}
-            chartBackgroundColor={processColor("#fff")}
-            chartDescription={this.state.description}
+            logEnabled={false}
+            chartBackgroundColor={processColor("#ccc")}
+            chartDescription={this.state.description} // 描述
             data={this.state.data}
-            legend={this.state.legend}
+            legend={this.state.legend} // 图例
             highlights={this.state.highlights}
-            entryLabelColor={processColor("green")}
-            entryLabelTextSize={20}
-            drawEntryLabels={true}
+            // entryLabelColor={processColor("green")}
+            // entryLabelTextSize={20}
+            drawEntryLabels={false} // 显示lables
             rotationEnabled={true}
-            rotationAngle={45}
-            usePercentValues={true}
+            rotationAngle={30} // 旋转角度
+            usePercentValues={false} // 显示小数
             styledCenterText={{
-              text: "Pie center text!",
-              color: processColor("pink"),
-              size: 20,
+              text: this.state.currentData,
+              color: processColor("#000"),
+              size: 15,
             }}
-            centerTextRadiusPercent={100}
-            holeRadius={80}
-            holeColor={processColor("#f0f0f0")}
-            transparentCircleRadius={90}
-            transparentCircleColor={processColor("#f0f0f088")}
-            maxAngle={350}
-            onSelect={this.handleSelect.bind(this)}
-            onChange={event => console.log(event.nativeEvent)}
+            centerTextRadiusPercent={60} // 中心文字占的半径百分比
+            holeRadius={60} // 中心大小
+            holeColor={processColor("#fff")} // 中心背景颜色
+            transparentCircleRadius={0} // 中心阴影
+            // transparentCircleColor={processColor("#f0f0f088")} // 中心阴影颜色
+            maxAngle={360}
+            onSelect={this.handleSelect}
+            // onChange={event => console.log(event.nativeEvent)}
           />
         </View>
       </SafeAreaView>
@@ -154,10 +164,19 @@ class TextPage extends Component<Props> {
 export default TextPage;
 
 const styles = StyleSheet.create({
-  container: {
+  SafeAreaView: {
     flex: 1,
   },
-  chart: {
+  container: {
     flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  chart: {
+    // flex: 1,
+    width: 360,
+    height: 220,
   },
 });
