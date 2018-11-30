@@ -8,10 +8,10 @@ import {
   setArrayStorage,
   removeAllStorage,
   clearAllStorage,
-  CustomStore
-} from '@src/utils'
-import {ISDEBUG, ISANDROID, ISIOS } from '@src/utils/system';
-import {Loading, ZnlToast} from '@src/components'
+  CustomStore,
+} from "@src/utils";
+import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
+import { Loading, ZnlToast } from "@src/components";
 
 const Cloud = {};
 

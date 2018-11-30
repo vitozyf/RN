@@ -185,39 +185,40 @@ class MyScrollView extends Component {
     const Url = ISDEBUG
       ? "appget/getversioninfo?isDebug=true"
       : "appget/getversioninfo";
-    Cloud.$get(Url, null, { onlydata: false }).then(data => {
-      if (data.Code === 200) {
-        const ResData = data.Result;
-        const downloadUrl = Platform.select({
-          ios:
-            "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
-          android: ResData.DownloadUrl,
-        });
-        if (ResData.Version !== Version) {
-          const ValueHandler = () => {
-            return (
-              <View style={{ paddingLeft: 8 }}>
-                {ResData.UpdateLog.Content.map((item, index) => {
-                  return (
-                    <Text style={{ fontSize: 16 }} key={index}>
-                      {item}
-                    </Text>
-                  );
-                })}
-              </View>
-            );
-          };
-          if (ISANDROID) {
-            this.setState({
-              visible: true,
-              title: ResData.UpdateLog.Title,
-              value: ValueHandler,
-              DownloadUrl: downloadUrl,
-            });
+    !__DEV__ &&
+      Cloud.$get(Url, null, { onlydata: false }).then(data => {
+        if (data.Code === 200) {
+          const ResData = data.Result;
+          const downloadUrl = Platform.select({
+            ios:
+              "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
+            android: ResData.DownloadUrl,
+          });
+          if (ResData.Version !== Version) {
+            const ValueHandler = () => {
+              return (
+                <View style={{ paddingLeft: 8 }}>
+                  {ResData.UpdateLog.Content.map((item, index) => {
+                    return (
+                      <Text style={{ fontSize: 16 }} key={index}>
+                        {item}
+                      </Text>
+                    );
+                  })}
+                </View>
+              );
+            };
+            if (ISANDROID) {
+              this.setState({
+                visible: true,
+                title: ResData.UpdateLog.Title,
+                value: ValueHandler,
+                DownloadUrl: downloadUrl,
+              });
+            }
           }
         }
-      }
-    });
+      });
   }
   confirmHandler = () => {
     this.setState({
