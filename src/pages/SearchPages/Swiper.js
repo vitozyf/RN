@@ -36,6 +36,10 @@ class SwiperModal extends Component<Props, State> {
     const { isVisible, closeModal, AuthenticationInfo, index } = this.props;
     const { pageIndex } = this.state;
     const AuthenticationInfoEle = AuthenticationInfo.map((item, index) => {
+      const ImageUrl =
+        item.Url.indexOf("http:") > -1 || item.Url.indexOf("https:") > -1
+          ? item.Url
+          : `https:${item.Url}`;
       return (
         <TouchableOpacity
           activeOpacity={1}
@@ -49,7 +53,7 @@ class SwiperModal extends Component<Props, State> {
             <Image
               style={styles.AuthenticationInfoImg}
               source={{
-                uri: item.Url,
+                uri: ImageUrl,
               }}
             />
           </View>

@@ -93,12 +93,12 @@ class CompanyInfoPage extends Component<Props, State> {
     //   {
     //     Description: "经营场所实景照片 前台",
     //     Url:
-    //       "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/h3Zzm2_1530156784919.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
+    //       "//bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/h3Zzm2_1530156784919.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
     //   },
     //   {
     //     Description: "经营场所实景照片 内景",
     //     Url:
-    //       "https://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/YeFNdQ_1530156813319.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
+    //       "//bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/YeFNdQ_1530156813319.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
     //   },
     // ];
     // CompanyInfo.Labellist = [
@@ -200,6 +200,10 @@ class CompanyInfoPage extends Component<Props, State> {
     // 认证资料
     const AuthenticationInfo = CompanyInfo.AuthenticationInfo || [];
     const AuthenticationInfoEle = AuthenticationInfo.map((item, index) => {
+      const ImageUrl =
+        item.Url.indexOf("http:") > -1 || item.Url.indexOf("https:") > -1
+          ? item.Url
+          : `https:${item.Url}`;
       return (
         <TouchableOpacity
           style={styles.AuthenticationInfoItem}
@@ -215,7 +219,7 @@ class CompanyInfoPage extends Component<Props, State> {
           <Image
             style={styles.AuthenticationInfoImg}
             source={{
-              uri: item.Url,
+              uri: ImageUrl,
             }}
           />
         </TouchableOpacity>
@@ -528,7 +532,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#0f9321",
     marginRight: 6,
-    marginBottom: 3,
+    marginBottom: 5,
   },
   IsMine: {
     color: "#ee7700",

@@ -7,6 +7,7 @@
     "test": "jest",
     "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h",
     "build-android": "./gradlew assembleRelease",
+    "install-ios-release": "react-native run-ios --configuration Release",
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
     "bundle-android": "react-native bundle --platform android --entry-file index.js --bundle-output ./bundles/index.android.bundle --assets-dest ./bundles/assets/ --dev false",
     "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
@@ -18,7 +19,7 @@
   "dependencies": {
     "react": "16.5.0",
     "react-native": "0.57.2",
-    "react-native-charts-wrapper": "^0.5.0",
+    "react-native-charts-wrapper": "git+https://github.com/wuxudong/react-native-charts-wrapper.git",
     "react-native-code-push": "^5.4.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-device-info": "^0.24.3",
