@@ -163,7 +163,7 @@ class Login extends Component<Props, State> {
           </View>
         </View>
       );
-    const TitleText = LoginType === 0 ? "手机号登录.." : "ERP登录..";
+    const TitleText = LoginType === 0 ? "手机号登录" : "ERP登录";
     const TitleNav = LoginType === 1 ? "手机号登录 >>" : "ERP登录 >>";
     return (
       <KeyboardAwareScrollView style={styles.Page}>

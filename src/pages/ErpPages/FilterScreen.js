@@ -316,6 +316,7 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
                   this.resetHandler();
                 }}
                 style={styles.footerButton}
+                textStyle={{ fontSize: 14 }}
               >
                 重置
               </ZnlButton>
@@ -325,6 +326,7 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
                   confirmHandler && confirmHandler(this.state);
                 }}
                 style={styles.footerButton}
+                textStyle={{ fontSize: 14 }}
               >
                 确定
               </ZnlButton>
@@ -355,13 +357,17 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   paneTitleView: {
-    height: 48,
+    // height: 48,
     flexDirection: "row",
     alignItems: "center",
   },
   paneTitle: {
     fontSize: 12,
     fontWeight: "bold",
+    color: "#333",
+    lineHeight: 17,
+    paddingTop: 12,
+    paddingBottom: 8,
   },
   footer: {
     marginTop: 20,
@@ -386,6 +392,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     marginRight: 5,
     lineHeight: 22,
+    color: "#999",
   },
   activeText: {
     color: "#fff",

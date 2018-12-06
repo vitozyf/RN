@@ -89,9 +89,10 @@ const styles = StyleSheet.create({
   },
   service: {
     backgroundColor: "#fff",
+    marginTop: 10,
   },
   Sales: {
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   rowView: {
     height: 48,

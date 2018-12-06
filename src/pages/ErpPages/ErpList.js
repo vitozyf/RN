@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { BackTop, ZnlInput } from "@components";
+import { BackTop, ZnlInput, ZnlHeader } from "@components";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Modal from "react-native-modal";
@@ -279,18 +279,24 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       default:
         break;
     }
+    // return {
+    //   headerTitle: Title,
+    //   headerStyle: {
+    //     backgroundColor: "#fff",
+    //   },
+    //   headerTitleStyle: {
+    //     alignSelf: "center",
+    //     color: "#333",
+    //   },
+    //   headerBackTitleStyle: {
+    //     color: "#333",
+    //   },
+    // };
+    const goBack = () => {
+      navigation.goBack();
+    };
     return {
-      headerTitle: Title,
-      headerStyle: {
-        backgroundColor: "#fff",
-      },
-      headerTitleStyle: {
-        alignSelf: "center",
-        color: "#333",
-      },
-      headerBackTitleStyle: {
-        color: "#333",
-      },
+      header: <ZnlHeader title={Title} onPressIcon={goBack} />,
     };
   };
   showComprehensiveRankingHandler = value => {
@@ -958,6 +964,8 @@ const styles = StyleSheet.create({
   },
   TextCommonCenter: {
     lineHeight: 22,
+    fontSize: 13,
+    color: "#666",
   },
   TextCommonBottom: {
     lineHeight: 22,
@@ -1047,7 +1055,8 @@ const styles = StyleSheet.create({
   SerchTitleBlock: {
     paddingLeft: 10,
     // paddingRight: -10,
-    fontSize: 16,
+    fontSize: 14,
+    color: "#666",
   },
   // 分割组件
   ItemSeparatorComponent: {
@@ -1068,6 +1077,7 @@ const styles = StyleSheet.create({
   FlatListRowModel: {
     fontSize: 15,
     fontWeight: "bold",
+    lineHeight: 22,
   },
   FlatListRowRightBox: {
     flexDirection: "row",

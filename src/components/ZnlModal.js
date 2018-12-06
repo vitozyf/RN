@@ -53,7 +53,7 @@ class ZnlModal extends Component<Props> {
           <View style={styles.modalFooterView}>
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.modalFooterButton}
+              style={[styles.modalFooterButton, styles.modalFooterLeft]}
               onPress={cancelHandler}
             >
               <Text
@@ -70,7 +70,14 @@ class ZnlModal extends Component<Props> {
               style={styles.modalFooterButton}
               onPress={confirmHandler}
             >
-              <Text style={styles.modalFooterButtonText}>{confirmText}</Text>
+              <Text
+                style={[
+                  styles.modalFooterButtonText,
+                  styles.modalFooterButtonRight,
+                ]}
+              >
+                {confirmText}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -93,15 +100,18 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 18,
+    color: "#000",
+    lineHeight: 20,
     textAlign: "center",
   },
   modalValueView: {
-    paddingTop: 16,
+    // paddingTop: 16,
     paddingBottom: 16,
   },
   modalValue: {
-    fontSize: 16,
+    fontSize: 15,
     textAlign: "center",
+    color: "#999",
   },
   modalFooterView: {
     flexDirection: "row",
@@ -113,14 +123,18 @@ const styles = StyleSheet.create({
   modalFooterButton: {
     flex: 1,
   },
+  modalFooterLeft: {
+    borderRightWidth: 1,
+    borderColor: "#E6E6E6",
+  },
   modalFooterButtonText: {
     textAlign: "center",
     lineHeight: 48,
     fontSize: 18,
   },
-  modalFooterButtonTextLeft: {
-    borderRightWidth: 1,
-    borderColor: "#E6E6E6",
+  modalFooterButtonTextLeft: {},
+  modalFooterButtonRight: {
+    color: "#2288CC",
   },
 });
 export default ZnlModal;
