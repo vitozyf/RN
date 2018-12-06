@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import BaseInfoScreen from "@pages/BaseInfoPages/BaseInfoScreen";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
-
 const IndexPages = createStackNavigator(
   {
     BaseInfo: {

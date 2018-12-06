@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
   Header: {
     paddingTop: ISIOS
       ? DeviceInfo.getDeviceName() === "iPhone X"
-        ? 44
+        ? 64
         : 20
       : 0,
-    backgroundColor: "rgba(248,248,248,0.82)",
+    backgroundColor: "#f8f8f8",
     paddingLeft: 10,
     flexDirection: "row",
     alignItems: "center",

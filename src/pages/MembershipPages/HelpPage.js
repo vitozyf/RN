@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
 import { connect } from "react-redux";
-import Icon from "react-native-vector-icons/Ionicons";
-import { HeaderTitle, HeaderRight } from "@components";
+import { ZnlHeader } from "@components";
 
 type Props = {
   Sales: Object,
@@ -17,18 +16,7 @@ class MembershipScreen extends Component<Props> {
       navigation.goBack();
     };
     return {
-      headerTitle: <HeaderTitle title="帮助" />,
-      headerLeft: (
-        <Icon.Button
-          size={26}
-          name="md-arrow-back"
-          backgroundColor="#fff"
-          color="#333"
-          iconStyle={{ marginLeft: 5 }}
-          onPress={goBack}
-        />
-      ),
-      headerRight: <HeaderRight />,
+      header: <ZnlHeader title="帮助" onPressIcon={goBack} />,
     };
   };
   render() {

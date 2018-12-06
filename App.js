@@ -14,6 +14,7 @@ import {
   setIsTabBarShow,
 } from "@router/routerChangeHandler";
 import { View, Text } from "react-native";
+
 // 深圳市正能量网络技术有限公司
 // 调试模式下刷新到本页
 const navigationPersistenceKey = __DEV__ ? "NavigationStateDEV" : null;
