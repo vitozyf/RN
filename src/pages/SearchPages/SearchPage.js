@@ -97,7 +97,7 @@ class SearchPage extends Component<Props, State> {
   };
   onChangeText = value => {
     this.setState({
-      KeyWord: value,
+      KeyWord: value.toUpperCase(),
     });
   };
   getSearchRecord() {
@@ -155,9 +155,11 @@ class SearchPage extends Component<Props, State> {
     const { SearchRecord } = this.props;
     return (
       <View style={styles.SearchPage}>
-        <SearchPane title="搜索记录" onPressDelete={this.onPressDelete}>
-          <View style={styles.searchBox}>{SearchRecord}</View>
-        </SearchPane>
+        {SearchRecord && SearchRecord.length > 0 && (
+          <SearchPane title="搜索记录" onPressDelete={this.onPressDelete}>
+            <View style={styles.searchBox}>{SearchRecord}</View>
+          </SearchPane>
+        )}
         <SearchPane title="热搜型号" showDeleteIcon={false}>
           <View style={styles.searchBox}>
             {HotModelList.map((item, index) => {
@@ -234,8 +236,8 @@ const styles = StyleSheet.create({
   searchBoxTag: {
     marginRight: 8,
     backgroundColor: "#f5f5f5",
-    paddingLeft: 4,
-    paddingRight: 4,
+    paddingLeft: 12,
+    paddingRight: 12,
     borderRadius: 2,
     marginBottom: 8,
     height: 32,
@@ -244,7 +246,7 @@ const styles = StyleSheet.create({
   },
   searchBoxTagText: {
     color: "#666",
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 

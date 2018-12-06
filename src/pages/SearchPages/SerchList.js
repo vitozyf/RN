@@ -119,6 +119,8 @@ class ListRow extends PureComponent<Props> {
         <View style={[styles.FlatListRowTop]}>
           <View style={styles.FlatListRowTopTitleBox}>
             <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
               style={[
                 styles.TextCommon,
                 value.SType === 3 ? styles.TextRed : null,
@@ -194,7 +196,7 @@ class ListRow extends PureComponent<Props> {
               styles.fontSize13,
             ]}
           >
-            {value.SupplierName}
+            &nbsp;&nbsp;&nbsp;&nbsp;{value.SupplierName}
           </Text>
         </View>
         {/* getyunexttopstocks */}
@@ -470,6 +472,7 @@ const styles = StyleSheet.create({
   },
   FlatListRowTopTitle: {
     fontWeight: "bold",
+    maxWidth: 175,
   },
   FlatListRowTopConteneBox: {
     flexWrap: "wrap",

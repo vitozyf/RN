@@ -44,7 +44,7 @@ const BackTop = {
 const styles = StyleSheet.create({
   maskStyle: {
     position: "absolute",
-    backgroundColor: "rgba(255,255,255,0.5)",
+    backgroundColor: "rgba(255,255,255,0.3)",
     borderRadius: 25,
     width: 50,
     height: 50,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "#999",
+    borderColor: "rgba(0,0,0,0.2)",
   },
   box: {
     flex: 1,
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   },
   MaterialCommunityIcons: {
     paddingTop: 2,
+    color: "rgba(0,0,0,0.2)",
   },
 });
 

@@ -110,7 +110,7 @@ class ErpIndex extends Component<ErpIndexProps> {
           <Text style={styles.title}>询价</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.row}
           activeOpacity={0.8}
           onPress={() => {
@@ -123,7 +123,7 @@ class ErpIndex extends Component<ErpIndexProps> {
           />
           <Text style={styles.title}>报价</Text>
           <AntDesign style={styles.icon} name="right" size={20} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   row: {
     borderBottomWidth: 1,
     borderColor: "#E6E6E6",
-    height: 44,
+    height: 52,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

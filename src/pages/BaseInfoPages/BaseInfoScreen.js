@@ -19,6 +19,7 @@ class BaseInfoScreen extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
       navigation.navigate("Home");
+      navigation.openDrawer();
     };
     return {
       header: <ZnlHeader title="基本信息" onPressIcon={goBack} />,
