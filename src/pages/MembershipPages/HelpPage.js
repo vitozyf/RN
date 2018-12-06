@@ -50,7 +50,7 @@ class MembershipScreen extends Component<Props> {
         <View style={styles.service}>
           <View style={styles.rowView}>
             <Text style={[styles.textCommon, styles.textTitle]}>客服</Text>
-            <Text style={[styles.textCommon, styles.textValue]}>正能量</Text>
+            <Text style={[styles.textCommon, styles.textValue]}>小正</Text>
           </View>
           <View style={styles.rowView}>
             <Text style={[styles.textCommon, styles.textTitle]}>联系电话</Text>

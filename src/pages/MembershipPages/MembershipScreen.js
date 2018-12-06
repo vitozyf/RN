@@ -14,7 +14,6 @@ class MembershipScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
       navigation.navigate("Home");
-      navigation.openDrawer();
     };
     return {
       header: <ZnlHeader title="会员身份" onPressIcon={goBack} />,
@@ -75,7 +74,7 @@ class MembershipScreen extends Component<Props> {
         <View style={styles.UserIdentityBox}>{UserIdentityEle}</View>
         <View style={styles.helpBox}>
           <Text style={styles.helpText} onPress={this.toHelpPage}>
-            我要帮助
+            帮助
           </Text>
         </View>
       </View>

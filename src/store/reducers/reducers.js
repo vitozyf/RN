@@ -2,6 +2,20 @@ import { StatusBar } from "react-native";
 import { ISANDROID, ISIOS } from "@src/utils/system";
 import DeviceInfo from "react-native-device-info";
 
+let HeaderHeightInit = 44;
+if (ISIOS) {
+  switch (DeviceInfo.getDeviceName()) {
+    case "iPhone X":
+    case "iPhone XS":
+    case "iPhone XS Max":
+      HeaderHeightInit = 88;
+      break;
+    default:
+      HeaderHeightInit = 64;
+      break;
+  }
+}
+
 export const IsTabBarShow = (state = false, action) => {
   switch (action.type) {
     case "SetIsTabBarShow":
@@ -10,10 +24,7 @@ export const IsTabBarShow = (state = false, action) => {
       return state;
   }
 };
-export const HeaderHeight = (
-  state = ISIOS ? (DeviceInfo.getDeviceName() === "iPhone X" ? 88 : 64) : 44,
-  action
-) => {
+export const HeaderHeight = (state = HeaderHeightInit, action) => {
   switch (action.type) {
     case "SetHeaderHeight":
       return action.HeaderHeight;

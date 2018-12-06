@@ -36,6 +36,7 @@ class ZnlModal extends Component<Props> {
         isVisible={visible}
         useNativeDriver={true}
         onBackButtonPress={cancelHandler}
+        style={styles.znlModal}
       >
         <View style={styles.modalView}>
           <View style={styles.modalTitleView}>
@@ -86,11 +87,16 @@ class ZnlModal extends Component<Props> {
   }
 }
 const styles = StyleSheet.create({
+  znlModal: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   modalView: {
     backgroundColor: "#fff",
     borderRadius: 10,
     paddingLeft: 10,
     paddingRight: 10,
+    width: 272,
   },
   modalTitleView: {
     height: 48,

@@ -1,13 +1,23 @@
 import { ISIOS } from "@src/utils/system";
 import DeviceInfo from "react-native-device-info";
+
+let HeaderHeightInit = 44;
+if (ISIOS) {
+  switch (DeviceInfo.getDeviceName()) {
+    case "iPhone X":
+    case "iPhone XS":
+    case "iPhone XS Max":
+      HeaderHeightInit = 88;
+      break;
+    default:
+      HeaderHeightInit = 64;
+      break;
+  }
+}
 // 统一声明默认State
 export default {
   IsTabBarShow: true, // 是否隐藏tabbar
-  HeaderHeight: ISIOS
-    ? DeviceInfo.getDeviceName() === "iPhone X"
-      ? 88
-      : 64
-    : 44,
+  HeaderHeight: HeaderHeightInit,
   StatusBarStyle: "light-content", // 状态栏
   SearchRecord: [], // 本地搜索记录
   // 搜索页信息

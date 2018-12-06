@@ -76,13 +76,23 @@ class ZnlHeader extends Component<Props> {
   }
 }
 
+let PaddingTop = 0;
+if (ISIOS) {
+  switch (DeviceInfo.getDeviceName()) {
+    case "iPhone X":
+    case "iPhone XS":
+    case "iPhone XS Max":
+      PaddingTop = 44;
+      break;
+    default:
+      PaddingTop = 20;
+      break;
+  }
+}
+
 const styles = StyleSheet.create({
   Header: {
-    paddingTop: ISIOS
-      ? DeviceInfo.getDeviceName() === "iPhone X"
-        ? 44
-        : 20
-      : 0,
+    paddingTop: PaddingTop,
     backgroundColor: "#f8f8f8",
     paddingLeft: 10,
     flexDirection: "row",

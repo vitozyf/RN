@@ -37,7 +37,7 @@ const SimpleAppNavigator = createDrawerNavigator(
     initialRouteName: "Home",
     drawerPosition: "left",
     contentComponent: CustomDrawerContentComponent,
-    // drawerLockMode: "locked-closed",
+    drawerLockMode: "locked-closed",
     contentOptions: {
       activeTintColor: "#ee7700",
     },

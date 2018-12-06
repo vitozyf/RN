@@ -189,8 +189,11 @@ class ListRow extends PureComponent<Props> {
             {value.Brand} | {value.Package} | {value.MakeAges}
           </Text>
           <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
             style={[
               styles.TextCommonBottom,
+              styles.TextCommonBottomSupplierName,
               value.SType === 3 ? styles.TextRed : null,
               IsInvisibleSupplierStyle,
               styles.fontSize13,
@@ -452,6 +455,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     color: "#666",
+  },
+  TextCommonBottomSupplierName: {
+    maxWidth: 180,
   },
   yunextTitle: {},
   stocksTitle: {

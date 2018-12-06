@@ -9,6 +9,8 @@ import {
 import IndexScreen from "@pages/Bom";
 import ErpScreen from "@pages/Erp";
 
+import { getActiveRouteName } from "@router/routerChangeHandler";
+
 // tab导航
 const navigationOptions = {
   activeTintColor: "#ee7700",
@@ -37,11 +39,17 @@ const TabNav = createBottomTabNavigator(
 
 class BottomTabNavRouter extends Component {
   static router = TabNav.router;
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     drawerLockMode: "unlocked",
-  //   };
-  // };
+  static navigationOptions = ({ navigation }) => {
+    let drawerLockMode = "locked-closed";
+    const RouterName = getActiveRouteName(navigation.state);
+    if (RouterName === "Bom" || RouterName === "ErpIndex") {
+      drawerLockMode = "unlocked";
+    }
+    return {
+      drawerLockMode: drawerLockMode,
+    };
+  };
+
   render() {
     return <TabNav navigation={this.props.navigation} />;
   }

@@ -47,6 +47,7 @@ type BonProps = {
 };
 class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
+    // console.log(111, navigation);
     return {
       headerTitle: <HeaderTitle title="BomAI" textStyle={{ color: "#fff" }} />,
       headerLeft: <HeaderLeftCom navigation={navigation} />,

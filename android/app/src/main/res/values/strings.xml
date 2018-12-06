@@ -1,5 +1,5 @@
 <resources>
     <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d</string>
-    <string name="app_name">正能量测试</string>
-    <!-- <string name="app_name">正能量电子网</string> -->
+    <!-- <string name="app_name">正能量测试</string> -->
+    <string name="app_name">正能量电子网</string>
 </resources>

@@ -253,7 +253,7 @@ class MyScrollView extends Component {
         case "品牌替代":
           titleClass = UserIdentity[key] ? "StockType7" : "StockTypeDis";
           break;
-        case "Erp会员":
+        case "ERP会员":
           titleClass = UserIdentity[key] ? "StockTypeErp" : "StockTypeDis";
           break;
         default:
