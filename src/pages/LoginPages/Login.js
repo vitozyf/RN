@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { ZnlInput, ZnlButton, HeaderRight } from "@components";
+import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppInit } from "@src/utils/appInit";
 import { connect } from "react-redux";
@@ -28,23 +28,28 @@ class Login extends Component<Props, State> {
       LoginType: 0, // 登录方式:0 手机号, 1 erp
     };
   }
+  // static navigationOptions = ({ navigation }) => {
+  //   const goBackHome = () => {
+  //     navigation.navigate("Home");
+  //   };
+  //   const HeaderLeft = (
+  //     <TouchableOpacity
+  //       onPress={goBackHome}
+  //       activeOpacity={0.8}
+  //       style={styles.iconbox}
+  //     >
+  //       <Icon name="md-close" color="#999" size={26} style={styles.icon} />
+  //     </TouchableOpacity>
+  //   );
+  //   return {
+  //     headerLeft: HeaderLeft,
+  //     title: "",
+  //     headerRight: <HeaderRight />,
+  //   };
+  // };
   static navigationOptions = ({ navigation }) => {
-    const goBackHome = () => {
-      navigation.navigate("Home");
-    };
-    const HeaderLeft = (
-      <TouchableOpacity
-        onPress={goBackHome}
-        activeOpacity={0.8}
-        style={styles.iconbox}
-      >
-        <Icon name="md-close" color="#999" size={26} style={styles.icon} />
-      </TouchableOpacity>
-    );
     return {
-      headerLeft: HeaderLeft,
-      title: "",
-      headerRight: <HeaderRight />,
+      header: <ZnlHeader hideLeft={true} title="登录" />,
     };
   };
   ToRegister = () => {

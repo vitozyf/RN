@@ -3,9 +3,8 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import Icon from "react-native-vector-icons/Ionicons";
-import { ZnlButton, ZnlModal } from "@components";
-import { HeaderTitle, HeaderRight } from "@components";
+// import Icon from "react-native-vector-icons/Ionicons";
+import { ZnlButton, ZnlModal, ZnlHeader } from "@components";
 type State = {
   modalVisible: boolean,
 };
@@ -22,18 +21,7 @@ class BaseInfoScreen extends Component<Props, State> {
       navigation.navigate("Home");
     };
     return {
-      headerTitle: <HeaderTitle title="基本信息" />,
-      headerLeft: (
-        <Icon.Button
-          size={26}
-          name="md-arrow-back"
-          backgroundColor="#fff"
-          color="#333"
-          iconStyle={{ marginLeft: 5 }}
-          onPress={goBack}
-        />
-      ),
-      headerRight: <HeaderRight />,
+      header: <ZnlHeader title="基本信息" onPressIcon={goBack} />,
     };
   };
   constructor(props) {

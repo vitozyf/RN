@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginBottom: 5,
     lineHeight: 16,
+    borderRadius: 2,
   },
   StockType4: {
     color: "#fff",

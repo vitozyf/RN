@@ -42,7 +42,7 @@ class ZnlHeader extends Component<Props> {
         activeOpacity={0.8}
         style={styles.iconbox}
       >
-        <Icon name={leftIcon} color="#999" size={22} style={styles.icon} />
+        <Icon name={leftIcon} color="#4D4D4D" size={26} style={styles.icon} />
       </TouchableOpacity>
     );
 
@@ -52,7 +52,11 @@ class ZnlHeader extends Component<Props> {
       <Text style={styles.Title}>{title}</Text>
     );
 
-    const RightEle = renderRight && renderRight();
+    const RightEle = renderRight ? (
+      renderRight()
+    ) : (
+      <View style={styles.right} />
+    );
 
     return (
       <View
@@ -99,6 +103,10 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   icon: {},
+  right: {
+    width: 30,
+    marginLeft: 5,
+  },
 });
 
 const mapStateToProps = (state, props) => {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { ZnlInput, ZnlButton, HeaderRight } from "@components";
+import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -19,23 +19,31 @@ class Register extends Component {
       SmsGuid: "",
     };
   }
+  // static navigationOptions = ({ navigation }) => {
+  //   const goBackHome = () => {
+  //     navigation.navigate("Home");
+  //   };
+  //   const HeaderLeft = (
+  //     <TouchableOpacity
+  //       onPress={goBackHome}
+  //       activeOpacity={0.8}
+  //       style={styles.iconbox}
+  //     >
+  //       <Icon name="md-close" color="#999" size={26} style={styles.icon} />
+  //     </TouchableOpacity>
+  //   );
+  //   return {
+  //     headerLeft: HeaderLeft,
+  //     title: "注册",
+  //     headerRight: <HeaderRight />,
+  //   };
+  // };
   static navigationOptions = ({ navigation }) => {
-    const goBackHome = () => {
-      navigation.navigate("Home");
+    const goBack = () => {
+      navigation.navigate("Login");
     };
-    const HeaderLeft = (
-      <TouchableOpacity
-        onPress={goBackHome}
-        activeOpacity={0.8}
-        style={styles.iconbox}
-      >
-        <Icon name="md-close" color="#999" size={26} style={styles.icon} />
-      </TouchableOpacity>
-    );
     return {
-      headerLeft: HeaderLeft,
-      title: "注册",
-      headerRight: <HeaderRight />,
+      header: <ZnlHeader title="注册" onPressIcon={goBack} />,
     };
   };
   GetCode = () => {

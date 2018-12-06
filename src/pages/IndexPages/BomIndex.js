@@ -48,8 +48,7 @@ type BonProps = {
 class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
     return {
-      // title: '首页 | BomAi',
-      headerTitle: <HeaderTitle title="BomAi" textStyle={{ color: "#fff" }} />,
+      headerTitle: <HeaderTitle title="BomAI" textStyle={{ color: "#fff" }} />,
       headerLeft: <HeaderLeftCom navigation={navigation} />,
       headerRight: <HeaderRight />,
     };
@@ -93,9 +92,9 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   headerLeftImg: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     marginLeft: 10,
   },
   ImgBox: {

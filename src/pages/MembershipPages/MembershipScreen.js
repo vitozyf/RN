@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { HeaderTitle, HeaderRight } from "@components";
+import { ZnlHeader } from "@components";
 
 type Props = {
   navigation: INavigation,
@@ -16,18 +16,7 @@ class MembershipScreen extends Component<Props> {
       navigation.navigate("Home");
     };
     return {
-      headerTitle: <HeaderTitle title="会员身份" />,
-      headerLeft: (
-        <Icon.Button
-          size={26}
-          name="md-arrow-back"
-          backgroundColor="#fff"
-          color="#333"
-          iconStyle={{ marginLeft: 5 }}
-          onPress={goBack}
-        />
-      ),
-      headerRight: <HeaderRight />,
+      header: <ZnlHeader title="会员身份" onPressIcon={goBack} />,
     };
   };
   toHelpPage = () => {
@@ -55,7 +44,7 @@ class MembershipScreen extends Component<Props> {
         case "品牌替代":
           titleClass = "textTitle7";
           break;
-        case "Erp会员":
+        case "ERP会员":
           titleClass = "textTitleErp";
           break;
         default:
@@ -114,7 +103,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   textCommon: {
-    fontSize: 18,
+    fontSize: 15,
   },
   textTitle: {
     color: "#FFF",
@@ -123,7 +112,7 @@ const styles = StyleSheet.create({
     paddingRight: 3,
     borderRadius: 3,
     width: 64,
-    borderRadius: 2,
+    borderRadius: 3,
     lineHeight: 24,
     textAlign: "center",
     fontSize: 14,

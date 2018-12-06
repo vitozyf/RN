@@ -134,9 +134,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   headerLeftImg: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     marginLeft: 10,
   },
   row: {
