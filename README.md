@@ -29,7 +29,7 @@ APP每次启动会请求服务器， 对应版本号不一致时会提示用户�
 code-push热更新测试和正式对于APP的测试和正式版本
 
 ### IOS
-
+bug: 删除lib.react
 clear
 config.js
 bundle-ios

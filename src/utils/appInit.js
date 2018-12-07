@@ -1,3 +1,5 @@
+// import CustomStore from "./jumpUtils";
+
 // 获取用户开通的服务
 const getUserIdentity = async () => {
   return Cloud.$get("mmhome/getusercenterinfo");
@@ -8,12 +10,24 @@ const gethomeinfo = async () => {
   return HomeInfo;
 };
 // 初始化本地存储的用户数据到redux
-const initUserData = async store => {
-  const HomeInfo = await gethomeinfo();
-  const UserIdentity = await getUserIdentity(store);
+const initUserData = async (store, CustomStore) => {
+  const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
+  let HomeInfo = { UserInfo: {}, UserAuthors: {} };
+  let UserIdentity = { UserIdentityModel: {}, SalesName: "", telephone: "" };
+
+  if (TOKEN) {
+    HomeInfo = await gethomeinfo();
+    UserIdentity = await getUserIdentity(store);
+  } else {
+    setTimeout(() => {
+      if (CustomStore.navigator) {
+        CustomStore.navigator._navigation.navigate("Login");
+      }
+    }, 100);
+  }
+
   const AvatarPath = await Cloud.$getStorage(Cloud.$CONFIG.AvatarPath);
   const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
-  const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
   const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
   const UserInfo = { Sales: {} };
   if (UserIdentity) {
@@ -43,8 +57,8 @@ const initUserData = async store => {
   });
 };
 
-const AppInit = async store => {
-  await initUserData(store);
+const AppInit = async (store, CustomStore) => {
+  await initUserData(store, CustomStore);
 };
 
 export { AppInit };

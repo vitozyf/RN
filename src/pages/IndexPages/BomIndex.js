@@ -49,7 +49,9 @@ class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
     // console.log(111, navigation);
     return {
-      headerTitle: <HeaderTitle title="BomAI" textStyle={{ color: "#fff" }} />,
+      headerTitle: (
+        <HeaderTitle title="正能量电子网" textStyle={{ color: "#fff" }} />
+      ),
       headerLeft: <HeaderLeftCom navigation={navigation} />,
       headerRight: <HeaderRight />,
     };

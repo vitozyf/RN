@@ -144,7 +144,7 @@ class ListRow extends PureComponent<Props> {
               {ComputedData.QuotedPhrase && (
                 <Text
                   style={[
-                    styles.TextColor333,
+                    styles.color999,
                     styles.TextSize12,
                     value.SType === 3 ? styles.TextRed : null,
                   ]}
@@ -458,10 +458,11 @@ const styles = StyleSheet.create({
   },
   TextCommonBottomSupplierName: {
     maxWidth: 180,
+    color: "#000",
   },
   yunextTitle: {},
   stocksTitle: {
-    color: "#000",
+    // color: "#000",
   },
   FlatListRowTop: {
     flexDirection: "row",
@@ -477,7 +478,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   FlatListRowTopTitle: {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     maxWidth: 175,
   },
   FlatListRowTopConteneBox: {
@@ -491,6 +492,9 @@ const styles = StyleSheet.create({
   },
   TextColor333: {
     color: "#333",
+  },
+  color999: {
+    color: "#999",
   },
   TextSize12: {
     fontSize: 12,

@@ -61,7 +61,7 @@ class App extends Component<Props> {
     });
   }
   componentWillMount() {
-    AppInit(store);
+    AppInit(store, CustomStore);
     // codePush.disallowRestart(); //禁止重启
 
     store.dispatch({
