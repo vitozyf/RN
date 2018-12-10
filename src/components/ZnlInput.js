@@ -53,7 +53,10 @@ type Props = {
   children: any,
   onClose: Function,
 };
-class ZnlInput extends Component<Props> {
+type State = {
+  inputValue: string | number,
+};
+class ZnlInput extends Component<Props, State> {
   static defaultProps = {
     placeholder: "",
     autoFocus: false,
@@ -61,10 +64,26 @@ class ZnlInput extends Component<Props> {
     keyboardType: "default",
     multiline: false,
   };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      inputValue: "",
+    };
+  }
   closeHandler = () => {
     const { onClose } = this.props;
     onClose && onClose();
     this.textInput && this.textInput.clear();
+    this.setState({
+      inputValue: "",
+    });
+  };
+  onChangeTextHandler = (value: string | number) => {
+    const { onChangeText } = this.props;
+    onChangeText && onChangeText(value);
+    this.setState({
+      inputValue: value,
+    });
   };
   textInput = null;
   render() {
@@ -87,6 +106,21 @@ class ZnlInput extends Component<Props> {
       renderRight,
     } = this.props;
     const { children } = this.props;
+    const CloseButton = () => {
+      if (this.state.inputValue || (!this.state.inputValue && defaultValue)) {
+        return (
+          <TouchableOpacity
+            style={[styles.close]}
+            onPress={this.closeHandler}
+            activeOpacity={1}
+          >
+            <Icon style={[styles.icon]} name="false" size={16} />
+          </TouchableOpacity>
+        );
+      } else {
+        return null;
+      }
+    };
     return (
       <View style={[styles.inputbox, style]}>
         {renderLeft && renderLeft()}
@@ -95,7 +129,7 @@ class ZnlInput extends Component<Props> {
             style={[styles.inputsty, inputStyle]}
             placeholder={placeholder}
             maxLength={maxLength}
-            onChangeText={onChangeText}
+            onChangeText={this.onChangeTextHandler}
             autoFocus={autoFocus}
             defaultValue={defaultValue}
             keyboardType={keyboardType}
@@ -107,13 +141,7 @@ class ZnlInput extends Component<Props> {
             returnKeyType={returnKeyType}
             ref={ref => (this.textInput = ref)}
           />
-          <TouchableOpacity
-            style={[styles.close]}
-            onPress={this.closeHandler}
-            activeOpacity={1}
-          >
-            <Icon style={[styles.icon]} name="false" size={16} />
-          </TouchableOpacity>
+          {CloseButton()}
         </View>
         {renderRight && renderRight()}
       </View>
