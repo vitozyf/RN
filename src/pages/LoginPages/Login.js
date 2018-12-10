@@ -28,25 +28,6 @@ class Login extends Component<Props, State> {
       LoginType: 0, // 登录方式:0 手机号, 1 erp
     };
   }
-  // static navigationOptions = ({ navigation }) => {
-  //   const goBackHome = () => {
-  //     navigation.navigate("Home");
-  //   };
-  //   const HeaderLeft = (
-  //     <TouchableOpacity
-  //       onPress={goBackHome}
-  //       activeOpacity={0.8}
-  //       style={styles.iconbox}
-  //     >
-  //       <Icon name="md-close" color="#999" size={26} style={styles.icon} />
-  //     </TouchableOpacity>
-  //   );
-  //   return {
-  //     headerLeft: HeaderLeft,
-  //     title: "",
-  //     headerRight: <HeaderRight />,
-  //   };
-  // };
   static navigationOptions = ({ navigation }) => {
     return {
       header: <ZnlHeader hideLeft={true} title="登录" />,
@@ -106,6 +87,7 @@ class Login extends Component<Props, State> {
         <View>
           <View style={styles.InputBox}>
             <ZnlInput
+              key="PhoneNumber"
               style={styles.znlInputBox}
               inputStyle={styles.Input}
               onChangeText={value => {
@@ -117,6 +99,7 @@ class Login extends Component<Props, State> {
           </View>
           <View style={styles.InputBox}>
             <ZnlInput
+              key="Password"
               style={styles.znlInputBox}
               inputStyle={styles.Input}
               onChangeText={value => {
@@ -131,6 +114,7 @@ class Login extends Component<Props, State> {
         <View>
           <View style={styles.InputBox}>
             <ZnlInput
+              key="CompanyName"
               style={styles.znlInputBox}
               inputStyle={styles.Input}
               onChangeText={value => {
@@ -142,6 +126,7 @@ class Login extends Component<Props, State> {
           </View>
           <View style={styles.InputBox}>
             <ZnlInput
+              key="AccountName"
               style={styles.znlInputBox}
               inputStyle={styles.Input}
               onChangeText={value => {
@@ -152,6 +137,7 @@ class Login extends Component<Props, State> {
           </View>
           <View style={styles.InputBox}>
             <ZnlInput
+              key="PasswordErp"
               style={styles.znlInputBox}
               inputStyle={styles.Input}
               onChangeText={value => {

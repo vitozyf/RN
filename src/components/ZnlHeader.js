@@ -54,7 +54,7 @@ class ZnlHeader extends Component<Props> {
 
     const RightEle = renderRight ? (
       renderRight()
-    ) : (
+    ) : hideLeft ? null : (
       <View style={styles.right} />
     );
 
@@ -78,8 +78,9 @@ class ZnlHeader extends Component<Props> {
 
 let PaddingTop = 0;
 if (ISIOS) {
-  switch (DeviceInfo.getDeviceName()) {
+  switch (DeviceInfo.getModel()) {
     case "iPhone X":
+    case "iPhone XR":
     case "iPhone XS":
     case "iPhone XS Max":
       PaddingTop = 44;

@@ -1,11 +1,15 @@
 import { StatusBar } from "react-native";
 import { ISANDROID, ISIOS } from "@src/utils/system";
 import DeviceInfo from "react-native-device-info";
-
+import { ZnlToast } from "@src/components";
 let HeaderHeightInit = 44;
 if (ISIOS) {
-  switch (DeviceInfo.getDeviceName()) {
+  // setTimeout(() => {
+  //   ZnlToast.show(DeviceInfo.getModel());
+  // }, 3000);
+  switch (DeviceInfo.getModel()) {
     case "iPhone X":
+    case "iPhone XR":
     case "iPhone XS":
     case "iPhone XS Max":
       HeaderHeightInit = 88;

@@ -953,6 +953,20 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     this.didBlurSubscription.remove();
   }
 }
+let TOPH = 142;
+if (ISIOS) {
+  switch (DeviceInfo.getModel()) {
+    case "iPhone X":
+    case "iPhone XR":
+    case "iPhone XS":
+    case "iPhone XS Max":
+      TOPH = 168;
+      break;
+    default:
+      TOPH = 142;
+      break;
+  }
+}
 
 const styles = StyleSheet.create({
   //通用
@@ -1132,7 +1146,7 @@ const styles = StyleSheet.create({
   },
   ComprehensiveRankingBox: {
     position: "absolute",
-    top: ISIOS ? (DeviceInfo.getDeviceName() === "iPhone X" ? 168 : 142) : 142,
+    top: TOPH,
     width: "100%",
     // left: -18,
     // width: 360,
