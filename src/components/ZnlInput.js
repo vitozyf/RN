@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
-import { TextInput, View, StyleSheet } from "react-native";
+import { TouchableOpacity, TextInput, View, StyleSheet } from "react-native";
+import Icon from "@components/Iconfont/CloudIcon";
 
 type TKeyboardType =
   | "default"
@@ -50,6 +51,7 @@ type Props = {
   editable: boolean,
   returnKeyType: TReturnKeyType,
   children: any,
+  onClose: Function,
 };
 class ZnlInput extends Component<Props> {
   static defaultProps = {
@@ -59,6 +61,12 @@ class ZnlInput extends Component<Props> {
     keyboardType: "default",
     multiline: false,
   };
+  closeHandler = () => {
+    const { onClose } = this.props;
+    onClose && onClose();
+    this.textInput && this.textInput.clear();
+  };
+  textInput = null;
   render() {
     const {
       onChangeText,
@@ -82,21 +90,31 @@ class ZnlInput extends Component<Props> {
     return (
       <View style={[styles.inputbox, style]}>
         {renderLeft && renderLeft()}
-        <TextInput
-          style={[styles.inputsty, inputStyle]}
-          placeholder={placeholder}
-          maxLength={maxLength}
-          onChangeText={onChangeText}
-          autoFocus={autoFocus}
-          defaultValue={defaultValue}
-          keyboardType={keyboardType}
-          multiline={multiline}
-          onSubmitEditing={onSubmitEditing}
-          secureTextEntry={secureTextEntry}
-          onFocus={onFocus}
-          editable={editable}
-          returnKeyType={returnKeyType}
-        />
+        <View style={styles.inputCon}>
+          <TextInput
+            style={[styles.inputsty, inputStyle]}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            onChangeText={onChangeText}
+            autoFocus={autoFocus}
+            defaultValue={defaultValue}
+            keyboardType={keyboardType}
+            multiline={multiline}
+            onSubmitEditing={onSubmitEditing}
+            secureTextEntry={secureTextEntry}
+            onFocus={onFocus}
+            editable={editable}
+            returnKeyType={returnKeyType}
+            ref={ref => (this.textInput = ref)}
+          />
+          <TouchableOpacity
+            style={[styles.close]}
+            onPress={this.closeHandler}
+            activeOpacity={1}
+          >
+            <Icon style={[styles.icon]} name="false" size={16} />
+          </TouchableOpacity>
+        </View>
         {renderRight && renderRight()}
       </View>
     );
@@ -120,6 +138,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     paddingLeft: 5,
+  },
+  inputCon: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  close: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    right: 0,
+    width: 30,
+    height: "100%",
+    // backgroundColor: "#ddd",
+  },
+  icon: {
+    color: "#ccc",
   },
 });
 

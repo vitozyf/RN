@@ -87,13 +87,17 @@ class SearchPage extends Component<Props, State> {
   };
   onSearchHandler = () => {
     const { KeyWord } = this.state;
-    Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8).then(() => {
-      this.getSearchRecord();
-    });
-    this.props.navigation.push("SeatchRes");
-    this.props.SetBomSearchInfo({
-      KeyWord,
-    });
+    if (KeyWord && KeyWord.length >= 3) {
+      Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8).then(() => {
+        this.getSearchRecord();
+      });
+      this.props.navigation.push("SeatchRes");
+      this.props.SetBomSearchInfo({
+        KeyWord,
+      });
+    } else {
+      Cloud.$Toast.show("搜索型号必须大于等于3个字符");
+    }
   };
   onChangeText = value => {
     this.setState({
