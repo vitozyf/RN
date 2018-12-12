@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "center",
   },
   Title: {
     lineHeight: 44,

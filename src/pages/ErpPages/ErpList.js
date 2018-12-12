@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Dimensions,
 } from "react-native";
 import { BackTop, ZnlInput, ZnlHeader } from "@components";
 import Feather from "react-native-vector-icons/Feather";
@@ -19,6 +20,8 @@ import DeviceInfo from "react-native-device-info";
 import { ISIOS } from "@src/utils/system";
 import Icon from "@components/Iconfont/CloudIcon";
 
+const { height, width } = Dimensions.get("window");
+const windowWidth = width;
 type Props = {
   value: Object,
   name: string,
@@ -374,6 +377,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   // 渲染综合排序
   _renderComprehensiveRanking = () => {
     const { showComprehensiveRanking, MakeYear } = this.state;
+
     return (
       <Modal
         isVisible={showComprehensiveRanking}
@@ -387,6 +391,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
         animationIn="fadeIn"
         animationOut="fadeOut"
         animationInTiming={50}
+        animationOutTiming={50}
       >
         <View style={styles.ComprehensiveRankingBox}>
           <TouchableOpacity
@@ -953,7 +958,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     this.didBlurSubscription.remove();
   }
 }
-let TOPH = 142;
+let TOPH = 124;
 if (ISIOS) {
   switch (DeviceInfo.getModel()) {
     case "iPhone X":
