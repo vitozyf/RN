@@ -43,8 +43,8 @@ class App extends Component<Props> {
       updateDialog: {
         //是否显示更新描述
         appendReleaseDescription: true,
-        //更新描述的前缀。 默认为"Description"
-        descriptionPrefix: "更新内容：",
+        //更新描述的前缀。 默认为"Description" 更新内容
+        descriptionPrefix: "",
         //强制更新按钮文字，默认为continue
         mandatoryContinueButtonLabel: "立即更新",
         //强制更新时的信息. 默认为"An update is available that must be installed."
@@ -54,9 +54,9 @@ class App extends Component<Props> {
         //非强制更新时，确认按钮文字. 默认为"Install"
         optionalInstallButtonLabel: "后台更新",
         //非强制更新时，检查到更新的消息文本
-        optionalUpdateMessage: "有新版本了，是否更新？",
+        optionalUpdateMessage: "",
         //Alert窗口的标题
-        title: "更新提示",
+        title: "有新版本了，是否更新？",
       },
     });
   }
