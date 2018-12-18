@@ -10,13 +10,14 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
+#import <React/RCTLinkingManager.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-  
+
   #ifdef DEBUG
     //开发包
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -40,6 +41,20 @@
   [self.window makeKeyAndVisible];
   [RNSplashScreen show];
   return YES;
+}
+
+// - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+// sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+// {
+//   return [RCTLinkingManager application:application openURL:url
+//                             sourceApplication:sourceApplication annotation:annotation];
+// }
+
+// ios 9.0+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 @end

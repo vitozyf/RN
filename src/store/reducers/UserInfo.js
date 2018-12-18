@@ -11,7 +11,7 @@ export const initialState = {
   Sales: {},
 };
 
-export default (state = {}, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case "SetUserInfo":
       return Object.assign({}, state, action.UserInfo);

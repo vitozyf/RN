@@ -14,6 +14,8 @@ import {
   setIsTabBarShow,
 } from "@router/routerChangeHandler";
 import { View, Text } from "react-native";
+import * as wechat from "react-native-wechat";
+import config from "./src/utils/config";
 
 // 深圳市正能量网络技术有限公司
 // 调试模式下刷新到本页
@@ -61,6 +63,16 @@ class App extends Component<Props> {
     });
   }
   componentWillMount() {
+    // 注册微信SDK
+    wechat.registerApp(config.appid).then(res => {
+      store.dispatch({
+        type: "SetWechat",
+        wechat,
+      });
+      // Cloud.$Toast.show(res + "");
+    });
+
+    // 初始化方法
     AppInit(store, CustomStore);
     // codePush.disallowRestart(); //禁止重启
 

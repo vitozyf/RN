@@ -45,4 +45,5 @@ export default {
       showFoot: 0,
     },
   },
+  wechat: {},
 };

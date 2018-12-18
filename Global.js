@@ -13,7 +13,7 @@ import {
 import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { Loading, ZnlToast } from "@src/components";
 
-const Cloud = {};
+const Cloud: ICloud = {};
 
 Cloud.$post = $post;
 Cloud.$get = $get;

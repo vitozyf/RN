@@ -1,10 +1,18 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Platform,
+  Alert,
+} from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppInit } from "@src/utils/appInit";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+// import { wechat } from "../../../App";
 
 type Props = {
   navigation: INavigation,
@@ -77,6 +85,41 @@ class Login extends Component<Props, State> {
     const { LoginType } = this.state;
     this.setState({
       LoginType: LoginType === 0 ? 1 : 0,
+    });
+  };
+  wechatLoginHandler = () => {
+    const { wechat } = this.props;
+    let scope = "snsapi_base";
+    let state = "wechat_sdk_demo";
+    //判断微信是否安装
+    wechat.isWXAppInstalled().then(isInstalled => {
+      if (isInstalled) {
+        //发送授权请求
+        wechat
+          .sendAuthRequest(scope, state)
+          .then(responseCode => {
+            //返回code码，通过code获取access_token
+            // this.getAccessToken(responseCode.code);
+            Alert.alert(
+              "登录授权成功：",
+              `${responseCode.code}-${responseCode.errCode}`,
+              [{ text: "确定" }]
+            );
+          })
+          .catch(err => {
+            Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
+          });
+      } else {
+        Platform.OS == "ios"
+          ? // ? Alert.alert("没有安装微信", "是否安装微信？", [
+            Alert.alert("没有安装微信", "请先安装微信客户端在进行登录", [
+              { text: "确定" },
+              // { text: "确定", onPress: () => this.installWechat() },
+            ])
+          : Alert.alert("没有安装微信", "请先安装微信客户端在进行登录", [
+              { text: "确定" },
+            ]);
+      }
     });
   };
 
@@ -182,6 +225,14 @@ class Login extends Component<Props, State> {
           >
             注册
           </ZnlButton>
+
+          {/* <ZnlButton
+            type="main"
+            style={styles.Button}
+            onPress={this.wechatLoginHandler}
+          >
+            微信登录
+          </ZnlButton> */}
         </View>
       </KeyboardAwareScrollView>
     );
@@ -250,7 +301,7 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = (state, props) => {
-  return props;
+  return Object.assign({}, { wechat: state.wechat }, props);
 };
 const mapDispatchToProps = dispatch => {
   return {

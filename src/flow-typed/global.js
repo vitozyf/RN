@@ -2,7 +2,7 @@ declare var document: Object;
 
 declare var window: Object;
 
-declare var Cloud: {
+declare type ICloud = {
   $post: Function,
   $get: Function,
   $Toast: any,
@@ -20,6 +20,8 @@ declare var Cloud: {
   $CustomStore: any, // 根路有类
 };
 
+declare var Cloud: ICloud;
+
 // 全局类型定义
 declare type IConfig = {
   // 本地数据存储键名
@@ -35,6 +37,8 @@ declare type IConfig = {
   APIBASEURL?: string,
   SEARCHAPIURL?: string,
   ERPAPI?: string,
+  appid?: string,
+  ClientSecret?: string,
 };
 declare type INavigation = {
   navigate: Function,
