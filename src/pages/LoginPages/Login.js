@@ -7,13 +7,13 @@ import {
   Image,
   Platform,
   Alert,
+  BackHandler,
 } from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AppInit } from "@src/utils/appInit";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-// import { wechat } from "../../../App";
 
 type Props = {
   navigation: INavigation,
@@ -124,6 +124,18 @@ class Login extends Component<Props, State> {
     });
   };
 
+  handleBackPress = () => {
+    return true;
+  };
+
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
   render() {
     const { LoginType } = this.state;
     const LoginForm =
@@ -151,6 +163,8 @@ class Login extends Component<Props, State> {
               }}
               placeholder="密码"
               secureTextEntry={true}
+              onSubmitEditing={this.LoginHandler}
+              TReturnKeyType="go"
             />
           </View>
         </View>
@@ -189,6 +203,8 @@ class Login extends Component<Props, State> {
               }}
               placeholder="密码"
               secureTextEntry={true}
+              onSubmitEditing={this.LoginHandler}
+              TReturnKeyType="go"
             />
           </View>
         </View>
@@ -235,13 +251,15 @@ class Login extends Component<Props, State> {
             </View>
             <View style={styles.wechatLoginLine} />
           </View>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={this.wechatLoginHandler}
-            style={styles.wechatLogin}
-          >
-            <Image source={require("./img/wechat_ic.png")} />
-          </TouchableOpacity>
+          <View style={styles.wechatLogin}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={this.wechatLoginHandler}
+              style={styles.wechatLoginImg}
+            >
+              <Image source={require("./img/wechat_ic.png")} />
+            </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAwareScrollView>
     );
@@ -332,6 +350,11 @@ const styles = StyleSheet.create({
   },
   wechatLogin: {
     alignItems: "center",
+  },
+  wechatLoginImg: {
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 const mapStateToProps = (state, props) => {

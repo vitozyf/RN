@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+} from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
@@ -19,25 +25,6 @@ class Register extends Component {
       SmsGuid: "",
     };
   }
-  // static navigationOptions = ({ navigation }) => {
-  //   const goBackHome = () => {
-  //     navigation.navigate("Home");
-  //   };
-  //   const HeaderLeft = (
-  //     <TouchableOpacity
-  //       onPress={goBackHome}
-  //       activeOpacity={0.8}
-  //       style={styles.iconbox}
-  //     >
-  //       <Icon name="md-close" color="#999" size={26} style={styles.icon} />
-  //     </TouchableOpacity>
-  //   );
-  //   return {
-  //     headerLeft: HeaderLeft,
-  //     title: "注册",
-  //     headerRight: <HeaderRight />,
-  //   };
-  // };
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
       navigation.navigate("Login");
@@ -118,6 +105,20 @@ class Register extends Component {
       [name]: value,
     });
   };
+
+  handleBackPress = () => {
+    this.props.navigation.navigate("Login");
+    return true;
+  };
+
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
   render() {
     return (
       <KeyboardAwareScrollView style={styles.Page}>
