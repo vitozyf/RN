@@ -35,6 +35,9 @@ class MembershipScreen extends Component<Props> {
         case "正品物料":
           titleClass = "textTitle8";
           break;
+        case "订货服务":
+          titleClass = "textTitle5";
+          break;
         case "保证有料":
           titleClass = "textTitle6";
           break;
@@ -125,6 +128,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6200",
     borderColor: "#FF6200",
   },
+  textTitle5: {
+    backgroundColor: "#269AF3",
+    borderColor: "#269AF3",
+  },
   textTitle6: {
     backgroundColor: "#FDF7A0",
     color: "#FF0000",
@@ -140,8 +147,8 @@ const styles = StyleSheet.create({
     borderColor: "#006DCC",
   },
   textTitleErp: {
-    backgroundColor: "#009DD9",
-    borderColor: "#009DD9",
+    backgroundColor: "#167CDB",
+    borderColor: "#167CDB",
   },
   textTrue: {
     color: "#09BB07",

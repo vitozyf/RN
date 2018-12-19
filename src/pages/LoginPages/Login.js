@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Image,
   Platform,
   Alert,
 } from "react-native";
@@ -112,11 +113,11 @@ class Login extends Component<Props, State> {
       } else {
         Platform.OS == "ios"
           ? // ? Alert.alert("没有安装微信", "是否安装微信？", [
-            Alert.alert("没有安装微信", "请先安装微信客户端在进行登录", [
+            Alert.alert("您未安装微信", "请先安装微信客户端再用微信登录方式", [
               { text: "确定" },
               // { text: "确定", onPress: () => this.installWechat() },
             ])
-          : Alert.alert("没有安装微信", "请先安装微信客户端在进行登录", [
+          : Alert.alert("您未安装微信", "请先安装微信客户端再用微信登录方式", [
               { text: "确定" },
             ]);
       }
@@ -137,7 +138,7 @@ class Login extends Component<Props, State> {
                 this.onChangeText(value, "PhoneNumber");
               }}
               placeholder="手机号"
-              autoFocus={true}
+              autoFocus={false}
             />
           </View>
           <View style={styles.InputBox}>
@@ -225,14 +226,22 @@ class Login extends Component<Props, State> {
           >
             注册
           </ZnlButton>
-
-          {/* <ZnlButton
-            type="main"
-            style={styles.Button}
+        </View>
+        <View style={styles.wechatLoginBox}>
+          <View style={styles.wechatLoginTitle}>
+            <View style={styles.wechatLoginLine} />
+            <View>
+              <Text style={styles.wechatLoginText}>其他登录方式</Text>
+            </View>
+            <View style={styles.wechatLoginLine} />
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
             onPress={this.wechatLoginHandler}
+            style={styles.wechatLogin}
           >
-            微信登录
-          </ZnlButton> */}
+            <Image source={require("./img/wechat_ic.png")} />
+          </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
     );
@@ -298,6 +307,31 @@ const styles = StyleSheet.create({
   icon: {
     lineHeight: 48,
     textAlign: "center",
+  },
+  wechatLoginBox: {
+    marginTop: 50,
+    // backgroundColor: "#ccc",
+  },
+  wechatLoginTitle: {
+    height: 50,
+    flexWrap: "nowrap",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  wechatLoginLine: {
+    width: 90,
+    height: 1,
+    backgroundColor: "#E6E6E6",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  wechatLoginText: {
+    color: "#999",
+    fontSize: 12,
+  },
+  wechatLogin: {
+    alignItems: "center",
   },
 });
 const mapStateToProps = (state, props) => {

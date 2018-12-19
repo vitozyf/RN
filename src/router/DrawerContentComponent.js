@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     width: 40,
     height: 40,
-    borderRadius: 4,
+    borderRadius: 2,
     marginTop: -20,
   },
   headerName: {},
@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff6200",
     borderColor: "#ff6200",
   },
+  StockType5: {
+    backgroundColor: "#269AF3",
+    color: "#fff",
+    borderColor: "#269AF3",
+  },
   StockType9: {
     color: "#FFF",
     backgroundColor: "#00bedb",
@@ -101,9 +106,9 @@ const styles = StyleSheet.create({
     borderColor: "#006DCC",
   },
   StockTypeErp: {
-    backgroundColor: "#048FE0",
+    backgroundColor: "#167CDB",
     color: "#fff",
-    borderColor: "#048FE0",
+    borderColor: "#167CDB",
   },
   StockTypeDis: {
     backgroundColor: "#ccc",
@@ -243,6 +248,9 @@ class MyScrollView extends Component {
           break;
         case "正品物料":
           titleClass = UserIdentity[key] ? "StockType8" : "StockTypeDis";
+          break;
+        case "订货服务":
+          titleClass = UserIdentity[key] ? "StockType5" : "StockTypeDis";
           break;
         case "保证有料":
           titleClass = UserIdentity[key] ? "StockType6" : "StockTypeDis";
