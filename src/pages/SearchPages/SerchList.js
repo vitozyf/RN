@@ -61,6 +61,13 @@ class ListRow extends PureComponent<Props> {
           </Text>
         );
         break;
+      case 5:
+        StockTypeTextEle = (
+          <Text style={[styles.StockTypeCommon, styles.StockType5]}>
+            订货服务
+          </Text>
+        );
+        break;
       case 6:
         StockTypeTextEle = (
           <Text style={[styles.StockTypeCommon, styles.StockType6]}>
@@ -538,6 +545,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     backgroundColor: "#ff6200",
     borderColor: "#ff6200",
+  },
+  StockType5: {
+    color: "#fff",
+    backgroundColor: "#269AF3",
+    borderColor: "#269AF3",
   },
   StockType9: {
     color: "#FFF",
