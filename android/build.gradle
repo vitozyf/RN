@@ -21,6 +21,20 @@ buildscript {
     }
 }
 
+// 解决方案开始
+// Execution failed for task ':react-native-wechat:verifyReleaseResources'.
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion rootProject.ext.compileSdkVersion     //do this in android/app/build.gradle too
+                buildToolsVersion rootProject.ext.buildToolsVersion     //do this in android/app/build.gradle too
+            }
+        }
+    }
+}
+// 解决方案结束
+
 allprojects {
     repositories {
         mavenLocal()
