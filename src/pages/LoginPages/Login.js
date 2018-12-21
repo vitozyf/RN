@@ -25,6 +25,7 @@ type State = {
   AccountName: string,
   Password: string,
   LoginType: number,
+  OpenId: "",
 };
 class Login extends Component<Props, State> {
   constructor(props) {
@@ -35,6 +36,8 @@ class Login extends Component<Props, State> {
       AccountName: "", // 账号
       Password: "", // 密码
       LoginType: 0, // 登录方式:0 手机号, 1 erp
+      OpenId: "",
+      IsFreeLogin: true,
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -50,10 +53,33 @@ class Login extends Component<Props, State> {
     const { navigation } = this.props;
     navigation.navigate("Home");
   };
+  readLoginInfo = () => {
+    Cloud.$getStorage(Cloud.$CONFIG.LoginCompanyName).then(CompanyName => {
+      this.setState({ CompanyName });
+    });
+    Cloud.$getStorage(Cloud.$CONFIG.LoginPhoneNumber).then(PhoneNumber => {
+      this.setState({ PhoneNumber });
+    });
+    Cloud.$getStorage(Cloud.$CONFIG.LoginAccountName).then(AccountName => {
+      this.setState({ AccountName });
+    });
+    Cloud.$getStorage(Cloud.$CONFIG.LoginPassword).then(Password => {
+      this.setState({ Password });
+    });
+  };
+  componentWillMount() {
+    this.readLoginInfo();
+  }
   LoginHandler = () => {
     const { SetUserInfo } = this.props;
-    // Cloud.$Loading.show();
-    Cloud.$post("user/login", this.state, { loading: true })
+    Cloud.$Loading.show();
+    const { CompanyName, PhoneNumber, AccountName, Password } = this.state;
+    Cloud.$setStorage(Cloud.$CONFIG.LoginCompanyName, CompanyName);
+    Cloud.$setStorage(Cloud.$CONFIG.LoginPhoneNumber, PhoneNumber);
+    Cloud.$setStorage(Cloud.$CONFIG.LoginAccountName, AccountName);
+    Cloud.$setStorage(Cloud.$CONFIG.LoginPassword, Password);
+
+    Cloud.$post("user/login", this.state, { loading: false })
       .then(async data => {
         Cloud.$Loading.hidden();
         if (data) {
@@ -90,26 +116,59 @@ class Login extends Component<Props, State> {
   };
   wechatLoginHandler = () => {
     const { wechat } = this.props;
+    // snsapi_userinfo
     let scope = "snsapi_base";
     let state = "wechat_sdk_demo";
     //判断微信是否安装
     wechat.isWXAppInstalled().then(isInstalled => {
       if (isInstalled) {
-        //发送授权请求
-        wechat
-          .sendAuthRequest(scope, state)
-          .then(responseCode => {
-            //返回code码，通过code获取access_token
-            // this.getAccessToken(responseCode.code);
-            Alert.alert(
-              "登录授权成功：",
-              `${responseCode.code}-${responseCode.errCode}`,
-              [{ text: "确定" }]
-            );
-          })
-          .catch(err => {
-            Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
-          });
+        // 检查是否支持微信开放接口
+        wechat.isWXAppSupportApi().then(isSupport => {
+          if (isSupport) {
+            //发送授权请求
+            wechat
+              .sendAuthRequest(scope, Cloud.$CONFIG.ClientSecret)
+              .then(responseCode => {
+                //返回code码，通过code获取access_token
+                // this.getAccessToken(responseCode.code);
+                const code = parseInt(res.errCode);
+                if (code === 0 && responseCode.code) {
+                  // Cloud.$setStorage(Cloud.$CONFIG.TOKEN, responseCode.code);
+                  // this.goBackHome();
+                  this.setState(
+                    {
+                      OpenId: responseCode.code,
+                    },
+                    () => {
+                      this.LoginHandler();
+                    }
+                  );
+                } else if (code === -4) {
+                  Cloud.$Toast.show("用户拒绝授权");
+                } else if (code === -6) {
+                  Cloud.$Toast.show("APP签名错误");
+                } else if (code === 2) {
+                  Cloud.$Toast.show("用户取消授权操作");
+                } else {
+                  Alert.alert("登录授权失败", code, [{ text: "确定" }]);
+                }
+                // Alert.alert(
+                //   "登录授权成功：",
+                //   `${responseCode.code}-${responseCode.errCode}`,
+                //   [{ text: "确定" }]
+                // );
+              })
+              .catch(err => {
+                Alert.alert("登录授权发生错误：", err.message, [
+                  { text: "确定" },
+                ]);
+              });
+          } else {
+            Alert.alert("版本不支持", "您的微信版本不支持，请升级微信后再试", [
+              { text: "确定" },
+            ]);
+          }
+        });
       } else {
         Platform.OS == "ios"
           ? // ? Alert.alert("没有安装微信", "是否安装微信？", [
@@ -151,6 +210,7 @@ class Login extends Component<Props, State> {
               }}
               placeholder="手机号"
               autoFocus={false}
+              defaultValue={this.state.PhoneNumber}
             />
           </View>
           <View style={styles.InputBox}>
@@ -165,6 +225,7 @@ class Login extends Component<Props, State> {
               secureTextEntry={true}
               onSubmitEditing={this.LoginHandler}
               TReturnKeyType="go"
+              defaultValue={this.state.Password}
             />
           </View>
         </View>
@@ -180,6 +241,7 @@ class Login extends Component<Props, State> {
               }}
               placeholder="公司名"
               autoFocus={true}
+              defaultValue={this.state.CompanyName}
             />
           </View>
           <View style={styles.InputBox}>
@@ -191,6 +253,7 @@ class Login extends Component<Props, State> {
                 this.onChangeText(value, "AccountName");
               }}
               placeholder="账号"
+              defaultValue={this.state.AccountName}
             />
           </View>
           <View style={styles.InputBox}>
@@ -205,6 +268,7 @@ class Login extends Component<Props, State> {
               secureTextEntry={true}
               onSubmitEditing={this.LoginHandler}
               TReturnKeyType="go"
+              defaultValue={this.state.Password}
             />
           </View>
         </View>
@@ -247,7 +311,7 @@ class Login extends Component<Props, State> {
           <View style={styles.wechatLoginTitle}>
             <View style={styles.wechatLoginLine} />
             <View>
-              <Text style={styles.wechatLoginText}>其他登录方式</Text>
+              <Text style={styles.wechatLoginText}>其他登录方式.</Text>
             </View>
             <View style={styles.wechatLoginLine} />
           </View>
@@ -327,7 +391,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   wechatLoginBox: {
-    marginTop: 50,
+    marginTop: 30,
     // backgroundColor: "#ccc",
   },
   wechatLoginTitle: {
