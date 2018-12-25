@@ -16,13 +16,20 @@ import CustomStore from "./jumpUtils";
  *  onlydata 默认只包含data
  *  searchApi 启用搜索站点api
  *  erpApi 启用erp站点
+ *  nativeApi 用传入的原生地址请求
  */
 const fetchMethods = async (method, url, data, option) => {
   let BaseUrl = CONFIG.APIBASEURL;
-
+  // 是否带loading
   if (option && option.loading) {
     Loading.show();
   }
+
+  // 是否源地址请求
+  if (option && option.nativeApi) {
+    BaseUrl = "";
+  }
+
   // 搜索站地址
   if (option && option.searchApi) {
     BaseUrl = CONFIG.SEARCHAPIURL;
@@ -63,6 +70,11 @@ const fetchMethods = async (method, url, data, option) => {
         .then(response => {
           if (option && option.loading) {
             Loading.hidden();
+          }
+          // 原生地址请求直接返回
+          if (option && option.nativeApi) {
+            resolve(response);
+            return;
           }
           if (response.Code === 200 || response.code === 200) {
             // erp直接返回

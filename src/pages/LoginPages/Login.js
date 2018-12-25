@@ -70,38 +70,89 @@ class Login extends Component<Props, State> {
   componentWillMount() {
     this.readLoginInfo();
   }
-  LoginHandler = () => {
+  LoginHandler = url => {
     const { SetUserInfo } = this.props;
     Cloud.$Loading.show();
-    const { CompanyName, PhoneNumber, AccountName, Password } = this.state;
-    Cloud.$setStorage(Cloud.$CONFIG.LoginCompanyName, CompanyName);
-    Cloud.$setStorage(Cloud.$CONFIG.LoginPhoneNumber, PhoneNumber);
-    Cloud.$setStorage(Cloud.$CONFIG.LoginAccountName, AccountName);
-    Cloud.$setStorage(Cloud.$CONFIG.LoginPassword, Password);
+    const {
+      CompanyName,
+      PhoneNumber,
+      AccountName,
+      Password,
+      OpenId,
+      LoginType,
+    } = this.state;
+    CompanyName &&
+      Cloud.$setStorage(Cloud.$CONFIG.LoginCompanyName, CompanyName);
+    PhoneNumber &&
+      Cloud.$setStorage(Cloud.$CONFIG.LoginPhoneNumber, PhoneNumber);
+    AccountName &&
+      Cloud.$setStorage(Cloud.$CONFIG.LoginAccountName, AccountName);
+    Password && Cloud.$setStorage(Cloud.$CONFIG.LoginPassword, Password);
 
-    Cloud.$post("user/login", this.state, { loading: false })
-      .then(async data => {
-        Cloud.$Loading.hidden();
-        if (data) {
-          await Cloud.$setStorage(
-            Cloud.$CONFIG.AvatarPath,
-            data.AvatarPath || ""
-          );
-          await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
-          await Cloud.$setStorage(
-            Cloud.$CONFIG.PhoneNumber,
-            this.state.PhoneNumber || ""
-          );
-          await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-          await AppInit({
-            dispatch: SetUserInfo,
-          });
-          this.goBackHome();
-        }
-      })
-      .catch(err => {
-        Cloud.$Loading.hidden();
-      });
+    let LoginData = {
+      CompanyName,
+      PhoneNumber,
+      AccountName,
+      Password,
+      LoginType,
+    };
+
+    if (!url) {
+      Cloud.$post("user/login", LoginData, { loading: false })
+        .then(async data => {
+          Cloud.$Loading.hidden();
+          if (data) {
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.AvatarPath,
+              data.AvatarPath || ""
+            );
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.NickName,
+              data.NickName || ""
+            );
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.PhoneNumber,
+              this.state.PhoneNumber || ""
+            );
+            await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
+            await AppInit({
+              dispatch: SetUserInfo,
+            });
+            this.goBackHome();
+          }
+        })
+        .catch(err => {
+          Cloud.$Loading.hidden();
+        });
+    } else {
+      Cloud.$get(url + `?openId=${OpenId}`, null, { loading: false })
+        .then(async data => {
+          console.log(333, data);
+          Cloud.$Loading.hidden();
+          if (data) {
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.AvatarPath,
+              data.AvatarPath || ""
+            );
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.NickName,
+              data.NickName || ""
+            );
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.PhoneNumber,
+              this.state.PhoneNumber || ""
+            );
+            await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
+            await AppInit({
+              dispatch: SetUserInfo,
+            });
+            this.goBackHome();
+          }
+        })
+        .catch(err => {
+          Cloud.$Loading.hidden();
+        });
+    }
   };
   onChangeText = (value, name) => {
     this.setState({
@@ -116,59 +167,68 @@ class Login extends Component<Props, State> {
   };
   wechatLoginHandler = () => {
     const { wechat } = this.props;
-    // snsapi_userinfo
-    let scope = "snsapi_base";
+    let scope = "snsapi_userinfo";
+    // let scope = "snsapi_base";
     let state = "wechat_sdk_demo";
     //判断微信是否安装
     wechat.isWXAppInstalled().then(isInstalled => {
       if (isInstalled) {
-        // 检查是否支持微信开放接口
-        wechat.isWXAppSupportApi().then(isSupport => {
-          if (isSupport) {
-            //发送授权请求
-            wechat
-              .sendAuthRequest(scope, Cloud.$CONFIG.ClientSecret)
-              .then(responseCode => {
-                //返回code码，通过code获取access_token
-                // this.getAccessToken(responseCode.code);
-                const code = parseInt(res.errCode);
-                if (code === 0 && responseCode.code) {
-                  // Cloud.$setStorage(Cloud.$CONFIG.TOKEN, responseCode.code);
-                  // this.goBackHome();
+        //发送授权请求
+        wechat
+          .sendAuthRequest(scope)
+          .then(responseCode => {
+            //返回code码，通过code获取access_token
+            // this.getAccessToken(responseCode.code);
+            console.log(111, responseCode);
+            const code = parseInt(responseCode.errCode);
+            if (code === 0) {
+              // Cloud.$setStorage(Cloud.$CONFIG.TOKEN, responseCode.code);
+              // this.goBackHome();
+              // this.setState(
+              //   {
+              //     OpenId: responseCode.code,
+              //   },
+              //   () => {
+              //     this.LoginHandler();
+              //   }
+              // );
+              Cloud.$get(
+                `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${
+                  Cloud.$CONFIG.appid
+                }&secret=${Cloud.$CONFIG.secret}&code=${
+                  responseCode.code
+                }&grant_type=authorization_code`,
+                null,
+                {
+                  nativeApi: true,
+                }
+              ).then(data => {
+                if (data.openid) {
                   this.setState(
                     {
-                      OpenId: responseCode.code,
+                      OpenId: data.openid,
                     },
                     () => {
-                      this.LoginHandler();
+                      console.log(222, data, data.openid, this);
+                      this.LoginHandler("user/loginwechat");
                     }
                   );
-                } else if (code === -4) {
-                  Cloud.$Toast.show("用户拒绝授权");
-                } else if (code === -6) {
-                  Cloud.$Toast.show("APP签名错误");
-                } else if (code === 2) {
-                  Cloud.$Toast.show("用户取消授权操作");
-                } else {
-                  Alert.alert("登录授权失败", code, [{ text: "确定" }]);
                 }
-                // Alert.alert(
-                //   "登录授权成功：",
-                //   `${responseCode.code}-${responseCode.errCode}`,
-                //   [{ text: "确定" }]
-                // );
-              })
-              .catch(err => {
-                Alert.alert("登录授权发生错误：", err.message, [
-                  { text: "确定" },
-                ]);
               });
-          } else {
-            Alert.alert("版本不支持", "您的微信版本不支持，请升级微信后再试", [
-              { text: "确定" },
-            ]);
-          }
-        });
+            } else if (code === -4) {
+              Cloud.$Toast.show("用户拒绝授权");
+            } else if (code === -6) {
+              Cloud.$Toast.show("APP签名错误");
+            } else if (code === 2) {
+              Cloud.$Toast.show("用户取消授权操作");
+            } else {
+              Alert.alert("登录授权失败", code, [{ text: "确定" }]);
+            }
+          })
+          .catch(err => {
+            console.log(123, err);
+            Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
+          });
       } else {
         Platform.OS == "ios"
           ? // ? Alert.alert("没有安装微信", "是否安装微信？", [
