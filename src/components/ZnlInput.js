@@ -114,7 +114,7 @@ class ZnlInput extends Component<Props, State> {
             onPress={this.closeHandler}
             activeOpacity={1}
           >
-            <Icon style={[styles.icon]} name="false" size={16} />
+            <Icon style={[styles.icon]} name="input_clear" size={16} />
           </TouchableOpacity>
         );
       } else {

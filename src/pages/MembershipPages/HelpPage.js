@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, Linking } from "react-native";
 import { connect } from "react-redux";
 import { ZnlHeader } from "@components";
+import Icon from "@components/Iconfont/CloudIcon";
 
 type Props = {
   Sales: Object,
@@ -21,9 +22,9 @@ class MembershipScreen extends Component<Props> {
   };
   render() {
     const { Sales } = this.props;
-    return (
-      <View style={styles.container}>
-        {Sales.SalesName && Sales.telephone && (
+    const SalesEle = () => {
+      if (Sales.SalesName && Sales.telephone) {
+        return (
           <View style={[styles.service, styles.Sales]}>
             <View style={styles.rowView}>
               <Text style={[styles.textCommon, styles.textTitle]}>业务员</Text>
@@ -41,12 +42,18 @@ class MembershipScreen extends Component<Props> {
                   Linking.openURL("tel:400-699-2899");
                 }}
               >
+                <Icon name="phone_ic" size={16} />
                 {Sales.telephone}
               </Text>
             </View>
           </View>
-        )}
-
+        );
+      }
+      return null;
+    };
+    return (
+      <View style={styles.container}>
+        {SalesEle()}
         <View style={styles.service}>
           <View style={styles.rowView}>
             <Text style={[styles.textCommon, styles.textTitle]}>客服</Text>
@@ -60,6 +67,7 @@ class MembershipScreen extends Component<Props> {
                 Linking.openURL("tel:400-699-2899");
               }}
             >
+              <Icon name="phone_ic" size={16} />
               400-699-2899
             </Text>
           </View>
