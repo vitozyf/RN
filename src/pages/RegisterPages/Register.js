@@ -5,8 +5,9 @@ import {
   Text,
   TouchableOpacity,
   BackHandler,
+  Alert,
 } from "react-native";
-import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
+import { ZnlInput, ZnlButton, ZnlHeader, ZnlProgress } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -30,7 +31,13 @@ class Register extends Component {
       navigation.navigate("Login");
     };
     return {
-      header: <ZnlHeader title="注册" onPressIcon={goBack} />,
+      header: (
+        <ZnlHeader
+          onPressIcon={goBack}
+          title=""
+          style={{ backgroundColor: "#fff" }}
+        />
+      ),
     };
   };
   GetCode = () => {
@@ -49,6 +56,54 @@ class Register extends Component {
     } else {
       Cloud.$Toast.show("请输入正确的手机号");
     }
+  };
+  wechatLoginHandler = () => {
+    const { wechat } = this.props;
+    let scope = "snsapi_userinfo";
+    //判断微信是否安装
+    wechat.isWXAppInstalled().then(isInstalled => {
+      if (isInstalled) {
+        //发送授权请求
+        wechat
+          .sendAuthRequest(scope)
+          .then(responseCode => {
+            //返回code码，通过code获取access_token
+            const code = parseInt(responseCode.errCode);
+            if (code === 0) {
+              Cloud.$get(
+                `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${
+                  Cloud.$CONFIG.appid
+                }&secret=${Cloud.$CONFIG.secret}&code=${
+                  responseCode.code
+                }&grant_type=authorization_code`,
+                null,
+                {
+                  nativeApi: true,
+                }
+              ).then(data => {
+                if (data.openid) {
+                  console.log(data.openid);
+                }
+              });
+            } else if (code === -4) {
+              Cloud.$Toast.show("用户拒绝授权");
+            } else if (code === -6) {
+              Cloud.$Toast.show("APP签名错误");
+            } else if (code === 2) {
+              Cloud.$Toast.show("用户取消授权操作");
+            } else {
+              Alert.alert("登录授权失败", code, [{ text: "确定" }]);
+            }
+          })
+          .catch(err => {
+            Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
+          });
+      } else {
+        Alert.alert("您未安装微信", "请先安装微信客户端再用微信登录方式", [
+          { text: "确定" },
+        ]);
+      }
+    });
   };
   RegisterHandler = () => {
     const {
@@ -120,12 +175,28 @@ class Register extends Component {
   }
 
   render() {
+    const data = [
+      {
+        key: 1,
+        value: "填写资料",
+      },
+      {
+        key: 2,
+        value: "绑定微信",
+      },
+      {
+        key: 3,
+        value: "注册完成",
+      },
+    ];
     return (
-      <KeyboardAwareScrollView style={styles.Page}>
-        <View style={styles.Page}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.Page}>
+        <View style={styles.pagebox}>
+          <ZnlProgress data={data} active={1} />
           <View style={styles.title}>
             <Text style={styles.titleText}>注册账号</Text>
           </View>
+
           <View style={styles.Body}>
             <View>
               <View style={styles.InputBox}>
@@ -136,7 +207,7 @@ class Register extends Component {
                     this.onChangeText(value, "ContactCompanyName");
                   }}
                   placeholder="公司名称"
-                  autoFocus={true}
+                  autoFocus={false}
                 />
               </View>
               <View style={styles.InputBox}>
@@ -146,7 +217,17 @@ class Register extends Component {
                   onChangeText={value => {
                     this.onChangeText(value, "ContactName");
                   }}
-                  placeholder="联系人名称"
+                  placeholder="联系人"
+                />
+              </View>
+              <View style={styles.InputBox}>
+                <ZnlInput
+                  style={styles.Input}
+                  inputStyle={styles.inputIn}
+                  onChangeText={value => {
+                    this.onChangeText(value, "AccountName");
+                  }}
+                  placeholder="账号"
                 />
               </View>
               <View style={styles.InputBox}>
@@ -166,7 +247,7 @@ class Register extends Component {
                   onChangeText={value => {
                     this.onChangeText(value, "SmsCode");
                   }}
-                  placeholder="短信验证码"
+                  placeholder="验证码"
                 />
                 <ZnlButton
                   style={styles.ButtonMessage}
@@ -181,19 +262,9 @@ class Register extends Component {
                   style={styles.Input}
                   inputStyle={styles.inputIn}
                   onChangeText={value => {
-                    this.onChangeText(value, "AccountName");
-                  }}
-                  placeholder="账号"
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
                     this.onChangeText(value, "Password");
                   }}
-                  placeholder="密码"
+                  placeholder="6-16位密码"
                   secureTextEntry={true}
                 />
               </View>
@@ -214,9 +285,9 @@ class Register extends Component {
           <ZnlButton
             type="main"
             style={styles.Button}
-            onPress={this.RegisterHandler}
+            onPress={this.wechatLoginHandler}
           >
-            确定
+            下一步
           </ZnlButton>
         </View>
       </KeyboardAwareScrollView>
@@ -228,61 +299,64 @@ const styles = StyleSheet.create({
   Page: {
     backgroundColor: "#fff",
     flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 20,
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 10,
+  },
+  pagebox: {
+    width: 300,
+    paddingBottom: 100,
   },
   title: {
-    paddingBottom: 20,
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
+    paddingTop: 24,
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 30,
+    lineHeight: 42,
+    fontWeight: "500",
+    color: "#333",
   },
   Body: {
     paddingTop: 20,
   },
   InputBox: {
-    marginBottom: 16,
+    marginBottom: 4,
   },
   InputBoxMessage: {
-    marginBottom: 16,
+    marginBottom: 4,
     flexDirection: "row",
     alignItems: "center",
   },
   Input: {
     borderWidth: 0,
     borderBottomWidth: 1,
+    height: 48,
   },
   inputIn: {},
   InputMessage: {
     borderWidth: 0,
     borderBottomWidth: 1,
-    // borderColor: '#ccc',
-    // width: 200,
     flex: 1,
   },
   ButtonMessage: {
     height: 40,
-    borderRadius: 2,
     width: 120,
+    borderRadius: 0,
     backgroundColor: "#fff",
-    borderWidth: 1,
+    borderWidth: 0,
     justifyContent: "center",
-    marginLeft: 10,
-    // flex: 1
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
   },
   ButtonMessageText: {
-    color: "#999",
-    borderColor: "#999",
+    color: "#2288CC",
+    fontSize: 16,
   },
   Button: {
     width: "100%",
     height: 48,
     borderRadius: 2,
+    marginTop: 30,
   },
   iconbox: {
     marginLeft: 5,
@@ -296,7 +370,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return props;
+  return Object.assign({}, { wechat: state.wechat }, props);
 };
 const mapDispatchToProps = dispatch => {
   return {

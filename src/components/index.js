@@ -9,6 +9,7 @@ import { Loading } from "./Loading";
 import { BackTop } from "./BackTop";
 import ZnlModal from "./ZnlModal";
 import { ZnlToast } from "./ZnlToast";
+import ZnlProgress from "./ZnlProgress";
 
 export {
   HeaderRight,
@@ -22,4 +23,5 @@ export {
   ZnlModal,
   ZnlToast,
   DashLine,
+  ZnlProgress,
 };

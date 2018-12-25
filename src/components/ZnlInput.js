@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 40,
     borderWidth: 1,
-    borderColor: "#e6e6e6",
+    borderColor: "#ccc",
     backgroundColor: "#fff",
   },
   inputsty: {
