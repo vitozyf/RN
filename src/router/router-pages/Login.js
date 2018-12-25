@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import LoginScreen from "@pages/LoginPages/Login";
+import LoginHelpPage from "@pages/MembershipPages/HelpPage";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -9,6 +10,10 @@ const IndexPages = createStackNavigator(
     Login: {
       screen: LoginScreen,
       path: "/Login/Index",
+    },
+    LoginHelpPage: {
+      screen: LoginHelpPage,
+      path: "/Login/HelpPage",
     },
   },
   {

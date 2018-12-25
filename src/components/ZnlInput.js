@@ -52,6 +52,7 @@ type Props = {
   returnKeyType: TReturnKeyType,
   children: any,
   onClose: Function,
+  placeholderTextColor: string,
 };
 type State = {
   inputValue: string | number,
@@ -63,6 +64,7 @@ class ZnlInput extends Component<Props, State> {
     defaultValue: "",
     keyboardType: "default",
     multiline: false,
+    placeholderTextColor: "#999",
   };
   constructor(props: Props) {
     super(props);
@@ -104,6 +106,7 @@ class ZnlInput extends Component<Props, State> {
       inputStyle,
       renderLeft,
       renderRight,
+      placeholderTextColor,
     } = this.props;
     const { children } = this.props;
     const CloseButton = () => {
@@ -140,6 +143,7 @@ class ZnlInput extends Component<Props, State> {
             editable={editable}
             returnKeyType={returnKeyType}
             ref={ref => (this.textInput = ref)}
+            placeholderTextColor={placeholderTextColor}
           />
           {CloseButton()}
         </View>

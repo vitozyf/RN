@@ -8,6 +8,7 @@ import {
   Platform,
   Alert,
   BackHandler,
+  Keyboard,
 } from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -26,6 +27,7 @@ type State = {
   Password: string,
   LoginType: number,
   OpenId: "",
+  showWechat: boolean,
 };
 class Login extends Component<Props, State> {
   constructor(props) {
@@ -38,11 +40,33 @@ class Login extends Component<Props, State> {
       LoginType: 0, // 登录方式:0 手机号, 1 erp
       OpenId: "",
       IsFreeLogin: true,
+      showWechat: true,
     };
   }
   static navigationOptions = ({ navigation }) => {
+    const toHelpPage = () => {
+      navigation.push("LoginHelpPage");
+    };
+    const renderRight = () => {
+      return (
+        <TouchableOpacity
+          style={styles.renderRightButton}
+          onPress={toHelpPage}
+          activeOpacity={1}
+        >
+          <Text style={styles.renderRightText}>帮助</Text>
+        </TouchableOpacity>
+      );
+    };
     return {
-      header: <ZnlHeader hideLeft={true} title="登录" />,
+      header: (
+        <ZnlHeader
+          hideLeft={true}
+          title=""
+          style={{ backgroundColor: "#fff" }}
+          renderRight={renderRight}
+        />
+      ),
     };
   };
   ToRegister = () => {
@@ -127,7 +151,7 @@ class Login extends Component<Props, State> {
     } else {
       Cloud.$get(url + `?openId=${OpenId}`, null, { loading: false })
         .then(async data => {
-          console.log(333, data);
+          // console.log(333, data);
           Cloud.$Loading.hidden();
           if (data) {
             await Cloud.$setStorage(
@@ -179,19 +203,8 @@ class Login extends Component<Props, State> {
           .then(responseCode => {
             //返回code码，通过code获取access_token
             // this.getAccessToken(responseCode.code);
-            console.log(111, responseCode);
             const code = parseInt(responseCode.errCode);
             if (code === 0) {
-              // Cloud.$setStorage(Cloud.$CONFIG.TOKEN, responseCode.code);
-              // this.goBackHome();
-              // this.setState(
-              //   {
-              //     OpenId: responseCode.code,
-              //   },
-              //   () => {
-              //     this.LoginHandler();
-              //   }
-              // );
               Cloud.$get(
                 `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${
                   Cloud.$CONFIG.appid
@@ -209,7 +222,6 @@ class Login extends Component<Props, State> {
                       OpenId: data.openid,
                     },
                     () => {
-                      console.log(222, data, data.openid, this);
                       this.LoginHandler("user/loginwechat");
                     }
                   );
@@ -226,7 +238,6 @@ class Login extends Component<Props, State> {
             }
           })
           .catch(err => {
-            console.log(123, err);
             Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
           });
       } else {
@@ -247,16 +258,43 @@ class Login extends Component<Props, State> {
     return true;
   };
 
+  keyboardDidShowListener = null;
+  keyboardDidHideListener = null;
+
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    this.keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      this._keyboardDidShow
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide
+    );
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
+
+  _keyboardDidShow = () => {
+    this.setState({
+      showWechat: false,
+    });
+  };
+
+  _keyboardDidHide = () => {
+    this.setState({
+      showWechat: true,
+    });
+  };
 
   render() {
     const { LoginType } = this.state;
+    const TitleText = LoginType === 0 ? "手机号登录" : "ERP账号登录";
+    const TitleNav = LoginType === 1 ? "手机号登录" : "ERP账号登录";
     const LoginForm =
       LoginType === 0 ? (
         <View>
@@ -288,6 +326,15 @@ class Login extends Component<Props, State> {
               defaultValue={this.state.Password}
             />
           </View>
+          <View style={styles.otherLogin}>
+            <Text
+              style={styles.otherLoginTitle}
+              onPress={this.toggleLoginTypeHandler}
+            >
+              {TitleNav}
+            </Text>
+            <Text style={styles.changePwd}>忘记密码?</Text>
+          </View>
         </View>
       ) : (
         <View>
@@ -300,7 +347,7 @@ class Login extends Component<Props, State> {
                 this.onChangeText(value, "CompanyName");
               }}
               placeholder="公司名"
-              autoFocus={true}
+              autoFocus={false}
               defaultValue={this.state.CompanyName}
             />
           </View>
@@ -331,22 +378,25 @@ class Login extends Component<Props, State> {
               defaultValue={this.state.Password}
             />
           </View>
+
+          <View style={styles.otherLogin}>
+            <Text
+              style={styles.otherLoginTitle}
+              onPress={this.toggleLoginTypeHandler}
+            >
+              {TitleNav}
+            </Text>
+            <Text style={styles.changePwd}>忘记密码?</Text>
+          </View>
         </View>
       );
-    const TitleText = LoginType === 0 ? "手机号登录" : "ERP登录";
-    const TitleNav = LoginType === 1 ? "手机号登录>>" : "ERP登录>>";
+
     return (
-      <KeyboardAwareScrollView style={styles.Page}>
-        <View style={styles.Page}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.Page}>
+        <View style={styles.pagebox}>
           <View style={styles.Body}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{TitleText}</Text>
-              <Text
-                style={styles.otherLoginTitle}
-                onPress={this.toggleLoginTypeHandler}
-              >
-                {TitleNav}
-              </Text>
             </View>
             {LoginForm}
           </View>
@@ -367,24 +417,28 @@ class Login extends Component<Props, State> {
             注册
           </ZnlButton>
         </View>
-        <View style={styles.wechatLoginBox}>
-          <View style={styles.wechatLoginTitle}>
-            <View style={styles.wechatLoginLine} />
-            <View>
-              <Text style={styles.wechatLoginText}>其他登录方式.</Text>
+        {this.state.showWechat && (
+          <View style={styles.wechatLoginBox}>
+            <View style={styles.wechatLoginTitle}>
+              <View style={styles.wechatLoginLine} />
+              <View>
+                <Text style={styles.wechatLoginText}>
+                  您还可以使用以下方式登录
+                </Text>
+              </View>
+              <View style={styles.wechatLoginLine} />
             </View>
-            <View style={styles.wechatLoginLine} />
+            <View style={styles.wechatLogin}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={this.wechatLoginHandler}
+                style={styles.wechatLoginImg}
+              >
+                <Image source={require("./img/wechat_ic.png")} />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.wechatLogin}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={this.wechatLoginHandler}
-              style={styles.wechatLoginImg}
-            >
-              <Image source={require("./img/wechat_ic.png")} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        )}
       </KeyboardAwareScrollView>
     );
   }
@@ -394,26 +448,44 @@ const styles = StyleSheet.create({
   Page: {
     backgroundColor: "#fff",
     flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10,
+    flexDirection: "column",
+    alignItems: "center",
+    // paddingLeft: 10,
+    // paddingRight: 10,
+    // paddingTop: 0,
+  },
+  pagebox: {
+    width: 300,
+    paddingBottom: 100,
   },
   Body: {
-    paddingTop: 20,
+    paddingTop: 24,
   },
   title: {
-    paddingBottom: 50,
+    paddingBottom: 25,
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 30,
+    lineHeight: 42,
+    fontWeight: "500",
+    color: "#333",
+  },
+  otherLogin: {
+    paddingBottom: 32,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   otherLoginTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#4A90E2",
+  },
+  changePwd: {
+    fontSize: 14,
+    color: "#999",
   },
   InputBox: {
     marginBottom: 16,
@@ -451,8 +523,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   wechatLoginBox: {
-    marginTop: 30,
+    // marginTop: 30,
     // backgroundColor: "#ccc",
+    width: 300,
+    position: "absolute",
+    bottom: 0,
+    paddingBottom: 24,
   },
   wechatLoginTitle: {
     height: 50,
@@ -462,7 +538,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   wechatLoginLine: {
-    width: 90,
+    // width: 90,
+    flex: 1,
     height: 1,
     backgroundColor: "#E6E6E6",
     marginLeft: 10,
@@ -479,6 +556,13 @@ const styles = StyleSheet.create({
     width: 50,
     alignItems: "center",
     justifyContent: "center",
+  },
+  renderRightButton: {
+    width: 50,
+  },
+  renderRightText: {
+    color: "#EE7700",
+    fontSize: 17,
   },
 });
 const mapStateToProps = (state, props) => {
