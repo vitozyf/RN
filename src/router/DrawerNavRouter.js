@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Home from "@router/router-pages/Home"; // 首页
 import Login from "@router/router-pages/Login"; // 登录
+import ChangePwd from "@router/router-pages/ChangePwd"; // 登录
 import Register from "@router/router-pages/Register"; // 注册
 import BaseInfo from "@router/router-pages/BaseInfo"; // 基本信息
 import Membership from "@router/router-pages/Membership"; // 会员身份
@@ -22,6 +23,10 @@ const SimpleAppNavigator = createDrawerNavigator(
     Register: {
       screen: Register,
       path: "/Register",
+    },
+    ChangePwd: {
+      screen: ChangePwd,
+      path: "/ChangePwd",
     },
     BaseInfo: {
       screen: BaseInfo,

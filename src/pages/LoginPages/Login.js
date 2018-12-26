@@ -73,6 +73,10 @@ class Login extends Component<Props, State> {
     const { navigation } = this.props;
     navigation.navigate("Register");
   };
+  ToChangePwd = () => {
+    const { navigation } = this.props;
+    navigation.navigate("ChangePwd");
+  };
   goBackHome = () => {
     const { navigation } = this.props;
     navigation.navigate("Home");
@@ -333,7 +337,9 @@ class Login extends Component<Props, State> {
             >
               {TitleNav}
             </Text>
-            <Text style={styles.changePwd}>忘记密码?</Text>
+            <Text style={styles.changePwd} onPress={this.ToChangePwd}>
+              忘记密码?
+            </Text>
           </View>
         </View>
       ) : (
@@ -386,7 +392,9 @@ class Login extends Component<Props, State> {
             >
               {TitleNav}
             </Text>
-            <Text style={styles.changePwd}>忘记密码?</Text>
+            <Text style={styles.changePwd} onPress={this.ToChangePwd}>
+              忘记密码?
+            </Text>
           </View>
         </View>
       );

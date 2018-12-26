@@ -7,21 +7,18 @@ import {
   BackHandler,
   Alert,
 } from "react-native";
-import { ZnlInput, ZnlButton, ZnlHeader, ZnlProgress } from "@components";
+import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { AppInit } from "@src/utils/appInit";
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ContactCompanyName: "", // 公司名
-      ContactName: "", // 联系人名称
+      CompanyName: "", // 公司名
       PhoneNumber: "", // 手机号
-      SmsCode: "", // 短信验证码
-      AccountName: "", // 账号
       Password: "", // 密码
       RePassword: "",
+      SmsCode: "", // 短信验证码
       SmsGuid: "",
       Time: 0,
     };
@@ -82,107 +79,59 @@ class Register extends Component {
       clearInterval(TimeId);
     }
   };
-  wechatLoginHandler = () => {
-    // 验证表单
+  ChangePwdHandler = () => {
     const {
-      ContactCompanyName,
-      ContactName,
+      CompanyName,
       PhoneNumber,
-      SmsCode,
-      AccountName,
       Password,
       RePassword,
-      SmsGuid,
+      SmsCode,
     } = this.state;
+    const { navigation } = this.props;
     let errMessage = "";
-    if (!ContactCompanyName) {
-      errMessage = "公司名不能为空";
-    } else if (!ContactName) {
-      errMessage = "联系人不能为空";
-    } else if (!AccountName) {
-      errMessage = "账号不能为空";
-    } else if (!PhoneNumber) {
+    if (!PhoneNumber) {
       errMessage = "手机号不能为空";
-    } else if (!SmsCode) {
-      errMessage = "短信验证码不能为空";
+    } else if (!CompanyName) {
+      errMessage = "公司名不能为空";
     } else if (!Password) {
       errMessage = "密码不能为空";
     } else if (Password.length < 6 || Password.length > 16) {
       errMessage = "密码长度6-16位";
     } else if (Password !== RePassword) {
       errMessage = "两次密码输入不一致";
+    } else if (!SmsCode) {
+      errMessage = "短信验证码不能为空";
     }
     if (errMessage) {
       return Cloud.$Toast.show(errMessage);
     }
-    // 绑定微信
-    const { wechat } = this.props;
-    let scope = "snsapi_userinfo";
-    //判断微信是否安装
-    wechat.isWXAppInstalled().then(isInstalled => {
-      if (isInstalled) {
-        //发送授权请求
-        wechat
-          .sendAuthRequest(scope)
-          .then(responseCode => {
-            //返回code码，通过code获取access_token
-            const code = parseInt(responseCode.errCode);
-            if (code === 0) {
-              Cloud.$get(
-                `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${
-                  Cloud.$CONFIG.appid
-                }&secret=${Cloud.$CONFIG.secret}&code=${
-                  responseCode.code
-                }&grant_type=authorization_code`,
-                null,
-                {
-                  nativeApi: true,
-                }
-              ).then(data => {
-                if (data.openid) {
-                  console.log(data.openid);
-                }
-              });
-            } else if (code === -4) {
-              Cloud.$Toast.show("用户拒绝授权");
-            } else if (code === -6) {
-              Cloud.$Toast.show("APP签名错误");
-            } else if (code === 2) {
-              Cloud.$Toast.show("用户取消授权操作");
-            } else {
-              Alert.alert("登录授权失败", code, [{ text: "确定" }]);
-            }
-          })
-          .catch(err => {
-            Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
-          });
+    Cloud.$post(
+      "user/changedpwd",
+      {
+        PhoneNumber,
+        CompanyName,
+        Password,
+        SmsGuid: this.state.SmsGuid,
+        SmsCode,
+      },
+      {
+        onlydata: false,
+      }
+    ).then(response => {
+      if (
+        response.Result &&
+        response.Result.Data &&
+        response.Result.Data.Code === 0
+      ) {
+        Cloud.$Toast.show("修改密码成功");
+        const timeid = setTimeout(() => {
+          navigation.navigate("Login");
+          clearTimeout(timeid);
+        }, 1000);
       } else {
-        Alert.alert("您未安装微信", "请先安装微信客户端再用微信登录方式", [
-          { text: "确定" },
-        ]);
+        Cloud.$Toast.show(response.Result.Data.Message || "修改密码失败");
       }
     });
-  };
-  RegisterHandler = () => {
-    Cloud.$post("user/reg", this.state)
-      .then(async data => {
-        if (data) {
-          const { SetUserInfo, navigation } = this.props;
-          await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-          await Cloud.$setStorage(
-            Cloud.$CONFIG.AvatarPath,
-            data.AvatarPath || ""
-          );
-          await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
-          await AppInit({
-            dispatch: SetUserInfo,
-          });
-          navigation.navigate("Home");
-        }
-      })
-      .catch(err => {
-        // console.log(222, err);
-      });
   };
   onChangeText = (value, name) => {
     this.setState({
@@ -204,61 +153,15 @@ class Register extends Component {
   }
 
   render() {
-    const data = [
-      {
-        key: 1,
-        value: "填写资料",
-      },
-      {
-        key: 2,
-        value: "绑定微信",
-      },
-      {
-        key: 3,
-        value: "注册完成",
-      },
-    ];
     return (
       <KeyboardAwareScrollView contentContainerStyle={styles.Page}>
         <View style={styles.pagebox}>
-          <ZnlProgress data={data} active={1} />
           <View style={styles.title}>
-            <Text style={styles.titleText}>注册账号</Text>
+            <Text style={styles.titleText}>修改密码</Text>
           </View>
 
           <View style={styles.Body}>
             <View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "ContactCompanyName");
-                  }}
-                  placeholder="公司名称"
-                  autoFocus={false}
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "ContactName");
-                  }}
-                  placeholder="联系人"
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "AccountName");
-                  }}
-                  placeholder="账号"
-                />
-              </View>
               <View style={styles.InputBox}>
                 <ZnlInput
                   style={styles.Input}
@@ -269,23 +172,16 @@ class Register extends Component {
                   placeholder="手机号"
                 />
               </View>
-              <View style={styles.InputBoxMessage}>
+              <View style={styles.InputBox}>
                 <ZnlInput
-                  style={styles.InputMessage}
+                  style={styles.Input}
                   inputStyle={styles.inputIn}
                   onChangeText={value => {
-                    this.onChangeText(value, "SmsCode");
+                    this.onChangeText(value, "CompanyName");
                   }}
-                  placeholder="验证码"
+                  placeholder="公司名称"
+                  autoFocus={false}
                 />
-                <ZnlButton
-                  style={styles.ButtonMessage}
-                  textStyle={styles.ButtonMessageText}
-                  onPress={this.GetCode}
-                  disabled={this.state.Time != 0}
-                >
-                  {this.state.Time === 0 ? "获取验证码" : this.state.Time}
-                </ZnlButton>
               </View>
               <View style={styles.InputBox}>
                 <ZnlInput
@@ -309,15 +205,33 @@ class Register extends Component {
                   secureTextEntry={true}
                 />
               </View>
+              <View style={styles.InputBoxMessage}>
+                <ZnlInput
+                  style={styles.InputMessage}
+                  inputStyle={styles.inputIn}
+                  onChangeText={value => {
+                    this.onChangeText(value, "SmsCode");
+                  }}
+                  placeholder="验证码"
+                />
+                <ZnlButton
+                  style={styles.ButtonMessage}
+                  textStyle={styles.ButtonMessageText}
+                  onPress={this.GetCode}
+                  disabled={this.state.Time != 0}
+                >
+                  {this.state.Time === 0 ? "获取验证码" : this.state.Time}
+                </ZnlButton>
+              </View>
             </View>
           </View>
 
           <ZnlButton
             type="main"
             style={styles.Button}
-            onPress={this.wechatLoginHandler}
+            onPress={this.ChangePwdHandler}
           >
-            下一步
+            确定
           </ZnlButton>
         </View>
       </KeyboardAwareScrollView>
@@ -400,17 +314,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, { wechat: state.wechat }, props);
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    SetUserInfo: SetUserInfo => {
-      return dispatch(SetUserInfo);
-    },
-  };
+  return props;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Register);
+export default connect(mapStateToProps)(Register);
