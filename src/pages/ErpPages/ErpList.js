@@ -413,7 +413,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
               <Text>
                 <Icon
                   style={[styles.icon, styles.colorMain]}
-                  name="true"
+                  name="screen_right_ic"
                   size={16}
                 />
               </Text>
@@ -438,7 +438,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
               <Text>
                 <Icon
                   style={[styles.icon, styles.colorMain]}
-                  name="true"
+                  name="screen_right_ic"
                   size={16}
                 />
               </Text>
@@ -463,7 +463,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
               <Text>
                 <Icon
                   style={[styles.icon, styles.colorMain]}
-                  name="true"
+                  name="screen_right_ic"
                   size={16}
                 />
               </Text>
@@ -602,7 +602,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                   MakeYear === "MakeYear ASC" ? styles.colorMain : null,
                   styles.iconTop,
                 ]}
-                name="arrow_up"
+                name="rank_up"
                 size={20}
               />
               <Icon
@@ -611,7 +611,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                   MakeYear === "MakeYear DESC" ? styles.colorMain : null,
                   styles.iconBottom,
                 ]}
-                name="arrow_down"
+                name="rank_down"
                 size={20}
               />
             </View>
@@ -630,7 +630,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                   InvQty.indexOf("ASC") > -1 ? styles.colorMain : null,
                   styles.iconTop,
                 ]}
-                name="arrow_up"
+                name="rank_up"
                 size={20}
               />
               <Icon
@@ -639,7 +639,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                   InvQty.indexOf("DESC") > -1 ? styles.colorMain : null,
                   styles.iconBottom,
                 ]}
-                name="arrow_down"
+                name="rank_down"
                 size={20}
               />
             </View>
@@ -666,7 +666,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                   UpdatedTime.indexOf("ASC") > -1 ? styles.colorMain : null,
                   styles.iconTop,
                 ]}
-                name="arrow_up"
+                name="rank_up"
                 size={20}
               />
               <Icon
@@ -675,7 +675,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                   UpdatedTime.indexOf("DESC") > -1 ? styles.colorMain : null,
                   styles.iconBottom,
                 ]}
-                name="arrow_down"
+                name="rank_down"
                 size={20}
               />
             </View>
@@ -703,7 +703,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
                     : null,
                   { marginLeft: -4 },
                 ]}
-                name="filter_o"
+                name="screen_ic"
                 size={20}
               />
             </View>
@@ -1005,13 +1005,13 @@ const styles = StyleSheet.create({
   iconTop: {
     position: "absolute",
     right: 0,
-    top: -14,
+    top: -13,
     fontWeight: "bold",
   },
   iconBottom: {
     position: "absolute",
     right: 0,
-    bottom: -14,
+    bottom: -13,
     fontWeight: "bold",
   },
   // header
