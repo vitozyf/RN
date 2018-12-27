@@ -11,7 +11,7 @@ import {
   Keyboard,
 } from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader } from "@components";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "@components/Iconfont/CloudIcon";
 import { AppInit } from "@src/utils/appInit";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -28,6 +28,7 @@ type State = {
   LoginType: number,
   OpenId: "",
   showWechat: boolean,
+  secureTextEntry: boolean,
 };
 class Login extends Component<Props, State> {
   constructor(props) {
@@ -41,6 +42,7 @@ class Login extends Component<Props, State> {
       OpenId: "",
       IsFreeLogin: true,
       showWechat: true,
+      secureTextEntry: true, // 密码方式显示
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -295,6 +297,27 @@ class Login extends Component<Props, State> {
     });
   };
 
+  renderCloseBtn = () => {
+    const { secureTextEntry } = this.state;
+    const name = secureTextEntry ? "input_view" : "input_hidden";
+    return (
+      <Icon.Button
+        name={name}
+        backgroundColor="#fff"
+        color="#ccc"
+        size={16}
+        borderRadius={0}
+        activeOpacity={1}
+        iconStyle={{ marginRight: 0 }}
+        onPress={() => {
+          this.setState({
+            secureTextEntry: !secureTextEntry,
+          });
+        }}
+      />
+    );
+  };
+
   render() {
     const { LoginType } = this.state;
     const TitleText = LoginType === 0 ? "手机号登录" : "ERP账号登录";
@@ -324,10 +347,11 @@ class Login extends Component<Props, State> {
                 this.onChangeText(value, "Password");
               }}
               placeholder="密码"
-              secureTextEntry={true}
+              secureTextEntry={this.state.secureTextEntry}
               onSubmitEditing={this.LoginHandler}
               TReturnKeyType="go"
               defaultValue={this.state.Password}
+              renderCloseBtn={this.renderCloseBtn}
             />
           </View>
           <View style={styles.otherLogin}>
@@ -378,10 +402,11 @@ class Login extends Component<Props, State> {
                 this.onChangeText(value, "Password");
               }}
               placeholder="密码"
-              secureTextEntry={true}
+              secureTextEntry={this.state.secureTextEntry}
               onSubmitEditing={this.LoginHandler}
               TReturnKeyType="go"
               defaultValue={this.state.Password}
+              renderCloseBtn={this.renderCloseBtn}
             />
           </View>
 
@@ -417,11 +442,7 @@ class Login extends Component<Props, State> {
             登录
           </ZnlButton>
 
-          <ZnlButton
-            type="light"
-            style={styles.ButtonReg}
-            onPress={this.ToRegister}
-          >
+          <ZnlButton style={styles.ButtonReg} onPress={this.ToRegister}>
             注册
           </ZnlButton>
         </View>

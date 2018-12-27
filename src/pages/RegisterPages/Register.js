@@ -11,6 +11,8 @@ import { ZnlInput, ZnlButton, ZnlHeader, ZnlProgress } from "@components";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AppInit } from "@src/utils/appInit";
+import Icon from "@components/Iconfont/CloudIcon";
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,7 @@ class Register extends Component {
       RePassword: "",
       SmsGuid: "",
       Time: 0,
+      secureTextEntry: true,
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -203,6 +206,27 @@ class Register extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
+  renderCloseBtn = () => {
+    const { secureTextEntry } = this.state;
+    const name = secureTextEntry ? "input_view" : "input_hidden";
+    return (
+      <Icon.Button
+        name={name}
+        backgroundColor="#fff"
+        color="#ccc"
+        size={16}
+        borderRadius={0}
+        activeOpacity={1}
+        iconStyle={{ marginRight: 0 }}
+        onPress={() => {
+          this.setState({
+            secureTextEntry: !secureTextEntry,
+          });
+        }}
+      />
+    );
+  };
+
   render() {
     const data = [
       {
@@ -295,7 +319,8 @@ class Register extends Component {
                     this.onChangeText(value, "Password");
                   }}
                   placeholder="6-16位密码"
-                  secureTextEntry={true}
+                  secureTextEntry={this.state.secureTextEntry}
+                  renderCloseBtn={this.renderCloseBtn}
                 />
               </View>
               <View style={styles.InputBox}>
@@ -306,7 +331,8 @@ class Register extends Component {
                     this.onChangeText(value, "RePassword");
                   }}
                   placeholder="再次输入密码"
-                  secureTextEntry={true}
+                  secureTextEntry={this.state.secureTextEntry}
+                  renderCloseBtn={this.renderCloseBtn}
                 />
               </View>
             </View>

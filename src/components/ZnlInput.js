@@ -53,6 +53,7 @@ type Props = {
   children: any,
   onClose: Function,
   placeholderTextColor: string,
+  renderCloseBtn: Function,
 };
 type State = {
   inputValue: string | number,
@@ -108,17 +109,33 @@ class ZnlInput extends Component<Props, State> {
       renderRight,
       placeholderTextColor,
     } = this.props;
-    const { children } = this.props;
+    const { children, renderCloseBtn } = this.props;
     const CloseButton = () => {
-      if (this.state.inputValue || (!this.state.inputValue && defaultValue)) {
+      if (renderCloseBtn) {
+        return renderCloseBtn();
+      } else if (
+        this.state.inputValue ||
+        (!this.state.inputValue && defaultValue)
+      ) {
         return (
-          <TouchableOpacity
-            style={[styles.close]}
+          // <TouchableOpacity
+          //   style={[styles.close]}
+          //   onPress={this.closeHandler}
+          //   activeOpacity={1}
+          // >
+          //   <Icon style={[styles.icon]} name="input_clear" size={16} />
+          // </TouchableOpacity>
+
+          <Icon.Button
             onPress={this.closeHandler}
+            name="input_clear"
+            backgroundColor="#fff"
+            color="#ccc"
+            size={16}
+            borderRadius={0}
             activeOpacity={1}
-          >
-            <Icon style={[styles.icon]} name="input_clear" size={16} />
-          </TouchableOpacity>
+            iconStyle={{ marginRight: 0 }}
+          />
         );
       } else {
         return null;
@@ -175,16 +192,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-  },
-  close: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    right: 0,
-    width: 30,
-    height: "100%",
-    // backgroundColor: "#ddd",
   },
   icon: {
     color: "#ccc",
