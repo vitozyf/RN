@@ -15,21 +15,18 @@ import { DrawerItems, SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { ZnlModal } from "@components";
-import DdeviceInfo from "react-native-device-info";
+import DeviceInfo from "react-native-device-info";
 
 const Height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   containerbox: {
-    height: Height,
+    flex: 1,
   },
   header: {
-    // flexDirection: "row",
-    // alignItems: "center",
     height: 120,
     borderBottomWidth: 1,
     borderColor: "#f0f0f0",
-    // paddingRight: 10,
   },
   ImageBackground: {
     width: "100%",
@@ -51,13 +48,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 5,
   },
-  // UserIdentity: {
-  //   paddingLeft: 3,
-  //   paddingRight: 3,
-  //   backgroundColor: "#048FE0",
-  //   color: "#fff",
-  //   borderRadius: 3,
-  // },
   StockTypeBox: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -120,14 +110,25 @@ const styles = StyleSheet.create({
   },
   container: {
     height: Height - 30,
-    // height: Height,
-    // justifyContent: 'space-between',
+    justifyContent: "space-between",
+  },
+  DrawerItems: {
+    flex: 1,
+    justifyContent: "flex-start",
   },
   footer: {
-    // backgroundColor: '#f2f2f2',
-    position: "absolute",
-    bottom: 1,
     height: 50,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  settingBtn: {
+    width: 100,
+    height: 50,
+  },
+  settingBtnText: {
+    lineHeight: 50,
+    textAlign: "center",
   },
 });
 
@@ -136,10 +137,7 @@ const items = [
   //   key: "Home",
   //   routeName: 'HOme'
   // },
-  {
-    key: "News",
-    routeName: "News",
-  },
+
   {
     key: "BaseInfo",
     routeName: "BaseInfo",
@@ -148,16 +146,12 @@ const items = [
     key: "Membership",
     routeName: "Membership",
   },
-  // {
-  //   key: "Register",
-  //   routeName: 'Register'
-  // },
-  // {
-  //   key: "Login",
-  //   routeName: 'Login'
-  // }
 ];
 if (ISDEBUG) {
+  items.push({
+    key: "News",
+    routeName: "News",
+  });
   items.push({
     key: "Register",
     routeName: "Register",
@@ -182,16 +176,12 @@ class MyScrollView extends Component {
       DownloadUrl: "",
     };
   }
-  toBaseInfo = () => {
+  toPage = name => {
     const { navigation } = this.props;
-    navigation.navigate("BaseInfo");
-  };
-  toMembership = () => {
-    const { navigation } = this.props;
-    navigation.navigate("Membership");
+    navigation.navigate(name);
   };
   getVersionApp() {
-    const Version = DdeviceInfo.getVersion();
+    const Version = DeviceInfo.getVersion();
     const Url = ISDEBUG
       ? "appget/getversioninfo?isDebug=true"
       : "appget/getversioninfo";
@@ -274,7 +264,9 @@ class MyScrollView extends Component {
       // if (UserIdentity[key]) {
       UserIdentityView.push(
         <Text
-          onPress={this.toMembership}
+          onPress={() => {
+            this.toPage("Membership");
+          }}
           style={[styles.StockTypeCommon, styles[titleClass]]}
           key={key}
         >
@@ -287,7 +279,9 @@ class MyScrollView extends Component {
     const CustomDrawer = (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={this.toBaseInfo}
+          onPress={() => {
+            this.toPage("BaseInfo");
+          }}
           activeOpacity={1}
           style={styles.header}
         >
@@ -319,8 +313,21 @@ class MyScrollView extends Component {
             this.setState({ visible: false });
           }}
         />
+        <View style={styles.DrawerItems}>
+          <DrawerItems {...this.props} items={items} />
+        </View>
 
-        <DrawerItems {...this.props} items={items} />
+        <View style={styles.footer}>
+          {/* <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.settingBtn}
+            onPress={() => {
+              this.toPage("Setting");
+            }}
+          >
+            <Text style={styles.settingBtnText}>设置</Text>
+          </TouchableOpacity> */}
+        </View>
       </View>
     );
     // IOS外层包裹安全区域
@@ -335,7 +342,11 @@ class MyScrollView extends Component {
       CustomDrawer
     );
 
-    return <ScrollView style={styles.containerbox}>{Container}</ScrollView>;
+    return (
+      <ScrollView contentContainerStyle={styles.containerbox}>
+        {Container}
+      </ScrollView>
+    );
   }
   componentDidMount() {
     this.getVersionApp();

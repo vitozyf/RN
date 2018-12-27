@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { View, StyleSheet, Text, WebView } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { ZnlHeader } from "@components";
 import { connect } from "react-redux";
 
@@ -8,7 +8,7 @@ type Props = {
   navigation: INavigation,
 };
 type State = {};
-class News extends Component<Props, State> {
+class Setting extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const onPressIcon = () => {
       navigation.navigate("Home");
@@ -16,7 +16,7 @@ class News extends Component<Props, State> {
     return {
       header: (
         <ZnlHeader
-          title=""
+          title="设置"
           style={{ backgroundColor: "#fff" }}
           onPressIcon={onPressIcon}
         />
@@ -24,19 +24,11 @@ class News extends Component<Props, State> {
     };
   };
 
-  componentWillMount() {
-    Cloud.$Loading.show();
-  }
-  onLoadEnd = () => {
-    Cloud.$Loading.hidden();
-  };
-
   render() {
     return (
-      <WebView
-        source={{ uri: "http://news.bom.ai/" }}
-        onLoadEnd={this.onLoadEnd}
-      />
+      <View>
+        <Text>123</Text>
+      </View>
     );
   }
 }
@@ -58,4 +50,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(News);
+)(Setting);

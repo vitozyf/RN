@@ -3,6 +3,7 @@ import Home from "@router/router-pages/Home"; // 首页
 import Login from "@router/router-pages/Login"; // 登录
 import ChangePwd from "@router/router-pages/ChangePwd"; // 修改密码
 import News from "@router/router-pages/News"; // 芯扒客
+import Setting from "@router/router-pages/Setting"; // 设置
 import Register from "@router/router-pages/Register"; // 注册
 import BaseInfo from "@router/router-pages/BaseInfo"; // 基本信息
 import Membership from "@router/router-pages/Membership"; // 会员身份
@@ -32,6 +33,10 @@ const SimpleAppNavigator = createDrawerNavigator(
     News: {
       screen: News,
       path: "/News",
+    },
+    Setting: {
+      screen: Setting,
+      path: "/Setting",
     },
     BaseInfo: {
       screen: BaseInfo,
