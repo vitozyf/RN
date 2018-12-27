@@ -82,3 +82,12 @@ export const BomSearchInfo = (state = {}, action) => {
       return state;
   }
 };
+// erp权限
+export const ErpUserRoleList = (state = [], action) => {
+  switch (action.type) {
+    case "SetErpUserRoleList":
+      return action.ErpUserRoleList;
+    default:
+      return state;
+  }
+};

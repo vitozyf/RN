@@ -256,9 +256,8 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
                 }}
               />
             )}
-            {["StkInRecord", "StkOutByModel", "HisofferpriceByModel"].indexOf(
-              name
-            ) > -1 && (
+            {["StkInRecord", "StkOutByModel", "HisOfferPrice"].indexOf(name) >
+              -1 && (
               <Pane
                 title="客户名称"
                 renderBody={() => {
@@ -271,7 +270,7 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
               "StkInRecord",
               "StkOutByModel",
               "StkInquireRecord",
-              "HisofferpriceByModel",
+              "HisOfferPrice",
             ].indexOf(name) > -1 && (
               <Pane
                 title="品牌"
@@ -285,7 +284,7 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
               "StkInRecord",
               "StkOutByModel",
               "StkInquireRecord",
-              "HisofferpriceByModel",
+              "HisOfferPrice",
             ].indexOf(name) > -1 && (
               <Pane
                 title="批号"
@@ -306,7 +305,7 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
               "StkStock",
               "StkInRecord",
               "StkOutByModel",
-              "HisofferpriceByModel",
+              "HisOfferPrice",
             ].indexOf(name) > -1 && (
               <Pane title="报价时间" renderBody={this._renderBodyQuotedTime} />
             )}

@@ -167,7 +167,7 @@ class ListRow extends PureComponent<Props> {
                 ]}
               >
                 {ActiveTab === "getyunexttopstocks" && (
-                  <Icon name="jinbi" size={12} />
+                  <Icon name="amount_ic" size={12} />
                 )}
                 {ViewQty}
               </Text>

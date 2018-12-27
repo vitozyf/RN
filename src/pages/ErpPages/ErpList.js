@@ -25,10 +25,11 @@ const windowWidth = width;
 type Props = {
   value: Object,
   name: string,
+  NoSeeStockCost: boolean,
 };
 class ListRow extends PureComponent<Props> {
   render() {
-    const { value, name } = this.props;
+    const { value, name, NoSeeStockCost } = this.props;
     const StkStockView = (
       <View style={styles.FlatListRow}>
         {/* top */}
@@ -86,14 +87,16 @@ class ListRow extends PureComponent<Props> {
               </Text>
             ) : null}
             <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
-              {value.MakeYear}
+              {value.MakeYear}&nbsp;
             </Text>
           </View>
 
           <View>
-            <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
-              ¥{value.BuyPrice}
-            </Text>
+            {NoSeeStockCost && (
+              <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
+                ¥{value.BuyPrice}
+              </Text>
+            )}
           </View>
         </View>
       </View>
@@ -112,7 +115,7 @@ class ListRow extends PureComponent<Props> {
       case "StkInquireRecord":
         TimeKey = "CreatedTime";
         break;
-      case "HisofferpriceByModel":
+      case "HisOfferPrice":
         TimeKey = "QuotedTime";
         CompanyKey = "CustomerName";
         PriceKey = "QuotePrice";
@@ -232,6 +235,7 @@ type SerchListState = {
   FieldWhereString: string, // 筛选条件
   Model: string,
   FieldWhereParams: Object, // 筛选条件对象
+  NoSeeStockCost: boolean, // 是否显示成本价
 };
 class SerchList extends PureComponent<SerchListProps, SerchListState> {
   constructor(props) {
@@ -258,6 +262,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       FieldWhereString: "",
       Model: "",
       FieldWhereParams: {},
+      NoSeeStockCost: false,
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -276,7 +281,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       case "StkInquireRecord":
         Title = "询价";
         break;
-      case "HisofferpriceByModel":
+      case "HisOfferPrice":
         Title = "报价";
         break;
       default:
@@ -324,7 +329,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       case "StkInRecord":
       case "StkOutByModel":
       case "StkInquireRecord":
-      case "HisofferpriceByModel":
+      case "HisOfferPrice":
         qtyKey = "Qty";
         break;
 
@@ -352,7 +357,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
         TimeKey = "ReceiveTime";
         break;
       case "StkOutByModel":
-      case "HisofferpriceByModel":
+      case "HisOfferPrice":
         TimeKey = "ShipTime";
         break;
       case "StkInquireRecord":
@@ -532,7 +537,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       case "StkInquireRecord":
         TimeTitle = "询价时间";
         break;
-      case "HisofferpriceByModel":
+      case "HisOfferPrice":
         TimeTitle = "报价时间";
         break;
       default:
@@ -794,7 +799,14 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   // 渲染行
   _renderItem = ({ item }) => {
     const { ActiveTab } = this.props;
-    return <ListRow value={item} name={this.state.name} />;
+    const { NoSeeStockCost } = this.state;
+    return (
+      <ListRow
+        value={item}
+        name={this.state.name}
+        NoSeeStockCost={NoSeeStockCost}
+      />
+    );
   };
   getDatas(name, PageIndex = 1, isMoreData) {
     const {
@@ -843,7 +855,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     });
 
     Cloud.$post(
-      `${name}/Search`,
+      `${name}/${name === "StkStock" ? "SearchApp" : "Search"}`,
       {
         FieldWhereString,
         OrderBy,
@@ -940,8 +952,11 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     });
     const { navigation } = this.props;
     const name = this.props.navigation.getParam("name");
+    const NoSeeStockCost = this.props.navigation.getParam("NoSeeStockCost");
+
     this.setState({
       name,
+      NoSeeStockCost,
     });
     this.getDatas(name);
     if (name === "StkStock") {
@@ -1005,13 +1020,13 @@ const styles = StyleSheet.create({
   iconTop: {
     position: "absolute",
     right: 0,
-    top: -13,
+    top: -14,
     fontWeight: "bold",
   },
   iconBottom: {
     position: "absolute",
     right: 0,
-    bottom: -13,
+    bottom: -14,
     fontWeight: "bold",
   },
   // header

@@ -35,6 +35,7 @@ const HeaderLeftCom = connect((state, props) => {
 
 type ErpIndexProps = {
   navigation: INavigation,
+  ErpUserRoleList: Array<any>,
 };
 
 class ErpIndex extends Component<ErpIndexProps> {
@@ -46,86 +47,139 @@ class ErpIndex extends Component<ErpIndexProps> {
     };
   };
   toErpList(name) {
-    const { navigation } = this.props;
-    navigation.push("ErpList", { name });
+    const { navigation, ErpUserRoleList } = this.props;
+    // 成本价
+    const NoSeeStockCost = !!ErpUserRoleList.find(item => {
+      return item.ResourceId === 122265;
+    });
+    navigation.push("ErpList", { name, NoSeeStockCost });
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.row}
-          activeOpacity={0.8}
-          onPress={() => {
-            this.toErpList("StkStock");
-          }}
-        >
-          <Image
-            style={styles.titleicon}
-            source={require("./img/list-wh_ic.png")}
-          />
-          <Text style={styles.title}>库存</Text>
-          <AntDesign style={styles.icon} name="right" size={20} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.row}
-          activeOpacity={0.8}
-          onPress={() => {
-            this.toErpList("StkInRecord");
-          }}
-        >
-          <Image
-            style={styles.titleicon}
-            source={require("./img/list-into-wh_ic.png")}
-          />
+    const { ErpUserRoleList } = this.props;
+    // 库存
+    const ShowStkStock = ErpUserRoleList.find(item => {
+      return item.ResourceId === 157;
+    });
+    // 入库
+    const ShowPastStkIn = ErpUserRoleList.find(item => {
+      return item.ResourceId === 200;
+    });
+    // 出库
+    const ShowPastStkOut = ErpUserRoleList.find(item => {
+      return item.ResourceId === 202;
+    });
+    // 询价
+    const ShowPastInquire = ErpUserRoleList.find(item => {
+      return item.ResourceId === 205;
+    });
+    // 报价
+    const ShowPastQuote = ErpUserRoleList.find(item => {
+      return item.ResourceId === 209;
+    });
+    // 成本价
+    const NoSeeStockCost = ErpUserRoleList.find(item => {
+      return item.ResourceId === 122265;
+    });
+    if (ErpUserRoleList.length > 0) {
+      return (
+        <View style={styles.container}>
+          {!!ShowStkStock && (
+            <TouchableOpacity
+              style={styles.row}
+              activeOpacity={0.8}
+              onPress={() => {
+                this.toErpList("StkStock");
+              }}
+            >
+              <Image
+                style={styles.titleicon}
+                source={require("./img/list-wh_ic.png")}
+              />
+              <Text style={styles.title}>库存</Text>
+              <AntDesign style={styles.icon} name="right" size={20} />
+            </TouchableOpacity>
+          )}
 
-          <Text style={styles.title}>入库</Text>
-          <AntDesign style={styles.icon} name="right" size={20} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.row}
-          activeOpacity={0.8}
-          onPress={() => {
-            this.toErpList("StkOutByModel");
-          }}
-        >
-          <Image
-            style={styles.titleicon}
-            source={require("./img/list-go-out-wh_ic.png")}
-          />
-          <Text style={styles.title}>出库</Text>
-          <AntDesign style={styles.icon} name="right" size={20} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.row}
-          activeOpacity={0.8}
-          onPress={() => {
-            this.toErpList("StkInquireRecord");
-          }}
-        >
-          <Image
-            style={styles.titleicon}
-            source={require("./img/list-askprice_ic.png")}
-          />
-          <Text style={styles.title}>询价</Text>
-          <AntDesign style={styles.icon} name="right" size={20} />
-        </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={styles.row}
-          activeOpacity={0.8}
-          onPress={() => {
-            this.toErpList("HisofferpriceByModel");
-          }}
-        >
-          <Image
-            style={styles.titleicon}
-            source={require("./img/list-quote_ic.png")}
-          />
-          <Text style={styles.title}>报价</Text>
-          <AntDesign style={styles.icon} name="right" size={20} />
-        </TouchableOpacity> */}
-      </View>
-    );
+          {!!ShowPastStkIn && (
+            <TouchableOpacity
+              style={styles.row}
+              activeOpacity={0.8}
+              onPress={() => {
+                this.toErpList("StkInRecord");
+              }}
+            >
+              <Image
+                style={styles.titleicon}
+                source={require("./img/list-into-wh_ic.png")}
+              />
+
+              <Text style={styles.title}>入库</Text>
+              <AntDesign style={styles.icon} name="right" size={20} />
+            </TouchableOpacity>
+          )}
+
+          {!!ShowPastStkOut && (
+            <TouchableOpacity
+              style={styles.row}
+              activeOpacity={0.8}
+              onPress={() => {
+                this.toErpList("StkOutByModel");
+              }}
+            >
+              <Image
+                style={styles.titleicon}
+                source={require("./img/list-go-out-wh_ic.png")}
+              />
+              <Text style={styles.title}>出库</Text>
+              <AntDesign style={styles.icon} name="right" size={20} />
+            </TouchableOpacity>
+          )}
+
+          {!!ShowPastInquire && (
+            <TouchableOpacity
+              style={styles.row}
+              activeOpacity={0.8}
+              onPress={() => {
+                this.toErpList("StkInquireRecord");
+              }}
+            >
+              <Image
+                style={styles.titleicon}
+                source={require("./img/list-askprice_ic.png")}
+              />
+              <Text style={styles.title}>询价</Text>
+              <AntDesign style={styles.icon} name="right" size={20} />
+            </TouchableOpacity>
+          )}
+
+          {!!ShowPastQuote && (
+            <TouchableOpacity
+              style={styles.row}
+              activeOpacity={0.8}
+              onPress={() => {
+                this.toErpList("HisOfferPrice");
+              }}
+            >
+              <Image
+                style={styles.titleicon}
+                source={require("./img/list-quote_ic.png")}
+              />
+              <Text style={styles.title}>报价</Text>
+              <AntDesign style={styles.icon} name="right" size={20} />
+            </TouchableOpacity>
+          )}
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.norule}>
+          <Text style={styles.noruleText}>
+            您没有权限访问, 请联系主账号开通权限
+          </Text>
+        </View>
+      );
+    }
   }
 }
 const styles = StyleSheet.create({
@@ -164,10 +218,20 @@ const styles = StyleSheet.create({
     color: "#999",
     fontWeight: "bold",
   },
+  norule: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  noruleText: {
+    fontSize: 16,
+  },
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, props);
+  return Object.assign({}, { ErpUserRoleList: state.ErpUserRoleList }, props);
 };
 
 export default connect(mapStateToProps)(ErpIndex);

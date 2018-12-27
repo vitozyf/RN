@@ -1,10 +1,21 @@
-// import CustomStore from "./jumpUtils";
-
+// 获取ERP用户权限
+const getUserInfoByBomAi = async store => {
+  return Cloud.$post(
+    "Security/GetUserInfoByBomAi",
+    { AppSource: 0 },
+    { erpApi: true }
+  ).then(data => {
+    store.dispatch({
+      type: "SetErpUserRoleList",
+      ErpUserRoleList: data.UserRoleList || [],
+    });
+  });
+};
 // 获取用户开通的服务
 const getUserIdentity = async () => {
   return Cloud.$get("mmhome/getusercenterinfo");
-  // /api/v1/mmhome/gethomeinfo
 };
+// 获取bomai用户相关信息
 const gethomeinfo = async () => {
   const HomeInfo = await Cloud.$get("mmhome/gethomeinfo");
   return HomeInfo;
@@ -59,6 +70,10 @@ const initUserData = async (store, CustomStore) => {
 
 const AppInit = async (store, CustomStore) => {
   await initUserData(store, CustomStore);
+  const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
+  if (TOKEN) {
+    getUserInfoByBomAi(store);
+  }
 };
 
 export { AppInit };
