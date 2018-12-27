@@ -137,6 +137,10 @@ const items = [
   //   routeName: 'HOme'
   // },
   {
+    key: "News",
+    routeName: "News",
+  },
+  {
     key: "BaseInfo",
     routeName: "BaseInfo",
   },
