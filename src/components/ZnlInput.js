@@ -88,6 +88,9 @@ class ZnlInput extends Component<Props, State> {
       inputValue: value,
     });
   };
+  clear = () => {
+    this.textInput && this.textInput.clear();
+  };
   textInput = null;
   render() {
     const {

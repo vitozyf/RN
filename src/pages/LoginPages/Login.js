@@ -15,6 +15,11 @@ import Icon from "@components/Iconfont/CloudIcon";
 import { AppInit } from "@src/utils/appInit";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DeviceInfo from "react-native-device-info";
+import store from "../../store";
+
+const AppUniqueID = DeviceInfo.getUniqueID();
+const MobileBrand = DeviceInfo.getBrand();
 
 type Props = {
   navigation: INavigation,
@@ -29,6 +34,10 @@ type State = {
   OpenId: "",
   showWechat: boolean,
   secureTextEntry: boolean,
+  FromType: number,
+  AppOpenID: string,
+  AppCode: string,
+  IsBandWechat: boolean,
 };
 class Login extends Component<Props, State> {
   constructor(props) {
@@ -43,6 +52,10 @@ class Login extends Component<Props, State> {
       IsFreeLogin: true,
       showWechat: true,
       secureTextEntry: true, // 密码方式显示
+      FromType: 1,
+      AppOpenID: "",
+      AppCode: "",
+      IsBandWechat: false,
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -100,6 +113,22 @@ class Login extends Component<Props, State> {
   componentWillMount() {
     this.readLoginInfo();
   }
+  clearLoginInfo = () => {
+    const { LoginType } = this.state;
+    Cloud.$removeStorage(Cloud.$CONFIG.LoginCompanyName);
+    Cloud.$removeStorage(Cloud.$CONFIG.LoginPhoneNumber);
+    Cloud.$removeStorage(Cloud.$CONFIG.LoginAccountName);
+    Cloud.$removeStorage(Cloud.$CONFIG.LoginPassword);
+    if (LoginType === 0) {
+      this._RefPhoneNumber.clear();
+      this._RefPassword.clear();
+    } else {
+      this._RefCompanyName.clear();
+      this._RefAccountName.clear();
+      this._RefPasswordErp.clear();
+    }
+    Cloud.$Toast.show("清除成功！");
+  };
   LoginHandler = url => {
     const { SetUserInfo } = this.props;
     Cloud.$Loading.show();
@@ -110,6 +139,10 @@ class Login extends Component<Props, State> {
       Password,
       OpenId,
       LoginType,
+      FromType,
+      AppOpenID,
+      AppCode,
+      IsBandWechat,
     } = this.state;
     CompanyName &&
       Cloud.$setStorage(Cloud.$CONFIG.LoginCompanyName, CompanyName);
@@ -125,64 +158,132 @@ class Login extends Component<Props, State> {
       AccountName,
       Password,
       LoginType,
+      AppUniqueID,
+      MobileBrand,
+      FromType,
+      AppOpenID,
+      AppCode,
+      IsBandWechat,
     };
 
     if (!url) {
-      Cloud.$post("user/login", LoginData, { loading: false })
+      Cloud.$post("user/login", LoginData, { loading: false, onlydata: false })
         .then(async data => {
           Cloud.$Loading.hidden();
-          if (data) {
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.AvatarPath,
-              data.AvatarPath || ""
-            );
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.NickName,
-              data.NickName || ""
-            );
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.PhoneNumber,
-              this.state.PhoneNumber || ""
-            );
-            await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-            await AppInit({
-              dispatch: SetUserInfo,
-            });
-            this.goBackHome();
+          if (data.Code === 200) {
+            const resData = data.Result.Data;
+            const info = resData.Data;
+            if (resData.Code === 0) {
+              await Cloud.$setStorage(
+                Cloud.$CONFIG.AvatarPath,
+                info.AvatarPath || ""
+              );
+              await Cloud.$setStorage(
+                Cloud.$CONFIG.NickName,
+                info.NickName || ""
+              );
+              await Cloud.$setStorage(
+                Cloud.$CONFIG.PhoneNumber,
+                this.state.PhoneNumber || ""
+              );
+              await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, info.Token || "");
+              await AppInit(store);
+              this.goBackHome();
+            } else if (resData.Code === 404) {
+              // 跳转微信授权
+              Alert.alert("登录提示", "软件首次登录需要进行微信绑定", [
+                {
+                  text: "取消",
+                  onPress: () => {
+                    Cloud.$Toast.show("您已取消登录！");
+                  },
+                },
+                {
+                  text: "去绑定",
+                  onPress: () => {
+                    this.wechatLoginHandler(true);
+                  },
+                },
+              ]);
+            } else if (resData.Code === 401) {
+              Alert.alert(
+                "绑定微信",
+                "您的微信已绑定其他账号，是否切换绑定当前账号？",
+                [
+                  {
+                    text: "取消",
+                  },
+                  {
+                    text: "切换绑定",
+                    onPress: () => {
+                      this.setState(
+                        {
+                          IsBandWechat: true,
+                        },
+                        () => {
+                          this.LoginHandler();
+                        }
+                      );
+                    },
+                  },
+                ]
+              );
+            } else {
+              Cloud.$Toast.show(resData.Message);
+            }
           }
         })
         .catch(err => {
           Cloud.$Loading.hidden();
         });
     } else {
-      Cloud.$get(url + `?openId=${OpenId}`, null, { loading: false })
-        .then(async data => {
-          // console.log(333, data);
-          Cloud.$Loading.hidden();
-          if (data) {
+      this.loginAsWechat(url);
+    }
+  };
+  loginAsWechat = url => {
+    Cloud.$get(url + `?appopenId=${this.state.AppOpenID}`, null, {
+      loading: false,
+      onlydata: false,
+    })
+      .then(async data => {
+        Cloud.$Loading.hidden();
+        if (data.Code === 200) {
+          const resData = data.Result.Data;
+          // 保存openid
+          this.setState({
+            AppOpenID: resData.Data,
+          });
+
+          if (resData.Code === 0) {
+            const info = resData.Data;
             await Cloud.$setStorage(
               Cloud.$CONFIG.AvatarPath,
-              data.AvatarPath || ""
+              info.AvatarPath || ""
             );
             await Cloud.$setStorage(
               Cloud.$CONFIG.NickName,
-              data.NickName || ""
+              info.NickName || ""
             );
             await Cloud.$setStorage(
               Cloud.$CONFIG.PhoneNumber,
               this.state.PhoneNumber || ""
             );
-            await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-            await AppInit({
-              dispatch: SetUserInfo,
-            });
+            await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, info.Token || "");
+            await AppInit(store);
             this.goBackHome();
+          } else if (resData.Code === 301) {
+            // 用户未保存openid
+            Alert.alert("登录提示", "软件首次登录请使用账号密码登录", [
+              { text: "确定" },
+            ]);
+          } else {
+            Cloud.$Toast.show(resData.Message);
           }
-        })
-        .catch(err => {
-          Cloud.$Loading.hidden();
-        });
-    }
+        }
+      })
+      .catch(err => {
+        Cloud.$Loading.hidden();
+      });
   };
   onChangeText = (value, name) => {
     this.setState({
@@ -195,7 +296,7 @@ class Login extends Component<Props, State> {
       LoginType: LoginType === 0 ? 1 : 0,
     });
   };
-  wechatLoginHandler = () => {
+  wechatLoginHandler = hideFirstTip => {
     const { wechat } = this.props;
     let scope = "snsapi_userinfo";
     // let scope = "snsapi_base";
@@ -225,10 +326,12 @@ class Login extends Component<Props, State> {
                 if (data.openid) {
                   this.setState(
                     {
-                      OpenId: data.openid,
+                      AppOpenID: data.openid,
+                      AppCode: responseCode.code,
                     },
                     () => {
-                      this.LoginHandler("user/loginwechat");
+                      // 登录提示验证微信之后进来的时候，不再走微信登录
+                      this.LoginHandler(hideFirstTip ? null : "user/loginapp");
                     }
                   );
                 }
@@ -336,6 +439,7 @@ class Login extends Component<Props, State> {
               placeholder="手机号"
               autoFocus={false}
               defaultValue={this.state.PhoneNumber}
+              ref={ele => (this._RefPhoneNumber = ele)}
             />
           </View>
           <View style={styles.InputBox}>
@@ -352,6 +456,7 @@ class Login extends Component<Props, State> {
               TReturnKeyType="go"
               defaultValue={this.state.Password}
               renderCloseBtn={this.renderCloseBtn}
+              ref={ele => (this._RefPassword = ele)}
             />
           </View>
           <View style={styles.otherLogin}>
@@ -379,6 +484,7 @@ class Login extends Component<Props, State> {
               placeholder="公司名"
               autoFocus={false}
               defaultValue={this.state.CompanyName}
+              ref={ele => (this._RefCompanyName = ele)}
             />
           </View>
           <View style={styles.InputBox}>
@@ -391,6 +497,7 @@ class Login extends Component<Props, State> {
               }}
               placeholder="账号"
               defaultValue={this.state.AccountName}
+              ref={ele => (this._RefAccountName = ele)}
             />
           </View>
           <View style={styles.InputBox}>
@@ -407,6 +514,7 @@ class Login extends Component<Props, State> {
               TReturnKeyType="go"
               defaultValue={this.state.Password}
               renderCloseBtn={this.renderCloseBtn}
+              ref={ele => (this._RefPasswordErp = ele)}
             />
           </View>
 
@@ -430,6 +538,12 @@ class Login extends Component<Props, State> {
           <View style={styles.Body}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{TitleText}</Text>
+              <Text
+                style={styles.otherLoginTitle}
+                onPress={this.clearLoginInfo}
+              >
+                清除登录信息
+              </Text>
             </View>
             {LoginForm}
           </View>
@@ -460,7 +574,9 @@ class Login extends Component<Props, State> {
             <View style={styles.wechatLogin}>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={this.wechatLoginHandler}
+                onPress={() => {
+                  this.wechatLoginHandler();
+                }}
                 style={styles.wechatLoginImg}
               >
                 <Image source={require("./img/wechat_ic.png")} />

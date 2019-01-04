@@ -12,7 +12,10 @@ import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AppInit } from "@src/utils/appInit";
 import Icon from "@components/Iconfont/CloudIcon";
-
+import DeviceInfo from "react-native-device-info";
+import store from "../../store";
+const AppUniqueID = DeviceInfo.getUniqueID();
+const MobileBrand = DeviceInfo.getBrand();
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +30,9 @@ class Register extends Component {
       SmsGuid: "",
       Time: 0,
       secureTextEntry: true,
+      AppOpenID: "",
+      AppCode: "",
+      IsChangedPhone: false,
     };
   }
   static navigationOptions = ({ navigation }) => {
@@ -143,7 +149,15 @@ class Register extends Component {
                 }
               ).then(data => {
                 if (data.openid) {
-                  console.log(data.openid);
+                  this.setState(
+                    {
+                      AppOpenID: data.openid,
+                      AppCode: responseCode.code,
+                    },
+                    () => {
+                      this.RegisterHandler();
+                    }
+                  );
                 }
               });
             } else if (code === -4) {
@@ -167,20 +181,80 @@ class Register extends Component {
     });
   };
   RegisterHandler = () => {
-    Cloud.$post("user/reg", this.state)
+    const {
+      ContactCompanyName,
+      ContactName,
+      PhoneNumber,
+      SmsCode,
+      AccountName,
+      Password,
+      RePassword,
+      SmsGuid,
+      AppOpenID,
+      AppCode,
+      IsChangedPhone,
+    } = this.state;
+    const regData = {
+      ContactCompanyName,
+      ContactName,
+      PhoneNumber,
+      SmsCode,
+      AccountName,
+      Password,
+      RePassword,
+      SmsGuid,
+      AppOpenID,
+      AppUniqueID,
+      MobileBrand,
+      AppCode,
+      IsChangedPhone,
+    };
+    Cloud.$post("user/reg", regData, { onlydata: false })
       .then(async data => {
-        if (data) {
-          const { SetUserInfo, navigation } = this.props;
-          await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, data.Token || "");
-          await Cloud.$setStorage(
-            Cloud.$CONFIG.AvatarPath,
-            data.AvatarPath || ""
-          );
-          await Cloud.$setStorage(Cloud.$CONFIG.NickName, data.NickName || "");
-          await AppInit({
-            dispatch: SetUserInfo,
-          });
-          navigation.navigate("Home");
+        console.log(123, data);
+        if (data.Code === 200) {
+          const resData = data.Result.Data;
+          const info = resData.Data;
+          if (resData.Code === 0) {
+            const { SetUserInfo, navigation } = this.props;
+            await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, info.Token || "");
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.AvatarPath,
+              info.AvatarPath || ""
+            );
+            await Cloud.$setStorage(
+              Cloud.$CONFIG.NickName,
+              info.NickName || ""
+            );
+            await AppInit(store);
+            navigation.navigate("Home");
+          } else if (resData.Code === 2) {
+            // 微信号已经被绑定
+            Alert.alert(
+              "绑定微信",
+              "您的微信已绑定其他账号，是否切换绑定当前账号？",
+              [
+                {
+                  text: "取消",
+                },
+                {
+                  text: "切换绑定",
+                  onPress: () => {
+                    this.setState(
+                      {
+                        IsChangedPhone: true,
+                      },
+                      () => {
+                        this.RegisterHandler();
+                      }
+                    );
+                  },
+                },
+              ]
+            );
+          } else {
+            Cloud.$Toast.show(resData.Message);
+          }
         }
       })
       .catch(err => {
