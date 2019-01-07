@@ -47,4 +47,8 @@ export default {
   },
   wechat: {},
   ErpUserRoleList: [],
+  AppWechatInfo: {
+    NickName: "",
+    AvatarPath: "",
+  },
 };

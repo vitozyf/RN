@@ -1,16 +1,13 @@
-import { NetInfo } from 'react-native';
+import { NetInfo } from "react-native";
 
-NetInfo.getConnectionInfo().then((connectionInfo) => {
-  console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+NetInfo.getConnectionInfo().then(connectionInfo => {
+  // console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
 });
 function handleFirstConnectivityChange(connectionInfo) {
-  console.log('First change, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+  // console.log('First change, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
   NetInfo.removeEventListener(
-    'connectionChange',
+    "connectionChange",
     handleFirstConnectivityChange
   );
 }
-NetInfo.addEventListener(
-  'connectionChange',
-  handleFirstConnectivityChange
-);
+NetInfo.addEventListener("connectionChange", handleFirstConnectivityChange);

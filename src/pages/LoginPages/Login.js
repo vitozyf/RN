@@ -304,7 +304,7 @@ class Login extends Component<Props, State> {
     );
   };
   wechatLoginHandler = hideFirstTip => {
-    const { wechat } = this.props;
+    const { wechat, SetAppWechatInfo } = this.props;
     let scope = "snsapi_userinfo";
     // let scope = "snsapi_base";
     let state = "wechat_sdk_com.znlicloud";
@@ -331,6 +331,22 @@ class Login extends Component<Props, State> {
                     nativeApi: true,
                   }
                 ).then(data => {
+                  Cloud.$get(
+                    `https://api.weixin.qq.com/sns/userinfo?access_token=${
+                      data.access_token
+                    }&openid=${data.openid}&lang=zh_CN`,
+                    null,
+                    {
+                      nativeApi: true,
+                    }
+                  ).then(res => {
+                    if (res) {
+                      SetAppWechatInfo({
+                        NickName: res.nickname,
+                        AvatarPath: res.headimgurl,
+                      });
+                    }
+                  });
                   if (data.openid) {
                     this.setState(
                       {
@@ -738,7 +754,14 @@ const mapStateToProps = (state, props) => {
   return Object.assign({}, { wechat: state.wechat }, props);
 };
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    SetAppWechatInfo: AppWechatInfo => {
+      return dispatch({
+        type: "SetAppWechatInfo",
+        AppWechatInfo,
+      });
+    },
+  };
 };
 export default connect(
   mapStateToProps,

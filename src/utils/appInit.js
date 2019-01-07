@@ -46,11 +46,16 @@ const initUserData = async (store, CustomStore) => {
     UserInfo.Sales.SalesName = UserIdentity.SalesName;
     UserInfo.Sales.telephone = UserIdentity.telephone;
   }
+  const AppWechatInfo = store.getState().AppWechatInfo;
   if (AvatarPath) {
-    UserInfo.AvatarPath = `https:${AvatarPath}`;
+    UserInfo.AvatarPath = AppWechatInfo.AvatarPath
+      ? AppWechatInfo.AvatarPath
+      : `https:${AvatarPath}`;
   }
   if (NickName) {
-    UserInfo.NickName = NickName;
+    UserInfo.NickName = AppWechatInfo.NickName
+      ? AppWechatInfo.NickName
+      : NickName;
   }
   if (TOKEN) {
     UserInfo.TOKEN = TOKEN;

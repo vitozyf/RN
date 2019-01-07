@@ -30,7 +30,6 @@ type State = {
 };
 class CompanyInfoPage extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
-    console.log(navigation.getParam());
     return {
       header: (
         <ZnlHeader
