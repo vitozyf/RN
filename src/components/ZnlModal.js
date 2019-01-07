@@ -37,6 +37,8 @@ class ZnlModal extends Component<Props> {
         useNativeDriver={true}
         onBackButtonPress={cancelHandler}
         style={styles.znlModal}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
       >
         <View style={styles.modalView}>
           <View style={styles.modalTitleView}>

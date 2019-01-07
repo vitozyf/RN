@@ -23,7 +23,6 @@ const MobileBrand = DeviceInfo.getBrand();
 
 type Props = {
   navigation: INavigation,
-  SetUserInfo: Function,
 };
 type State = {
   CompanyName: string,
@@ -130,7 +129,6 @@ class Login extends Component<Props, State> {
   //   Cloud.$Toast.show("清除成功！");
   // };
   LoginHandler = url => {
-    const { SetUserInfo } = this.props;
     Cloud.$Loading.show();
     const {
       CompanyName,
@@ -740,11 +738,7 @@ const mapStateToProps = (state, props) => {
   return Object.assign({}, { wechat: state.wechat }, props);
 };
 const mapDispatchToProps = dispatch => {
-  return {
-    SetUserInfo: SetUserInfo => {
-      return dispatch(SetUserInfo);
-    },
-  };
+  return {};
 };
 export default connect(
   mapStateToProps,
