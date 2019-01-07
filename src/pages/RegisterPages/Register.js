@@ -211,7 +211,6 @@ class Register extends Component {
     };
     Cloud.$post("user/reg", regData, { onlydata: false })
       .then(async data => {
-        console.log(123, data);
         if (data.Code === 200) {
           const resData = data.Result.Data;
           const info = resData.Data;
@@ -382,7 +381,9 @@ class Register extends Component {
                   onPress={this.GetCode}
                   disabled={this.state.Time != 0}
                 >
-                  {this.state.Time === 0 ? "获取验证码" : this.state.Time}
+                  {this.state.Time === 0
+                    ? "获取验证码"
+                    : `${this.state.Time}秒后重发`}
                 </ZnlButton>
               </View>
               <View style={styles.InputBox}>

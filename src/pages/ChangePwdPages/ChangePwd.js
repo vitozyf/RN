@@ -246,7 +246,9 @@ class Register extends Component {
                   onPress={this.GetCode}
                   disabled={this.state.Time != 0}
                 >
-                  {this.state.Time === 0 ? "获取验证码" : this.state.Time}
+                  {this.state.Time === 0
+                    ? "获取验证码"
+                    : `${this.state.Time}秒后重发`}
                 </ZnlButton>
               </View>
             </View>
@@ -307,9 +309,10 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 1,
     flex: 1,
+    height: 48,
   },
   ButtonMessage: {
-    height: 40,
+    height: 48,
     width: 120,
     borderRadius: 0,
     backgroundColor: "#fff",

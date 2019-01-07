@@ -106,29 +106,29 @@ class Login extends Component<Props, State> {
     Cloud.$getStorage(Cloud.$CONFIG.LoginAccountName).then(AccountName => {
       this.setState({ AccountName });
     });
-    Cloud.$getStorage(Cloud.$CONFIG.LoginPassword).then(Password => {
-      this.setState({ Password });
-    });
+    // Cloud.$getStorage(Cloud.$CONFIG.LoginPassword).then(Password => {
+    //   this.setState({ Password });
+    // });
   };
   componentWillMount() {
     this.readLoginInfo();
   }
-  clearLoginInfo = () => {
-    const { LoginType } = this.state;
-    Cloud.$removeStorage(Cloud.$CONFIG.LoginCompanyName);
-    Cloud.$removeStorage(Cloud.$CONFIG.LoginPhoneNumber);
-    Cloud.$removeStorage(Cloud.$CONFIG.LoginAccountName);
-    Cloud.$removeStorage(Cloud.$CONFIG.LoginPassword);
-    if (LoginType === 0) {
-      this._RefPhoneNumber.clear();
-      this._RefPassword.clear();
-    } else {
-      this._RefCompanyName.clear();
-      this._RefAccountName.clear();
-      this._RefPasswordErp.clear();
-    }
-    Cloud.$Toast.show("清除成功！");
-  };
+  // clearLoginInfo = () => {
+  //   const { LoginType } = this.state;
+  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginCompanyName);
+  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginPhoneNumber);
+  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginAccountName);
+  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginPassword);
+  //   if (LoginType === 0) {
+  //     this._RefPhoneNumber.clear();
+  //     this._RefPassword.clear();
+  //   } else {
+  //     this._RefCompanyName.clear();
+  //     this._RefAccountName.clear();
+  //     this._RefPasswordErp.clear();
+  //   }
+  //   Cloud.$Toast.show("清除成功！");
+  // };
   LoginHandler = url => {
     const { SetUserInfo } = this.props;
     Cloud.$Loading.show();
@@ -292,75 +292,103 @@ class Login extends Component<Props, State> {
   };
   toggleLoginTypeHandler = () => {
     const { LoginType } = this.state;
-    this.setState({
-      LoginType: LoginType === 0 ? 1 : 0,
-    });
+    this.setState(
+      {
+        LoginType: LoginType === 0 ? 1 : 0,
+      },
+      () => {
+        if (this.state.LoginType === 0) {
+          this._RefPassword.clear();
+        } else {
+          this._RefPasswordErp.clear();
+        }
+      }
+    );
   };
   wechatLoginHandler = hideFirstTip => {
     const { wechat } = this.props;
     let scope = "snsapi_userinfo";
     // let scope = "snsapi_base";
-    let state = "wechat_sdk_demo";
+    let state = "wechat_sdk_com.znlicloud";
     //判断微信是否安装
-    wechat.isWXAppInstalled().then(isInstalled => {
-      if (isInstalled) {
-        //发送授权请求
-        wechat
-          .sendAuthRequest(scope)
-          .then(responseCode => {
-            //返回code码，通过code获取access_token
-            // this.getAccessToken(responseCode.code);
-            const code = parseInt(responseCode.errCode);
-            if (code === 0) {
-              Cloud.$get(
-                `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${
-                  Cloud.$CONFIG.appid
-                }&secret=${Cloud.$CONFIG.secret}&code=${
-                  responseCode.code
-                }&grant_type=authorization_code`,
-                null,
-                {
-                  nativeApi: true,
-                }
-              ).then(data => {
-                if (data.openid) {
-                  this.setState(
-                    {
-                      AppOpenID: data.openid,
-                      AppCode: responseCode.code,
-                    },
-                    () => {
-                      // 登录提示验证微信之后进来的时候，不再走微信登录
-                      this.LoginHandler(hideFirstTip ? null : "user/loginapp");
-                    }
-                  );
-                }
-              });
-            } else if (code === -4) {
-              Cloud.$Toast.show("用户拒绝授权");
-            } else if (code === -6) {
-              Cloud.$Toast.show("APP签名错误");
-            } else if (code === 2) {
-              Cloud.$Toast.show("用户取消授权操作");
-            } else {
-              Alert.alert("登录授权失败", code, [{ text: "确定" }]);
-            }
-          })
-          .catch(err => {
-            Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
-          });
+    try {
+      wechat.isWXAppInstalled().then(isInstalled => {
+        if (isInstalled) {
+          //发送授权请求
+          wechat
+            .sendAuthRequest(scope)
+            .then(responseCode => {
+              //返回code码，通过code获取access_token
+              // this.getAccessToken(responseCode.code);
+              const code = parseInt(responseCode.errCode);
+              if (code === 0) {
+                Cloud.$get(
+                  `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${
+                    Cloud.$CONFIG.appid
+                  }&secret=${Cloud.$CONFIG.secret}&code=${
+                    responseCode.code
+                  }&grant_type=authorization_code`,
+                  null,
+                  {
+                    nativeApi: true,
+                  }
+                ).then(data => {
+                  if (data.openid) {
+                    this.setState(
+                      {
+                        AppOpenID: data.openid,
+                        AppCode: responseCode.code,
+                      },
+                      () => {
+                        // 登录提示验证微信之后进来的时候，不再走微信登录
+                        this.LoginHandler(
+                          hideFirstTip ? null : "user/loginapp"
+                        );
+                      }
+                    );
+                  }
+                });
+              } else if (code === -4) {
+                Cloud.$Toast.show("用户拒绝授权");
+              } else if (code === -6) {
+                Cloud.$Toast.show("APP签名错误");
+              } else if (code === 2) {
+                Cloud.$Toast.show("用户取消授权操作");
+              } else {
+                Alert.alert("登录授权失败", code, [{ text: "确定" }]);
+              }
+            })
+            .catch(err => {
+              Alert.alert("登录授权发生错误：", err.message, [
+                { text: "确定" },
+              ]);
+            });
+        } else {
+          Platform.OS == "ios"
+            ? // ? Alert.alert("没有安装微信", "是否安装微信？", [
+              Alert.alert(
+                "您未安装微信",
+                "请先安装微信客户端再用微信登录方式",
+                [
+                  { text: "确定" },
+                  // { text: "确定", onPress: () => this.installWechat() },
+                ]
+              )
+            : Alert.alert(
+                "您未安装微信",
+                "请先安装微信客户端再用微信登录方式",
+                [{ text: "确定" }]
+              );
+        }
+      });
+    } catch (e) {
+      if (e instanceof wechat.WechatError) {
+        console.error(e.stack);
+        Cloud.$Toast.show(e.stack);
       } else {
-        Platform.OS == "ios"
-          ? // ? Alert.alert("没有安装微信", "是否安装微信？", [
-            Alert.alert("您未安装微信", "请先安装微信客户端再用微信登录方式", [
-              { text: "确定" },
-              // { text: "确定", onPress: () => this.installWechat() },
-            ])
-          : Alert.alert("您未安装微信", "请先安装微信客户端再用微信登录方式", [
-              { text: "确定" },
-            ]);
+        Cloud.$Toast.show(JSON.stringify(e));
       }
-    });
+    }
   };
 
   handleBackPress = () => {
@@ -455,7 +483,6 @@ class Login extends Component<Props, State> {
               onSubmitEditing={this.LoginHandler}
               TReturnKeyType="go"
               defaultValue={this.state.Password}
-              renderCloseBtn={this.renderCloseBtn}
               ref={ele => (this._RefPassword = ele)}
             />
           </View>
@@ -513,7 +540,6 @@ class Login extends Component<Props, State> {
               onSubmitEditing={this.LoginHandler}
               TReturnKeyType="go"
               defaultValue={this.state.Password}
-              renderCloseBtn={this.renderCloseBtn}
               ref={ele => (this._RefPasswordErp = ele)}
             />
           </View>
@@ -538,12 +564,12 @@ class Login extends Component<Props, State> {
           <View style={styles.Body}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{TitleText}</Text>
-              <Text
+              {/* <Text
                 style={styles.otherLoginTitle}
                 onPress={this.clearLoginInfo}
               >
                 清除登录信息
-              </Text>
+              </Text> */}
             </View>
             {LoginForm}
           </View>

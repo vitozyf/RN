@@ -57,6 +57,7 @@ type Props = {
 };
 type State = {
   inputValue: string | number,
+  showClearBtn: boolean,
 };
 class ZnlInput extends Component<Props, State> {
   static defaultProps = {
@@ -71,6 +72,7 @@ class ZnlInput extends Component<Props, State> {
     super(props);
     this.state = {
       inputValue: "",
+      showClearBtn: true,
     };
   }
   closeHandler = () => {
@@ -79,6 +81,7 @@ class ZnlInput extends Component<Props, State> {
     this.textInput && this.textInput.clear();
     this.setState({
       inputValue: "",
+      showClearBtn: false,
     });
   };
   onChangeTextHandler = (value: string | number) => {
@@ -86,6 +89,7 @@ class ZnlInput extends Component<Props, State> {
     onChangeText && onChangeText(value);
     this.setState({
       inputValue: value,
+      showClearBtn: true,
     });
   };
   clear = () => {
@@ -113,22 +117,12 @@ class ZnlInput extends Component<Props, State> {
       placeholderTextColor,
     } = this.props;
     const { children, renderCloseBtn } = this.props;
+    const { inputValue, showClearBtn } = this.state;
     const CloseButton = () => {
       if (renderCloseBtn) {
         return renderCloseBtn();
-      } else if (
-        this.state.inputValue ||
-        (!this.state.inputValue && defaultValue)
-      ) {
+      } else if (inputValue || (showClearBtn && defaultValue)) {
         return (
-          // <TouchableOpacity
-          //   style={[styles.close]}
-          //   onPress={this.closeHandler}
-          //   activeOpacity={1}
-          // >
-          //   <Icon style={[styles.icon]} name="input_clear" size={16} />
-          // </TouchableOpacity>
-
           <Icon.Button
             onPress={this.closeHandler}
             name="input_clear"
