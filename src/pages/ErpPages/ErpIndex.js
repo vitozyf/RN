@@ -36,6 +36,7 @@ const HeaderLeftCom = connect((state, props) => {
 type ErpIndexProps = {
   navigation: INavigation,
   ErpUserRoleList: Array<any>,
+  HomeUserInfo: any,
 };
 
 class ErpIndex extends Component<ErpIndexProps> {
@@ -56,32 +57,57 @@ class ErpIndex extends Component<ErpIndexProps> {
   }
 
   render() {
-    const { ErpUserRoleList } = this.props;
+    const { ErpUserRoleList, HomeUserInfo } = this.props;
+    const { IsMainAccount } = HomeUserInfo;
+    let AppErpUserRoleList = ErpUserRoleList;
+    if (IsMainAccount) {
+      AppErpUserRoleList = [
+        {
+          ResourceId: 157,
+        },
+        {
+          ResourceId: 200,
+        },
+        {
+          ResourceId: 202,
+        },
+        {
+          ResourceId: 205,
+        },
+        {
+          ResourceId: 209,
+        },
+        {
+          ResourceId: 122265,
+        },
+      ];
+    }
+
     // 库存
-    const ShowStkStock = ErpUserRoleList.find(item => {
+    const ShowStkStock = AppErpUserRoleList.find(item => {
       return item.ResourceId === 157;
     });
     // 入库
-    const ShowPastStkIn = ErpUserRoleList.find(item => {
+    const ShowPastStkIn = AppErpUserRoleList.find(item => {
       return item.ResourceId === 200;
     });
     // 出库
-    const ShowPastStkOut = ErpUserRoleList.find(item => {
+    const ShowPastStkOut = AppErpUserRoleList.find(item => {
       return item.ResourceId === 202;
     });
     // 询价
-    const ShowPastInquire = ErpUserRoleList.find(item => {
+    const ShowPastInquire = AppErpUserRoleList.find(item => {
       return item.ResourceId === 205;
     });
     // 报价
-    const ShowPastQuote = ErpUserRoleList.find(item => {
+    const ShowPastQuote = AppErpUserRoleList.find(item => {
       return item.ResourceId === 209;
     });
     // 成本价
-    const NoSeeStockCost = ErpUserRoleList.find(item => {
+    const NoSeeStockCost = AppErpUserRoleList.find(item => {
       return item.ResourceId === 122265;
     });
-    if (ErpUserRoleList.length > 0) {
+    if (AppErpUserRoleList.length > 0) {
       return (
         <View style={styles.container}>
           {!!ShowStkStock && (
@@ -231,7 +257,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, { ErpUserRoleList: state.ErpUserRoleList }, props);
+  return Object.assign(
+    {},
+    {
+      ErpUserRoleList: state.ErpUserRoleList,
+      HomeUserInfo: state.UserInfo.HomeUserInfo,
+    },
+    props
+  );
 };
 
 export default connect(mapStateToProps)(ErpIndex);
