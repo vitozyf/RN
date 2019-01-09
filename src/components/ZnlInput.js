@@ -126,7 +126,7 @@ class ZnlInput extends Component<Props, State> {
           <Icon.Button
             onPress={this.closeHandler}
             name="input_clear"
-            backgroundColor="#fff"
+            backgroundColor="rgba(0,0,0,0)"
             color="#ccc"
             size={16}
             borderRadius={0}
