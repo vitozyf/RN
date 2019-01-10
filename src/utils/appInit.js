@@ -86,14 +86,18 @@ const initUserData = async (store, CustomStore) => {
 };
 
 const AppInit = async (store, CustomStore) => {
-  await initUserData(store, CustomStore);
+  try {
+    await initUserData(store, CustomStore);
+  } catch (error) {
+    console.log(error);
+  }
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
   if (TOKEN) {
     getUserInfoByBomAi(store);
   }
 
   if (Platform.OS === "android") {
-    // JPushModule.initPush();
+    JPushModule.initPush();
     JPushModule.notifyJSDidLoad(resultCode => {
       if (resultCode === 0) {
       }
@@ -107,5 +111,7 @@ const AppInit = async (store, CustomStore) => {
     setAlias(PhoneNumber);
   }
 };
+
+AppInit.JPushModule = JPushModule;
 
 export { AppInit };

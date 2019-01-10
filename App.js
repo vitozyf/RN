@@ -69,23 +69,38 @@ class App extends Component<Props> {
         type: "SetWechat",
         wechat,
       });
-      // Cloud.$Toast.show(res + "");
     });
 
     // 初始化方法
     AppInit(store, CustomStore);
     // codePush.disallowRestart(); //禁止重启
-
     store.dispatch({
       type: "SetStatusBarStyle",
       StatusBarStyle: "light-content",
     });
   }
+  openNotificationListener = (map: any) => {
+    console.log("Opening notification!");
+    console.log("map.extra: " + map.extras);
+    // Cloud.$Toast.show("map.extra: " + map.extras);
+  };
   componentDidMount() {
     if (ISANDROID && !__DEV__) {
       this.syncImmediate(); //开始检查更新
     }
     SplashScreen.hide();
+
+    // 监听点开通知事件
+    AppInit.JPushModule.addReceiveOpenNotificationListener(
+      this.openNotificationListener
+    );
+  }
+  componentWillUnmount() {
+    // 移除事件
+    AppInit.JPushModule.removeReceiveOpenNotificationListener(
+      this.openNotificationListener
+    );
+    AppInit.JPushModule.clearAllNotifications();
   }
   render() {
     return (

@@ -27,9 +27,9 @@ public class MainApplication extends Application implements ReactApplication {
   private final String CODEPUSH_KEY_STAGING = "kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d";
 
   // 设置为 true 将不会弹出 toast
-  private boolean SHUTDOWN_TOAST = false;
+  private boolean SHUTDOWN_TOAST = true;
   // 设置为 true 将不会打印 log
-  private boolean SHUTDOWN_LOG = false;
+  private boolean SHUTDOWN_LOG = true;
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
