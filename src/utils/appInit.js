@@ -1,3 +1,15 @@
+import JPushModule from "jpush-react-native";
+import { Platform } from "react-native";
+// 设置别名
+const setAlias = PhoneNumber => {
+  JPushModule.setAlias(PhoneNumber, map => {
+    if (map.errorCode === 0) {
+      console.log("set alias succeed");
+    } else {
+      console.log("set alias failed, errorCode: " + map.errorCode);
+    }
+  });
+};
 // 获取ERP用户权限
 const getUserInfoByBomAi = async store => {
   return Cloud.$post(
@@ -78,6 +90,21 @@ const AppInit = async (store, CustomStore) => {
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
   if (TOKEN) {
     getUserInfoByBomAi(store);
+  }
+
+  if (Platform.OS === "android") {
+    // JPushModule.initPush();
+    JPushModule.notifyJSDidLoad(resultCode => {
+      if (resultCode === 0) {
+      }
+    });
+  } else {
+    JPushModule.setupPush();
+  }
+  // 以手机号设置推送设备别名
+  const PhoneNumber = store.getState().UserInfo.PhoneNumber;
+  if (PhoneNumber) {
+    setAlias(PhoneNumber);
   }
 };
 
