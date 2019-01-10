@@ -20,16 +20,23 @@ import com.facebook.react.bridge.ReadableNativeMap;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.jpush.reactnativejpush.JPushPackage;
+
 public class MainApplication extends Application implements ReactApplication {
   private final String CODEPUSH_KEY_PRODUCTIO = "x2D2xLa-NGE1OsbFXTZRwGFNgS-vd2879c22-c96e-4d6e-bef4-b597a869454d";
   private final String CODEPUSH_KEY_STAGING = "kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d";
 
+  // 设置为 true 将不会弹出 toast
+  private boolean SHUTDOWN_TOAST = false;
+  // 设置为 true 将不会打印 log
+  private boolean SHUTDOWN_LOG = false;
+
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-        @Override
-        protected String getJSBundleFile() {
-        return CodePush.getJSBundleFile();
-        }
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
 
     @Override
     public boolean getUseDeveloperSupport() {
@@ -38,17 +45,15 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new WeChatPackage(),
-          new MPAndroidChartPackage(),
-          new RNDeviceInfo(),
-          new SplashScreenReactPackage(),
-          // new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG),
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new WeChatPackage(), new MPAndroidChartPackage(),
+          new RNDeviceInfo(), new SplashScreenReactPackage(),
+          // new
+          // CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey),
+          // getApplicationContext(), BuildConfig.DEBUG),
           new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
-          // new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG),
-          new VectorIconsPackage()
-      );
+          // new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(),
+          // BuildConfig.DEBUG),
+          new VectorIconsPackage(), new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG));
     }
 
     @Override
