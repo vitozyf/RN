@@ -30,6 +30,9 @@ Archive
 upload
 publish
 
+- 注意
+如果`node_modules`包重装后，将`react-native-wechat`包中的`DevelopmentTeam`改为`P3YTJX7552`
+
 ### 更新
 
 APP每次启动会请求服务器， 对应版本号不一致时会提示用户下载更新，正式的会请求正式API（返回正式版本下载地址）， 测试版本会请求测试API（返回测试版本下载地址）
