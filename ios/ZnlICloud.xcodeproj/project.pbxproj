@@ -1467,7 +1467,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.ZnlICloud;
+				PRODUCT_BUNDLE_IDENTIFIER = ZnlICloud;
 				PRODUCT_NAME = ZnlICloud;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ZnlICloud-Bridging-Header.h";
@@ -1508,7 +1508,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.ZnlICloud;
+				PRODUCT_BUNDLE_IDENTIFIER = ZnlICloud;
 				PRODUCT_NAME = ZnlICloud;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ZnlICloud-Bridging-Header.h";
