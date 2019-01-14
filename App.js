@@ -13,7 +13,7 @@ import {
   getActiveRouteName,
   setIsTabBarShow,
 } from "@router/routerChangeHandler";
-import { View, Text, AppState, Platform, Alert, Linking } from "react-native";
+import { View, Text, AppState, Platform, Linking } from "react-native";
 import * as wechat from "react-native-wechat";
 import config from "./src/utils/config";
 
@@ -79,11 +79,9 @@ class App extends Component<Props> {
   // 点击消息通知
   openNotificationListener = (map: any) => {
     this.clearBadge();
-    try {
-      if (map.extras && map.extras.type === "1") {
-        // this.getversioninfo();
-      }
-    } catch (error) {}
+    if (map.extras && map.extras.type === "1") {
+      // this.getversioninfo();
+    }
   };
   // 前后台切换
   _handleAppStateChange = nextAppState => {
