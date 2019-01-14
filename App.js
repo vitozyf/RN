@@ -13,7 +13,7 @@ import {
   getActiveRouteName,
   setIsTabBarShow,
 } from "@router/routerChangeHandler";
-import { View, Text } from "react-native";
+import { View, Text, AppState, Platform, Alert, Linking } from "react-native";
 import * as wechat from "react-native-wechat";
 import config from "./src/utils/config";
 
@@ -24,10 +24,6 @@ const navigationPersistenceKey = __DEV__ ? "NavigationStateDEV" : null;
 let codePushOptions;
 if (ISANDROID && !__DEV__) {
   codePushOptions = {
-    //设置检查更新的频率
-    //ON_APP_RESUME APP恢复到前台的时候
-    //ON_APP_START APP开启的时候
-    //MANUAL 手动检查
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
   };
 }
@@ -36,30 +32,7 @@ type Props = {};
 class App extends Component<Props> {
   syncImmediate() {
     codePush.sync({
-      //安装模式
-      //ON_NEXT_RESUME 下次恢复到前台时
-      //ON_NEXT_RESTART 下一次重启时
-      //IMMEDIATE 马上更新
       installMode: codePush.InstallMode.ON_NEXT_RESUME,
-      //对话框
-      // updateDialog: {
-      //   //是否显示更新描述
-      //   appendReleaseDescription: true,
-      //   //更新描述的前缀。 默认为"Description" 更新内容
-      //   descriptionPrefix: "",
-      //   //强制更新按钮文字，默认为continue
-      //   mandatoryContinueButtonLabel: "立即更新",
-      //   //强制更新时的信息. 默认为"An update is available that must be installed."
-      //   mandatoryUpdateMessage: "",
-      //   //非强制更新时，按钮文字,默认为"ignore"
-      //   optionalIgnoreButtonLabel: "稍后",
-      //   //非强制更新时，确认按钮文字. 默认为"Install"
-      //   optionalInstallButtonLabel: "后台更新",
-      //   //非强制更新时，检查到更新的消息文本
-      //   optionalUpdateMessage: "",
-      //   //Alert窗口的标题
-      //   title: "有新版本了，是否更新？",
-      // },
     });
   }
   componentWillMount() {
@@ -79,10 +52,44 @@ class App extends Component<Props> {
       StatusBarStyle: "light-content",
     });
   }
+  // 清空角标
+  clearBadge = () => {
+    if (Platform.OS == "ios") {
+      AppInit.JPushModule.setBadge(0, success => {});
+    }
+  };
+  // 获取新版本地址
+  getversioninfo = () => {
+    Cloud.$get("appget/getversioninfo", null, { onlydata: false }).then(
+      data => {
+        if (data.Code === 200) {
+          const ResData = data.Result;
+          const downloadUrl = Platform.select({
+            ios:
+              "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
+            android: ResData.DownloadUrl,
+          });
+          Linking.openURL(downloadUrl).catch(err => {
+            console.log(err);
+          });
+        }
+      }
+    );
+  };
+  // 点击消息通知
   openNotificationListener = (map: any) => {
-    console.log("Opening notification!");
-    console.log("map.extra: " + map.extras);
-    // Cloud.$Toast.show("map.extra: " + map.extras);
+    this.clearBadge();
+    try {
+      if (map.extras && map.extras.type === "1") {
+        // this.getversioninfo();
+      }
+    } catch (error) {}
+  };
+  // 前后台切换
+  _handleAppStateChange = nextAppState => {
+    if (nextAppState === "active") {
+      this.clearBadge();
+    }
   };
   componentDidMount() {
     if (ISANDROID && !__DEV__) {
@@ -94,6 +101,8 @@ class App extends Component<Props> {
     AppInit.JPushModule.addReceiveOpenNotificationListener(
       this.openNotificationListener
     );
+    // 监听从APP到前台事件
+    AppState.addEventListener("change", this._handleAppStateChange);
   }
   componentWillUnmount() {
     // 移除事件
@@ -101,6 +110,7 @@ class App extends Component<Props> {
       this.openNotificationListener
     );
     AppInit.JPushModule.clearAllNotifications();
+    AppState.removeEventListener("change", this._handleAppStateChange);
   }
   render() {
     return (

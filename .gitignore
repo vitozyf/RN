@@ -61,3 +61,4 @@ src/utils/config.js
 *.log
 
 ios/bundle/
+demo/
