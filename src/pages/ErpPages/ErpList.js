@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   FlatList,
-  ScrollView,
   TouchableOpacity,
   Image,
   Dimensions,

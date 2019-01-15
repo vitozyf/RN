@@ -149,7 +149,7 @@ const gethotpartnos = async store => {
       Hotpartnos: HotpartnosParse,
     });
   } else {
-    Cloud.$get("appget/gethotpartnos?PageSize=10", null, {
+    Cloud.$get("appget/gethotpartnos?PageSize=3000", null, {
       onlydata: false,
     }).then(data => {
       if (data.Code === 200) {

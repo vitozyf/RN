@@ -12,12 +12,13 @@ import { connect } from "react-redux";
 import SearchPane from "@components/IndexPages/SearchPane";
 import CONFIG from "@src/utils/config";
 import { ZnlHeader, ZnlInput, ZnlButton, HeaderRight } from "@components";
-
+import HotpartnosView from "./Hotpartnos";
 type Props = {
   navigation: INavigation,
   SetBomSearchInfo: Function,
   SetSearchRecord: Function,
   SearchRecord: Array<any>,
+  Hotpartnos: Array<string>,
 };
 type State = {
   KeyWord: string,
@@ -104,6 +105,21 @@ class SearchPage extends Component<Props, State> {
     this.setState({
       KeyWord: value.toUpperCase(),
     });
+    if (!value) {
+      return HotpartnosView.hidden();
+    }
+    const { Hotpartnos } = this.props;
+    const mapHotpartnos = Hotpartnos.filter(item => {
+      return new RegExp(value).test(item);
+    });
+    HotpartnosView.show(mapHotpartnos, KeyWord => {
+      this.setState(
+        {
+          KeyWord,
+        },
+        this.onSearchHandler
+      );
+    });
   };
   getSearchRecord() {
     let SearchRecord = [];
@@ -184,11 +200,20 @@ class SearchPage extends Component<Props, State> {
       </View>
     );
   }
+  didBlurSubscription: any;
   componentWillMount() {
     this.getSearchRecord(); // 处理搜索记录
     this.gethotmodelandgdspotcheck(); // 获取热搜
     this.passParameterHandler();
-    const { navigation } = this.props;
+    this.didBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload => {
+        HotpartnosView.hidden();
+      }
+    );
+  }
+  componentWillUnmount() {
+    this.didBlurSubscription.remove();
   }
 }
 const styles = StyleSheet.create({
@@ -256,7 +281,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, { SearchRecord: state.SearchRecord }, props);
+  return Object.assign(
+    {},
+    { SearchRecord: state.SearchRecord, Hotpartnos: state.Hotpartnos },
+    props
+  );
 };
 const mapDispatchToProps = dispatch => {
   return {
