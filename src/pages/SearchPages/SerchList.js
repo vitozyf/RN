@@ -348,10 +348,13 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     let newScrollOffset = event.nativeEvent.contentOffset.y;
     // console.log(newScrollOffset);
 
+    // 搜索栏
     // if (newScrollOffset <= 60 && newScrollOffset >= 0) {
     //   SetHeaderHeight((ISIOS ? 64 : 44) - newScrollOffset);
     //   console.log((ISIOS ? 64 : 44) - newScrollOffset);
     // }
+
+    // 回到顶部
     if (newScrollOffset > 100) {
       BackTop.show({
         onPress() {

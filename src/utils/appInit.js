@@ -1,6 +1,14 @@
+/**
+ *
+ */
 import JPushModule from "jpush-react-native";
 import { Platform } from "react-native";
-// 设置别名
+import { Loading } from "@components";
+import type { IUserInfo, ISales } from "@src/store/reducers/UserInfo";
+/**
+ * 设置别名
+ * @param {*} PhoneNumber
+ */
 const setAlias = PhoneNumber => {
   JPushModule.setAlias(PhoneNumber, map => {
     if (map.errorCode === 0) {
@@ -10,7 +18,11 @@ const setAlias = PhoneNumber => {
     }
   });
 };
-// 获取ERP用户权限
+
+/**
+ * 获取ERP用户权限
+ * @param {*} store
+ */
 const getUserInfoByBomAi = async store => {
   return Cloud.$post(
     "Security/GetUserInfoByBomAi",
@@ -23,36 +35,52 @@ const getUserInfoByBomAi = async store => {
     });
   });
 };
-// 获取用户开通的服务
+
+/**
+ * 获取用户开通的服务
+ */
 const getUserIdentity = async () => {
   return Cloud.$get("mmhome/getusercenterinfo");
 };
-// 获取bomai用户相关信息
+
+/**
+ * 获取bomai用户相关信息
+ */
 const gethomeinfo = async () => {
   const HomeInfo = await Cloud.$get("mmhome/gethomeinfo");
   return HomeInfo;
 };
-// 初始化本地存储的用户数据到redux
+
+/**
+ * 初始化本地存储的用户数据到redux
+ * @param {*} store
+ * @param {*} CustomStore
+ */
 const initUserData = async (store, CustomStore) => {
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
   let HomeInfo = { UserInfo: {}, UserAuthors: {} };
-  let UserIdentity = { UserIdentityModel: {}, SalesName: "", telephone: "" };
-
+  let UserIdentity = null;
   if (TOKEN) {
-    HomeInfo = await gethomeinfo();
-    UserIdentity = await getUserIdentity(store);
+    try {
+      HomeInfo = await gethomeinfo();
+      UserIdentity = await getUserIdentity();
+    } catch (error) {
+      console.log(error);
+    }
   } else {
-    setTimeout(() => {
+    const timeid = setTimeout(() => {
       if (CustomStore.navigator) {
         CustomStore.navigator._navigation.navigate("Login");
       }
+      clearTimeout(timeid);
     }, 100);
   }
 
   const AvatarPath = await Cloud.$getStorage(Cloud.$CONFIG.AvatarPath);
   const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
   const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
-  const UserInfo = { Sales: {} };
+  const Sales: ISales = { SalesName: "", telephone: "" };
+  const UserInfo: IUserInfo = { Sales };
   if (UserIdentity) {
     UserInfo.UserIdentity = UserIdentity.UserIdentityModel;
     UserInfo.Sales.SalesName = UserIdentity.SalesName;
@@ -85,17 +113,12 @@ const initUserData = async (store, CustomStore) => {
   });
 };
 
-const AppInit = async (store, CustomStore) => {
-  try {
-    await initUserData(store, CustomStore);
-  } catch (error) {
-    console.log(error);
-  }
-  const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
-  if (TOKEN) {
-    getUserInfoByBomAi(store);
-  }
-
+/**
+ * jpush方法
+ * @param {} store
+ */
+const jpushHandler = store => {
+  // 初始化jpush
   if (Platform.OS === "android") {
     JPushModule.initPush();
     JPushModule.notifyJSDidLoad(resultCode => {
@@ -110,6 +133,64 @@ const AppInit = async (store, CustomStore) => {
   if (PhoneNumber) {
     setAlias(PhoneNumber);
   }
+};
+
+const gethotpartnos = async store => {
+  const Hotpartnos = await Cloud.$getStorage(Cloud.$CONFIG.Hotpartnos);
+  let HotpartnosParse = [];
+  try {
+    HotpartnosParse = JSON.parse(Hotpartnos);
+  } catch (error) {
+    console.log(error);
+  }
+  if (HotpartnosParse.length > 0) {
+    store.dispatch({
+      type: "SetHotpartnos",
+      Hotpartnos: HotpartnosParse,
+    });
+  } else {
+    Cloud.$get("appget/gethotpartnos?PageSize=10", null, {
+      onlydata: false,
+    }).then(data => {
+      if (data.Code === 200) {
+        let result = "";
+        try {
+          result = JSON.stringify(data.Result);
+          Cloud.$setStorage(Cloud.$CONFIG.Hotpartnos, result);
+        } catch (error) {
+          console.log(error);
+        }
+        store.dispatch({
+          type: "SetHotpartnos",
+          Hotpartnos: data.Result,
+        });
+      }
+    });
+  }
+};
+
+/**
+ * 初始化
+ * @param {} store
+ * @param {*} CustomStore
+ */
+const AppInit = async (store: any, CustomStore: any) => {
+  Loading.show();
+  // 同步执行
+  try {
+    await initUserData(store, CustomStore);
+  } catch (error) {
+    Loading.hidden();
+  }
+  Loading.hidden();
+  const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
+  if (TOKEN) {
+    getUserInfoByBomAi(store);
+  }
+
+  // 异步执行
+  jpushHandler(store);
+  gethotpartnos(store);
 };
 
 AppInit.JPushModule = JPushModule;

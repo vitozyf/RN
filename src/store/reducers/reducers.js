@@ -4,9 +4,6 @@ import DeviceInfo from "react-native-device-info";
 import { ZnlToast } from "@src/components";
 let HeaderHeightInit = 44;
 if (ISIOS) {
-  // setTimeout(() => {
-  //   ZnlToast.show(DeviceInfo.getModel());
-  // }, 3000);
   switch (DeviceInfo.getModel()) {
     case "iPhone X":
     case "iPhone XR":
@@ -96,6 +93,14 @@ export const AppWechatInfo = (state = {}, action) => {
   switch (action.type) {
     case "SetAppWechatInfo":
       return action.AppWechatInfo;
+    default:
+      return state;
+  }
+};
+export const Hotpartnos = (state = [], action) => {
+  switch (action.type) {
+    case "SetHotpartnos":
+      return action.Hotpartnos;
     default:
       return state;
   }
