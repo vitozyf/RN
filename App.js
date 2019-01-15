@@ -19,7 +19,7 @@ import config from "./src/utils/config";
 
 // 深圳市正能量网络技术有限公司
 // 调试模式下刷新到本页
-const navigationPersistenceKey = __DEV__ ? "NavigationStateDEV" : null;
+// const navigationPersistenceKey = __DEV__ ? "NavigationStateDEV" : null;
 // codepush配置
 let codePushOptions;
 if (ISANDROID && !__DEV__) {

@@ -140,6 +140,7 @@ class SeatchRes extends Component<Props, State> {
           placeholder="请输入型号进行搜索"
           renderLeft={inputRenderLeft}
           defaultValue={KeyWord}
+          autoCapitalize="characters"
         />
       );
     };

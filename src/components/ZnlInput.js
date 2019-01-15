@@ -33,6 +33,8 @@ type TReturnKeyType =
   | "route"
   | "yahoo";
 
+type IautoCapitalize = "none" | "sentences" | "words" | "characters";
+
 type Props = {
   placeholder: string,
   onChangeText: Function,
@@ -54,6 +56,7 @@ type Props = {
   onClose: Function,
   placeholderTextColor: string,
   renderCloseBtn: Function,
+  autoCapitalize: IautoCapitalize,
 };
 type State = {
   inputValue: string | number,
@@ -67,6 +70,7 @@ class ZnlInput extends Component<Props, State> {
     keyboardType: "default",
     multiline: false,
     placeholderTextColor: "#999",
+    autoCapitalize: "none",
   };
   constructor(props: Props) {
     super(props);
@@ -115,6 +119,7 @@ class ZnlInput extends Component<Props, State> {
       renderLeft,
       renderRight,
       placeholderTextColor,
+      autoCapitalize,
     } = this.props;
     const { children, renderCloseBtn } = this.props;
     const { inputValue, showClearBtn } = this.state;
@@ -131,7 +136,11 @@ class ZnlInput extends Component<Props, State> {
             size={16}
             borderRadius={0}
             activeOpacity={1}
-            iconStyle={{ marginRight: 0 }}
+            iconStyle={{
+              marginRight: 0,
+              padding: 0,
+              height: 16,
+            }}
           />
         );
       } else {
@@ -158,6 +167,7 @@ class ZnlInput extends Component<Props, State> {
             returnKeyType={returnKeyType}
             ref={ref => (this.textInput = ref)}
             placeholderTextColor={placeholderTextColor}
+            autoCapitalize={autoCapitalize}
           />
           {CloseButton()}
         </View>

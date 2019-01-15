@@ -52,6 +52,7 @@ class SearchPage extends Component<Props, State> {
           onChangeText={method.onChangeText}
           placeholder="请输入型号进行搜索"
           renderLeft={inputRenderLeft}
+          autoCapitalize="characters"
         />
       );
     };
