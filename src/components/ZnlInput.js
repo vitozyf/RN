@@ -80,13 +80,14 @@ class ZnlInput extends Component<Props, State> {
     };
   }
   closeHandler = () => {
-    const { onClose } = this.props;
+    const { onClose, onChangeText } = this.props;
     onClose && onClose();
     this.textInput && this.textInput.clear();
     this.setState({
       inputValue: "",
       showClearBtn: false,
     });
+    onChangeText && onChangeText("");
   };
   onChangeTextHandler = (value: string | number) => {
     const { onChangeText } = this.props;

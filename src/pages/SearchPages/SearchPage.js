@@ -110,7 +110,7 @@ class SearchPage extends Component<Props, State> {
     }
     const { Hotpartnos } = this.props;
     const mapHotpartnos = Hotpartnos.filter(item => {
-      return new RegExp(value).test(item);
+      return new RegExp(value, "i").test(item);
     });
     HotpartnosView.show(mapHotpartnos, KeyWord => {
       this.setState(

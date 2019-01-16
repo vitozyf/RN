@@ -139,7 +139,7 @@ const gethotpartnos = async store => {
   const Hotpartnos = await Cloud.$getStorage(Cloud.$CONFIG.Hotpartnos);
   let HotpartnosParse = [];
   try {
-    HotpartnosParse = JSON.parse(Hotpartnos);
+    HotpartnosParse = JSON.parse(Hotpartnos) || [];
   } catch (error) {
     console.log(error);
   }

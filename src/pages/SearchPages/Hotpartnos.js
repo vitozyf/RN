@@ -38,12 +38,13 @@ const Hotpartnos = {
   show: (mapHotpartnos: Array<string>, onPress: Function) => {
     // sibling && sibling.destroy();
     const SiblingEle = (
-      <ScrollView style={styles.maskStyle}>
+      <ScrollView style={styles.maskStyle} keyboardShouldPersistTaps="handled">
         {mapHotpartnos.map((item, index) => {
           return (
             <TouchableOpacity
               key={index}
               style={styles.hotrow}
+              activeOpacity={0.8}
               onPress={() => {
                 onPress && onPress(item);
                 sibling && sibling.destroy();
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "#fff",
     width: Width,
-    maxHeight: Height - HeaderHeightInit - 300,
+    height: Height - HeaderHeightInit,
     // alignItems: "center",
     // justifyContent: "center",
     marginTop: HeaderHeightInit,
