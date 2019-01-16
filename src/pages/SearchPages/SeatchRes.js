@@ -36,16 +36,23 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     marginRight: 8,
   },
-
+  tabStyle: {
+    height: 44,
+    width: 100,
+  },
   tabBarStyle: {
     backgroundColor: "#fff",
+    margin: 0,
+    padding: 0,
   },
   labelStyle: {
     fontWeight: "bold",
   },
   indicatorStyle: {
-    height: 2,
+    height: 3,
     backgroundColor: "#ee7700",
+    width: 60,
+    marginLeft: 20,
   },
 });
 
@@ -54,9 +61,7 @@ const navigationOptions = {
   inactiveTintColor: "#333",
   pressOpacity: 1,
   style: styles.tabBarStyle,
-  tabStyle: {
-    height: 44,
-  },
+  tabStyle: styles.tabStyle,
   labelStyle: styles.labelStyle,
   indicatorStyle: styles.indicatorStyle,
 };

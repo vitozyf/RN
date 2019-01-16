@@ -6,33 +6,16 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  Platform,
   ScrollView,
 } from "react-native";
 import RootSiblings from "react-native-root-siblings";
-import DeviceInfo from "react-native-device-info";
 import Feather from "react-native-vector-icons/Feather";
+import { HeaderHeightInit } from "@src/utils/constant";
 
 const Height = Dimensions.get("window").height;
 const Width = Dimensions.get("window").width;
 
 let sibling = undefined;
-
-let HeaderHeightInit = 44;
-
-if (Platform.OS == "ios") {
-  switch (DeviceInfo.getModel()) {
-    case "iPhone X":
-    case "iPhone XR":
-    case "iPhone XS":
-    case "iPhone XS Max":
-      HeaderHeightInit = 88;
-      break;
-    default:
-      HeaderHeightInit = 64;
-      break;
-  }
-}
 
 const Hotpartnos = {
   show: (mapHotpartnos: Array<string>, onPress: Function) => {

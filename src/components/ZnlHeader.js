@@ -1,10 +1,17 @@
 // @flow
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import DeviceInfo from "react-native-device-info";
 import { connect } from "react-redux";
 import { ISIOS } from "@src/utils/system";
+import { HeaderHeightInit } from "@src/utils/constant";
 
 type Props = {
   style: Object,
@@ -16,11 +23,42 @@ type Props = {
   renderCenter: Function,
   renderRight: Function,
   HeaderHeight: number,
+  ActiveRouteName: string,
 };
-class ZnlHeader extends Component<Props> {
+type State = {
+  currentHeaderHeightAni: any,
+  currentOpacityAni: any,
+};
+class ZnlHeader extends Component<Props, State> {
   static defaultProps = {
     leftIcon: "ios-arrow-back",
   };
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentHeaderHeightAni: new Animated.Value(HeaderHeightInit),
+      currentOpacityAni: new Animated.Value(1),
+    };
+  }
+  currentHeaderHeight: number = HeaderHeightInit;
+  componentWillReceiveProps(prop) {
+    // console.log(11111, prop.ActiveRouteName);
+    const IsAlowAni =
+      prop.ActiveRouteName === "Yunext" || prop.ActiveRouteName === "Stocks";
+    const { currentHeaderHeight } = this;
+    if (currentHeaderHeight !== prop.HeaderHeight) {
+      Animated.timing(this.state.currentHeaderHeightAni, {
+        toValue: prop.HeaderHeight,
+        duration: IsAlowAni ? 200 : 0,
+      }).start(() => {
+        this.currentHeaderHeight = prop.HeaderHeight;
+      });
+      Animated.timing(this.state.currentOpacityAni, {
+        toValue: prop.HeaderHeight === HeaderHeightInit ? 1 : 0,
+        duration: IsAlowAni ? 200 : 0,
+      }).start();
+    }
+  }
   render() {
     const {
       style,
@@ -58,20 +96,22 @@ class ZnlHeader extends Component<Props> {
       <View style={styles.right} />
     );
 
+    const { currentHeaderHeightAni, currentOpacityAni } = this.state;
     return (
-      <View
+      <Animated.View
         style={[
           styles.Header,
           style,
           {
-            height: HeaderHeight,
+            height: currentHeaderHeightAni,
+            opacity: currentOpacityAni,
           },
         ]}
       >
         {Left}
         {CenEle}
         {RightEle}
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -98,6 +138,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flexDirection: "row",
     alignItems: "center",
+    overflow: "hidden",
   },
   Title: {
     lineHeight: 44,
@@ -124,6 +165,7 @@ const mapStateToProps = (state, props) => {
     {},
     {
       HeaderHeight: state.HeaderHeight,
+      ActiveRouteName: state.ActiveRouteName,
     },
     props
   );

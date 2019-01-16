@@ -1,22 +1,8 @@
 import { StatusBar } from "react-native";
-import { ISANDROID, ISIOS } from "@src/utils/system";
-import DeviceInfo from "react-native-device-info";
+import { ISANDROID } from "@src/utils/system";
 import { ZnlToast } from "@src/components";
-let HeaderHeightInit = 44;
-if (ISIOS) {
-  switch (DeviceInfo.getModel()) {
-    case "iPhone X":
-    case "iPhone XR":
-    case "iPhone XS":
-    case "iPhone XS Max":
-      HeaderHeightInit = 88;
-      break;
-    default:
-      HeaderHeightInit = 64;
-      break;
-  }
-}
-
+import { HeaderHeightInit } from "@src/utils/constant";
+// 底部tab显示
 export const IsTabBarShow = (state = false, action) => {
   switch (action.type) {
     case "SetIsTabBarShow":
@@ -25,6 +11,7 @@ export const IsTabBarShow = (state = false, action) => {
       return state;
   }
 };
+// 顶部tab高度
 export const HeaderHeight = (state = HeaderHeightInit, action) => {
   switch (action.type) {
     case "SetHeaderHeight":
@@ -97,10 +84,20 @@ export const AppWechatInfo = (state = {}, action) => {
       return state;
   }
 };
+// 联想用的热搜型号
 export const Hotpartnos = (state = [], action) => {
   switch (action.type) {
     case "SetHotpartnos":
       return action.Hotpartnos;
+    default:
+      return state;
+  }
+};
+// ActiveRouteName
+export const ActiveRouteName = (state = "", action) => {
+  switch (action.type) {
+    case "SetActiveRouteName":
+      return action.ActiveRouteName;
     default:
       return state;
   }

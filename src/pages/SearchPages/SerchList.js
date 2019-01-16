@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { BackTop } from "@components";
 import { connect } from "react-redux";
-import { ISIOS } from "@src/utils/system";
 import Icon from "@components/Iconfont/CloudIcon";
+import { HeaderHeightInit } from "@src/utils/constant";
 
 const ITEM_HEIGHT = 30; // list行高
 const HEADER_HEIGHT = 50; // 头部高
@@ -206,7 +206,10 @@ class ListRow extends PureComponent<Props> {
               styles.fontSize13,
             ]}
           >
-            &nbsp;&nbsp;&nbsp;&nbsp;{value.SupplierName}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {ActiveTab === "getyunexttopstocks"
+              ? value.Depot
+              : value.SupplierName}
           </Text>
         </View>
         {/* getyunexttopstocks */}
@@ -228,7 +231,7 @@ class ListRow extends PureComponent<Props> {
                 styles.fontSize13,
               ]}
             >
-              {value.Depot}
+              {value.SupplierName}
             </Text>
           </View>
         )}
@@ -341,18 +344,22 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       }
     }
   };
+  currentHeaderHeight: number = HeaderHeightInit;
   // 滚动
   onScroll = event => {
     const that = this;
-    // const { SetHeaderHeight } = this.props;
+    const { SetHeaderHeight } = this.props;
+    const { currentHeaderHeight } = this;
     let newScrollOffset = event.nativeEvent.contentOffset.y;
-    // console.log(newScrollOffset);
 
     // 搜索栏
-    // if (newScrollOffset <= 60 && newScrollOffset >= 0) {
-    //   SetHeaderHeight((ISIOS ? 64 : 44) - newScrollOffset);
-    //   console.log((ISIOS ? 64 : 44) - newScrollOffset);
-    // }
+    if (newScrollOffset > 100 && currentHeaderHeight === HeaderHeightInit) {
+      SetHeaderHeight(0);
+      this.currentHeaderHeight = 0;
+    } else if (newScrollOffset <= 100 && currentHeaderHeight === 0) {
+      SetHeaderHeight(HeaderHeightInit);
+      this.currentHeaderHeight = HeaderHeightInit;
+    }
 
     // 回到顶部
     if (newScrollOffset > 100) {
@@ -414,16 +421,22 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     );
   }
   didBlurSubscription: any;
+  willFocusListener: any;
   componentWillMount() {
-    this.didBlurSubscription = this.props.navigation.addListener(
-      "willBlur",
-      payload => {
-        BackTop.hidden();
+    const { navigation } = this.props;
+    this.didBlurSubscription = navigation.addListener("willBlur", payload => {
+      BackTop.hidden();
+    });
+    this.willFocusListener = navigation.addListener("willFocus", () => {
+      this.currentHeaderHeight = HeaderHeightInit;
+      if (this.props.datas.length <= 10) {
+        this.props.SetHeaderHeight(HeaderHeightInit);
       }
-    );
+    });
   }
   componentWillUnmount() {
     this.didBlurSubscription.remove();
+    this.willFocusListener.remove();
   }
 }
 

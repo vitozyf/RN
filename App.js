@@ -11,7 +11,7 @@ import { ISANDROID } from "@src/utils/system";
 import SplashScreen from "react-native-splash-screen";
 import {
   getActiveRouteName,
-  setIsTabBarShow,
+  routerChangeHandler,
 } from "@router/routerChangeHandler";
 import { View, Text, AppState, Platform, Linking } from "react-native";
 import * as wechat from "react-native-wechat";
@@ -116,7 +116,13 @@ class App extends Component<Props> {
         <DrawerNavRouter
           onNavigationStateChange={(prevState, currentState) => {
             const currentScreen = getActiveRouteName(currentState);
-            setIsTabBarShow(currentScreen, store.getState());
+            if (store.getState().ActiveRouteName !== currentScreen) {
+              store.dispatch({
+                type: "SetActiveRouteName",
+                ActiveRouteName: currentScreen,
+              });
+            }
+            routerChangeHandler(currentScreen, store.getState());
           }}
           // persistenceKey={navigationPersistenceKey}
           ref={navigator => {

@@ -1,7 +1,6 @@
 // 统一声明默认State
 export default {
   IsTabBarShow: true, // 是否隐藏tabbar
-  // HeaderHeight: HeaderHeightInit,
   StatusBarStyle: "light-content", // 状态栏
   SearchRecord: [], // 本地搜索记录
   // 搜索页信息
@@ -35,4 +34,5 @@ export default {
     AvatarPath: "",
   },
   Hotpartnos: [],
+  ActiveRouteName: "",
 };
