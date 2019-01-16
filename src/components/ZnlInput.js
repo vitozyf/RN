@@ -57,6 +57,7 @@ type Props = {
   placeholderTextColor: string,
   renderCloseBtn: Function,
   autoCapitalize: IautoCapitalize,
+  autoCorrect: boolean,
 };
 type State = {
   inputValue: string | number,
@@ -64,13 +65,13 @@ type State = {
 };
 class ZnlInput extends Component<Props, State> {
   static defaultProps = {
-    placeholder: "",
-    autoFocus: false,
-    defaultValue: "",
-    keyboardType: "default",
-    multiline: false,
+    // placeholder: "",
+    // autoFocus: false,
+    // defaultValue: "",
+    // keyboardType: "default",
+    // multiline: false,
     placeholderTextColor: "#999",
-    autoCapitalize: "none",
+    // autoCapitalize: "none",
   };
   constructor(props: Props) {
     super(props);
@@ -121,6 +122,7 @@ class ZnlInput extends Component<Props, State> {
       renderRight,
       placeholderTextColor,
       autoCapitalize,
+      autoCorrect,
     } = this.props;
     const { children, renderCloseBtn } = this.props;
     const { inputValue, showClearBtn } = this.state;
@@ -169,6 +171,7 @@ class ZnlInput extends Component<Props, State> {
             ref={ref => (this.textInput = ref)}
             placeholderTextColor={placeholderTextColor}
             autoCapitalize={autoCapitalize}
+            autoCorrect={autoCorrect}
           />
           {CloseButton()}
         </View>

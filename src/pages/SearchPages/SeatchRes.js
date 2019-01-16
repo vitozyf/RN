@@ -5,7 +5,6 @@ import Stocks from "./Stocks";
 import { View, StyleSheet, Text } from "react-native";
 import { ZnlInput, ZnlHeader, HeaderRight } from "@components";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { WithSearchHandler } from "@components/HOC";
 import { createMaterialTopTabNavigator } from "react-navigation";
 import { connect } from "react-redux";
 

@@ -55,7 +55,7 @@ const Hotpartnos = {
                   {item}
                 </Text>
               </View>
-              <Feather size={14} name="arrow-up-right" />
+              <Feather size={14} name="arrow-up-left" />
             </TouchableOpacity>
           );
         })}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "#fff",
     width: Width,
-    height: Height - HeaderHeightInit,
+    height: Height - HeaderHeightInit - 50,
     // alignItems: "center",
     // justifyContent: "center",
     marginTop: HeaderHeightInit,
