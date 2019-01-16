@@ -65,7 +65,7 @@ const initUserData = async (store, CustomStore) => {
       HomeInfo = await gethomeinfo();
       UserIdentity = await getUserIdentity();
     } catch (error) {
-      console.log(error);
+      Cloud.$addLog("appInit-initUserData", error.message);
     }
   } else {
     const timeid = setTimeout(() => {
@@ -135,13 +135,14 @@ const jpushHandler = store => {
   }
 };
 
+// 读取热搜型号（前3000）
 const gethotpartnos = async store => {
   const Hotpartnos = await Cloud.$getStorage(Cloud.$CONFIG.Hotpartnos);
   let HotpartnosParse = [];
   try {
     HotpartnosParse = JSON.parse(Hotpartnos) || [];
   } catch (error) {
-    console.log(error);
+    Cloud.$addLog("appInit-gethotpartnos", error.message);
   }
   if (HotpartnosParse.length > 0) {
     store.dispatch({
@@ -158,7 +159,7 @@ const gethotpartnos = async store => {
           result = JSON.stringify(data.Result);
           Cloud.$setStorage(Cloud.$CONFIG.Hotpartnos, result);
         } catch (error) {
-          console.log(error);
+          Cloud.$addLog("appInit-gethotpartnos", error.message);
         }
         store.dispatch({
           type: "SetHotpartnos",
@@ -181,6 +182,7 @@ const AppInit = async (store: any, CustomStore: any) => {
     await initUserData(store, CustomStore);
   } catch (error) {
     Loading.hidden();
+    Cloud.$addLog("appInit-AppInit", error.message);
   }
   Loading.hidden();
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);

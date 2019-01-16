@@ -1,11 +1,7 @@
 // 全局配置
-import config from './config';
+import config from "./config";
 // 数据获取
-import {
-  fetchMethods,
-  $post,
-  $get
-} from './fetch';
+import { fetchMethods, $post, $get, addLog } from "./fetch";
 // 数据存取
 import {
   setStorage,
@@ -13,10 +9,10 @@ import {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  clearAllStorage
-} from './storage';
+  clearAllStorage,
+} from "./storage";
 // 全局跳转
-import CustomStore from './jumpUtils';
+import CustomStore from "./jumpUtils";
 
 export {
   config,
@@ -29,5 +25,6 @@ export {
   setArrayStorage,
   removeAllStorage,
   clearAllStorage,
-  CustomStore
-}
+  CustomStore,
+  addLog,
+};

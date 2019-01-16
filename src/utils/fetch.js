@@ -5,6 +5,35 @@ import { Loading, ZnlToast } from "../components";
 import store from "../store";
 import CustomStore from "./jumpUtils";
 
+const LogUrl = "appget/addapplog";
+/**
+ * 添加日志
+ * @param {*} Address 日志位置/url
+ * @param {*} ExpContent 日志内容
+ * @param {*} PostParam 参数
+ * @param {*} ExtInfo 附加信息
+ */
+const addLog = (
+  Address: string,
+  ExpContent: string,
+  PostParam: string,
+  ExtInfo: string
+) => {
+  const PhoneNumber = store.getState().UserInfo.PhoneNumber || "";
+  $post(
+    LogUrl,
+    {
+      PhoneNumber,
+      Address,
+      ExpContent,
+      PostParam,
+      ExtInfo,
+    },
+    {
+      onlydata: false,
+    }
+  );
+};
 /**
  *
  * @param {string} method 请求方式
@@ -105,6 +134,14 @@ const fetchMethods = async (method, url, data, option) => {
             }, 300);
           } else {
             ZnlToast.show(response.Message || "系统异常,请稍后重试");
+            if (url !== LogUrl) {
+              addLog(
+                BaseUrl + url,
+                response.Message || "系统异常,请稍后重试",
+                data ? JSON.stringify(data) : "",
+                "fetch.js"
+              );
+            }
           }
         })
         .catch(error => {
@@ -112,13 +149,29 @@ const fetchMethods = async (method, url, data, option) => {
             Loading.hidden();
           }
           reject(error);
+          if (url !== LogUrl) {
+            addLog(
+              BaseUrl + url,
+              error.message || "请求错误，未捕获到message",
+              data ? JSON.stringify(data) : "",
+              "fetch.js"
+            );
+          }
         });
     });
   } catch (error) {
     if (option && option.loading) {
       Loading.hidden();
     }
-    console.log(error);
+    // console.log(error);
+    if (url !== LogUrl) {
+      addLog(
+        BaseUrl + url,
+        error.message || "请求错误，未捕获到message",
+        data ? JSON.stringify(data) : "",
+        "fetch.js"
+      );
+    }
   }
 };
 const abort_promise = () => {
@@ -141,4 +194,4 @@ const $get = (url, data, option) => {
   return Promise.race([fetch_promise, abort_promise()]);
 };
 
-export { fetchMethods, $post, $get };
+export { fetchMethods, $post, $get, addLog };
