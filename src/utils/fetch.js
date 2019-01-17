@@ -4,21 +4,19 @@ import CONFIG from "./config";
 import { Loading, ZnlToast } from "../components";
 import store from "../store";
 import CustomStore from "./jumpUtils";
+import DeviceInfo from "react-native-device-info";
 
+const MobileBrand = DeviceInfo.getBrand();
+const Version = DeviceInfo.getVersion();
+const SystemVersion = DeviceInfo.getSystemVersion();
 const LogUrl = "appget/addapplog";
 /**
  * 添加日志
  * @param {*} Address 日志位置/url
  * @param {*} ExpContent 日志内容
  * @param {*} PostParam 参数
- * @param {*} ExtInfo 附加信息
  */
-const addLog = (
-  Address: string,
-  ExpContent: string,
-  PostParam: string,
-  ExtInfo: string
-) => {
+const addLog = (Address: string, ExpContent: string, PostParam: string) => {
   const PhoneNumber = store.getState().UserInfo.PhoneNumber || "";
   $post(
     LogUrl,
@@ -27,7 +25,9 @@ const addLog = (
       Address,
       ExpContent,
       PostParam,
-      ExtInfo,
+      ExtInfo: `MobileBrand=${MobileBrand};ActiveRouteName=${
+        store.getState().ActiveRouteName
+      };Version=${Version};SystemVersion=${SystemVersion}`,
     },
     {
       onlydata: false,

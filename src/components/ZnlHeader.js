@@ -42,7 +42,6 @@ class ZnlHeader extends Component<Props, State> {
   }
   currentHeaderHeight: number = HeaderHeightInit;
   componentWillReceiveProps(prop) {
-    // console.log(11111, prop.ActiveRouteName);
     const IsAlowAni =
       prop.ActiveRouteName === "Yunext" || prop.ActiveRouteName === "Stocks";
     const { currentHeaderHeight } = this;
@@ -71,6 +70,8 @@ class ZnlHeader extends Component<Props, State> {
       renderRight,
       HeaderHeight,
     } = this.props;
+
+    console.log("render");
 
     const Left = hideLeft ? null : renderLeft ? (
       renderLeft()
