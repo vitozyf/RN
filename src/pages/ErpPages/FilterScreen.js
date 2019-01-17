@@ -391,6 +391,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     marginRight: 5,
     lineHeight: 22,
+    marginBottom: 5,
     color: "#999",
   },
   activeText: {

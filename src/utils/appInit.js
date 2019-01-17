@@ -1,10 +1,8 @@
-/**
- *
- */
 import JPushModule from "jpush-react-native";
 import { Platform } from "react-native";
 import { Loading } from "@components";
 import type { IUserInfo, ISales } from "@src/store/reducers/UserInfo";
+
 /**
  * 设置别名
  * @param {*} PhoneNumber

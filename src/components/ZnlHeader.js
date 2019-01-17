@@ -71,8 +71,6 @@ class ZnlHeader extends Component<Props, State> {
       HeaderHeight,
     } = this.props;
 
-    console.log("render");
-
     const Left = hideLeft ? null : renderLeft ? (
       renderLeft()
     ) : (

@@ -5,6 +5,7 @@ import { Loading, ZnlToast } from "../components";
 import store from "../store";
 import CustomStore from "./jumpUtils";
 import DeviceInfo from "react-native-device-info";
+import { NetInfo } from "react-native";
 
 const MobileBrand = DeviceInfo.getBrand();
 const Version = DeviceInfo.getVersion();
@@ -48,6 +49,10 @@ const addLog = (Address: string, ExpContent: string, PostParam: string) => {
  *  nativeApi 用传入的原生地址请求
  */
 const fetchMethods = async (method, url, data, option) => {
+  const isConnected = await NetInfo.isConnected.fetch();
+  if (!isConnected) {
+    return ZnlToast.show("当前网络不可用，请检查网络是否正常");
+  }
   let BaseUrl = CONFIG.APIBASEURL;
   // 是否带loading
   if (option && option.loading) {
