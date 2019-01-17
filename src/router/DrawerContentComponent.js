@@ -19,6 +19,22 @@ import DeviceInfo from "react-native-device-info";
 
 const Height = Dimensions.get("window").height;
 
+// top导航栏初始高度
+let FooterPaddingBottom = 0;
+if (ISIOS) {
+  switch (DeviceInfo.getModel()) {
+    case "iPhone X":
+    case "iPhone XR":
+    case "iPhone XS":
+    case "iPhone XS Max":
+      FooterPaddingBottom = 44;
+      break;
+    default:
+      FooterPaddingBottom = 0;
+      break;
+  }
+}
+
 const styles = StyleSheet.create({
   containerbox: {
     flex: 1,
@@ -117,10 +133,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   footer: {
-    height: 50,
+    height: 50 + FooterPaddingBottom,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    borderTopWidth: 1,
+    borderColor: "#ccc",
+    paddingBottom: FooterPaddingBottom,
   },
   settingBtn: {
     width: 100,
@@ -225,7 +244,10 @@ class MyScrollView extends Component {
       visible: false,
     });
     Linking.openURL(this.state.DownloadUrl).catch(err => {
-      console.log(err);
+      Cloud.$addLog(
+        "DrawerContentComponent.js-confirmHandler",
+        err.message || err.toString()
+      );
     });
   };
   render() {
@@ -317,8 +339,8 @@ class MyScrollView extends Component {
           <DrawerItems {...this.props} items={items} />
         </View>
 
-        <View style={styles.footer}>
-          {/* <TouchableOpacity
+        {/* <View style={styles.footer}>
+          <TouchableOpacity
             activeOpacity={0.8}
             style={styles.settingBtn}
             onPress={() => {
@@ -326,8 +348,11 @@ class MyScrollView extends Component {
             }}
           >
             <Text style={styles.settingBtnText}>设置</Text>
-          </TouchableOpacity> */}
-        </View>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8} style={styles.settingBtn}>
+            <Text style={styles.settingBtnText}>帮助</Text>
+          </TouchableOpacity>
+        </View> */}
       </View>
     );
     // IOS外层包裹安全区域

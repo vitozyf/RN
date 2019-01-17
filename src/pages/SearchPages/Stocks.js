@@ -61,7 +61,7 @@ class Stocks extends Component<Props> {
         }
       })
       .catch(err => {
-        console.log(err);
+        Cloud.$addLog("Stocks.js-onSearchHandler", err.message);
       });
   };
 

@@ -63,7 +63,7 @@ class Yunext extends Component<Props> {
         }
       })
       .catch(err => {
-        console.log(err);
+        Cloud.$addLog("Yunext.js-onSearchHandler", err.message);
       });
   };
   render() {

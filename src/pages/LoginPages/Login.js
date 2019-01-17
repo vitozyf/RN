@@ -397,10 +397,11 @@ class Login extends Component<Props, State> {
       });
     } catch (e) {
       if (e instanceof wechat.WechatError) {
-        console.error(e.stack);
+        Cloud.$addLog("Login.js-wechatLoginHandler", e.stack);
         Cloud.$Toast.show(e.stack);
       } else {
-        Cloud.$Toast.show(JSON.stringify(e));
+        Cloud.$addLog("Login.js-wechatLoginHandler", e.message);
+        Cloud.$Toast.show(e.message);
       }
     }
   };

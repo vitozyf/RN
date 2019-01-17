@@ -268,7 +268,7 @@ class SeatchRes extends Component<Props, State> {
         }
       })
       .catch(err => {
-        console.log(err);
+        Cloud.$addLog("SeatchRes.js-onSearchHandler", err.message);
       });
   };
   onChangeText = (value: string) => {

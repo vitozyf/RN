@@ -171,6 +171,7 @@ class Register extends Component {
             }
           })
           .catch(err => {
+            Cloud.$addLog("Register.js-wechatLoginHandler", err.message);
             Alert.alert("登录授权发生错误：", err.message, [{ text: "确定" }]);
           });
       } else {
