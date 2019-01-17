@@ -179,6 +179,7 @@ const fetchMethods = async (method, url, data, option) => {
     }
   }
 };
+
 const abort_promise = () => {
   return new Promise((resolve, reject) => {
     const TimeId = setTimeout(() => {
@@ -188,8 +189,8 @@ const abort_promise = () => {
     }, CONFIG.TIMEDELAY);
   });
 };
+
 const $post = (url, data, option) => {
-  // return fetchMethods("post", url, data, option);
   const fetch_promise = fetchMethods("post", url, data, option);
   return Promise.race([fetch_promise, abort_promise()]);
 };

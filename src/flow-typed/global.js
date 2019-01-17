@@ -18,6 +18,7 @@ declare type ICloud = {
   $clearAllStorage: Function,
   $Loading: Object,
   $CustomStore: any, // 根路有类
+  $addLog: Function,
 };
 
 declare var Cloud: ICloud;

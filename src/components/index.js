@@ -10,6 +10,7 @@ import { BackTop } from "./BackTop";
 import ZnlModal from "./ZnlModal";
 import { ZnlToast } from "./ZnlToast";
 import ZnlProgress from "./ZnlProgress";
+import ErrorBoundary from "./ErrorBoundary";
 
 export {
   HeaderRight,
@@ -24,4 +25,5 @@ export {
   ZnlToast,
   DashLine,
   ZnlProgress,
+  ErrorBoundary,
 };

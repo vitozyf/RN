@@ -16,6 +16,7 @@ import {
 import { View, Text, AppState, Platform, Linking } from "react-native";
 import * as wechat from "react-native-wechat";
 import config from "./src/utils/config";
+import { ErrorBoundary } from "@components";
 
 // 深圳市正能量网络技术有限公司
 // 调试模式下刷新到本页
@@ -28,13 +29,12 @@ if (ISANDROID && !__DEV__) {
   };
 }
 type Props = {};
-
 class App extends Component<Props> {
-  syncImmediate() {
+  syncImmediate = () => {
     codePush.sync({
       installMode: codePush.InstallMode.ON_NEXT_RESUME,
     });
-  }
+  };
   componentWillMount() {
     // 注册微信SDK
     wechat.registerApp(config.appid).then(res => {
@@ -112,24 +112,26 @@ class App extends Component<Props> {
   }
   render() {
     return (
-      <Provider store={store}>
-        <DrawerNavRouter
-          onNavigationStateChange={(prevState, currentState) => {
-            const currentScreen = getActiveRouteName(currentState);
-            if (store.getState().ActiveRouteName !== currentScreen) {
-              store.dispatch({
-                type: "SetActiveRouteName",
-                ActiveRouteName: currentScreen,
-              });
-            }
-            routerChangeHandler(currentScreen, store.getState());
-          }}
-          // persistenceKey={navigationPersistenceKey}
-          ref={navigator => {
-            CustomStore.navigator = navigator;
-          }}
-        />
-      </Provider>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <DrawerNavRouter
+            onNavigationStateChange={(prevState, currentState) => {
+              const currentScreen = getActiveRouteName(currentState);
+              if (store.getState().ActiveRouteName !== currentScreen) {
+                store.dispatch({
+                  type: "SetActiveRouteName",
+                  ActiveRouteName: currentScreen,
+                });
+              }
+              routerChangeHandler(currentScreen, store.getState());
+            }}
+            // persistenceKey={navigationPersistenceKey}
+            ref={navigator => {
+              CustomStore.navigator = navigator;
+            }}
+          />
+        </Provider>
+      </ErrorBoundary>
     );
   }
 }
