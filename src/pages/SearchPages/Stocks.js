@@ -66,7 +66,7 @@ class Stocks extends Component<Props> {
   };
 
   render() {
-    const { navigation, datas, SetBomSearchInfo } = this.props;
+    const { datas } = this.props;
     return (
       <View>
         <SerchList

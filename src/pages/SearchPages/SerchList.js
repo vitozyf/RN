@@ -254,6 +254,7 @@ type SerchListProps = {
   TotalPage: number,
   PageSize: number,
   navigation: INavigation,
+  HeaderHeight: number,
 };
 type SerchListState = {
   selected: any,
@@ -429,7 +430,10 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     });
     this.willFocusListener = navigation.addListener("willFocus", () => {
       this.currentHeaderHeight = HeaderHeightInit;
-      if (this.props.datas.length <= 10) {
+      if (
+        this.props.datas.length <= 10 &&
+        this.props.HeaderHeight !== HeaderHeightInit
+      ) {
         this.props.SetHeaderHeight(HeaderHeightInit);
       }
     });
@@ -605,7 +609,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return props;
+  return Object.assign({}, props, { HeaderHeight: state.HeaderHeight });
 };
 const mapDispatchToProps = dispatch => {
   return {

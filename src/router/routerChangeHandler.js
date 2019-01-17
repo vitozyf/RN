@@ -18,10 +18,10 @@ export function getActiveRouteName(navigationState) {
   return route.routeName;
 }
 
-export function routerChangeHandler(routerName, currentState) {
+export function routerChangeHandler(routerName) {
   // 是否隐藏下面tab栏
   const IsTabBarShow = routerName === "Bom" || routerName === "ErpIndex";
-  if (currentState.IsTabBarShow !== IsTabBarShow) {
+  if (store.getState().IsTabBarShow !== IsTabBarShow) {
     store.dispatch({
       type: "SetIsTabBarShow",
       IsTabBarShow,
@@ -32,7 +32,7 @@ export function routerChangeHandler(routerName, currentState) {
     routerName === "Bom" || routerName === "ErpIndex"
       ? "light-content"
       : "dark-content";
-  if (currentState.StatusBarStyle !== StatusBarStyle) {
+  if (store.getState().StatusBarStyle !== StatusBarStyle) {
     store.dispatch({
       type: "SetStatusBarStyle",
       StatusBarStyle,
@@ -48,9 +48,11 @@ export function routerChangeHandler(routerName, currentState) {
   }
   // 允许搜索tab栏隐藏的路由
   if (routerName !== "Yunext" && routerName !== "Stocks") {
-    store.dispatch({
-      type: "SetHeaderHeight",
-      HeaderHeight: HeaderHeightInit,
-    });
+    if (store.getState().HeaderHeight !== HeaderHeightInit) {
+      store.dispatch({
+        type: "SetHeaderHeight",
+        HeaderHeight: HeaderHeightInit,
+      });
+    }
   }
 }

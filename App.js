@@ -123,7 +123,7 @@ class App extends Component<Props> {
                   ActiveRouteName: currentScreen,
                 });
               }
-              routerChangeHandler(currentScreen, store.getState());
+              routerChangeHandler(currentScreen);
             }}
             // persistenceKey={navigationPersistenceKey}
             ref={navigator => {
