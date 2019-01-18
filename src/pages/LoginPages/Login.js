@@ -105,29 +105,10 @@ class Login extends Component<Props, State> {
     Cloud.$getStorage(Cloud.$CONFIG.LoginAccountName).then(AccountName => {
       this.setState({ AccountName });
     });
-    // Cloud.$getStorage(Cloud.$CONFIG.LoginPassword).then(Password => {
-    //   this.setState({ Password });
-    // });
   };
   componentWillMount() {
     this.readLoginInfo();
   }
-  // clearLoginInfo = () => {
-  //   const { LoginType } = this.state;
-  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginCompanyName);
-  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginPhoneNumber);
-  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginAccountName);
-  //   Cloud.$removeStorage(Cloud.$CONFIG.LoginPassword);
-  //   if (LoginType === 0) {
-  //     this._RefPhoneNumber.clear();
-  //     this._RefPassword.clear();
-  //   } else {
-  //     this._RefCompanyName.clear();
-  //     this._RefAccountName.clear();
-  //     this._RefPasswordErp.clear();
-  //   }
-  //   Cloud.$Toast.show("清除成功！");
-  // };
   LoginHandler = url => {
     Cloud.$Loading.show();
     const {
@@ -148,7 +129,6 @@ class Login extends Component<Props, State> {
       Cloud.$setStorage(Cloud.$CONFIG.LoginPhoneNumber, PhoneNumber);
     AccountName &&
       Cloud.$setStorage(Cloud.$CONFIG.LoginAccountName, AccountName);
-    Password && Cloud.$setStorage(Cloud.$CONFIG.LoginPassword, Password);
 
     let LoginData = {
       CompanyName,
@@ -579,12 +559,6 @@ class Login extends Component<Props, State> {
           <View style={styles.Body}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{TitleText}</Text>
-              {/* <Text
-                style={styles.otherLoginTitle}
-                onPress={this.clearLoginInfo}
-              >
-                清除登录信息
-              </Text> */}
             </View>
             {LoginForm}
           </View>
@@ -677,15 +651,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   znlInputBox: {
-    // width: 360
     borderWidth: 0,
     borderBottomWidth: 1,
   },
   Input: {
     borderWidth: 0,
     paddingLeft: 5,
-    // borderBottomWidth: 1,
-    // borderColor: "#ccc",
   },
   Button: {
     width: "100%",
@@ -709,8 +680,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   wechatLoginBox: {
-    // marginTop: 30,
-    // backgroundColor: "#ccc",
     width: 300,
     position: "absolute",
     bottom: 0,

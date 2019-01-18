@@ -13,9 +13,6 @@ import { connect } from "react-redux";
 import Icon from "@components/Iconfont/CloudIcon";
 import { HeaderHeightInit } from "@src/utils/constant";
 
-const ITEM_HEIGHT = 30; // list行高
-const HEADER_HEIGHT = 50; // 头部高
-
 type Props = {
   value: Object,
   ActiveTab: string,
@@ -436,7 +433,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   flatList: any;
   render() {
     const { datas, ActiveTab } = this.props;
-    let listDatas = [];
+    let listDatas: Array<any> = [];
     if (ActiveTab === "getyunexttopstocks") {
       let StockType = 0;
       datas.forEach((item, index) => {

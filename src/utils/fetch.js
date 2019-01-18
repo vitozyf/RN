@@ -1,6 +1,6 @@
+// @flow
 import { getStorage, removeStorage } from "./storage";
 import CONFIG from "./config";
-// import { Toast } from './system';
 import { Loading, ZnlToast } from "../components";
 import store from "../store";
 import CustomStore from "./jumpUtils";
@@ -11,8 +11,9 @@ const MobileBrand = DeviceInfo.getBrand();
 const Version = DeviceInfo.getVersion();
 const SystemVersion = DeviceInfo.getSystemVersion();
 const LogUrl = "appget/addapplog";
+
 /**
- * 添加日志
+ * 错误日志记录
  * @param {*} Address 日志位置/url
  * @param {*} ExpContent 日志内容
  * @param {*} PostParam 参数
@@ -35,54 +36,57 @@ const addLog = (Address: string, ExpContent: string, PostParam: string) => {
     }
   );
 };
+
+type IOption = {
+  loading?: boolean, // 是否带全屏loading，默认false
+  onlydata?: boolean, // 默认只包含data
+  searchApi?: boolean, // 启用搜索站点api
+  erpApi?: boolean, // 启用erp站点
+  nativeApi?: boolean, // 是否用传入的原生地址请求
+};
+type IReqConfig = {
+  method: string,
+  headers: Object,
+  referrerPolicy: Object,
+  body?: string,
+};
+
 /**
- *
+ * 封装fetch
  * @param {string} method 请求方式
  * @param {string} url 请求地址
  * @param {any} data 请求数据
  * @param {any} option 附加请求选项
- * option:
- *  loading 默认false
- *  onlydata 默认只包含data
- *  searchApi 启用搜索站点api
- *  erpApi 启用erp站点
- *  nativeApi 用传入的原生地址请求
  */
-const fetchMethods = async (method, url, data, option) => {
+const fetchMethods = async (
+  method: string,
+  url: string,
+  data: Object,
+  option: IOption = { onlydata: true }
+) => {
   const isConnected = await NetInfo.isConnected.fetch();
   if (!isConnected) {
     return ZnlToast.show("当前网络不可用，请检查网络是否正常");
   }
-  let BaseUrl = CONFIG.APIBASEURL;
-  // 是否带loading
-  if (option && option.loading) {
+  let BaseUrl: string = CONFIG.APIBASEURL;
+  if (option.loading) {
     Loading.show();
   }
-
-  // 是否源地址请求
-  if (option && option.nativeApi) {
+  if (option.nativeApi) {
     BaseUrl = "";
   }
-
-  // 搜索站地址
-  if (option && option.searchApi) {
+  if (option.searchApi) {
     BaseUrl = CONFIG.SEARCHAPIURL;
   }
-
-  const token = await getStorage(CONFIG.TOKEN);
-  let Authorization = "JWTAPP " + (token === null ? "" : token);
-  // erp站地址
-  if (option && option.erpApi) {
+  const token = (await getStorage(CONFIG.TOKEN)) || "";
+  let Authorization = "JWTAPP " + token;
+  if (option.erpApi) {
     BaseUrl = CONFIG.ERPAPI;
-    Authorization = `ErpApi${token === null ? "" : token}`;
+    Authorization = `ErpApi${token}`;
   }
-  // 是否只返回数据，默认true
-  const onlydata = option
-    ? typeof option.onlydata === "undefined" || option.onlydata
-      ? true
-      : option.onlydata
-    : true;
-  const ReqConfig = {
+  // 默认只返回包装层的数据
+  const onlydata = option.onlydata;
+  const ReqConfig: IReqConfig = {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -102,17 +106,17 @@ const fetchMethods = async (method, url, data, option) => {
       })
         .then(response => response.json())
         .then(response => {
-          if (option && option.loading) {
+          if (option.loading) {
             Loading.hidden();
           }
           // 原生地址请求直接返回
-          if (option && option.nativeApi) {
+          if (option.nativeApi) {
             resolve(response);
             return;
           }
           if (response.Code === 200 || response.code === 200) {
-            // erp直接返回
-            if (option && option.erpApi) {
+            // erp直接返回数据
+            if (option.erpApi) {
               return resolve(response.data);
             }
             const completeData = response.Result.Data;
@@ -132,10 +136,11 @@ const fetchMethods = async (method, url, data, option) => {
             // 用户身份失效,清除存储
             removeStorage(CONFIG.TOKEN);
             store.dispatch({ type: "ClearUserInfo" });
-            setTimeout(() => {
+            const TIMEID = setTimeout(() => {
               if (CustomStore.navigator) {
                 CustomStore.navigator._navigation.navigate("Login");
               }
+              clearTimeout(TIMEID);
             }, 300);
           } else {
             ZnlToast.show(response.Message || "系统异常,请稍后重试");
@@ -143,8 +148,7 @@ const fetchMethods = async (method, url, data, option) => {
               addLog(
                 BaseUrl + url,
                 response.Message || "系统异常,请稍后重试",
-                data ? JSON.stringify(data) : "",
-                "fetch.js"
+                data ? JSON.stringify(data) : ""
               );
             }
           }
@@ -158,8 +162,7 @@ const fetchMethods = async (method, url, data, option) => {
             addLog(
               BaseUrl + url,
               error.message || "请求错误，未捕获到message",
-              data ? JSON.stringify(data) : "",
-              "fetch.js"
+              data ? JSON.stringify(data) : ""
             );
           }
         });
@@ -168,13 +171,11 @@ const fetchMethods = async (method, url, data, option) => {
     if (option && option.loading) {
       Loading.hidden();
     }
-    // console.log(error);
     if (url !== LogUrl) {
       addLog(
         BaseUrl + url,
         error.message || "请求错误，未捕获到message",
-        data ? JSON.stringify(data) : "",
-        "fetch.js"
+        data ? JSON.stringify(data) : ""
       );
     }
   }
@@ -190,12 +191,12 @@ const abort_promise = () => {
   });
 };
 
-const $post = (url, data, option) => {
+const $post = (url: string, data: Object, option: IOption) => {
   const fetch_promise = fetchMethods("post", url, data, option);
   return Promise.race([fetch_promise, abort_promise()]);
 };
 
-const $get = (url, data, option) => {
+const $get = (url: string, data: Object, option: IOption) => {
   const fetch_promise = fetchMethods("get", url, data, option);
   return Promise.race([fetch_promise, abort_promise()]);
 };

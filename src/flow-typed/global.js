@@ -1,7 +1,3 @@
-declare var document: Object;
-
-declare var window: Object;
-
 declare type ICloud = {
   $post: Function,
   $get: Function,
@@ -21,25 +17,28 @@ declare type ICloud = {
   $addLog: Function,
 };
 
-declare var Cloud: ICloud;
-
 // 全局类型定义
 declare type IConfig = {
   // 本地数据存储键名
-  TOKEN?: string,
-  AvatarPath?: string,
-  NickName?: string,
-  PhoneNumber?: string,
-  KeyWords?: string, // 搜索记录
-  RegisterDate?: string, // 到期时间
+  TOKEN: string,
+  AvatarPath: string,
+  NickName: string,
+  PhoneNumber: string,
+  KeyWords: string, // 搜索记录
+  RegisterDate: string, // 到期时间
+  LoginCompanyName: string, // 公司名
+  LoginPhoneNumber: string, // 手机号
+  LoginAccountName: string, // 账号
+  Hotpartnos: string, // 联想用热搜型号
   // 正则验证表达式
-  RegPhoneNumber?: RegExp,
-
-  APIBASEURL?: string,
-  SEARCHAPIURL?: string,
-  ERPAPI?: string,
-  appid?: string,
-  ClientSecret?: string,
+  RegPhoneNumber: RegExp,
+  // appid
+  appid: string,
+  secret: string,
+  TIMEDELAY: number,
+  APIBASEURL: string,
+  SEARCHAPIURL: string,
+  ERPAPI: string,
 };
 declare type INavigation = {
   navigate: Function,
@@ -54,3 +53,5 @@ declare type INavigation = {
   openDrawer: Function,
   push: Function,
 };
+
+declare var Cloud: ICloud;
