@@ -297,7 +297,6 @@ type SerchListProps = {
   PageSize: number,
   navigation: INavigation,
   HeaderHeight: number,
-  ActiveRouteName: string,
 };
 type SerchListState = {
   selected: any,
@@ -436,9 +435,9 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   };
   flatList: any;
   render() {
-    const { datas, ActiveRouteName } = this.props;
+    const { datas, ActiveTab } = this.props;
     let listDatas = [];
-    if (ActiveRouteName === "Stocks") {
+    if (ActiveTab === "getyunexttopstocks") {
       let StockType = 0;
       datas.forEach((item, index) => {
         if (StockType !== item.StockType) {
@@ -726,7 +725,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return Object.assign({}, props, {
     HeaderHeight: state.HeaderHeight,
-    ActiveRouteName: state.ActiveRouteName,
   });
 };
 const mapDispatchToProps = dispatch => {
