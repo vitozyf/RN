@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import { BackTop } from "@components";
 import { connect } from "react-redux";
@@ -46,6 +47,7 @@ class ListRow extends PureComponent<Props> {
     // 现货类型
     const StockType = value.StockType;
     let StockTypeTextEle = null;
+    let StockTypeBorderColor = styles.StockType0BorderColor;
     switch (StockType) {
       case 4:
         StockTypeTextEle = (
@@ -53,6 +55,7 @@ class ListRow extends PureComponent<Props> {
             正品企业
           </Text>
         );
+        StockTypeBorderColor = styles.StockType4BorderColor;
         break;
       case 8:
         StockTypeTextEle = (
@@ -60,6 +63,7 @@ class ListRow extends PureComponent<Props> {
             正品物料
           </Text>
         );
+        StockTypeBorderColor = styles.StockType8BorderColor;
         break;
       case 5:
         StockTypeTextEle = (
@@ -67,6 +71,7 @@ class ListRow extends PureComponent<Props> {
             订货服务
           </Text>
         );
+        StockTypeBorderColor = styles.StockType5BorderColor;
         break;
       case 6:
         StockTypeTextEle = (
@@ -74,6 +79,7 @@ class ListRow extends PureComponent<Props> {
             保证有料
           </Text>
         );
+        StockTypeBorderColor = styles.StockType6BorderColor;
         break;
       case 9:
         StockTypeTextEle = (
@@ -81,6 +87,7 @@ class ListRow extends PureComponent<Props> {
             优势库存
           </Text>
         );
+        StockTypeBorderColor = styles.StockType9BorderColor;
         break;
       case 7:
         StockTypeTextEle = (
@@ -88,9 +95,41 @@ class ListRow extends PureComponent<Props> {
             品牌替代
           </Text>
         );
+        StockTypeBorderColor = styles.StockType7BorderColor;
         break;
       default:
         break;
+    }
+    // title
+    if (value.FlatListRowType === 1) {
+      return (
+        <View style={[styles.FlatListRowTitle, StockTypeBorderColor]}>
+          <View style={[styles.FlatListRowTitleText]}>{StockTypeTextEle}</View>
+        </View>
+      );
+    } else if (value.FlatListRowType === 2) {
+      return (
+        <View style={styles.FlatListRowTitle2}>
+          <View style={styles.FlexCenter}>
+            <Text style={styles.FlatListRowTitle2Text}>
+              以下库存由会员自行发布，正能量未参与任何监督，请自行甄别。
+            </Text>
+          </View>
+          <View style={styles.FlatListRowTitle2Bom}>
+            <Text style={styles.FlatListRowTitle2Text}>
+              推荐使用正能量验货：
+            </Text>
+            <Text
+              onPress={() => {
+                Linking.openURL("tel:0755-23894827");
+              }}
+              style={[styles.FlatListRowTitle2Text, styles.telText]}
+            >
+              0755-23894827
+            </Text>
+          </View>
+        </View>
+      );
     }
     // 数据、样式区分
     let ComputedData = {};
@@ -116,7 +155,10 @@ class ListRow extends PureComponent<Props> {
 
     return (
       <TouchableOpacity
-        style={styles.FlatListRow}
+        style={[
+          styles.FlatListRow,
+          value.hideBorder ? { borderBottomWidth: 0 } : null,
+        ]}
         activeOpacity={0.8}
         onPress={() => {
           this.RowClickHandler(value);
@@ -137,7 +179,7 @@ class ListRow extends PureComponent<Props> {
             >
               {value.PartNo}&nbsp;
             </Text>
-            <View style={[styles.StockTypeTextEleBox]}>{StockTypeTextEle}</View>
+            {/* <View style={[styles.StockTypeTextEleBox]}>{StockTypeTextEle}</View> */}
           </View>
 
           <View style={styles.FlatListRowTopConteneBox}>
@@ -255,6 +297,7 @@ type SerchListProps = {
   PageSize: number,
   navigation: INavigation,
   HeaderHeight: number,
+  ActiveRouteName: string,
 };
 type SerchListState = {
   selected: any,
@@ -353,7 +396,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     const { currentHeaderHeight } = this;
     let newScrollOffset = event.nativeEvent.contentOffset.y;
 
-    // 搜索栏
+    // 搜索栏隐藏/显示
     if (newScrollOffset > 100 && currentHeaderHeight === HeaderHeightInit) {
       SetHeaderHeight(0);
       this.currentHeaderHeight = 0;
@@ -393,13 +436,33 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   };
   flatList: any;
   render() {
-    const { datas } = this.props;
+    const { datas, ActiveRouteName } = this.props;
+    let listDatas = [];
+    if (ActiveRouteName === "Stocks") {
+      let StockType = 0;
+      datas.forEach((item, index) => {
+        if (StockType !== item.StockType) {
+          listDatas.push({
+            FlatListRowType:
+              new String("485697").indexOf(item.StockType) > -1 ? 1 : 2,
+            StockType: item.StockType,
+          });
+          StockType = item.StockType;
+          if (index > 0) {
+            listDatas[index - 1].hideBorder = true;
+          }
+        }
+        listDatas.push(item);
+      });
+    } else {
+      listDatas = datas;
+    }
     const { refreshing } = this.state;
     return (
       <View style={[styles.SerchList]}>
         {/* {this._renderHeader()} */}
         <FlatList
-          data={datas}
+          data={listDatas}
           extraData={this.state.selected}
           ref={ref => (this.flatList = ref)}
           keyExtractor={this._keyExtractor}
@@ -411,7 +474,6 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
           renderItem={this._renderItem}
           ListFooterComponent={this._renderFooter}
           ListEmptyComponent={this._renderEmptyView}
-          ItemSeparatorComponent={this._renderItemSeparatorComponent}
           onEndReachedThreshold={0.5}
           onEndReached={this.onEndReached}
           onRefresh={this._renderRefresh}
@@ -468,11 +530,43 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#E6E6E6",
   },
+  // title
+  FlatListRowTitle: {
+    // paddingLeft: 8,
+    marginLeft: 8,
+    paddingRight: 8,
+    borderBottomWidth: 1,
+    height: 26,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  FlatListRowTitle2: {
+    backgroundColor: "#F0F0F0",
+  },
+  FlexCenter: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  FlatListRowTitle2Bom: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  FlatListRowTitle2Text: {
+    fontSize: 12,
+    lineHeight: 22,
+    color: "#666",
+  },
+  telText: {
+    color: "#2288CC",
+  },
+  FlatListRowTitleText: {
+    width: 80,
+  },
   FlatListRow: {
-    // borderBottomWidth: 1,
-    // borderColor: '#E6E6E6'
     paddingLeft: 8,
     paddingRight: 8,
+    borderBottomWidth: 1,
+    borderColor: "#E6E6E6",
   },
   TextCommon: {
     lineHeight: 22,
@@ -551,14 +645,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlign: "center",
   },
+  StockType0BorderColor: {
+    borderColor: "#E6E6E6",
+  },
   StockType4: {
     color: "#fff",
     backgroundColor: "#FF0000",
     borderColor: "#FF0000",
   },
+  StockType4BorderColor: {
+    borderColor: "#ffaa00",
+  },
   StockType6: {
     color: "#ff2200",
     backgroundColor: "#fdf7a0",
+    borderColor: "#ffaa00",
+  },
+  StockType6BorderColor: {
     borderColor: "#ffaa00",
   },
   StockType8: {
@@ -566,9 +669,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff6200",
     borderColor: "#ff6200",
   },
+  StockType8BorderColor: {
+    borderColor: "#ff6200",
+  },
   StockType5: {
     color: "#fff",
     backgroundColor: "#269AF3",
+    borderColor: "#269AF3",
+  },
+  StockType5BorderColor: {
     borderColor: "#269AF3",
   },
   StockType9: {
@@ -576,9 +685,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#00bedb",
     borderColor: "#00bedb",
   },
+  StockType9BorderColor: {
+    borderColor: "#00bedb",
+  },
   StockType7: {
     color: "#006DCC",
     backgroundColor: "#CCE7FF",
+    borderColor: "#006DCC",
+  },
+  StockType7BorderColor: {
     borderColor: "#006DCC",
   },
   footer: {
@@ -609,7 +724,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, props, { HeaderHeight: state.HeaderHeight });
+  return Object.assign({}, props, {
+    HeaderHeight: state.HeaderHeight,
+    ActiveRouteName: state.ActiveRouteName,
+  });
 };
 const mapDispatchToProps = dispatch => {
   return {

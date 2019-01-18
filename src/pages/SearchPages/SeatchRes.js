@@ -179,7 +179,7 @@ class SeatchRes extends Component<Props, State> {
     navigation.setParams({ onSearchHandler });
     navigation.setParams({ onChangeText });
   }
-  onSearchHandler = (name, isconcat?: boolean = false) => {
+  onSearchHandler = async name => {
     const {
       SetBomSearchInfo,
       PageIndex,
@@ -217,7 +217,7 @@ class SeatchRes extends Component<Props, State> {
       default:
         break;
     }
-    Cloud.$post(url, serchData, {
+    return Cloud.$post(url, serchData, {
       loading: CurrentName === "yunext",
       ...searchApi,
       ...onlydata,
@@ -276,26 +276,14 @@ class SeatchRes extends Component<Props, State> {
       KeyWord: value,
     });
   };
-  setStateHandler = (stateName: string, value: string, bc: Function) => {
-    this.setState(
-      {
-        [stateName]: value,
-      },
-      () => {
-        if (bc) {
-          bc();
-        }
-      }
-    );
-  };
   render() {
     return <TabNav navigation={this.props.navigation} />;
   }
   componentWillMount() {
     this.passParameterHandler();
-    this.onSearchHandler();
-    const { navigation } = this.props;
-    this.onSearchHandler("getyunexttopstocks");
+    this.onSearchHandler().then(() => {
+      this.onSearchHandler("getyunexttopstocks");
+    });
   }
 }
 
