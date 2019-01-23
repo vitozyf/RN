@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   componentBox: {
-    paddingTop: 50,
+    paddingTop: 30,
   },
   component: {
     fontSize: 16,
