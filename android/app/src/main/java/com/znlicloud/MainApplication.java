@@ -50,9 +50,9 @@ public class MainApplication extends Application implements ReactApplication {
           // new
           // CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey),
           // getApplicationContext(), BuildConfig.DEBUG),
-          // new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(),
-          // BuildConfig.DEBUG),
-          new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG), new VectorIconsPackage(),
+          new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
+          // new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(),
+          // BuildConfig.DEBUG), new VectorIconsPackage(),
           new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG));
     }
 
