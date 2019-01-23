@@ -56,6 +56,7 @@ const SimpleAppNavigator = createDrawerNavigator(
   {
     initialRouteName: "Home",
     drawerPosition: "left",
+    drawerWidth: 250,
     contentComponent: CustomDrawerContentComponent,
     drawerLockMode: "locked-closed",
     contentOptions: {

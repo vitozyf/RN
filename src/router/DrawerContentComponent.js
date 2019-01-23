@@ -214,7 +214,7 @@ class MyScrollView extends Component {
           if (ResData.Version !== Version) {
             const ValueHandler = () => {
               return (
-                <View style={{ paddingLeft: 8 }}>
+                <View style={{ paddingLeft: 10 }}>
                   {ResData.UpdateLog.Content.map((item, index) => {
                     return (
                       <Text style={{ fontSize: 16 }} key={index}>

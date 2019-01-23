@@ -15,7 +15,7 @@ class MembershipScreen extends Component<Props> {
   };
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
-      navigation.navigate("Home");
+      navigation.navigate("Home", { OpenDrawer: true });
     };
     return {
       header: <ZnlHeader title="帮助" onPressIcon={goBack} />,

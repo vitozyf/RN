@@ -50,6 +50,13 @@ class BottomTabNavRouter extends Component {
     };
   };
 
+  componentWillMount() {
+    const { navigation } = this.props;
+    if (navigation.getParam("OpenDrawer")) {
+      navigation.openDrawer();
+    }
+  }
+
   render() {
     return <TabNav navigation={this.props.navigation} />;
   }

@@ -25,7 +25,7 @@ type State = {
 class Setting extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const onPressIcon = () => {
-      navigation.navigate("Home");
+      navigation.navigate("Home", { OpenDrawer: true });
     };
     return {
       header: (
@@ -46,39 +46,45 @@ class Setting extends Component<Props, State> {
   }
 
   getVersionApp() {
-    const Url = "appget/getversioninfo";
-    Cloud.$get(Url, null, { onlydata: false }).then(data => {
-      if (data && data.Code === 200) {
-        const ResData = data.Result;
-        const downloadUrl = Platform.select({
-          ios:
-            "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
-          android: ResData.DownloadUrl,
-        });
-        if (ResData.Version !== Version) {
-          Alert.alert("检测到新版本，是否更新", `新版本： ${ResData.Version}`, [
-            { text: "取消" },
-            {
-              text: "确定",
-              onPress: () => {
-                if (Platform.OS === "android") {
-                  Linking.openURL(downloadUrl).catch(err => {
-                    Cloud.$addLog(
-                      "DrawerContentComponent.js-confirmHandler",
-                      err.message || err.toString()
-                    );
-                  });
-                } else if (Platform.OS === "ios") {
-                  Cloud.$Toast.show("检测到新版本，请打开应用商店下载");
-                }
-              },
-            },
-          ]);
-        } else {
-          Cloud.$Toast.show("当前版本为最新版本！");
+    if (Platform.OS === "android") {
+      const Url = "appget/getversioninfo";
+      Cloud.$get(Url, null, { onlydata: false }).then(data => {
+        if (data && data.Code === 200) {
+          const ResData = data.Result;
+          const downloadUrl = Platform.select({
+            ios:
+              "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
+            android: ResData.DownloadUrl,
+          });
+          if (ResData.Version !== Version) {
+            Alert.alert(
+              "检测到新版本，是否更新",
+              `新版本： ${ResData.Version}`,
+              [
+                { text: "取消" },
+                {
+                  text: "确定",
+                  onPress: () => {
+                    if (Platform.OS === "android") {
+                      Linking.openURL(downloadUrl).catch(err => {
+                        Cloud.$addLog(
+                          "DrawerContentComponent.js-confirmHandler",
+                          err.message || err.toString()
+                        );
+                      });
+                    } else if (Platform.OS === "ios") {
+                      Cloud.$Toast.show("检测到新版本，请打开应用商店下载");
+                    }
+                  },
+                },
+              ]
+            );
+          } else {
+            Cloud.$Toast.show("当前版本为最新版本！");
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   _renderRowVersion = item => {
