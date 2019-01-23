@@ -10,7 +10,7 @@ import { NetInfo } from "react-native";
 const MobileBrand = DeviceInfo.getBrand();
 const Version = DeviceInfo.getVersion();
 const SystemVersion = DeviceInfo.getSystemVersion();
-const LogUrl = "appget/addapplog";
+const LOGURL = "appget/addapplog";
 
 /**
  * 错误日志记录
@@ -21,7 +21,7 @@ const LogUrl = "appget/addapplog";
 const addLog = (Address: string, ExpContent: string, PostParam: string) => {
   const PhoneNumber = store.getState().UserInfo.PhoneNumber || "";
   $post(
-    LogUrl,
+    LOGURL,
     {
       PhoneNumber,
       Address,
@@ -144,7 +144,7 @@ const fetchMethods = async (
             }, 300);
           } else {
             ZnlToast.show(response.Message || "系统异常,请稍后重试");
-            if (url !== LogUrl) {
+            if (url !== LOGURL) {
               addLog(
                 BaseUrl + url,
                 response.Message || "系统异常,请稍后重试",
@@ -158,7 +158,7 @@ const fetchMethods = async (
             Loading.hidden();
           }
           reject(error);
-          if (url !== LogUrl) {
+          if (url !== LOGURL) {
             addLog(
               BaseUrl + url,
               error.message || "请求错误，未捕获到message",
@@ -171,7 +171,7 @@ const fetchMethods = async (
     if (option && option.loading) {
       Loading.hidden();
     }
-    if (url !== LogUrl) {
+    if (url !== LOGURL) {
       addLog(
         BaseUrl + url,
         error.message || "请求错误，未捕获到message",

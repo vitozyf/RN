@@ -339,7 +339,7 @@ class MyScrollView extends Component {
           <DrawerItems {...this.props} items={items} />
         </View>
 
-        {/* <View style={styles.footer}>
+        <View style={styles.footer}>
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.settingBtn}
@@ -352,7 +352,7 @@ class MyScrollView extends Component {
           <TouchableOpacity activeOpacity={0.8} style={styles.settingBtn}>
             <Text style={styles.settingBtnText}>帮助</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
     );
     // IOS外层包裹安全区域

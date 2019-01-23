@@ -103,7 +103,6 @@ class App extends Component<Props> {
     AppState.addEventListener("change", this._handleAppStateChange);
   }
   componentWillUnmount() {
-    // 移除事件
     AppInit.JPushModule.removeReceiveOpenNotificationListener(
       this.openNotificationListener
     );

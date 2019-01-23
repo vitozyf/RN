@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { ZnlHeader } from "@components";
+import { ZnlHeader, ZnlCardList } from "@components";
 
 type Props = {
   navigation: INavigation,
@@ -23,9 +23,29 @@ class MembershipScreen extends Component<Props> {
     const { navigation } = this.props;
     navigation.push("HelpPage");
   };
+  _renderRow = item => {
+    return (
+      <View style={styles.rowView}>
+        <Text
+          style={[styles.textCommon, styles.textTitle, styles[item.titleClass]]}
+        >
+          {item.key}
+        </Text>
+        <Text
+          style={[
+            styles.textCommon,
+            item.value ? styles.textTrue : styles.textFalse,
+          ]}
+        >
+          {item.value && <AntDesign name="checkcircleo" size={16} />}
+          {item.value ? "已开通" : "未开通"}
+        </Text>
+      </View>
+    );
+  };
   render() {
     const { UserIdentity } = this.props;
-    let UserIdentityEle = [];
+    let UserIdentitys = [];
     for (const key in UserIdentity) {
       let titleClass = "textTitle4";
       switch (key) {
@@ -53,28 +73,15 @@ class MembershipScreen extends Component<Props> {
         default:
           break;
       }
-      UserIdentityEle.push(
-        <View style={styles.rowView} key={key}>
-          <Text
-            style={[styles.textCommon, styles.textTitle, styles[titleClass]]}
-          >
-            {key}
-          </Text>
-          <Text
-            style={[
-              styles.textCommon,
-              UserIdentity[key] ? styles.textTrue : styles.textFalse,
-            ]}
-          >
-            {UserIdentity[key] && <AntDesign name="checkcircleo" size={16} />}
-            {UserIdentity[key] ? "已开通" : "未开通"}
-          </Text>
-        </View>
-      );
+      UserIdentitys.push({
+        key,
+        titleClass,
+        value: UserIdentity[key],
+      });
     }
     return (
       <View style={styles.container}>
-        <View style={styles.UserIdentityBox}>{UserIdentityEle}</View>
+        <ZnlCardList datas={UserIdentitys} renderRow={this._renderRow} />
         <View style={styles.helpBox}>
           <Text style={styles.helpText} onPress={this.toHelpPage}>
             帮助
@@ -90,20 +97,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F5F5F5",
   },
-  UserIdentityBox: {
-    marginTop: 8,
-    backgroundColor: "#fff",
-  },
   rowView: {
-    height: 48,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: "#e6e6e6",
-    // paddingLeft: 10,
-    marginLeft: 12,
-    paddingRight: 10,
   },
   textCommon: {
     fontSize: 15,

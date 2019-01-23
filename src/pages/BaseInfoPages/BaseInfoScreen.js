@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 // import Icon from "react-native-vector-icons/Ionicons";
-import { ZnlButton, ZnlModal, ZnlHeader } from "@components";
+import { ZnlButton, ZnlModal, ZnlHeader, ZnlCardList } from "@components";
 type State = {
   modalVisible: boolean,
 };
@@ -64,34 +64,39 @@ class BaseInfoScreen extends Component<Props, State> {
       ClearUserInfo && ClearUserInfo();
     });
   };
+  _renderRow = item => {
+    return (
+      <View style={styles.baseRow}>
+        <Text style={styles.baseRowTitle}>{item.key}</Text>
+        <Text style={styles.baseRowValue}>{item.value}</Text>
+      </View>
+    );
+  };
   render() {
     const { modalVisible } = this.state;
     const { NickName, PhoneNumber, HomeUserInfo } = this.props;
     const { ExpirationDateStr, CompanyName } = HomeUserInfo || {};
+    const datas = [
+      {
+        key: "公司名",
+        value: CompanyName,
+      },
+      {
+        key: "微信",
+        value: NickName,
+      },
+      {
+        key: "手机号",
+        value: PhoneNumber,
+      },
+      {
+        key: "到期时间",
+        value: ExpirationDateStr,
+      },
+    ];
     return (
       <View style={styles.container}>
-        <View style={styles.rowBox}>
-          <View style={styles.baseRow}>
-            <Text style={styles.baseRowTitle}>公司名</Text>
-            <Text style={styles.baseRowValue}>{CompanyName}</Text>
-          </View>
-
-          <View style={styles.baseRow}>
-            <Text style={styles.baseRowTitle}>微信</Text>
-            <Text style={styles.baseRowValue}>{NickName}</Text>
-          </View>
-
-          <View style={styles.baseRow}>
-            <Text style={styles.baseRowTitle}>手机号</Text>
-            <Text style={styles.baseRowValue}>{PhoneNumber}</Text>
-          </View>
-
-          <View style={styles.baseRow}>
-            <Text style={styles.baseRowTitle}>到期时间</Text>
-            <Text style={styles.baseRowValue}>{ExpirationDateStr}</Text>
-          </View>
-        </View>
-
+        <ZnlCardList datas={datas} renderRow={this._renderRow} />
         <View style={styles.buttonBox}>
           <ZnlButton style={styles.button} type="warn" onPress={this.openModal}>
             退出登录
@@ -114,20 +119,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
-  rowBox: {
-    backgroundColor: "#fff",
-    marginTop: 8,
-  },
   baseRow: {
-    height: 44,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: "#f0f0f0",
-    // paddingLeft: 10,
-    marginLeft: 12,
-    paddingRight: 10,
   },
   baseRowTitle: {
     fontSize: 15,
