@@ -201,9 +201,7 @@ class MyScrollView extends Component {
   };
   getVersionApp() {
     const Version = DeviceInfo.getVersion();
-    const Url = ISDEBUG
-      ? "appget/getversioninfo?isDebug=true"
-      : "appget/getversioninfo";
+    const Url = "appget/getversioninfo";
     !__DEV__ &&
       Cloud.$get(Url, null, { onlydata: false }).then(data => {
         if (data.Code === 200) {
