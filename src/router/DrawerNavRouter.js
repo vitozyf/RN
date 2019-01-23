@@ -7,9 +7,10 @@ import Setting from "@router/router-pages/Setting"; // 设置
 import Register from "@router/router-pages/Register"; // 注册
 import BaseInfo from "@router/router-pages/BaseInfo"; // 基本信息
 import Membership from "@router/router-pages/Membership"; // 会员身份
+import HelpPage from "@router/router-pages/HelpPage"; // 会员身份
 import TestPageScreen from "./router-pages/TestPage"; // 测试页
-import { createDrawerNavigator } from "react-navigation";
 
+import { createDrawerNavigator } from "react-navigation";
 import CustomDrawerContentComponent from "./DrawerContentComponent";
 
 const SimpleAppNavigator = createDrawerNavigator(
@@ -45,6 +46,10 @@ const SimpleAppNavigator = createDrawerNavigator(
     Membership: {
       screen: Membership,
       path: "/Membership",
+    },
+    HelpPage: {
+      screen: HelpPage,
+      path: "/HelpPage",
     },
     TestPage: TestPageScreen,
   },

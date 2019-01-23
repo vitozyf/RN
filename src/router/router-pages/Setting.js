@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SettingScreen from "@pages/Setting/Setting";
+import AboutScreen from "@pages/Setting/About";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -8,7 +9,11 @@ const IndexPages = createStackNavigator(
   {
     Setting: {
       screen: SettingScreen,
-      path: "/Setting/Index",
+      path: "/Setting/Setting",
+    },
+    About: {
+      screen: AboutScreen,
+      path: "/Setting/About",
     },
   },
   {

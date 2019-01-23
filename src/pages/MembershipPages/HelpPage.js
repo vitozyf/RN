@@ -7,6 +7,7 @@ import Icon from "@components/Iconfont/CloudIcon";
 
 type Props = {
   Sales: Object,
+  navigation: INavigation,
 };
 class MembershipScreen extends Component<Props> {
   static defaultProps = {
@@ -14,7 +15,7 @@ class MembershipScreen extends Component<Props> {
   };
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
-      navigation.goBack();
+      navigation.navigate("Home");
     };
     return {
       header: <ZnlHeader title="帮助" onPressIcon={goBack} />,

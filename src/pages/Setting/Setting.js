@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { ZnlHeader, ZnlCardList } from "@components";
+import { ZnlHeader, ZnlCardList, ZnlButton, ZnlModal } from "@components";
 import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import Icon from "@components/Iconfont/CloudIcon";
@@ -17,8 +17,11 @@ import Icon from "@components/Iconfont/CloudIcon";
 const Version = DeviceInfo.getVersion();
 type Props = {
   navigation: INavigation,
+  ClearUserInfo: Function,
 };
-type State = {};
+type State = {
+  modalVisible: boolean,
+};
 class Setting extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const onPressIcon = () => {
@@ -34,6 +37,13 @@ class Setting extends Component<Props, State> {
       ),
     };
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+    };
+  }
 
   getVersionApp() {
     const Url = "appget/getversioninfo";
@@ -75,17 +85,53 @@ class Setting extends Component<Props, State> {
     return (
       <TouchableOpacity
         style={styles.baseRow}
-        onPress={this.getVersionApp}
+        onPress={item.onPress}
         activeOpacity={0.8}
       >
         <Text style={styles.baseRowTitle}>{item.key}</Text>
         <Text style={styles.baseRowValue}>
-          版本{item.Version}
-          &nbsp;&nbsp;&nbsp;
+          {item.Version && (
+            <Text>
+              版本{item.Version}
+              &nbsp;&nbsp;&nbsp;
+            </Text>
+          )}
           <Icon name="right_arrow" size={14} style={styles.iconfont} />
         </Text>
       </TouchableOpacity>
     );
+  };
+
+  openModal = () => {
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  closeModal = cb => {
+    this.setState(
+      {
+        modalVisible: false,
+      },
+      () => {
+        if (typeof cb === "function") {
+          cb();
+        }
+      }
+    );
+  };
+
+  logoutHandler = () => {
+    const { navigation, ClearUserInfo } = this.props;
+    Cloud.$post("user/logout", null, { onlydata: false }).then(data => {
+      if (data.Result.isSuccess) {
+        this.closeModal(() => {
+          Cloud.$clearAllStorage();
+          navigation.navigate("Login");
+        });
+      }
+      ClearUserInfo && ClearUserInfo();
+    });
   };
 
   render() {
@@ -93,11 +139,50 @@ class Setting extends Component<Props, State> {
       {
         key: "版本更新",
         Version,
+        onPress: this.getVersionApp,
       },
     ];
+    const DatasAbout = [
+      {
+        key: "法律条款与隐私政策",
+        onPress: () => {
+          Linking.openURL("https://static.bom.ai/appdownload/about.html").catch(
+            err => {
+              Cloud.$addLog(
+                "DrawerContentComponent.js-confirmHandler",
+                err.message || err.toString()
+              );
+            }
+          );
+        },
+      },
+      {
+        key: "关于我们",
+        onPress: () => {
+          this.props.navigation.push("About", { Version });
+        },
+      },
+    ];
+    const { modalVisible } = this.state;
+
     return (
       <View style={styles.container}>
         <ZnlCardList datas={DatasVersion} renderRow={this._renderRowVersion} />
+        <ZnlCardList datas={DatasAbout} renderRow={this._renderRowVersion} />
+
+        <View style={styles.buttonBox}>
+          <ZnlButton style={styles.button} type="warn" onPress={this.openModal}>
+            退出登录
+          </ZnlButton>
+        </View>
+
+        <ZnlModal
+          visible={modalVisible}
+          title="确定要退出登录吗？"
+          value="退出登录后，您将无法查看云价格"
+          cancelHandler={this.closeModal}
+          confirmHandler={this.logoutHandler}
+        />
       </View>
     );
   }
@@ -124,12 +209,29 @@ const styles = StyleSheet.create({
   iconfont: {
     fontWeight: "bold",
   },
+
+  buttonBox: {
+    paddingTop: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  button: {
+    width: "100%",
+    height: 48,
+    borderRadius: 2,
+  },
 });
 const mapStateToProps = (state, props) => {
   return props;
 };
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    ClearUserInfo: () => {
+      return dispatch({
+        type: "ClearUserInfo",
+      });
+    },
+  };
 };
 export default connect(
   mapStateToProps,

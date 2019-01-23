@@ -1,23 +1,18 @@
 import React, { Component } from "react";
-import MembershipScreen from "@pages/MembershipPages/MembershipScreen";
-// import HelpPage from "@pages/MembershipPages/HelpPage";
+import HelpPage from "@pages/MembershipPages/HelpPage";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
 
 const IndexPages = createStackNavigator(
   {
-    Membership: {
-      screen: MembershipScreen,
-      path: "/Membership/Index",
+    HelpPage: {
+      screen: HelpPage,
+      path: "/Membership/HelpPage",
     },
-    // HelpPage: {
-    //   screen: HelpPage,
-    //   path: "/Membership/HelpPage",
-    // },
   },
   {
-    initialRouteName: "Membership",
+    initialRouteName: "HelpPage",
     navigationOptions: {
       headerStyle: {
         backgroundColor: "#fff",
@@ -34,7 +29,7 @@ const IndexPages = createStackNavigator(
 
 const Index = class Index extends Component {
   static navigationOptions = {
-    drawerLabel: "会员身份",
+    drawerLabel: "帮助",
   };
   static router = IndexPages.router;
   render() {

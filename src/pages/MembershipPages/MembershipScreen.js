@@ -19,10 +19,6 @@ class MembershipScreen extends Component<Props> {
       header: <ZnlHeader title="会员身份" onPressIcon={goBack} />,
     };
   };
-  toHelpPage = () => {
-    const { navigation } = this.props;
-    navigation.push("HelpPage");
-  };
   _renderRow = item => {
     return (
       <View style={styles.rowView}>
@@ -82,11 +78,6 @@ class MembershipScreen extends Component<Props> {
     return (
       <View style={styles.container}>
         <ZnlCardList datas={UserIdentitys} renderRow={this._renderRow} />
-        <View style={styles.helpBox}>
-          <Text style={styles.helpText} onPress={this.toHelpPage}>
-            帮助
-          </Text>
-        </View>
       </View>
     );
   }
@@ -153,18 +144,6 @@ const styles = StyleSheet.create({
   },
   textFalse: {
     color: "#999",
-  },
-  helpBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    paddingBottom: 50,
-  },
-  helpText: {
-    color: "#576B95",
   },
 });
 

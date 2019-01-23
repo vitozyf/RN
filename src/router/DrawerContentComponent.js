@@ -165,12 +165,12 @@ const items = [
     key: "Membership",
     routeName: "Membership",
   },
-];
-if (ISDEBUG) {
-  items.push({
+  {
     key: "News",
     routeName: "News",
-  });
+  },
+];
+if (ISDEBUG) {
   items.push({
     key: "Register",
     routeName: "Register",
@@ -347,7 +347,13 @@ class MyScrollView extends Component {
           >
             <Text style={styles.settingBtnText}>设置</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} style={styles.settingBtn}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.settingBtn}
+            onPress={() => {
+              this.toPage("HelpPage");
+            }}
+          >
             <Text style={styles.settingBtnText}>帮助</Text>
           </TouchableOpacity>
         </View>
