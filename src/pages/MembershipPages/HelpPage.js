@@ -15,7 +15,6 @@ class MembershipScreen extends Component<Props> {
   };
   static navigationOptions = ({ navigation }) => {
     const BACK = navigation.getParam("back");
-    console.log(111, BACK);
     const goBack = () => {
       switch (BACK) {
         case "Membership":
