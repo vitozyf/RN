@@ -195,9 +195,9 @@ class MyScrollView extends Component {
       DownloadUrl: "",
     };
   }
-  toPage = name => {
+  toPage = (name, parms) => {
     const { navigation } = this.props;
-    navigation.navigate(name);
+    navigation.navigate(name, parms);
   };
   getVersionApp() {
     const Version = DeviceInfo.getVersion();
@@ -351,7 +351,7 @@ class MyScrollView extends Component {
             activeOpacity={0.8}
             style={styles.settingBtn}
             onPress={() => {
-              this.toPage("HelpPage");
+              this.toPage("HelpPage", { back: "Home" });
             }}
           >
             <Text style={styles.settingBtnText}>帮助</Text>

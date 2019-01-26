@@ -37,6 +37,7 @@ type State = {
   AppOpenID: string,
   AppCode: string,
   IsBandWechat: boolean,
+  hasWechat: boolean,
 };
 class Login extends Component<Props, State> {
   constructor(props) {
@@ -55,11 +56,12 @@ class Login extends Component<Props, State> {
       AppOpenID: "",
       AppCode: "",
       IsBandWechat: false,
+      hasWechat: false,
     };
   }
   static navigationOptions = ({ navigation }) => {
     const toHelpPage = () => {
-      navigation.push("LoginHelpPage");
+      navigation.push("LoginHelpPage", { back: "Login" });
     };
     const renderRight = () => {
       return (
@@ -106,8 +108,18 @@ class Login extends Component<Props, State> {
       this.setState({ AccountName });
     });
   };
+  isWXAppInstalledHandler() {
+    const { wechat } = this.props;
+
+    wechat.isWXAppInstalled().then(isInstalled => {
+      this.setState({
+        hasWechat: !!isInstalled,
+      });
+    });
+  }
   componentWillMount() {
     this.readLoginInfo();
+    this.isWXAppInstalledHandler();
   }
   LoginHandler = url => {
     Cloud.$Loading.show();
@@ -445,7 +457,7 @@ class Login extends Component<Props, State> {
   };
 
   render() {
-    const { LoginType } = this.state;
+    const { LoginType, hasWechat } = this.state;
     const TitleText = LoginType === 0 ? "手机号登录" : "ERP账号登录";
     const TitleNav = LoginType === 1 ? "手机号登录" : "ERP账号登录";
     const LoginForm =
@@ -575,7 +587,7 @@ class Login extends Component<Props, State> {
             注册
           </ZnlButton>
         </View>
-        {this.state.showWechat && (
+        {this.state.showWechat && hasWechat && (
           <View style={styles.wechatLoginBox}>
             <View style={styles.wechatLoginTitle}>
               <View style={styles.wechatLoginLine} />

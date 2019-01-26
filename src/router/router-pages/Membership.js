@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MembershipScreen from "@pages/MembershipPages/MembershipScreen";
-// import HelpPage from "@pages/MembershipPages/HelpPage";
+import HelpPageMem from "@pages/MembershipPages/HelpPage";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -11,10 +11,10 @@ const IndexPages = createStackNavigator(
       screen: MembershipScreen,
       path: "/Membership/Index",
     },
-    // HelpPage: {
-    //   screen: HelpPage,
-    //   path: "/Membership/HelpPage",
-    // },
+    HelpPageMem: {
+      screen: HelpPageMem,
+      path: "/Membership/HelpPage",
+    },
   },
   {
     initialRouteName: "Membership",

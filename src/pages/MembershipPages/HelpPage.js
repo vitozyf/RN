@@ -14,8 +14,22 @@ class MembershipScreen extends Component<Props> {
     Sales: {},
   };
   static navigationOptions = ({ navigation }) => {
+    const BACK = navigation.getParam("back");
+    console.log(111, BACK);
     const goBack = () => {
-      navigation.navigate("Home", { OpenDrawer: true });
+      switch (BACK) {
+        case "Membership":
+          navigation.goBack();
+          break;
+        case "Home":
+          break;
+        case "Login":
+          navigation.navigate("Login");
+          break;
+        default:
+          navigation.navigate("Home", { OpenDrawer: true });
+          break;
+      }
     };
     return {
       header: <ZnlHeader title="帮助" onPressIcon={goBack} />,
@@ -76,7 +90,12 @@ class MembershipScreen extends Component<Props> {
       </View>
     );
   }
-  componentWillMount() {}
+  componentWillMount() {
+    // const { navigation } = this.props;
+    // navigation.setParams({
+    //   back: navigation.getParam("back"),
+    // });
+  }
 }
 
 const styles = StyleSheet.create({
