@@ -583,9 +583,11 @@ class Login extends Component<Props, State> {
             登录
           </ZnlButton>
 
-          <ZnlButton style={styles.ButtonReg} onPress={this.ToRegister}>
-            注册
-          </ZnlButton>
+          {Platform.OS == "android" && (
+            <ZnlButton style={styles.ButtonReg} onPress={this.ToRegister}>
+              注册
+            </ZnlButton>
+          )}
         </View>
         {this.state.showWechat && hasWechat && (
           <View style={styles.wechatLoginBox}>
