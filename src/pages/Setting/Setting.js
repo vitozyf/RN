@@ -152,14 +152,15 @@ class Setting extends Component<Props, State> {
       {
         key: "法律条款与隐私政策",
         onPress: () => {
-          Linking.openURL("https://static.bom.ai/appdownload/about.html").catch(
-            err => {
-              Cloud.$addLog(
-                "DrawerContentComponent.js-confirmHandler",
-                err.message || err.toString()
-              );
-            }
-          );
+          // Linking.openURL("https://static.bom.ai/appdownload/about.html").catch(
+          //   err => {
+          //     Cloud.$addLog(
+          //       "DrawerContentComponent.js-confirmHandler",
+          //       err.message || err.toString()
+          //     );
+          //   }
+          // );
+          this.props.navigation.push("LegalProtection");
         },
       },
       {

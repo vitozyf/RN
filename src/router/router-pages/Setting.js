@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SettingScreen from "@pages/Setting/Setting";
 import AboutScreen from "@pages/Setting/About";
+import LegalProtection from "@pages/Setting/LegalProtection";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -14,6 +15,10 @@ const IndexPages = createStackNavigator(
     About: {
       screen: AboutScreen,
       path: "/Setting/About",
+    },
+    LegalProtection: {
+      screen: LegalProtection,
+      path: "/Setting/LegalProtection",
     },
   },
   {
