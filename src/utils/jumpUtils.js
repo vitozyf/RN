@@ -8,8 +8,10 @@ export const DrawerNavOpenPage = (pageName, obj) => {
 
 export default new class CustomStore {
   navigate = (pageName, params) => {
-    const navigation = this.navigator._navigation;
-    const { navigate } = navigation;
-    navigate && navigate(pageName, params);
+    if (this.navigator) {
+      const navigation = this.navigator._navigation;
+      const { navigate } = navigation;
+      navigate && navigate(pageName, params);
+    }
   };
 }();

@@ -58,8 +58,8 @@ class ErpIndex extends Component<ErpIndexProps> {
 
   render() {
     const { ErpUserRoleList, HomeUserInfo } = this.props;
-    const { IsMainAccount } = HomeUserInfo;
-    let AppErpUserRoleList = ErpUserRoleList;
+    const IsMainAccount = HomeUserInfo ? HomeUserInfo.IsMainAccount : false;
+    let AppErpUserRoleList = ErpUserRoleList || [];
     if (IsMainAccount) {
       AppErpUserRoleList = [
         {

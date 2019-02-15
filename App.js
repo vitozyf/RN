@@ -111,8 +111,8 @@ class App extends Component<Props> {
   }
   render() {
     return (
-      <ErrorBoundary>
-        <Provider store={store}>
+      <Provider store={store}>
+        <ErrorBoundary>
           <DrawerNavRouter
             onNavigationStateChange={(prevState, currentState) => {
               const currentScreen = getActiveRouteName(currentState);
@@ -129,8 +129,8 @@ class App extends Component<Props> {
               CustomStore.navigator = navigator;
             }}
           />
-        </Provider>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </Provider>
     );
   }
 }
