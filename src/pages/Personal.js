@@ -5,6 +5,8 @@ import SettingScreen from "@pages/Setting/Setting";
 import AboutScreen from "@pages/Setting/About";
 import LegalProtection from "@pages/Setting/LegalProtection";
 
+import BaseInfoScreen from "@pages/BaseInfoPages/BaseInfoScreen";
+
 import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -27,6 +29,10 @@ const IndexPages = createStackNavigator(
     LegalProtection: {
       screen: LegalProtection,
       path: "/Home/Personal/LegalProtection",
+    },
+    BaseInfo: {
+      screen: BaseInfoScreen,
+      path: "/Home/Personal/BaseInfo",
     },
   },
   {

@@ -152,15 +152,6 @@ const styles = StyleSheet.create({
 });
 
 const items = [
-  // {
-  //   key: "Home",
-  //   routeName: 'HOme'
-  // },
-
-  {
-    key: "BaseInfo",
-    routeName: "BaseInfo",
-  },
   {
     key: "Membership",
     routeName: "Membership",
