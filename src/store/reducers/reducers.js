@@ -16,6 +16,10 @@ export const HeaderHeight = (state = HeaderHeightInit, action) => {
   switch (action.type) {
     case "SetHeaderHeight":
       return action.HeaderHeight;
+    case "HideHeader":
+      return 0;
+    case "ShowHeader":
+      return HeaderHeightInit;
     default:
       return state;
   }
