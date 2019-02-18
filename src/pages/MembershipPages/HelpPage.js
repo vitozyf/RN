@@ -26,7 +26,8 @@ class MembershipScreen extends Component<Props> {
           navigation.navigate("Login");
           break;
         default:
-          navigation.navigate("Home");
+          // navigation.navigate("Home");
+          navigation.goBack();
           break;
       }
     };

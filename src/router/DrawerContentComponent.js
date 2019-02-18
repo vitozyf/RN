@@ -4,125 +4,20 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  ImageBackground,
   Platform,
   Linking,
+  Dimensions,
 } from "react-native";
 import { DrawerItems, SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { ZnlModal } from "@components";
 import DeviceInfo from "react-native-device-info";
-
 const Height = Dimensions.get("window").height;
-
-// top导航栏初始高度
-let FooterPaddingBottom = 0;
-if (ISIOS) {
-  switch (DeviceInfo.getModel()) {
-    case "iPhone X":
-    case "iPhone XR":
-    case "iPhone XS":
-    case "iPhone XS Max":
-      FooterPaddingBottom = 44;
-      break;
-    default:
-      FooterPaddingBottom = 0;
-      break;
-  }
-}
 
 const styles = StyleSheet.create({
   containerbox: {
     flex: 1,
-  },
-  header: {
-    height: 120,
-    borderBottomWidth: 1,
-    borderColor: "#f0f0f0",
-  },
-  ImageBackground: {
-    width: "100%",
-    height: 112,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  headerLeftImg: {
-    marginLeft: 10,
-    marginRight: 10,
-    width: 40,
-    height: 40,
-    borderRadius: 2,
-    marginTop: -20,
-  },
-  headerName: {},
-  NickName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    paddingBottom: 5,
-  },
-  StockTypeBox: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: 230,
-    marginLeft: -5,
-  },
-  StockTypeCommon: {
-    fontSize: 12,
-    paddingLeft: 2,
-    paddingRight: 2,
-    borderWidth: 1,
-    textAlign: "center",
-    marginLeft: 5,
-    marginBottom: 5,
-    lineHeight: 16,
-    borderRadius: 2,
-  },
-  StockType4: {
-    color: "#fff",
-    backgroundColor: "#FF0000",
-    borderColor: "#FF0000",
-  },
-  StockType6: {
-    color: "#ff2200",
-    backgroundColor: "#fdf7a0",
-    borderColor: "#ffaa00",
-  },
-  StockType8: {
-    color: "#fff",
-    backgroundColor: "#ff6200",
-    borderColor: "#ff6200",
-  },
-  StockType5: {
-    backgroundColor: "#269AF3",
-    color: "#fff",
-    borderColor: "#269AF3",
-  },
-  StockType9: {
-    color: "#FFF",
-    backgroundColor: "#00bedb",
-    borderColor: "#00bedb",
-  },
-  StockType7: {
-    color: "#006DCC",
-    backgroundColor: "#CCE7FF",
-    borderColor: "#006DCC",
-  },
-  StockTypeErp: {
-    backgroundColor: "#167CDB",
-    color: "#fff",
-    borderColor: "#167CDB",
-  },
-  StockTypeDis: {
-    backgroundColor: "#ccc",
-    color: "#666",
-    borderColor: "#ccc",
-  },
-  ioscontainer: {
-    // height: '100%'
   },
   container: {
     height: Height - 30,
@@ -132,36 +27,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
   },
-  footer: {
-    height: 50 + FooterPaddingBottom,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderTopWidth: 1,
-    borderColor: "#ccc",
-    paddingBottom: FooterPaddingBottom,
-  },
-  settingBtn: {
-    width: 100,
-    height: 50,
-  },
-  settingBtnText: {
-    lineHeight: 50,
-    textAlign: "center",
-  },
 });
 
-const items = [
-  {
-    key: "Membership",
-    routeName: "Membership",
-  },
-  {
+const items = [];
+if (ISDEBUG) {
+  items.push({
     key: "News",
     routeName: "News",
-  },
-];
-if (ISDEBUG) {
+  });
   items.push({
     key: "Register",
     routeName: "Register",
@@ -240,7 +113,6 @@ class MyScrollView extends Component {
     });
   };
   render() {
-    const { AvatarPath, NickName, UserIdentity } = this.props;
     const { visible, title, value } = this.state;
 
     // 自定义区域
@@ -286,15 +158,7 @@ class MyScrollView extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  return Object.assign(
-    {},
-    {
-      AvatarPath: state.UserInfo.AvatarPath,
-      NickName: state.UserInfo.NickName,
-      UserIdentity: state.UserInfo.UserIdentity,
-    },
-    props
-  );
+  return props;
 };
 
 const MyScrollViewWithConnect = connect(mapStateToProps)(MyScrollView);

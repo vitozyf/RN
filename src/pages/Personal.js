@@ -7,6 +7,9 @@ import LegalProtection from "@pages/Setting/LegalProtection";
 
 import BaseInfoScreen from "@pages/BaseInfoPages/BaseInfoScreen";
 
+import MembershipScreen from "@pages/MembershipPages/MembershipScreen";
+import HelpPageMem from "@pages/MembershipPages/HelpPage";
+
 import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -16,23 +19,31 @@ const IndexPages = createStackNavigator(
   {
     PersonalCenter: {
       screen: PersonalCenter,
-      path: "/Home/Personal/index",
+      path: "/Personal/index",
     },
     Setting: {
       screen: SettingScreen,
-      path: "/Home/Personal/Setting",
+      path: "/Personal/Setting",
     },
     About: {
       screen: AboutScreen,
-      path: "/Home/Personal/About",
+      path: "/Personal/About",
     },
     LegalProtection: {
       screen: LegalProtection,
-      path: "/Home/Personal/LegalProtection",
+      path: "/Personal/LegalProtection",
     },
     BaseInfo: {
       screen: BaseInfoScreen,
-      path: "/Home/Personal/BaseInfo",
+      path: "/Personal/BaseInfo",
+    },
+    Membership: {
+      screen: MembershipScreen,
+      path: "/Personal/Membership",
+    },
+    HelpPageMem: {
+      screen: HelpPageMem,
+      path: "/Personal/HelpPage",
     },
   },
   {
