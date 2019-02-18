@@ -1,4 +1,7 @@
-/* @flow */
+/**
+ * 返回顶部
+ * @flow
+ */
 import React, { Component } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import RootSiblings from "react-native-root-siblings";

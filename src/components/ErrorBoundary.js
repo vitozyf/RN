@@ -1,4 +1,5 @@
 /**
+ * 错误屏
  * @flow
  */
 import React, { Component } from "react";

@@ -81,6 +81,7 @@ class PersonalCenter extends Component<Props> {
           style={[
             styles.StockTypeCommon,
             titleClass ? styles[titleClass] : null,
+            key === "正品企业" ? styles.firstIdebtity : null,
           ]}
           key={key}
         >
@@ -222,6 +223,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 20,
     borderRadius: 2,
+  },
+  firstIdebtity: {
+    marginLeft: 0,
   },
   StockType4: {
     color: "#fff",

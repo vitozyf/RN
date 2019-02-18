@@ -1,4 +1,7 @@
-// @flow
+/**
+ * 自定义标题栏
+ * @flow
+ */
 import React, { Component } from "react";
 import {
   View,

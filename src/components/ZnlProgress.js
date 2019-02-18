@@ -1,4 +1,7 @@
-// @flow
+/**
+ * 步骤条
+ * @flow
+ */
 import React, { Component } from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 

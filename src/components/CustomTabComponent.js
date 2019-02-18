@@ -1,6 +1,6 @@
-// @flow
 /**
  * 自定义底部渲染
+ * @flow
  */
 import React from "react";
 import { Keyboard, StyleSheet } from "react-native";
@@ -11,13 +11,6 @@ type Props = {
   IsTabBarShow: boolean,
 };
 class CustomTabComponent extends React.Component<Props> {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     visible: true
-  //   }
-  // }
-
   render() {
     const { IsTabBarShow } = this.props;
     return (

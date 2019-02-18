@@ -1,4 +1,7 @@
-// @flow
+/**
+ * 标题栏右侧
+ * @flow
+ */
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 

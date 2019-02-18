@@ -1,3 +1,6 @@
+/**
+ * @flow
+ */
 import React, { Component } from "react";
 import {
   View,
@@ -13,7 +16,7 @@ const height = Dimensions.get("window").height;
 let sibling = undefined;
 
 const Loading = {
-  show: content => {
+  show: (content: string) => {
     sibling = new RootSiblings(
       (
         <View style={styles.maskStyle}>
