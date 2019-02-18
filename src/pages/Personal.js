@@ -76,8 +76,8 @@ class Index extends Component<Props> {
       activeTintColor: "#ee7700",
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const Icon = focused
-          ? require("./assets/img/tab_bomai_p.png")
-          : require("./assets/img/tab_bomai_n.png");
+          ? require("./assets/img/tab_mycenter_ic_p.png")
+          : require("./assets/img/tab_mycenter_ic_n.png");
         return <Image source={Icon} />;
       },
     };

@@ -92,12 +92,6 @@ class PersonalCenter extends Component<Props> {
     }
     let datas = [
       {
-        key: "芯扒客",
-        onPress: () => {
-          this.toPage("News");
-        },
-      },
-      {
         key: "设置",
         onPress: () => {
           this.toPage("Setting");
@@ -107,6 +101,12 @@ class PersonalCenter extends Component<Props> {
         key: "帮助",
         onPress: () => {
           this.toPage("HelpPageMem");
+        },
+      },
+      {
+        key: "芯扒客",
+        onPress: () => {
+          this.toPage("News");
         },
       },
     ];
@@ -174,7 +174,9 @@ class PersonalCenter extends Component<Props> {
   }
 }
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
   blockview: {
     backgroundColor: "#fff",
     marginBottom: 10,
