@@ -208,7 +208,7 @@ class MyScrollView extends Component {
           const ResData = data.Result;
           const downloadUrl = Platform.select({
             ios:
-              "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
+              "https://itunes.apple.com/us/app/%E6%AD%A3%E8%83%BD%E9%87%8F%E7%94%B5%E5%AD%90%E7%BD%91/id1443457324?l=zh&ls=1&mt=8",
             android: ResData.DownloadUrl,
           });
           if (ResData.Version !== Version) {

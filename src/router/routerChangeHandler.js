@@ -20,7 +20,10 @@ export function getActiveRouteName(navigationState) {
 
 export function routerChangeHandler(routerName) {
   // 是否隐藏下面tab栏
-  const IsTabBarShow = routerName === "Bom" || routerName === "ErpIndex";
+  const IsTabBarShow =
+    routerName === "Bom" ||
+    routerName === "ErpIndex" ||
+    routerName === "PersonalCenter";
   if (store.getState().IsTabBarShow !== IsTabBarShow) {
     store.dispatch({
       type: "SetIsTabBarShow",

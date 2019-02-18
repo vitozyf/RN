@@ -8,6 +8,7 @@ import {
 
 import IndexScreen from "@pages/Bom";
 import ErpScreen from "@pages/Erp";
+import PersonalScreen from "@pages/Personal";
 
 import { getActiveRouteName } from "@router/routerChangeHandler";
 
@@ -29,6 +30,10 @@ const TabNav = createBottomTabNavigator(
       screen: ErpScreen,
       path: "/Home/Erp",
     },
+    Personal: {
+      screen: PersonalScreen,
+      path: "/Home/Personal",
+    },
   },
   {
     initialRouteName: "Home",
@@ -39,23 +44,6 @@ const TabNav = createBottomTabNavigator(
 
 class BottomTabNavRouter extends Component {
   static router = TabNav.router;
-  static navigationOptions = ({ navigation }) => {
-    let drawerLockMode = "locked-closed";
-    const RouterName = getActiveRouteName(navigation.state);
-    if (RouterName === "Bom" || RouterName === "ErpIndex") {
-      drawerLockMode = "unlocked";
-    }
-    return {
-      drawerLockMode: drawerLockMode,
-    };
-  };
-
-  // componentWillMount() {
-  //   const { navigation } = this.props;
-  //   if (navigation.getParam("OpenDrawer")) {
-  //     navigation.openDrawer();
-  //   }
-  // }
 
   render() {
     return <TabNav navigation={this.props.navigation} />;
