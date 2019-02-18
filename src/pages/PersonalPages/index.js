@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import { ISIOS, ISDEBUG } from "@src/utils/system";
-import { ZnlCardList } from "@components";
+import { ZnlCardList, ZnlHeader } from "@components";
 import Icon from "@components/Iconfont/CloudIcon";
 
 type Props = {
@@ -21,6 +21,17 @@ type Props = {
   navigation: INavigation,
 };
 class PersonalCenter extends Component<Props> {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: (
+        <ZnlHeader
+          hideLeft={true}
+          title=""
+          style={{ backgroundColor: "#fff" }}
+        />
+      ),
+    };
+  };
   toPage = (name, parms) => {
     const { navigation } = this.props;
     navigation.navigate(name, parms);
@@ -180,6 +191,7 @@ const styles = StyleSheet.create({
   blockview: {
     backgroundColor: "#fff",
     marginBottom: 10,
+    top: -20,
   },
   header: {
     height: 120,
