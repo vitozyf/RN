@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { HeaderTitle, HeaderRight } from "@components";
+import { HeaderTitle } from "@components";
 type Props = {
   navigation: any,
   AvatarPath: string,
@@ -18,29 +18,6 @@ type Props = {
 type State = {
   AvatarPath: string,
 };
-class HeaderLeft extends Component<Props, State> {
-  onPress = () => {
-    const { navigation } = this.props;
-    navigation.openDrawer();
-  };
-  render() {
-    const { AvatarPath } = this.props;
-    return (
-      <TouchableOpacity activeOpacity={0.8} onPress={this.onPress}>
-        <Image
-          style={styles.headerLeftImg}
-          source={{
-            uri: AvatarPath,
-          }}
-        />
-      </TouchableOpacity>
-    );
-  }
-}
-
-const HeaderLeftCom = connect((state, props) => {
-  return Object.assign({}, { AvatarPath: state.UserInfo.AvatarPath }, props);
-})(HeaderLeft);
 
 type BonProps = {
   navigation: any,
@@ -52,8 +29,6 @@ class Bom extends Component<BonProps> {
       headerTitle: (
         <HeaderTitle title="正能量电子网" textStyle={{ color: "#fff" }} />
       ),
-      headerLeft: <HeaderLeftCom navigation={navigation} />,
-      headerRight: <HeaderRight />,
     };
   };
   toSearchPage = () => {
@@ -93,12 +68,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     paddingBottom: 100,
-  },
-  headerLeftImg: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    marginLeft: 10,
   },
   ImgBox: {
     justifyContent: "flex-end",
