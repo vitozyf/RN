@@ -26,7 +26,7 @@ class MembershipScreen extends Component<Props> {
           navigation.navigate("Login");
           break;
         default:
-          navigation.navigate("Home", { OpenDrawer: true });
+          navigation.navigate("Home");
           break;
       }
     };

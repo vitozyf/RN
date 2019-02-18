@@ -25,7 +25,7 @@ type State = {
 class Setting extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const onPressIcon = () => {
-      navigation.navigate("Home", { OpenDrawer: true });
+      navigation.navigate("Home");
     };
     return {
       header: (

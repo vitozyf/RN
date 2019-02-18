@@ -13,7 +13,7 @@ type Props = {
 class MembershipScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
     const goBack = () => {
-      navigation.navigate("Home", { OpenDrawer: true });
+      navigation.navigate("Home");
     };
     return {
       header: <ZnlHeader title="会员身份" onPressIcon={goBack} />,
