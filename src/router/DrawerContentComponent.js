@@ -251,77 +251,10 @@ class MyScrollView extends Component {
   render() {
     const { AvatarPath, NickName, UserIdentity } = this.props;
     const { visible, title, value } = this.state;
-    // 用户身份
-    let UserIdentityView = [];
-    for (const key in UserIdentity) {
-      // console.log(key, UserIdentity[key]);
-      let titleClass = "";
-      switch (key) {
-        case "正品企业":
-          titleClass = UserIdentity[key] ? "StockType4" : "StockTypeDis";
-          break;
-        case "正品物料":
-          titleClass = UserIdentity[key] ? "StockType8" : "StockTypeDis";
-          break;
-        case "订货服务":
-          titleClass = UserIdentity[key] ? "StockType5" : "StockTypeDis";
-          break;
-        case "保证有料":
-          titleClass = UserIdentity[key] ? "StockType6" : "StockTypeDis";
-          break;
-        case "优势推广":
-          titleClass = UserIdentity[key] ? "StockType9" : "StockTypeDis";
-          break;
-        case "品牌替代":
-          titleClass = UserIdentity[key] ? "StockType7" : "StockTypeDis";
-          break;
-        case "ERP会员":
-          titleClass = UserIdentity[key] ? "StockTypeErp" : "StockTypeDis";
-          break;
-        default:
-          break;
-      }
-      // if (UserIdentity[key]) {
-      UserIdentityView.push(
-        <Text
-          onPress={() => {
-            this.toPage("Membership");
-          }}
-          style={[styles.StockTypeCommon, styles[titleClass]]}
-          key={key}
-        >
-          {key}
-        </Text>
-      );
-      // }
-    }
+
     // 自定义区域
     const CustomDrawer = (
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => {
-            this.toPage("BaseInfo");
-          }}
-          activeOpacity={1}
-          style={styles.header}
-        >
-          <ImageBackground
-            source={require("./img/center_bg_texture.png")}
-            style={styles.ImageBackground}
-          >
-            <Image
-              style={styles.headerLeftImg}
-              source={{
-                uri: AvatarPath,
-              }}
-            />
-            <View style={styles.headerName}>
-              <Text style={styles.NickName}>{NickName}</Text>
-              <View style={styles.StockTypeBox}>{UserIdentityView}</View>
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-
         <ZnlModal
           visible={visible}
           title={title}
@@ -335,27 +268,6 @@ class MyScrollView extends Component {
         />
         <View style={styles.DrawerItems}>
           <DrawerItems {...this.props} items={items} />
-        </View>
-
-        <View style={styles.footer}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.settingBtn}
-            onPress={() => {
-              this.toPage("Setting");
-            }}
-          >
-            <Text style={styles.settingBtnText}>设置</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.settingBtn}
-            onPress={() => {
-              this.toPage("HelpPage", { back: "Home" });
-            }}
-          >
-            <Text style={styles.settingBtnText}>帮助</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );

@@ -137,6 +137,27 @@ class PersonalCenter extends Component<Props> {
             <Text style={styles.settingBtnText}>帮助</Text>
           </TouchableOpacity>
         </View>
+
+        <View style={styles.footer}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.settingBtn}
+            onPress={() => {
+              this.toPage("Setting");
+            }}
+          >
+            <Text style={styles.settingBtnText}>设置</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.settingBtn}
+            onPress={() => {
+              this.toPage("HelpPage", { back: "Home" });
+            }}
+          >
+            <Text style={styles.settingBtnText}>帮助</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
