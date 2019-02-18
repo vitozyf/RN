@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Home from "@router/router-pages/Home"; // 首页
 import Login from "@router/router-pages/Login"; // 登录
 import ChangePwd from "@router/router-pages/ChangePwd"; // 修改密码
-import News from "@router/router-pages/News"; // 芯扒客
 import Register from "@router/router-pages/Register"; // 注册
 import HelpPage from "@router/router-pages/HelpPage"; // 会员身份
 import TestPageScreen from "./router-pages/TestPage"; // 测试页
@@ -27,10 +26,6 @@ const SimpleAppNavigator = createDrawerNavigator(
     ChangePwd: {
       screen: ChangePwd,
       path: "/ChangePwd",
-    },
-    News: {
-      screen: News,
-      path: "/News",
     },
     HelpPage: {
       screen: HelpPage,

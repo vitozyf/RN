@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import HelpPage from "@pages/MembershipPages/HelpPage";
+import HelpPage from "@pages/PersonalPages/HelpPage";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";

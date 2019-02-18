@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import LoginScreen from "@pages/LoginPages/Login";
-import LoginHelpPage from "@pages/MembershipPages/HelpPage";
+import LoginHelpPage from "@pages/PersonalPages/HelpPage";
 
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";

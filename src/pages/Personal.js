@@ -1,15 +1,13 @@
 /* @flow */
 import React, { Component } from "react";
 import PersonalCenter from "@pages/PersonalPages";
-import SettingScreen from "@pages/Setting/Setting";
-import AboutScreen from "@pages/Setting/About";
-import LegalProtection from "@pages/Setting/LegalProtection";
-
-import BaseInfoScreen from "@pages/BaseInfoPages/BaseInfoScreen";
-
-import MembershipScreen from "@pages/MembershipPages/MembershipScreen";
-import HelpPageMem from "@pages/MembershipPages/HelpPage";
-
+import SettingScreen from "@pages/PersonalPages/Setting"; // 设置
+import AboutScreen from "@pages/PersonalPages/About"; // 关于
+import LegalProtection from "@pages/PersonalPages/LegalProtection"; // 法律条款
+import BaseInfoScreen from "@pages/PersonalPages/BaseInfoScreen"; // 基本信息
+import MembershipScreen from "@pages/PersonalPages/MembershipScreen"; // 会员
+import HelpPageMem from "@pages/PersonalPages/HelpPage"; // 帮助
+import News from "@pages/PersonalPages/News"; // 芯扒客
 import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -44,6 +42,10 @@ const IndexPages = createStackNavigator(
     HelpPageMem: {
       screen: HelpPageMem,
       path: "/Personal/HelpPage",
+    },
+    News: {
+      screen: News,
+      path: "/Personal/News",
     },
   },
   {

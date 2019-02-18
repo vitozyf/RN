@@ -24,7 +24,6 @@ type BonProps = {
 };
 class Bom extends Component<BonProps> {
   static navigationOptions = ({ navigation }) => {
-    // console.log(111, navigation);
     return {
       headerTitle: (
         <HeaderTitle title="正能量电子网" textStyle={{ color: "#fff" }} />

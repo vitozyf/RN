@@ -30,25 +30,6 @@ const styles = StyleSheet.create({
 });
 
 const items = [];
-if (ISDEBUG) {
-  items.push({
-    key: "News",
-    routeName: "News",
-  });
-  items.push({
-    key: "Register",
-    routeName: "Register",
-  });
-  items.push({
-    key: "Login",
-    routeName: "Login",
-  });
-  items.push({
-    key: "TestPage",
-    routeName: "TestPage",
-  });
-}
-
 class MyScrollView extends Component {
   constructor(props) {
     super(props);
