@@ -3,8 +3,9 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-// import Icon from "react-native-vector-icons/Ionicons";
 import { ZnlHeader, ZnlCardList } from "@components";
+import Icon from "@components/Iconfont/CloudIcon";
+
 type State = {};
 type Props = {
   navigation: INavigation,
@@ -29,6 +30,20 @@ class BaseInfoScreen extends Component<Props, State> {
       </View>
     );
   };
+  _memrenderRow = item => {
+    return (
+      <TouchableOpacity
+        style={styles.baseRow}
+        onPress={item.onPress}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.baseRowTitle}>{item.key}</Text>
+        <Text style={styles.baseRowValue}>
+          <Icon name="right_arrow" size={14} style={styles.iconfont} />
+        </Text>
+      </TouchableOpacity>
+    );
+  };
   render() {
     const { NickName, PhoneNumber, HomeUserInfo } = this.props;
     const { ExpirationDateStr, CompanyName } = HomeUserInfo || {};
@@ -50,9 +65,19 @@ class BaseInfoScreen extends Component<Props, State> {
         value: ExpirationDateStr,
       },
     ];
+    let memdatas = [
+      {
+        key: "会员身份",
+        onPress: () => {
+          const { navigation } = this.props;
+          navigation.navigate("Membership");
+        },
+      },
+    ];
     return (
       <View style={styles.container}>
         <ZnlCardList datas={datas} renderRow={this._renderRow} />
+        <ZnlCardList datas={memdatas} renderRow={this._memrenderRow} />
       </View>
     );
   }
@@ -75,6 +100,9 @@ const styles = StyleSheet.create({
     maxWidth: 280,
     fontSize: 15,
     color: "#999",
+  },
+  iconfont: {
+    fontWeight: "bold",
   },
 });
 

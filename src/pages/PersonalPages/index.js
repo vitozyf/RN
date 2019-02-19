@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
@@ -45,7 +46,7 @@ class PersonalCenter extends Component<Props> {
       >
         <Text style={styles.baseRowTitle}>{item.key}</Text>
         <Text style={styles.baseRowValue}>
-          <Icon name="right_arrow" size={14} style={styles.iconfont} />
+          <Icon name="right_arrow" size={15} style={[styles.iconfont]} />
         </Text>
       </TouchableOpacity>
     );
@@ -56,7 +57,6 @@ class PersonalCenter extends Component<Props> {
     // 用户身份
     let UserIdentityView = [];
     for (const key in UserIdentity) {
-      // console.log(key, UserIdentity[key]);
       let titleClass = "";
       switch (key) {
         case "正品企业":
@@ -83,12 +83,8 @@ class PersonalCenter extends Component<Props> {
         default:
           break;
       }
-      // if (UserIdentity[key]) {
       UserIdentityView.push(
         <Text
-          onPress={() => {
-            this.toPage("Membership");
-          }}
           style={[
             styles.StockTypeCommon,
             titleClass ? styles[titleClass] : null,
@@ -99,7 +95,6 @@ class PersonalCenter extends Component<Props> {
           {key}
         </Text>
       );
-      // }
     }
     let datas = [
       {
@@ -144,43 +139,49 @@ class PersonalCenter extends Component<Props> {
       ]);
     }
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => {
-            this.toPage("BaseInfo");
-          }}
-          activeOpacity={0.8}
-          style={[styles.header, styles.blockview]}
-        >
-          {/* <ImageBackground
-            source={require("./img/center_bg_texture.png")}
-            style={styles.ImageBackground}
-          > */}
-          <Image
-            style={styles.headerLeftImg}
-            source={{
-              uri: AvatarPath,
+      <ScrollView>
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => {
+              this.toPage("BaseInfo");
             }}
-          />
-          <View style={styles.headerName}>
-            <Text style={styles.NickName}>{NickName}</Text>
-          </View>
-          {/* </ImageBackground> */}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            this.toPage("Membership");
-          }}
-          activeOpacity={0.8}
-          style={[styles.blockview, styles.MembershipView]}
-        >
-          <View style={styles.StockTypeBox}>{UserIdentityView}</View>
-        </TouchableOpacity>
+            activeOpacity={0.8}
+            style={[styles.header, styles.blockview]}
+          >
+            {/* <ImageBackground
+              source={require("./img/center_bg_texture.png")}
+              style={styles.ImageBackground}
+            > */}
+            <View style={styles.headerLeft}>
+              <Image
+                style={styles.headerLeftImg}
+                source={{
+                  uri: AvatarPath,
+                }}
+              />
+              <View>
+                <Text style={styles.NickName}>{NickName}</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={styles.baseRowValue}>
+                <Icon name="right_arrow" size={15} style={styles.iconfont} />
+              </Text>
+            </View>
+            {/* </ImageBackground> */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={[styles.blockview, styles.MembershipView]}
+          >
+            <View style={styles.StockTypeBox}>{UserIdentityView}</View>
+          </TouchableOpacity>
 
-        <View style={[styles.blockview]}>
-          <ZnlCardList datas={datas} renderRow={this._renderRow} />
+          <View style={[styles.blockview]}>
+            <ZnlCardList datas={datas} renderRow={this._renderRow} />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -199,6 +200,8 @@ const styles = StyleSheet.create({
     borderColor: "#f0f0f0",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    paddingRight: 10,
   },
   //   ImageBackground: {
   //     width: "100%",
@@ -206,6 +209,11 @@ const styles = StyleSheet.create({
   //     flexDirection: "row",
   //     alignItems: "center",
   //   },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   headerLeftImg: {
     marginLeft: 20,
     marginRight: 20,
@@ -213,11 +221,9 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 2,
   },
-  headerName: {},
   NickName: {
     fontSize: 16,
     fontWeight: "bold",
-    paddingBottom: 5,
   },
   MembershipView: {},
   StockTypeBox: {
