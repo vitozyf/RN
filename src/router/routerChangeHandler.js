@@ -1,6 +1,8 @@
 import store from "@src/store";
 import { BackTop } from "@components";
 import { HeaderHeightInit } from "@src/utils/constant";
+import { StatusBar } from "react-native";
+import { ISANDROID } from "@src/utils/system";
 
 /**
  * 获取当前路由名称
@@ -35,11 +37,15 @@ export function routerChangeHandler(routerName) {
     routerName === "Bom" || routerName === "ErpIndex"
       ? "light-content"
       : "dark-content";
-  if (store.getState().StatusBarStyle !== StatusBarStyle) {
-    store.dispatch({
-      type: "SetStatusBarStyle",
-      StatusBarStyle,
-    });
+  // if (store.getState().StatusBarStyle !== StatusBarStyle) {
+  store.dispatch({
+    type: "SetStatusBarStyle",
+    StatusBarStyle,
+  });
+  // }
+  // 状态栏背景色
+  if (routerName === "PersonalCenter" && ISANDROID) {
+    StatusBar.setBackgroundColor("#ee7700", false);
   }
   // 允许回到顶部组件显示的路由
   if (

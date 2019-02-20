@@ -27,7 +27,9 @@ export const HeaderHeight = (state = HeaderHeightInit, action) => {
 export const StatusBarStyle = (state = "light-content", action) => {
   switch (action.type) {
     case "SetStatusBarStyle":
+      // 设置样式（白底黑字/黑底白字）
       StatusBar.setBarStyle(action.StatusBarStyle, false);
+      // 设置安卓背景色
       if (ISANDROID && action.StatusBarStyle === "light-content") {
         StatusBar.setBackgroundColor("#2C2D31", false);
       } else if (ISANDROID && action.StatusBarStyle === "dark-content") {
