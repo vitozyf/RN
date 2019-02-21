@@ -24,16 +24,23 @@ export const HeaderHeight = (state = HeaderHeightInit, action) => {
       return state;
   }
 };
-export const StatusBarStyle = (state = "light-content", action) => {
+export const StatusBarStyle = (
+  state = {
+    TextColor: "light-content",
+    BackgroundColor: "#2C2D31",
+  },
+  action
+) => {
   switch (action.type) {
     case "SetStatusBarStyle":
       // 设置样式（白底黑字/黑底白字）
-      StatusBar.setBarStyle(action.StatusBarStyle, false);
+      StatusBar.setBarStyle(action.StatusBarStyle.TextColor, false);
       // 设置安卓背景色
-      if (ISANDROID && action.StatusBarStyle === "light-content") {
-        StatusBar.setBackgroundColor("#2C2D31", false);
-      } else if (ISANDROID && action.StatusBarStyle === "dark-content") {
-        StatusBar.setBackgroundColor("rgba(248,248,248,0.82)", false);
+      if (ISANDROID) {
+        StatusBar.setBackgroundColor(
+          action.StatusBarStyle.BackgroundColor,
+          false
+        );
       }
       return action.StatusBarStyle;
     default:

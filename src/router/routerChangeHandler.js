@@ -33,19 +33,38 @@ export function routerChangeHandler(routerName) {
     });
   }
   // 状态栏样式
-  const StatusBarStyle =
-    routerName === "Bom" || routerName === "ErpIndex"
-      ? "light-content"
-      : "dark-content";
-  // if (store.getState().StatusBarStyle !== StatusBarStyle) {
-  store.dispatch({
-    type: "SetStatusBarStyle",
-    StatusBarStyle,
-  });
-  // }
+
   // 状态栏背景色
-  if (routerName === "PersonalCenter" && ISANDROID) {
-    StatusBar.setBackgroundColor("#ee7700", false);
+  if (routerName === "PersonalCenter") {
+    store.dispatch({
+      type: "SetStatusBarStyle",
+      StatusBarStyle: {
+        TextColor: "light-content",
+        BackgroundColor: "#EE7700",
+      },
+    });
+  } else {
+    const NewTextColor =
+      routerName === "Bom" || routerName === "ErpIndex"
+        ? "light-content"
+        : "dark-content";
+    const NewBackgroundColor =
+      routerName === "Bom" || routerName === "ErpIndex"
+        ? "#2C2D31"
+        : "rgba(248,248,248,0.82)";
+    const StatusBarStyle = store.getState().StatusBarStyle;
+    if (
+      StatusBarStyle.TextColor !== NewTextColor ||
+      StatusBarStyle.BackgroundColor !== NewBackgroundColor
+    ) {
+      store.dispatch({
+        type: "SetStatusBarStyle",
+        StatusBarStyle: {
+          TextColor: NewTextColor,
+          BackgroundColor: NewBackgroundColor,
+        },
+      });
+    }
   }
   // 允许回到顶部组件显示的路由
   if (

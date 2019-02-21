@@ -1,7 +1,10 @@
 // 统一声明默认State
 export default {
   IsTabBarShow: true, // 是否隐藏tabbar
-  StatusBarStyle: "light-content", // 状态栏
+  StatusBarStyle: {
+    TextColor: "light-content", // light-content dark-content
+    BackgroundColor: "#2C2D31", // #2C2D31 rgba(248,248,248,0.82)
+  }, // 状态栏
   SearchRecord: [], // 本地搜索记录
   // 搜索页信息
   BomSearchInfo: {

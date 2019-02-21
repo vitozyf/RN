@@ -49,7 +49,10 @@ class App extends Component<Props> {
     // codePush.disallowRestart(); //禁止重启
     store.dispatch({
       type: "SetStatusBarStyle",
-      StatusBarStyle: "light-content",
+      StatusBarStyle: {
+        TextColor: "light-content",
+        BackgroundColor: "#2C2D31",
+      },
     });
   }
   // 清空角标
