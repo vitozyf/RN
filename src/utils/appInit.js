@@ -10,9 +10,9 @@ import type { IUserInfo, ISales } from "@src/store/reducers/UserInfo";
 const setAlias = PhoneNumber => {
   JPushModule.setAlias(PhoneNumber, map => {
     if (map.errorCode === 0) {
-      console.log("set alias succeed");
+      // Cloud.$addLog("appInit.js-setAlias-succeed", PhoneNumber);
     } else {
-      console.log("set alias failed, errorCode: " + map.errorCode);
+      Cloud.$addLog("appInit.js-setAlias-fail", map.errorCode);
     }
   });
 };

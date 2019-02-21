@@ -248,7 +248,9 @@ class SeatchRes extends Component<Props, State> {
               });
               break;
             case "getyunexttopstocks":
-              const SupplierProducts = data.Result.Data.SpotStockResult.Data;
+              const SupplierProducts = data.Result.Data
+                ? data.Result.Data.SpotStockResult.Data
+                : {};
               StartIndex = SupplierProducts ? SupplierProducts.SartIndex : 0;
               TotalCount = SupplierProducts ? SupplierProducts.TotalCount : 0;
               Datas = SupplierProducts ? SupplierProducts.ResultList : [];
