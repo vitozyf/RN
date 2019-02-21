@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
   CompanyName: {
     fontSize: 14,
     fontWeight: "400",
+    maxWidth: 200,
   },
   MembershipView: {
     flexDirection: "row",
