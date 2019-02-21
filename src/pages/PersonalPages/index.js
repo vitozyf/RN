@@ -150,14 +150,15 @@ class PersonalCenter extends Component<Props> {
               <View style={[styles.headerLeft]}>
                 <Image
                   style={styles.headerLeftImg}
-                  source={{
-                    uri: AvatarPath,
-                  }}
+                  source={
+                    AvatarPath ===
+                    "https://static.bom.ai/assets/img/linked-head.png"
+                      ? require("./img/head-portrait_default_pic.png")
+                      : {
+                          uri: AvatarPath,
+                        }
+                  }
                 />
-                {/* <Image
-                style={styles.titleicon}
-                source={require("./img/list-go-out-wh_ic.png")}
-              /> */}
                 <View>
                   <View>
                     <Text style={[styles.$TextColorWhite, styles.NickName]}>

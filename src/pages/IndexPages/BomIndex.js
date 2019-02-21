@@ -13,10 +13,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { HeaderTitle } from "@components";
 type Props = {
   navigation: any,
-  AvatarPath: string,
-};
-type State = {
-  AvatarPath: string,
 };
 
 type BonProps = {

@@ -21,8 +21,9 @@ type IAction = {
   type: string,
 };
 export const initialState = {
-  AvatarPath:
-    "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
+  // AvatarPath:
+  //   "http://bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/JCNEeK_1540978339916.jpg",
+  AvatarPath: "",
   NickName: "",
   TOKEN: "",
   PhoneNumber: "",
