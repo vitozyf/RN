@@ -140,7 +140,7 @@ class PersonalCenter extends Component<Props> {
             onPress={() => {
               this.toPage("BaseInfo");
             }}
-            activeOpacity={0.8}
+            activeOpacity={1}
             style={[styles.header]}
           >
             <ImageBackground
