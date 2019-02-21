@@ -76,7 +76,7 @@ const initUserData = async (store, CustomStore) => {
 
   const AvatarPath = await Cloud.$getStorage(Cloud.$CONFIG.AvatarPath);
   const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
-  const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
+  // const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
   const Sales: ISales = { SalesName: "", telephone: "" };
   const UserInfo: IUserInfo = { Sales };
   if (UserIdentity) {
@@ -98,10 +98,11 @@ const initUserData = async (store, CustomStore) => {
   if (TOKEN) {
     UserInfo.TOKEN = TOKEN;
   }
-  if (PhoneNumber) {
-    UserInfo.PhoneNumber = PhoneNumber;
-  }
+  // if (PhoneNumber) {
+  //   UserInfo.PhoneNumber = PhoneNumber;
+  // }
   if (HomeInfo) {
+    UserInfo.PhoneNumber = HomeInfo.UserInfo.BindMobile;
     UserInfo.HomeUserInfo = HomeInfo.UserInfo;
     UserInfo.HomeUserAuthors = HomeInfo.UserAuthors;
   }

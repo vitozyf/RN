@@ -154,6 +154,10 @@ class PersonalCenter extends Component<Props> {
                     uri: AvatarPath,
                   }}
                 />
+                {/* <Image
+                style={styles.titleicon}
+                source={require("./img/list-go-out-wh_ic.png")}
+              /> */}
                 <View>
                   <View>
                     <Text style={[styles.$TextColorWhite, styles.NickName]}>
