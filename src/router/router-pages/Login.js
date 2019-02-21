@@ -18,7 +18,7 @@ const IndexPages = createStackNavigator(
   },
   {
     initialRouteName: "Login",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#fff",
         height: 44,

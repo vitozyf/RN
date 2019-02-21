@@ -60,6 +60,8 @@ PODS:
     - Charts (= 3.1.1)
     - React
     - SwiftyJSON
+  - RNGestureHandler (1.0.15):
+    - React
   - SwiftyJSON (4.2.0)
   - yoga (0.57.2.React)
 
@@ -81,6 +83,7 @@ DEPENDENCIES:
   - React/RCTVibration (from `../node_modules/react-native/`)
   - React/RCTWebSocket (from `../node_modules/react-native/`)
   - RNCharts (from `../node_modules/react-native-charts-wrapper`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/`)
 
 SPEC REPOS:
@@ -100,6 +103,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/"
   RNCharts:
     :path: "../node_modules/react-native-charts-wrapper"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/"
 
@@ -111,9 +116,10 @@ SPEC CHECKSUMS:
   glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   RNCharts: 786d1ea7d4c42216b4895cdaa9b8865469833430
+  RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: e8110b4d49489cf0ee7e2035fe25c6b1223e3833
+PODFILE CHECKSUM: 647bde9bef56f6917b36f3bfbf101f94357ded5e
 
 COCOAPODS: 1.5.3

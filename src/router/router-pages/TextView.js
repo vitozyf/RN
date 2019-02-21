@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { HeaderTitle, HeaderRight } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
-import { StackNavigator, SafeAreaView } from "react-navigation";
+import { SafeAreaView } from "react-navigation";
 
 import { PieChart } from "react-native-charts-wrapper";
 

@@ -6,7 +6,7 @@ import Register from "@router/router-pages/Register"; // 注册
 import HelpPage from "@router/router-pages/HelpPage"; // 会员身份
 import TestPageScreen from "./router-pages/TestPage"; // 测试页
 
-import { createDrawerNavigator } from "react-navigation";
+import { createAppContainer, createDrawerNavigator } from "react-navigation";
 import CustomDrawerContentComponent from "./DrawerContentComponent";
 
 const SimpleAppNavigator = createDrawerNavigator(
@@ -45,4 +45,4 @@ const SimpleAppNavigator = createDrawerNavigator(
   }
 );
 
-export default SimpleAppNavigator;
+export default createAppContainer(SimpleAppNavigator);

@@ -13,7 +13,7 @@ const IndexPages = createStackNavigator(
   },
   {
     initialRouteName: "Register",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#fff",
         height: 44,

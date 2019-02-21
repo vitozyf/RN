@@ -13,7 +13,7 @@ const IndexPages = createStackNavigator(
   },
   {
     initialRouteName: "ChangePwd",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#fff",
         height: 44,

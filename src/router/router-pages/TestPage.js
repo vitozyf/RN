@@ -11,7 +11,7 @@ const IndexPages = createStackNavigator(
   },
   {
     initialRouteName: "TextView",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#fff",
         height: 44,

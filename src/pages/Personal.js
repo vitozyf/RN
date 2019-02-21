@@ -51,7 +51,7 @@ const IndexPages = createStackNavigator(
   {
     initialRouteName: "PersonalCenter",
     headerLayoutPreset: "center",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#fff",
         height: 0,

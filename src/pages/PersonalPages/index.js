@@ -134,7 +134,7 @@ class PersonalCenter extends Component<Props> {
       ]);
     }
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() => {
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: "#f5f5f5",
   },
   blockview: {
     backgroundColor: "#fff",

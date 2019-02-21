@@ -21,7 +21,7 @@ const IndexPages = createStackNavigator(
   {
     initialRouteName: "ErpIndex",
     headerLayoutPreset: "center",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#2C2D31",
         height: 44,

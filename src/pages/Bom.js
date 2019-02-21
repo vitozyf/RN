@@ -31,7 +31,7 @@ const IndexPages = createStackNavigator(
   {
     initialRouteName: "Bom",
     mode: "card",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: "#2C2D31",
         height: 44,

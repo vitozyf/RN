@@ -198,6 +198,7 @@ class Setting extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f5f5f5",
   },
   baseRow: {
     flex: 1,
