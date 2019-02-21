@@ -61,24 +61,6 @@ class App extends Component<Props> {
       AppInit.JPushModule.setBadge(0, success => {});
     }
   };
-  // 获取新版本地址
-  getversioninfo = () => {
-    Cloud.$get("appget/getversioninfo", null, { onlydata: false }).then(
-      data => {
-        if (data.Code === 200) {
-          const ResData = data.Result;
-          const downloadUrl = Platform.select({
-            ios:
-              "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
-            android: ResData.DownloadUrl,
-          });
-          Linking.openURL(downloadUrl).catch(err => {
-            console.log(err);
-          });
-        }
-      }
-    );
-  };
   // 点击消息通知
   openNotificationListener = (map: any) => {
     this.clearBadge();

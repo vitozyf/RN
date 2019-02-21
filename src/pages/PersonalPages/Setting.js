@@ -51,11 +51,7 @@ class Setting extends Component<Props, State> {
       Cloud.$get(Url, null, { onlydata: false }).then(data => {
         if (data && data.Code === 200) {
           const ResData = data.Result;
-          const downloadUrl = Platform.select({
-            ios:
-              "https://itunes.apple.com/cn/app/%E7%A5%9E%E5%A5%87%E8%84%91%E6%B3%A2/id882399484?mt=12",
-            android: ResData.DownloadUrl,
-          });
+          const downloadUrl = ResData.DownloadUrl;
           if (ResData.Version !== Version) {
             Alert.alert(
               "检测到新版本，是否更新",
@@ -65,16 +61,12 @@ class Setting extends Component<Props, State> {
                 {
                   text: "确定",
                   onPress: () => {
-                    if (Platform.OS === "android") {
-                      Linking.openURL(downloadUrl).catch(err => {
-                        Cloud.$addLog(
-                          "DrawerContentComponent.js-confirmHandler",
-                          err.message || err.toString()
-                        );
-                      });
-                    } else if (Platform.OS === "ios") {
-                      Cloud.$Toast.show("检测到新版本，请打开应用商店下载");
-                    }
+                    Linking.openURL(downloadUrl).catch(err => {
+                      Cloud.$addLog(
+                        "DrawerContentComponent.js-confirmHandler",
+                        err.message || err.toString()
+                      );
+                    });
                   },
                 },
               ]
@@ -83,6 +75,15 @@ class Setting extends Component<Props, State> {
             Cloud.$Toast.show("当前版本为最新版本！");
           }
         }
+      });
+    } else if (Platform.OS === "ios") {
+      Linking.openURL(
+        "https://itunes.apple.com/us/app/%E6%AD%A3%E8%83%BD%E9%87%8F%E7%94%B5%E5%AD%90%E7%BD%91/id1443457324?l=zh&ls=1&mt=8"
+      ).catch(err => {
+        Cloud.$addLog(
+          "DrawerContentComponent.js-confirmHandler",
+          err.message || err.toString()
+        );
       });
     }
   }
@@ -148,18 +149,16 @@ class Setting extends Component<Props, State> {
         onPress: this.getVersionApp,
       },
     ];
+    if (Platform.OS === "ios") {
+      DatasVersion.push({
+        key: "去评分",
+        onPress: this.getVersionApp,
+      });
+    }
     const DatasAbout = [
       {
         key: "法律条款与隐私政策",
         onPress: () => {
-          // Linking.openURL("https://static.bom.ai/appdownload/about.html").catch(
-          //   err => {
-          //     Cloud.$addLog(
-          //       "DrawerContentComponent.js-confirmHandler",
-          //       err.message || err.toString()
-          //     );
-          //   }
-          // );
           this.props.navigation.push("LegalProtection");
         },
       },

@@ -51,11 +51,7 @@ class MyScrollView extends Component {
       Cloud.$get(Url, null, { onlydata: false }).then(data => {
         if (data.Code === 200) {
           const ResData = data.Result;
-          const downloadUrl = Platform.select({
-            ios:
-              "https://itunes.apple.com/us/app/%E6%AD%A3%E8%83%BD%E9%87%8F%E7%94%B5%E5%AD%90%E7%BD%91/id1443457324?l=zh&ls=1&mt=8",
-            android: ResData.DownloadUrl,
-          });
+          const downloadUrl = ResData.DownloadUrl;
           if (ResData.Version !== Version) {
             const ValueHandler = () => {
               return (
@@ -70,14 +66,12 @@ class MyScrollView extends Component {
                 </View>
               );
             };
-            if (ISANDROID) {
-              this.setState({
-                visible: true,
-                title: ResData.UpdateLog.Title,
-                value: ValueHandler,
-                DownloadUrl: downloadUrl,
-              });
-            }
+            this.setState({
+              visible: true,
+              title: ResData.UpdateLog.Title,
+              value: ValueHandler,
+              DownloadUrl: downloadUrl,
+            });
           }
         }
       });
@@ -134,7 +128,9 @@ class MyScrollView extends Component {
     );
   }
   componentDidMount() {
-    this.getVersionApp();
+    if (ISANDROID) {
+      this.getVersionApp();
+    }
   }
 }
 
