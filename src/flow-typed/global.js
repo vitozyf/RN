@@ -21,9 +21,6 @@ declare type ICloud = {
 declare type IConfig = {
   // 本地数据存储键名
   TOKEN: string,
-  AvatarPath: string,
-  NickName: string,
-  PhoneNumber: string,
   KeyWords: string, // 搜索记录
   RegisterDate: string, // 到期时间
   LoginCompanyName: string, // 公司名

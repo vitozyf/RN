@@ -164,18 +164,6 @@ class Login extends Component<Props, State> {
             const resData = data.Result.Data;
             const info = resData.Data;
             if (resData.Code === 0) {
-              await Cloud.$setStorage(
-                Cloud.$CONFIG.AvatarPath,
-                info.AvatarPath || ""
-              );
-              await Cloud.$setStorage(
-                Cloud.$CONFIG.NickName,
-                info.NickName || ""
-              );
-              await Cloud.$setStorage(
-                Cloud.$CONFIG.PhoneNumber,
-                this.state.PhoneNumber || ""
-              );
               await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, info.Token || "");
               await AppInit(store);
               this.goBackHome();
@@ -246,18 +234,6 @@ class Login extends Component<Props, State> {
 
           if (resData.Code === 0) {
             const info = resData.Data;
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.AvatarPath,
-              info.AvatarPath || ""
-            );
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.NickName,
-              info.NickName || ""
-            );
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.PhoneNumber,
-              this.state.PhoneNumber || ""
-            );
             await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, info.Token || "");
             await AppInit(store);
             this.goBackHome();

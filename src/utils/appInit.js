@@ -73,10 +73,6 @@ const initUserData = async (store, CustomStore) => {
       clearTimeout(timeid);
     }, 100);
   }
-
-  const AvatarPath = await Cloud.$getStorage(Cloud.$CONFIG.AvatarPath);
-  const NickName = await Cloud.$getStorage(Cloud.$CONFIG.NickName);
-  // const PhoneNumber = await Cloud.$getStorage(Cloud.$CONFIG.PhoneNumber);
   const Sales: ISales = { SalesName: "", telephone: "" };
   const UserInfo: IUserInfo = { Sales };
   if (UserIdentity) {
@@ -85,12 +81,10 @@ const initUserData = async (store, CustomStore) => {
     UserInfo.Sales.telephone = UserIdentity.telephone;
   }
   const AppWechatInfo = store.getState().AppWechatInfo;
-  if (AvatarPath) {
+  if (AppWechatInfo) {
     UserInfo.AvatarPath = AppWechatInfo.AvatarPath
       ? AppWechatInfo.AvatarPath
       : `https:${AvatarPath}`;
-  }
-  if (NickName) {
     UserInfo.NickName = AppWechatInfo.NickName
       ? AppWechatInfo.NickName
       : NickName;
@@ -98,9 +92,6 @@ const initUserData = async (store, CustomStore) => {
   if (TOKEN) {
     UserInfo.TOKEN = TOKEN;
   }
-  // if (PhoneNumber) {
-  //   UserInfo.PhoneNumber = PhoneNumber;
-  // }
   if (HomeInfo) {
     UserInfo.PhoneNumber = HomeInfo.UserInfo.BindMobile;
     UserInfo.HomeUserInfo = HomeInfo.UserInfo;

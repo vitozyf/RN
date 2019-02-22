@@ -1,12 +1,10 @@
-import {
-  AsyncStorage
-} from 'react-native';
-import CONFIG from './config';
+import { AsyncStorage } from "react-native";
+import CONFIG from "./config";
 
 /**
  * 设置本地数据
- * @param {string} key 
- * @param {string} value 
+ * @param {string} key
+ * @param {string} value
  */
 const setStorage = (key, value) => {
   return new Promise(async (resolve, reject) => {
@@ -16,35 +14,35 @@ const setStorage = (key, value) => {
     } catch (error) {
       reject(error);
     }
-  })
-}
+  });
+};
 
 /**
  * 获取本地数据
- * @param {设置本地数据}key 
+ * @param {设置本地数据}key
  */
-const getStorage = (key) => {
+const getStorage = key => {
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.getItem(key);
-      resolve(value)
+      resolve(value);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
-}
+  });
+};
 
 /**
  * 将数据以数组形式存储
- * @param {string} key 
- * @param {string} value 
+ * @param {string} key
+ * @param {string} value
  * @param {number} length 数组最大长度
  */
 const setArrayStorage = (key, value, length = 50) => {
   return new Promise(async (resolve, reject) => {
     try {
       let values = [];
-      const AlreadyValues = await getStorage(key) || JSON.stringify([]);
+      const AlreadyValues = (await getStorage(key)) || JSON.stringify([]);
       // 获取已有数据
       try {
         values = JSON.parse(AlreadyValues);
@@ -55,8 +53,8 @@ const setArrayStorage = (key, value, length = 50) => {
       let AlreadyIndex = 0;
       const AlreadyItem = values.find((item, index) => {
         AlreadyIndex = index;
-        return item === value
-      })
+        return item === value;
+      });
       // 长度超过则裁剪
       if (values.length >= length) {
         values.pop();
@@ -64,43 +62,39 @@ const setArrayStorage = (key, value, length = 50) => {
       // 存在则删除原有
       if (AlreadyItem) {
         values.splice(AlreadyIndex, 1);
-      } 
+      }
       // 堆栈
-      values.unshift(value)
+      values.unshift(value);
       // 设置
       await AsyncStorage.setItem(key, JSON.stringify(values));
       resolve(true);
     } catch (error) {
       reject(error);
     }
-  })
-}
+  });
+};
 
-const removeStorage = (key) => {
+const removeStorage = key => {
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.removeItem(key);
-      resolve(value)
+      resolve(value);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
-}
+  });
+};
 
 const removeAllStorage = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const value = await AsyncStorage.multiRemove([
-        CONFIG.TOKEN, 
-        CONFIG.AvatarPath, 
-        CONFIG.NickName
-      ]);
-      resolve(value)
+      const value = await AsyncStorage.multiRemove([CONFIG.TOKEN]);
+      resolve(value);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
-}
+  });
+};
 /**
  * 删除全部本地数据
  */
@@ -108,17 +102,15 @@ const clearAllStorage = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.multiRemove([
-        CONFIG.TOKEN, 
-        CONFIG.AvatarPath, 
-        CONFIG.NickName, 
-        CONFIG.PhoneNumber
+        CONFIG.TOKEN,
+        CONFIG.PhoneNumber,
       ]);
-      resolve(value)
+      resolve(value);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
-}
+  });
+};
 
 export {
   setStorage,
@@ -126,5 +118,5 @@ export {
   removeStorage,
   setArrayStorage,
   removeAllStorage,
-  clearAllStorage
-}
+  clearAllStorage,
+};

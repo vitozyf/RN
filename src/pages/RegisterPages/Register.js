@@ -218,14 +218,6 @@ class Register extends Component {
           if (resData.Code === 0) {
             const { SetUserInfo, navigation } = this.props;
             await Cloud.$setStorage(Cloud.$CONFIG.TOKEN, info.Token || "");
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.AvatarPath,
-              info.AvatarPath || ""
-            );
-            await Cloud.$setStorage(
-              Cloud.$CONFIG.NickName,
-              info.NickName || ""
-            );
             await AppInit(store);
             navigation.navigate("Home");
           } else if (resData.Code === 2) {
