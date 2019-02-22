@@ -63,7 +63,7 @@ const initUserData = async (store, CustomStore) => {
       HomeInfo = await gethomeinfo();
       UserIdentity = await getUserIdentity();
     } catch (error) {
-      Cloud.$addLog("appInit-initUserData", error.message);
+      Cloud.$addLog("appInit-initUserData-TOKEN", error.message);
     }
   } else {
     const timeid = setTimeout(() => {
@@ -75,23 +75,33 @@ const initUserData = async (store, CustomStore) => {
   }
   const Sales: ISales = { SalesName: "", telephone: "" };
   const UserInfo: IUserInfo = { Sales };
+
   if (UserIdentity) {
-    UserInfo.UserIdentity = UserIdentity.UserIdentityModel;
-    UserInfo.Sales.SalesName = UserIdentity.SalesName;
-    UserInfo.Sales.telephone = UserIdentity.telephone;
+    try {
+      UserInfo.UserIdentity = UserIdentity.UserIdentityModel;
+      UserInfo.Sales.SalesName = UserIdentity.SalesName;
+      UserInfo.Sales.telephone = UserIdentity.telephone;
+    } catch (error) {
+      Cloud.$addLog("appInit-initUserData-UserIdentity", error.message);
+    }
   }
   const AppWechatInfo = store.getState().AppWechatInfo;
   if (AppWechatInfo) {
-    UserInfo.AvatarPath = AppWechatInfo.AvatarPath
-      ? AppWechatInfo.AvatarPath
-      : `https:${AvatarPath}`;
-    UserInfo.NickName = AppWechatInfo.NickName
-      ? AppWechatInfo.NickName
-      : NickName;
+    try {
+      UserInfo.AvatarPath = AppWechatInfo.AvatarPath
+        ? AppWechatInfo.AvatarPath
+        : `https:${HomeInfo.UserInfo.HeadPic}`;
+      UserInfo.NickName = AppWechatInfo.NickName
+        ? AppWechatInfo.NickName
+        : HomeInfo.UserInfo.NickName;
+    } catch (error) {
+      Cloud.$addLog("appInit-initUserData-AppWechatInfo", error.message);
+    }
   }
   if (TOKEN) {
     UserInfo.TOKEN = TOKEN;
   }
+
   if (HomeInfo) {
     UserInfo.PhoneNumber = HomeInfo.UserInfo.BindMobile;
     UserInfo.HomeUserInfo = HomeInfo.UserInfo;

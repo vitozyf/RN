@@ -48,7 +48,6 @@ class PersonalCenter extends Component<Props> {
   };
   render() {
     const { AvatarPath, NickName, UserIdentity, CompanyName } = this.props;
-
     // 用户身份
     let UserIdentityView = [];
     for (const key in UserIdentity) {
@@ -152,7 +151,8 @@ class PersonalCenter extends Component<Props> {
                   style={styles.headerLeftImg}
                   source={
                     AvatarPath ===
-                    "https://static.bom.ai/assets/img/linked-head.png"
+                      "https://static.bom.ai/assets/img/linked-head.png" ||
+                    AvatarPath === ""
                       ? require("./img/head-portrait_default_pic.png")
                       : {
                           uri: AvatarPath,
