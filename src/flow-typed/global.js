@@ -15,6 +15,9 @@ declare type ICloud = {
   $Loading: Object,
   $CustomStore: any, // 根路有类
   $addLog: Function,
+  $connection: any,
+  $proxy: any,
+  $cnh: Function,
 };
 
 // 全局类型定义
