@@ -10,10 +10,26 @@ import type { IUserInfo, ISales } from "@src/store/reducers/UserInfo";
 const setAlias = UserId => {
   JPushModule.setAlias(UserId, map => {
     if (map.errorCode === 0) {
-      // Cloud.$addLog("appInit.js-setAlias-succeed", PhoneNumber);
+      console.log("setAlias-success", UserId);
     } else {
       Cloud.$addLog("appInit.js-setAlias-fail", map.errorCode);
     }
+  });
+};
+/**
+ * 设置标签
+ * @param {*} UserId
+ */
+const setTags = tags => {
+  JPushModule.cleanTags(success => {
+    JPushModule.setTags(tags, map => {
+      if (map.errorCode === 0) {
+        console.log("setTags-success", tags);
+      } else {
+        console.log("setTags-fail", map);
+        Cloud.$addLog("appInit.js-tags-fail", map.errorCode);
+      }
+    });
   });
 };
 
@@ -118,21 +134,44 @@ const initUserData = async (store, CustomStore) => {
  * @param {} store
  */
 const jpushHandler = store => {
-  // 初始化jpush
-  if (Platform.OS === "android") {
-    JPushModule.initPush();
-    JPushModule.notifyJSDidLoad(resultCode => {
-      if (resultCode === 0) {
-      }
-    });
-  } else {
-    JPushModule.setupPush();
-  }
-  // 以手机号设置推送设备别名
-  console.log(store.getState().UserInfo.HomeUserInfo.UserId);
-  const UserId = store.getState().UserInfo.HomeUserInfo.UserId;
-  if (UserId) {
-    setAlias(UserId);
+  try {
+    // 初始化jpush
+    if (Platform.OS === "android") {
+      JPushModule.initPush();
+      JPushModule.notifyJSDidLoad(resultCode => {
+        if (resultCode === 0) {
+        }
+      });
+    } else {
+      JPushModule.setupPush();
+    }
+    // UserId设置推送设备别名
+    const UserId = store
+      .getState()
+      .UserInfo.HomeUserInfo.UserId.replace(/-/g, "");
+    if (UserId) {
+      setAlias(UserId);
+    }
+    const BindMobile = store.getState().UserInfo.HomeUserInfo.BindMobile;
+    const IsMainAccount = store.getState().UserInfo.HomeUserInfo.IsMainAccount
+      ? "IsMainAccount"
+      : "NotMainAccount";
+    const CompanyId = store
+      .getState()
+      .UserInfo.HomeUserInfo.CompanyId.replace(/-/g, "");
+    const Tags = [];
+    if (BindMobile) {
+      Tags.push(BindMobile);
+    }
+    if (IsMainAccount) {
+      Tags.push(IsMainAccount);
+    }
+    if (CompanyId) {
+      Tags.push(CompanyId);
+    }
+    setTags(Tags);
+  } catch (error) {
+    Cloud.$addLog("appInit-jpushHandler", error.message);
   }
 };
 
