@@ -5,10 +5,10 @@ import type { IUserInfo, ISales } from "@src/store/reducers/UserInfo";
 
 /**
  * 设置别名
- * @param {*} PhoneNumber
+ * @param {*} UserId
  */
-const setAlias = PhoneNumber => {
-  JPushModule.setAlias(PhoneNumber, map => {
+const setAlias = UserId => {
+  JPushModule.setAlias(UserId, map => {
     if (map.errorCode === 0) {
       // Cloud.$addLog("appInit.js-setAlias-succeed", PhoneNumber);
     } else {
@@ -129,9 +129,10 @@ const jpushHandler = store => {
     JPushModule.setupPush();
   }
   // 以手机号设置推送设备别名
-  const PhoneNumber = store.getState().UserInfo.PhoneNumber;
-  if (PhoneNumber) {
-    setAlias(PhoneNumber);
+  console.log(store.getState().UserInfo.HomeUserInfo.UserId);
+  const UserId = store.getState().UserInfo.HomeUserInfo.UserId;
+  if (UserId) {
+    setAlias(UserId);
   }
 };
 
