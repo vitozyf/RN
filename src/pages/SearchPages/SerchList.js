@@ -65,7 +65,7 @@ class ListRow extends PureComponent<Props> {
       case 5:
         StockTypeTextEle = (
           <Text style={[styles.StockTypeCommon, styles.StockType5]}>
-            订货服务
+            正品期货
           </Text>
         );
         StockTypeBorderColor = styles.StockType5BorderColor;

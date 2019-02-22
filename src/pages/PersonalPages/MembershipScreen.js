@@ -56,6 +56,7 @@ class MembershipScreen extends Component<Props> {
         case "正品物料":
           titleClass = "textTitle8";
           break;
+        case "正品期货":
         case "订货服务":
           titleClass = "textTitle5";
           break;

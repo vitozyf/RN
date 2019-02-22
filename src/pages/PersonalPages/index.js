@@ -61,6 +61,7 @@ class PersonalCenter extends Component<Props> {
         case "正品物料":
           titleClass = UserIdentity[key] ? "StockType8" : "StockTypeDis";
           break;
+        case "正品期货":
         case "订货服务":
           titleClass = UserIdentity[key] ? "StockType5" : "StockTypeDis";
           break;
