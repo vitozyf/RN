@@ -9,6 +9,7 @@ import {
 import IndexScreen from "@pages/Bom";
 import ErpScreen from "@pages/Erp";
 import PersonalScreen from "@pages/Personal";
+import Message from "@pages/Message";
 
 import { getActiveRouteName } from "@router/routerChangeHandler";
 
@@ -29,6 +30,10 @@ const TabNav = createBottomTabNavigator(
     Erp: {
       screen: ErpScreen,
       path: "/Home/Erp",
+    },
+    Message: {
+      screen: Message,
+      path: "/Home/Message",
     },
     Personal: {
       screen: PersonalScreen,

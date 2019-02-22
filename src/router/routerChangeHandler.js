@@ -25,7 +25,8 @@ export function routerChangeHandler(routerName) {
   const IsTabBarShow =
     routerName === "Bom" ||
     routerName === "ErpIndex" ||
-    routerName === "PersonalCenter";
+    routerName === "PersonalCenter" ||
+    routerName === "MessageIndex";
   if (store.getState().IsTabBarShow !== IsTabBarShow) {
     store.dispatch({
       type: "SetIsTabBarShow",
