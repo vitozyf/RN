@@ -12,12 +12,15 @@ class MessagePages extends Component<Props> {
       header: <ZnlHeader title="消息" hideLeft={true} />,
     };
   };
-  render() {
+  _renderRow = () => {
     return (
-      <View style={styles.container}>
-        <Text>111</Text>
+      <View>
+        <Text>222</Text>
       </View>
     );
+  };
+  render() {
+    return <View style={styles.container}>{this._renderRow()}</View>;
   }
 }
 const styles = StyleSheet.create({
