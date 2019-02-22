@@ -1,4 +1,7 @@
-/* @flow */
+/**
+ * 深圳市正能量网络技术有限公司 手机APP
+ * @flow
+ */
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 import store from "@src/store";
@@ -7,7 +10,7 @@ import "./Global";
 import { AppInit } from "@src/utils/appInit";
 import CustomStore from "./src/utils/jumpUtils";
 import codePush from "react-native-code-push";
-import { ISANDROID } from "@src/utils/system";
+import { ISANDROID, ISIOS } from "@src/utils/system";
 import SplashScreen from "react-native-splash-screen";
 import {
   getActiveRouteName,
@@ -17,10 +20,12 @@ import { View, Text, AppState, Platform, Linking } from "react-native";
 import * as wechat from "react-native-wechat";
 import config from "./src/utils/config";
 import { ErrorBoundary } from "@components";
+import {
+  clearBadge,
+  openNotificationListener,
+  handleAppStateChange,
+} from "@src/utils/EventListenersHandler";
 
-// 深圳市正能量网络技术有限公司
-// 调试模式下刷新到本页
-// const navigationPersistenceKey = __DEV__ ? "NavigationStateDEV" : null;
 // codepush配置
 let codePushOptions;
 if (ISANDROID && !__DEV__) {
@@ -28,6 +33,7 @@ if (ISANDROID && !__DEV__) {
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
   };
 }
+
 type Props = {};
 class App extends Component<Props> {
   syncImmediate = () => {
@@ -55,44 +61,37 @@ class App extends Component<Props> {
       },
     });
   }
-  // 清空角标
-  clearBadge = () => {
-    if (Platform.OS == "ios") {
-      AppInit.JPushModule.setBadge(0, success => {});
-    }
-  };
-  // 点击消息通知
-  openNotificationListener = (map: any) => {
-    this.clearBadge();
-    if (map.extras && map.extras.type === "1") {
-      // this.getversioninfo();
-    }
-  };
-  // 前后台切换
-  _handleAppStateChange = nextAppState => {
-    if (nextAppState === "active") {
-      this.clearBadge();
-    }
-  };
+
   componentDidMount() {
     if (ISANDROID && !__DEV__) {
       this.syncImmediate(); //开始检查更新
     }
+    // 启动屏结束
     SplashScreen.hide();
 
     // 监听点开通知事件
     AppInit.JPushModule.addReceiveOpenNotificationListener(
-      this.openNotificationListener
+      openNotificationListener
     );
+    if (ISIOS) {
+      // 应用未启动的通知监听
+      AppInit.JPushModule.addOpenNotificationLaunchAppListener(
+        openNotificationListener
+      );
+    }
     // 监听从APP到前台事件
-    AppState.addEventListener("change", this._handleAppStateChange);
+    AppState.addEventListener("change", handleAppStateChange);
   }
   componentWillUnmount() {
     AppInit.JPushModule.removeReceiveOpenNotificationListener(
-      this.openNotificationListener
+      openNotificationListener
     );
-    AppInit.JPushModule.clearAllNotifications();
-    AppState.removeEventListener("change", this._handleAppStateChange);
+    if (ISIOS) {
+      AppInit.JJPushModule.removeOpenNotificationLaunchAppEventListener(
+        openNotificationListener
+      );
+    }
+    AppState.removeEventListener("change", handleAppStateChange);
   }
   render() {
     return (
@@ -109,7 +108,6 @@ class App extends Component<Props> {
               }
               routerChangeHandler(currentScreen);
             }}
-            // persistenceKey={navigationPersistenceKey}
             ref={navigator => {
               CustomStore.navigator = navigator;
             }}

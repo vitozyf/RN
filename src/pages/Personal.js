@@ -8,7 +8,6 @@ import BaseInfoScreen from "@pages/PersonalPages/BaseInfoScreen"; // 基本信�
 import MembershipScreen from "@pages/PersonalPages/MembershipScreen"; // 会员
 import HelpPageMem from "@pages/PersonalPages/HelpPage"; // 帮助
 import News from "@pages/PersonalPages/News"; // 芯扒客
-import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
 import { Image } from "react-native";

@@ -145,13 +145,14 @@ const jpushHandler = store => {
     } else {
       JPushModule.setupPush();
     }
-    // UserId设置推送设备别名
+    // 设置推送设备别名： UserId
     const UserId = store
       .getState()
       .UserInfo.HomeUserInfo.UserId.replace(/-/g, "");
     if (UserId) {
       setAlias(UserId);
     }
+    // 设置推送设备标签： 手机号 是否主账号 公司id
     const BindMobile = store.getState().UserInfo.HomeUserInfo.BindMobile;
     const IsMainAccount = store.getState().UserInfo.HomeUserInfo.IsMainAccount
       ? "IsMainAccount"
