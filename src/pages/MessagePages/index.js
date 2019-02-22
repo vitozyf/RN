@@ -33,8 +33,21 @@ class MessagePages extends Component<Props> {
       </View>
     );
   };
+  _renderEmptyView = () => {
+    return (
+      <View style={styles.EmptyView}>
+        <View style={styles.EmptyViewBox}>
+          <Image
+            style={styles.EmptyPic}
+            source={require("./img/message_default_pic.png")}
+          />
+          <Text style={styles.EmptyText}>暂无询报价通知</Text>
+        </View>
+      </View>
+    );
+  };
   render() {
-    return <View style={styles.container}>{this._renderRow()}</View>;
+    return <View style={styles.container}>{this._renderEmptyView()}</View>;
   }
 }
 const styles = StyleSheet.create({
@@ -81,6 +94,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#999999",
     lineHeight: 20,
+  },
+  EmptyView: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  EmptyViewBox: {
+    top: -30,
+  },
+  EmptyPic: {
+    width: 156,
+    height: 108,
+  },
+  EmptyText: {
+    fontSize: 16,
+    color: "#999",
+    lineHeight: 22,
+    textAlign: "center",
+    marginTop: 12,
   },
 });
 

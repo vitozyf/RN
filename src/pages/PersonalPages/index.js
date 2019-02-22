@@ -15,6 +15,8 @@ import { ISIOS, ISDEBUG } from "@src/utils/system";
 import { ZnlCardList, ZnlHeader } from "@components";
 import Icon from "@components/Iconfont/CloudIcon";
 import { HeaderHeightInit, StatusBarHeader } from "@src/utils/constant";
+import InquiryEntrance from "./components/InquiryEntrance";
+
 type Props = {
   AvatarPath: string,
   NickName: string,
@@ -187,6 +189,41 @@ class PersonalCenter extends Component<Props> {
             <View style={styles.StockTypeBox}>{UserIdentityView}</View>
           </View>
 
+          <View>
+            <InquiryEntrance
+              title="我收到的询价"
+              message1={8}
+              message2={10}
+              message1Title="待我报价"
+              message2Title="我已报价"
+              titlePress={() => {
+                this.toPage("Setting");
+              }}
+              message1Press={() => {
+                this.toPage("Setting");
+              }}
+              message2Press={() => {
+                this.toPage("Setting");
+              }}
+            />
+            <InquiryEntrance
+              title="我发出的询价"
+              message1={7}
+              message2={32}
+              message1Title="等待供方报价"
+              message2Title="供方已报价"
+              titlePress={() => {
+                this.toPage("Setting");
+              }}
+              message1Press={() => {
+                this.toPage("Setting");
+              }}
+              message2Press={() => {
+                this.toPage("Setting");
+              }}
+            />
+          </View>
+
           <View style={[styles.blockview]}>
             <ZnlCardList datas={datas} renderRow={this._renderRow} />
           </View>
@@ -254,6 +291,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingLeft: 8,
     paddingRight: 8,
+    height: 30,
   },
   StockTypeBox: {
     width: "100%",
