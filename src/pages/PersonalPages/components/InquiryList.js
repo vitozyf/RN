@@ -4,70 +4,26 @@
  */
 
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-  Image,
-} from "react-native";
-
-type Props = {
-  onPressItem: Function,
-  id: string,
-  selected: boolean,
-  title: string,
-};
-class MyListItem extends React.PureComponent<Props> {
-  _onPress = () => {
-    this.props.onPressItem(this.props.id);
-  };
-
-  render() {
-    const textColor = this.props.selected ? "red" : "black";
-    return (
-      <TouchableOpacity onPress={this._onPress}>
-        <View>
-          <Text style={{ color: textColor }}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
+import { View, Text, FlatList, StyleSheet, Image } from "react-native";
+import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
 
 type InquiryListProps = {
   data: Array<any>,
   ActiveRouteName: string,
 };
 type InquiyListState = {
-  selected: Map<string, boolean>,
+  refreshing: boolean,
 };
 class InquiryList extends React.PureComponent<
   InquiryListProps,
   InquiyListState
 > {
-  state = { selected: (new Map(): Map<string, boolean>) };
+  state = { refreshing: false };
 
   _keyExtractor = (item, index) => item.id;
 
-  _onPressItem = (id: string) => {
-    // updater functions are preferred for transactional updates
-    this.setState(state => {
-      // copy the map rather than modifying state.
-      const selected = new Map(state.selected);
-      selected.set(id, !selected.get(id)); // toggle
-      return { selected };
-    });
-  };
-
   _renderItem = ({ item }) => (
-    <MyListItem
-      id={item.id}
-      onPressItem={this._onPressItem}
-      selected={!!this.state.selected.get(item.id)}
-      title={item.title}
-    />
+    <InquiryListItem id={item.id} title={item.title} />
   );
 
   _renderListEmptyComponent = () => {
@@ -104,12 +60,15 @@ class InquiryList extends React.PureComponent<
     );
   };
 
-  //   shouldComponentUpdate(nextProps, nextState) {
-  //     console.log(333, nextProps);
-  //     return true;
-  //   }
+  onRefresh = () => {
+    console.log(111111);
+  };
+  onEndReached = () => {
+    console.log(3333333);
+  };
 
   render() {
+    const { refreshing } = this.state;
     return (
       <View style={styles.container}>
         <FlatList
@@ -118,6 +77,10 @@ class InquiryList extends React.PureComponent<
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           ListEmptyComponent={this._renderListEmptyComponent}
+          refreshing={refreshing}
+          onRefresh={this.onRefresh}
+          onEndReached={this.onEndReached}
+          onEndReachedThreshold={0.5}
         />
       </View>
     );
@@ -133,6 +96,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
+    paddingLeft: 12,
+    paddingRight: 12,
   },
   containerCenter: {
     flex: 1,

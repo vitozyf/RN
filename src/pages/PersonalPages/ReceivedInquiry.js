@@ -60,12 +60,13 @@ class ReceivedInquiry extends Component<Props, State> {
         },
       },
     ];
-    const data = [
-      //   { id: "1", title: "列表1" },
-      //   { id: "2", title: "列表2" },
-      //   { id: "3", title: "列表3" },
-      //   { id: "4", title: "列表4" },
-    ];
+    const data = [];
+    for (let index = 0; index < 20; index++) {
+      data.push({
+        id: index + "",
+        title: `列表${index}`,
+      });
+    }
     return (
       <View style={styles.container}>
         <HeaderTabs active={active} tabs={tabs} />

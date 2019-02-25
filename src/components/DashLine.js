@@ -11,7 +11,6 @@ const LineMargin = 3;
 const LineHeight = 1;
 
 type Props = {
-  len: number, // 虚线个数
   width: number, // 总长度
   backgroundColor: string, // 背景颜色
 };
@@ -20,7 +19,7 @@ export default class DashLine extends Component<Props> {
     backgroundColor: "#999",
   };
   render() {
-    const { len, width, backgroundColor } = this.props;
+    const { width, backgroundColor } = this.props;
     const arr = [];
     for (let i = 0; i < width / (LineWidth + LineMargin); i++) {
       arr.push(i);
