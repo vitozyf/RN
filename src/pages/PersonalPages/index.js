@@ -17,6 +17,11 @@ import Icon from "@components/Iconfont/CloudIcon";
 import { HeaderHeightInit, StatusBarHeader } from "@src/utils/constant";
 import InquiryEntrance from "./components/InquiryEntrance";
 
+type PageInfo = {
+  name: string,
+  params?: Object,
+  type?: string,
+};
 type Props = {
   AvatarPath: string,
   NickName: string,
@@ -30,9 +35,14 @@ class PersonalCenter extends Component<Props> {
       header: null,
     };
   };
-  toPage = (name, parms) => {
+  toPage = (PageInfo: PageInfo) => {
+    const { name, params, type } = PageInfo;
     const { navigation } = this.props;
-    navigation.navigate(name, parms);
+    if (type === "push") {
+      navigation.push(name, params);
+    } else {
+      navigation.navigate(name, params);
+    }
   };
   getinquirycount = () => {
     // Cloud.$cnh("getinquirycount")
@@ -114,14 +124,14 @@ class PersonalCenter extends Component<Props> {
       {
         key: "设置",
         onPress: () => {
-          this.toPage("Setting");
+          this.toPage({ name: "Setting" });
         },
         icon: "center_set",
       },
       {
         key: "帮助",
         onPress: () => {
-          this.toPage("HelpPageMem");
+          this.toPage({ name: "HelpPageMem" });
         },
         icon: "center_help",
       },
@@ -131,25 +141,25 @@ class PersonalCenter extends Component<Props> {
         {
           key: "芯扒客",
           onPress: () => {
-            this.toPage("News");
+            this.toPage({ name: "News" });
           },
         },
         {
           key: "注册",
           onPress: () => {
-            this.toPage("Register");
+            this.toPage({ name: "Register" });
           },
         },
         {
           key: "登录",
           onPress: () => {
-            this.toPage("Login");
+            this.toPage({ name: "Login" });
           },
         },
         {
           key: "测试",
           onPress: () => {
-            this.toPage("TestPage");
+            this.toPage({ name: "TestPage" });
           },
         },
       ]);
@@ -159,7 +169,7 @@ class PersonalCenter extends Component<Props> {
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() => {
-              this.toPage("BaseInfo");
+              this.toPage({ name: "BaseInfo" });
             }}
             activeOpacity={1}
             style={[styles.header]}
@@ -217,13 +227,25 @@ class PersonalCenter extends Component<Props> {
               message1Title="待我报价"
               message2Title="我已报价"
               titlePress={() => {
-                this.toPage("ReceivedInquiry");
+                this.toPage({
+                  name: "ReceivedInquiry",
+                  params: { active: "all" },
+                  type: "push",
+                });
               }}
               message1Press={() => {
-                this.toPage("ReceivedInquiry");
+                this.toPage({
+                  name: "ReceivedInquiry",
+                  params: { active: "waiting" },
+                  type: "push",
+                });
               }}
               message2Press={() => {
-                this.toPage("ReceivedInquiry");
+                this.toPage({
+                  name: "ReceivedInquiry",
+                  params: { active: "already" },
+                  type: "push",
+                });
               }}
             />
             <InquiryEntrance
@@ -233,13 +255,25 @@ class PersonalCenter extends Component<Props> {
               message1Title="等待供方报价"
               message2Title="供方已报价"
               titlePress={() => {
-                this.toPage("OutgoingInquiry");
+                this.toPage({
+                  name: "OutgoingInquiry",
+                  params: { active: "all" },
+                  type: "push",
+                });
               }}
               message1Press={() => {
-                this.toPage("OutgoingInquiry");
+                this.toPage({
+                  name: "OutgoingInquiry",
+                  params: { active: "waiting" },
+                  type: "push",
+                });
               }}
               message2Press={() => {
-                this.toPage("OutgoingInquiry");
+                this.toPage({
+                  name: "OutgoingInquiry",
+                  params: { active: "already" },
+                  type: "push",
+                });
               }}
             />
           </View>
