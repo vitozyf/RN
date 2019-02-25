@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import { ISIOS, ISDEBUG } from "@src/utils/system";
-import { ZnlCardList, ZnlHeader } from "@components";
+import { ZnlCardList } from "@components";
 import Icon from "@components/Iconfont/CloudIcon";
 import { HeaderHeightInit, StatusBarHeader } from "@src/utils/constant";
 import InquiryEntrance from "./components/InquiryEntrance";
@@ -217,13 +217,13 @@ class PersonalCenter extends Component<Props> {
               message1Title="待我报价"
               message2Title="我已报价"
               titlePress={() => {
-                this.toPage("Setting");
+                this.toPage("ReceivedInquiry");
               }}
               message1Press={() => {
-                this.toPage("Setting");
+                this.toPage("ReceivedInquiry");
               }}
               message2Press={() => {
-                this.toPage("Setting");
+                this.toPage("ReceivedInquiry");
               }}
             />
             <InquiryEntrance
@@ -233,13 +233,13 @@ class PersonalCenter extends Component<Props> {
               message1Title="等待供方报价"
               message2Title="供方已报价"
               titlePress={() => {
-                this.toPage("Setting");
+                this.toPage("OutgoingInquiry");
               }}
               message1Press={() => {
-                this.toPage("Setting");
+                this.toPage("OutgoingInquiry");
               }}
               message2Press={() => {
-                this.toPage("Setting");
+                this.toPage("OutgoingInquiry");
               }}
             />
           </View>

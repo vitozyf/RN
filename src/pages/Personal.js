@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import PersonalCenter from "@pages/PersonalPages";
 import SettingScreen from "@pages/PersonalPages/Setting"; // 设置
+import ReceivedInquiry from "@pages/PersonalPages/ReceivedInquiry"; // 收到的询价
+import OutgoingInquiry from "@pages/PersonalPages/OutgoingInquiry"; // 发出的询价
 import AboutScreen from "@pages/PersonalPages/About"; // 关于
 import LegalProtection from "@pages/PersonalPages/LegalProtection"; // 法律条款
 import BaseInfoScreen from "@pages/PersonalPages/BaseInfoScreen"; // 基本信息
@@ -45,6 +47,14 @@ const IndexPages = createStackNavigator(
     News: {
       screen: News,
       path: "/Personal/News",
+    },
+    ReceivedInquiry: {
+      screen: ReceivedInquiry,
+      path: "/Personal/ReceivedInquiry",
+    },
+    OutgoingInquiry: {
+      screen: OutgoingInquiry,
+      path: "/Personal/OutgoingInquiry",
     },
   },
   {
