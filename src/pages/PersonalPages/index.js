@@ -42,7 +42,6 @@ class PersonalCenter extends Component<Props> {
     //   .catch(error => {
     //     console.log(2222, error);
     //   });
-    console.log(333);
     Cloud.$get("im/getinquirycount").then(data => {
       console.log(1111, data);
     });

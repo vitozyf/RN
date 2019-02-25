@@ -48,6 +48,7 @@ const hubConnection = async () => {
     })
     .fail(error => {
       Cloud.$addLog("signalr.js", "connection--start-error: " + error.message);
+      connectionInfo.IsConnectionSuccess = false;
     });
 
   //connection-handling
@@ -56,6 +57,7 @@ const hubConnection = async () => {
   });
 
   connection.error(error => {
+    connectionInfo.IsConnectionSuccess = false;
     Cloud.$addLog("signalr.js", "connection-error: " + error.message);
   });
 
