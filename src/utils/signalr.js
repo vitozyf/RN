@@ -7,7 +7,7 @@ import { getStorage } from "./storage";
 import CONFIG from "./config";
 
 const getUrl = () => {
-  return __DEV__ ? "//test.bom.ai:8088/im/signalr" : "//api.bom.ai/im";
+  return __DEV__ ? "http://test.bom.ai:8088/im" : "https://api.bom.ai/im";
 };
 
 // 客户端方法集合
@@ -34,24 +34,28 @@ const hubConnection = async () => {
 
   connection.logging = true; // 启用日志记录
 
-  connection
+  await connection
     .start({
       withCredentials: false,
     })
     .done(() => {
-      console.log(11111);
+      console.log("signalr-connection-success");
     })
-    .fail(() => {
-      console.log(2222);
+    .fail(error => {
+      Cloud &&
+        Cloud.$addLog(
+          "signalr.js",
+          "connection--start-error: " + error.message
+        );
     });
 
   //connection-handling
   connection.connectionSlow(() => {
-    console.log(3333);
+    Cloud && Cloud.$addLog("signalr.js", "connectionSlow");
   });
 
   connection.error(error => {
-    console.log(4444, error);
+    Cloud && Cloud.$addLog("signalr.js", "connection-error: " + error.message);
   });
 
   const proxy = connection.createHubProxy("IMHub");
@@ -59,26 +63,30 @@ const hubConnection = async () => {
   ClientMethodSets.map(item => {
     proxy.on(item.name, item.method);
   });
-  Cloud.$connection = connection;
-  Cloud.$proxy = proxy;
+  Cloud && (Cloud.$connection = connection);
+  Cloud && (Cloud.$proxy = proxy);
   return connection;
 };
 
-const getStartConnectionData = (methodName, args) => {
+const getStartConnectionData = async (methodName, args) => {
+  if (!Cloud.$connection) {
+    await hubConnection();
+  }
   return new Promise((resolve, reject) => {
     Cloud.$connection
       .start({
         withCredentials: false,
       })
       .done(() => {
-        Cloud.$proxy
-          .invoke(methodName, args)
-          .done(response => {
-            return resolve(response);
-          })
-          .fail(err => {
-            return reject(err);
-          });
+        Cloud &&
+          Cloud.$proxy
+            .invoke(methodName, args)
+            .done(response => {
+              return resolve(response);
+            })
+            .fail(err => {
+              return reject(err);
+            });
       });
   });
 };

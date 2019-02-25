@@ -232,6 +232,15 @@ class PersonalCenter extends Component<Props> {
       </ScrollView>
     );
   }
+  componentWillMount() {
+    Cloud.$cnh("getinquirycount")
+      .then(data => {
+        console.log(1111, data);
+      })
+      .catch(error => {
+        console.log(2222, error);
+      });
+  }
 }
 const styles = StyleSheet.create({
   $TextColorWhite: {

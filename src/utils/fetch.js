@@ -19,22 +19,26 @@ const LOGURL = "appget/addapplog";
  * @param {*} PostParam 参数
  */
 const addLog = (Address: string, ExpContent: string, PostParam: string) => {
-  const PhoneNumber = store.getState().UserInfo.PhoneNumber || "";
-  $post(
-    LOGURL,
-    {
-      PhoneNumber,
-      Address,
-      ExpContent,
-      PostParam,
-      ExtInfo: `MobileBrand=${MobileBrand};ActiveRouteName=${
-        store.getState().ActiveRouteName
-      };Version=${Version};SystemVersion=${SystemVersion}`,
-    },
-    {
-      onlydata: false,
-    }
-  );
+  if (__DEV__) {
+    console.log("error-log", Address, ExpContent, PostParam);
+  } else {
+    const PhoneNumber = store.getState().UserInfo.PhoneNumber || "";
+    $post(
+      LOGURL,
+      {
+        PhoneNumber,
+        Address,
+        ExpContent,
+        PostParam,
+        ExtInfo: `MobileBrand=${MobileBrand};ActiveRouteName=${
+          store.getState().ActiveRouteName
+        };Version=${Version};SystemVersion=${SystemVersion}`,
+      },
+      {
+        onlydata: false,
+      }
+    );
+  }
 };
 
 type IOption = {

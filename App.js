@@ -2,11 +2,11 @@
  * 深圳市正能量网络技术有限公司 手机APP
  * @flow
  */
+import "./Global";
 import React, { Component } from "react";
 import { Provider } from "react-redux";
 import store from "@src/store";
 import DrawerNavRouter from "@router/DrawerNavRouter";
-import "./Global";
 import { AppInit } from "@src/utils/appInit";
 import { hubConnection } from "@src/utils/signalr";
 import CustomStore from "./src/utils/jumpUtils";
@@ -26,7 +26,6 @@ import {
   openNotificationListener,
   handleAppStateChange,
 } from "@src/utils/EventListenersHandler";
-
 // codepush配置
 let codePushOptions;
 if (ISANDROID && !__DEV__) {
@@ -61,6 +60,9 @@ class App extends Component<Props> {
         BackgroundColor: "#2C2D31",
       },
     });
+
+    // 链接signalr
+    hubConnection();
   }
 
   componentDidMount() {
@@ -82,8 +84,6 @@ class App extends Component<Props> {
     }
     // 监听从APP到前台事件
     AppState.addEventListener("change", handleAppStateChange);
-    // 链接signalr
-    hubConnection();
   }
   componentWillUnmount() {
     AppInit.JPushModule.removeReceiveOpenNotificationListener(
