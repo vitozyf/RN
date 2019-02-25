@@ -34,6 +34,19 @@ class PersonalCenter extends Component<Props> {
     const { navigation } = this.props;
     navigation.navigate(name, parms);
   };
+  getinquirycount = () => {
+    // Cloud.$cnh("getinquirycount")
+    //   .then(data => {
+    //     console.log(1111, data);
+    //   })
+    //   .catch(error => {
+    //     console.log(2222, error);
+    //   });
+    console.log(333);
+    Cloud.$get("im/getinquirycount").then(data => {
+      console.log(1111, data);
+    });
+  };
   _renderRow = item => {
     return (
       <TouchableOpacity
@@ -233,13 +246,7 @@ class PersonalCenter extends Component<Props> {
     );
   }
   componentWillMount() {
-    Cloud.$cnh("getinquirycount")
-      .then(data => {
-        console.log(1111, data);
-      })
-      .catch(error => {
-        console.log(2222, error);
-      });
+    this.getinquirycount();
   }
 }
 const styles = StyleSheet.create({

@@ -10,6 +10,10 @@ const getUrl = () => {
   return __DEV__ ? "http://test.bom.ai:8088/im" : "https://api.bom.ai/im";
 };
 
+const connectionInfo = {
+  IsConnectionSuccess: false,
+};
+
 // 客户端方法集合
 const ClientMethodSets = [
   // 1. 对方发送文本消息后推送
@@ -40,22 +44,19 @@ const hubConnection = async () => {
     })
     .done(() => {
       console.log("signalr-connection-success");
+      connectionInfo.IsConnectionSuccess = true;
     })
     .fail(error => {
-      Cloud &&
-        Cloud.$addLog(
-          "signalr.js",
-          "connection--start-error: " + error.message
-        );
+      Cloud.$addLog("signalr.js", "connection--start-error: " + error.message);
     });
 
   //connection-handling
   connection.connectionSlow(() => {
-    Cloud && Cloud.$addLog("signalr.js", "connectionSlow");
+    Cloud.$addLog("signalr.js", "connectionSlow");
   });
 
   connection.error(error => {
-    Cloud && Cloud.$addLog("signalr.js", "connection-error: " + error.message);
+    Cloud.$addLog("signalr.js", "connection-error: " + error.message);
   });
 
   const proxy = connection.createHubProxy("IMHub");
@@ -63,13 +64,13 @@ const hubConnection = async () => {
   ClientMethodSets.map(item => {
     proxy.on(item.name, item.method);
   });
-  Cloud && (Cloud.$connection = connection);
-  Cloud && (Cloud.$proxy = proxy);
+  Cloud.$connection = connection;
+  Cloud.$proxy = proxy;
   return connection;
 };
 
 const getStartConnectionData = async (methodName, args) => {
-  if (!Cloud.$connection) {
+  if (!Cloud.$connection || !connectionInfo.IsConnectionSuccess) {
     await hubConnection();
   }
   return new Promise((resolve, reject) => {
@@ -78,15 +79,14 @@ const getStartConnectionData = async (methodName, args) => {
         withCredentials: false,
       })
       .done(() => {
-        Cloud &&
-          Cloud.$proxy
-            .invoke(methodName, args)
-            .done(response => {
-              return resolve(response);
-            })
-            .fail(err => {
-              return reject(err);
-            });
+        Cloud.$proxy
+          .invoke(methodName, args)
+          .done(response => {
+            return resolve(response);
+          })
+          .fail(err => {
+            return reject(err);
+          });
       });
   });
 };

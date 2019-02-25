@@ -145,21 +145,20 @@ const jpushHandler = store => {
     } else {
       JPushModule.setupPush();
     }
+    const HomeUserInfo = store.getState().UserInfo.HomeUserInfo;
     // 设置推送设备别名： UserId
-    const UserId = store
-      .getState()
-      .UserInfo.HomeUserInfo.UserId.replace(/-/g, "");
+    const UserId = HomeUserInfo.UserId.replace(/-/g, "");
     if (UserId) {
       setAlias(UserId);
     }
     // 设置推送设备标签： 手机号 是否主账号 公司id
-    const BindMobile = store.getState().UserInfo.HomeUserInfo.BindMobile;
-    const IsMainAccount = store.getState().UserInfo.HomeUserInfo.IsMainAccount
+    const BindMobile = HomeUserInfo.BindMobile;
+    const IsMainAccount = HomeUserInfo.IsMainAccount
       ? "IsMainAccount"
       : "NotMainAccount";
-    const CompanyId = store
-      .getState()
-      .UserInfo.HomeUserInfo.CompanyId.replace(/-/g, "");
+    const CompanyId = HomeUserInfo.CompanyId
+      ? HomeUserInfo.CompanyId.replace(/-/g, "")
+      : null;
     const Tags = [];
     if (BindMobile) {
       Tags.push(BindMobile);
