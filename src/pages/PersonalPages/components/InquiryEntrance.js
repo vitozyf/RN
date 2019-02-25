@@ -48,7 +48,10 @@ class InquiryEntrance extends Component<Props> {
             onPress={message1Press}
           >
             <View style={styles.textCenter}>
-              <Text style={styles.message1Text}>{message1}</Text>
+              <View style={styles.UnreadPromptBox}>
+                <View style={styles.UnreadPrompt} />
+                <Text style={styles.message1Text}>{message1}</Text>
+              </View>
             </View>
             <View style={styles.textCenter}>
               <Text style={styles.messageTitle}>{message1Title}</Text>
@@ -60,7 +63,10 @@ class InquiryEntrance extends Component<Props> {
             onPress={message2Press}
           >
             <View style={styles.textCenter}>
-              <Text style={styles.message1Text}>{message2}</Text>
+              <View style={styles.UnreadPromptBox}>
+                <View style={styles.UnreadPrompt} />
+                <Text style={styles.message1Text}>{message2}</Text>
+              </View>
             </View>
             <View style={styles.textCenter}>
               <Text style={styles.messageTitle}>{message2Title}</Text>
@@ -76,6 +82,20 @@ const styles = StyleSheet.create({
   textCenter: {
     flexDirection: "row",
     justifyContent: "center",
+  },
+  UnreadPromptBox: {
+    width: 50,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  UnreadPrompt: {
+    position: "absolute",
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#ff2200",
+    top: 0,
+    right: 0,
   },
   container: {
     backgroundColor: "#fff",
