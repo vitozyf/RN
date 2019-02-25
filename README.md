@@ -42,4 +42,6 @@ code-push对应发布正式/测试版本
 
 ### 字体图标
 
-下载最新字体，取出svg放入transfont目录, run cd ./transfont && ./iconfont_mapper.sh 获取编码json， 替换 src/components/Iconfont/iconfont.json
+- 下载最新字体，取出svg放入transfont目录
+- 执行 `run cd ./transfont` && `./iconfont_mapper.sh iconfont.svg` 获取编码json， 替换 `src/components/Iconfont/iconfont.json`
+- 替换 `ios/` 及 `android/app/src/main/assets/fonts/` 目录下的 `iconfont.ttf`文件

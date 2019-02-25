@@ -53,7 +53,12 @@ class PersonalCenter extends Component<Props> {
         onPress={item.onPress}
         activeOpacity={0.8}
       >
-        <Text style={styles.baseRowTitle}>{item.key}</Text>
+        <View style={styles.baseRowLeft}>
+          <View style={styles.baseRowLeftIconBox}>
+            <Icon name={item.icon} size={16} />
+          </View>
+          <Text style={styles.baseRowTitle}>{item.key}</Text>
+        </View>
         <Text style={styles.baseRowValue}>
           <Icon name="right_arrow" size={15} style={[styles.iconfont]} />
         </Text>
@@ -111,22 +116,24 @@ class PersonalCenter extends Component<Props> {
         onPress: () => {
           this.toPage("Setting");
         },
+        icon: "center_set",
       },
       {
         key: "帮助",
         onPress: () => {
           this.toPage("HelpPageMem");
         },
-      },
-      {
-        key: "芯扒客",
-        onPress: () => {
-          this.toPage("News");
-        },
+        icon: "center_help",
       },
     ];
     if (ISDEBUG) {
       datas = datas.concat([
+        {
+          key: "芯扒客",
+          onPress: () => {
+            this.toPage("News");
+          },
+        },
         {
           key: "注册",
           onPress: () => {
@@ -389,8 +396,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  baseRowLeft: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: "100%",
+    alignItems: "center",
+  },
+  baseRowLeftIconBox: {
+    width: 20,
+  },
   baseRowTitle: {
-    fontSize: 15,
+    fontSize: 16,
   },
   baseRowValue: {
     maxWidth: 280,
@@ -399,6 +415,10 @@ const styles = StyleSheet.create({
   },
   iconfont: {
     fontWeight: "bold",
+  },
+  baseRowTitleLeft: {
+    marginLeft: 10,
+    backgroundColor: "red",
   },
 });
 const mapStateToProps = (state, props) => {
