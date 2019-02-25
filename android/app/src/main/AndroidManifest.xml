@@ -1,9 +1,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
     package="com.znlicloud">
 
+    <!-- 权限申请 -->
+
+    <!-- 访问网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 显示系统窗口 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!-- 获取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 删除敏感权限 -->
+
+    <!-- 大概位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
+        tools:node="remove"/>
+    <!-- 精准位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:node="remove"/>
+    <!-- 读取系统日志 -->
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:node="remove"/>
+    <!-- 允许程序访问额外的定位提供者指令 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"
+        tools:node="remove"/>
+     <!-- 允许程序获取当前或最近运行的应用 -->
+    <uses-permission android:name="android.permission.GET_TASKS"
+        tools:node="remove"/>
+
 
     <application
       android:name=".MainApplication"
