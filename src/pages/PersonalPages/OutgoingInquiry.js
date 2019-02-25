@@ -6,12 +6,14 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { ZnlHeader } from "@components";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
+import InquiryList from "@pages/PersonalPages/components/InquiryList";
+import { connect } from "react-redux";
 
-type Props = { navigation: INavigation };
+type Props = { navigation: INavigation, ActiveRouteName: string };
 type State = {
   active: string, // all waiting already
 };
-class ReceivedInquiry extends Component<Props, State> {
+class OutgoingInquiry extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
     const goBack = () => {
       navigation.goBack();
@@ -33,6 +35,7 @@ class ReceivedInquiry extends Component<Props, State> {
   };
   render() {
     const { active } = this.state;
+    const { ActiveRouteName } = this.props;
     const that = this;
     const tabs = [
       {
@@ -57,9 +60,11 @@ class ReceivedInquiry extends Component<Props, State> {
         },
       },
     ];
+    const data = [];
     return (
       <View style={styles.container}>
         <HeaderTabs active={active} tabs={tabs} />
+        <InquiryList data={data} ActiveRouteName={ActiveRouteName} />
       </View>
     );
   }
@@ -75,4 +80,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReceivedInquiry;
+const mapStateToProps = (state, props) => {
+  return Object.assign({}, { ActiveRouteName: state.ActiveRouteName }, props);
+};
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OutgoingInquiry);

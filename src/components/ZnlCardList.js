@@ -1,4 +1,7 @@
-// @flow
+/**
+ * 区域列表
+ * @flow
+ */
 import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 
