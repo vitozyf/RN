@@ -104,14 +104,17 @@ const initUserData = async (store, CustomStore) => {
   const AppWechatInfo = store.getState().AppWechatInfo;
   if (AppWechatInfo) {
     try {
-      UserInfo.AvatarPath = AppWechatInfo.AvatarPath
-        ? AppWechatInfo.AvatarPath
-        : `https:${HomeInfo.UserInfo.HeadPic}`;
-      UserInfo.NickName = AppWechatInfo.NickName
-        ? AppWechatInfo.NickName
-        : HomeInfo.UserInfo.NickName;
+      UserInfo.AvatarPath = AppWechatInfo.AvatarPath;
+      UserInfo.NickName = AppWechatInfo.NickName;
     } catch (error) {
-      Cloud.$addLog("appInit-initUserData-AppWechatInfo", error.message);
+      Cloud.$addLog("appInit-initUserData-AppWechatInfo-if", error.message);
+    }
+  } else {
+    try {
+      UserInfo.AvatarPath = `https:${HomeInfo.UserInfo.HeadPic}`;
+      UserInfo.NickName = HomeInfo.UserInfo.NikeName;
+    } catch (error) {
+      Cloud.$addLog("appInit-initUserData-AppWechatInfo-else", error.message);
     }
   }
   if (TOKEN) {

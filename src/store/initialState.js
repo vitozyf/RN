@@ -32,10 +32,11 @@ export default {
   },
   wechat: {},
   ErpUserRoleList: [],
-  AppWechatInfo: {
-    NickName: "",
-    AvatarPath: "",
-  },
+  AppWechatInfo: null,
+  // AppWechatInfo: {
+  //   NickName: "",
+  //   AvatarPath: "",
+  // },
   Hotpartnos: [],
   ActiveRouteName: "",
 };

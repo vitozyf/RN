@@ -89,7 +89,7 @@ export const ErpUserRoleList = (state = [], action) => {
   }
 };
 // app端微信登录后微信信息
-export const AppWechatInfo = (state = {}, action) => {
+export const AppWechatInfo = (state = null, action) => {
   switch (action.type) {
     case "SetAppWechatInfo":
       return action.AppWechatInfo;
