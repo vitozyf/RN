@@ -25,7 +25,7 @@ type State = {
 class MessageList extends React.PureComponent<Props, State> {
   state = { refreshing: false };
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => item.Id;
 
   toPage = ({ name, params }: any) => {
     const { navigation } = this.props;
@@ -63,7 +63,7 @@ class MessageList extends React.PureComponent<Props, State> {
                 : require("./img/message_system_pic.png")
             }
           />
-          <View style={item.IsHaveNewMsg ? styles.IsHaveNewMsg : null} />
+          <View style={item.IsReaded ? styles.IsReaded : null} />
         </View>
         <View style={styles.massageRowRight}>
           <View style={styles.massageTitleBox}>
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     paddingTop: (ITEM_HEIGHT - 48) / 2,
     paddingBottom: (ITEM_HEIGHT - 48) / 2,
   },
-  IsHaveNewMsg: {
+  IsReaded: {
     width: 10,
     height: 10,
     backgroundColor: "#ff2200",
