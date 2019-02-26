@@ -6,6 +6,7 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
+import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 
 type InquiryListProps = {
   data: Array<any>,
@@ -22,9 +23,7 @@ class InquiryList extends React.PureComponent<
 
   _keyExtractor = (item, index) => item.id;
 
-  _renderItem = ({ item }) => (
-    <InquiryListItem id={item.id} title={item.title} />
-  );
+  _renderItem = ({ item }) => <InquiryListItem data={item} />;
 
   _renderListEmptyComponent = () => {
     const { ActiveRouteName } = this.props;

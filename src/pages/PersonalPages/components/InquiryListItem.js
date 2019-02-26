@@ -11,24 +11,27 @@ import {
   StyleSheet,
   Linking,
   Dimensions,
+  Picker,
 } from "react-native";
 import Icon from "@components/Iconfont/CloudIcon";
 import { DashLine, ZnlInput } from "@components";
+
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 20;
 
 type Props = {
-  id: string,
-  title: string,
+  data: Object,
 };
 type State = {
   showMoreParams: boolean,
+  language: string,
 };
 class InquiryListItem extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       showMoreParams: false,
+      language: "Java",
     };
   }
   render() {
@@ -194,11 +197,21 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 </Text>
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
-                <ZnlInput
+                {/* <ZnlInput
                   placeholder="请选择"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
-                />
+                /> */}
+                <Picker
+                  selectedValue={this.state.language}
+                  style={{ height: 36, width: "100%" }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ language: itemValue })
+                  }
+                >
+                  <Picker.Item label="Java" value="java" />
+                  <Picker.Item label="JavaScript" value="js" />
+                </Picker>
               </View>
             </View>
           )}
@@ -248,7 +261,28 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
             </View>
           )}
-
+          <View style={styles.sendBtnView}>
+            <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
+              <TouchableOpacity
+                style={[styles.sendBtnCom, styles.sendBtnLeft]}
+                activeOpacity={0.8}
+              >
+                <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
+                  忽略
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
+              <TouchableOpacity
+                style={[styles.sendBtnCom, styles.sendBtnRight]}
+                activeOpacity={0.8}
+              >
+                <Text style={[styles.sendBtnText, styles.sendBtnTextRight]}>
+                  发送报价
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -366,6 +400,42 @@ const styles = StyleSheet.create({
   moreParamsText: {
     color: "#999",
     fontSize: 14,
+  },
+  sendBtnView: {
+    height: 44,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 14,
+    marginTop: 14,
+  },
+  sendBtnBox: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sendBtnViewLeft: {},
+  sendBtnViewRight: {},
+  sendBtnCom: {
+    width: 96,
+    height: 40,
+    borderRadius: 4,
+  },
+  sendBtnLeft: {},
+  sendBtnRight: {
+    backgroundColor: "#ee7700",
+  },
+  sendBtnText: {
+    fontSize: 16,
+    textAlign: "center",
+    lineHeight: 40,
+  },
+  sendBtnTextLeft: {
+    color: "#aaa",
+  },
+  sendBtnTextRight: {
+    color: "#fff",
   },
 });
 

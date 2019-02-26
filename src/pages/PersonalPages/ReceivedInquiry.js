@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 type Props = { navigation: INavigation, ActiveRouteName: string };
 type State = {
   active: string, // all waiting already
+  data: Array<any>,
 };
 class ReceivedInquiry extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -26,6 +27,7 @@ class ReceivedInquiry extends Component<Props, State> {
     super(props);
     this.state = {
       active: "all",
+      data: [],
     };
   }
   setActive = (active: string) => {
@@ -33,8 +35,19 @@ class ReceivedInquiry extends Component<Props, State> {
       this.setState({ active });
     }
   };
+  getReceivedInquiryData = () => {
+    const data = [];
+    for (let index = 0; index < 10; index++) {
+      data.push({
+        id: index + "",
+        title: `列表${index}`,
+      });
+    }
+
+    this.setState({ data });
+  };
   render() {
-    const { active } = this.state;
+    const { active, data } = this.state;
     const { ActiveRouteName } = this.props;
     const that = this;
     const tabs = [
@@ -60,13 +73,7 @@ class ReceivedInquiry extends Component<Props, State> {
         },
       },
     ];
-    const data = [];
-    for (let index = 0; index < 20; index++) {
-      data.push({
-        id: index + "",
-        title: `列表${index}`,
-      });
-    }
+
     return (
       <View style={styles.container}>
         <HeaderTabs active={active} tabs={tabs} />
@@ -78,6 +85,7 @@ class ReceivedInquiry extends Component<Props, State> {
     const { navigation } = this.props;
     const active = navigation.getParam("active");
     this.setActive(active);
+    this.getReceivedInquiryData();
   }
 }
 
