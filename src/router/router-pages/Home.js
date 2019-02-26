@@ -41,7 +41,7 @@ const TabNav = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: "Personal",
+    initialRouteName: "Message",
     tabBarOptions: navigationOptions,
     tabBarComponent: CustomTabComponent,
   }

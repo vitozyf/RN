@@ -31,33 +31,38 @@ class MessagePages extends Component<Props, State> {
   getMessageData = (count = 50, minMsgId = 0) => {
     const { SET_MESSAGE_DATA, CONCAT_MESSAGE_DATA } = this.props;
 
-    // 数据模拟
-    const data = [];
-    for (let index = minMsgId + 1; index < minMsgId + 51; index++) {
-      data.push({
-        MsgType: index % 2 === 0 ? 2 : 3,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37" + "--" + index,
-        IsReaded: index % 2 === 0,
-        Id: index,
-      });
-    }
-    if (minMsgId != 0) {
-      data.pop();
-    }
-    console.log(111, data.length);
-    // 数据模拟结束
+    Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`).then(
+      res => {
+        const data = res || [];
+        if (data.length < 50) {
+          this.setState({
+            showFoot: true,
+          });
+        }
+        if (minMsgId === 0) {
+          SET_MESSAGE_DATA(data);
+        } else {
+          CONCAT_MESSAGE_DATA(data);
+        }
+      }
+    );
 
-    if (data.length < 50) {
-      this.setState({
-        showFoot: true,
-      });
-    }
-    if (minMsgId === 0) {
-      SET_MESSAGE_DATA(data);
-    } else {
-      CONCAT_MESSAGE_DATA(data);
-    }
+    // 数据模拟
+    // const data = [];
+    // for (let index = minMsgId + 1; index < minMsgId + 51; index++) {
+    //   data.push({
+    //     MsgType: index % 2 === 0 ? 2 : 3,
+    //     MsgContent: "您收到了型号为BAV99的报价",
+    //     MsgTimePhrase: "15:37" + "--" + index,
+    //     IsReaded: index % 2 === 0,
+    //     Id: index,
+    //   });
+    // }
+    // if (minMsgId != 0) {
+    //   data.pop();
+    // }
+    // console.log(111, data.length);
+    // 数据模拟结束
   };
   getMoreMesageData = () => {
     const { MessageData } = this.props;
