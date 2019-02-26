@@ -195,7 +195,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
                 <ZnlInput
-                  placeholder="请输入税点"
+                  placeholder="请选择"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
                 />
@@ -241,13 +241,14 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
                 <ZnlInput
-                  placeholder="请输入品质"
+                  placeholder="请选择"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
                 />
               </View>
             </View>
           )}
+
         </View>
       </TouchableOpacity>
     );
