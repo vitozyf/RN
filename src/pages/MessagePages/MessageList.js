@@ -25,7 +25,7 @@ type State = {
 class MessageList extends React.PureComponent<Props, State> {
   state = { refreshing: false };
 
-  _keyExtractor = (item, index) => item.Id;
+  _keyExtractor = (item, index) => item.Id + "";
 
   toPage = ({ name, params }: any) => {
     const { navigation } = this.props;

@@ -83,10 +83,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state, props) => {
   return Object.assign({}, { ActiveRouteName: state.ActiveRouteName }, props);
 };
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OutgoingInquiry);
+
+export default connect(mapStateToProps)(OutgoingInquiry);

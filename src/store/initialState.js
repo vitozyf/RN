@@ -39,4 +39,6 @@ export default {
   // },
   Hotpartnos: [],
   ActiveRouteName: "",
+  // 消息列表
+  MessageData: [],
 };

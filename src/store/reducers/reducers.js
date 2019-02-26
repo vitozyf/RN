@@ -115,3 +115,16 @@ export const ActiveRouteName = (state = "", action) => {
       return state;
   }
 };
+// 消息列表
+export const MessageData = (state = [], action) => {
+  switch (action.type) {
+    case "SET_MESSAGE_DATA":
+      return action.MessageData;
+    case "ADD_MESSAGE_DATA":
+      const Data = JSON.parse(state);
+      Data.unshift(action.Message);
+      return Data;
+    default:
+      return state;
+  }
+};

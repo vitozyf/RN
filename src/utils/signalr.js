@@ -5,6 +5,7 @@
 import signalr from "react-native-signalr";
 import { getStorage } from "./storage";
 import CONFIG from "./config";
+import store from "@src/store";
 
 const getUrl = () => {
   return __DEV__ ? "http://test.bom.ai:8088/im" : "https://api.bom.ai/im";
@@ -16,11 +17,15 @@ const connectionInfo = {
 
 // 客户端方法集合
 const ClientMethodSets = [
-  // 1. 对方发送文本消息后推送
+  // 消息推送处理方法
   {
-    name: "addNewMsg",
-    method: (data, companyName, partno, newmessagecount) => {
-      console.log(123456, data, companyName, partno, newmessagecount);
+    name: "addAppMsg",
+    method: data => {
+      // 消息列表更新
+      store.dispatch({
+        type: "ADD_MESSAGE_DATA",
+        Message: data,
+      });
     },
   },
 ];
