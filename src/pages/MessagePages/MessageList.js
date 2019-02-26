@@ -18,6 +18,9 @@ const ITEM_HEIGHT = 72;
 type Props = {
   data: Array<any>,
   navigation: INavigation,
+  getMessageData: Function,
+  getMoreMesageData: Function,
+  showFoot: boolean,
 };
 type State = {
   refreshing: boolean,
@@ -46,6 +49,22 @@ class MessageList extends React.PureComponent<Props, State> {
         });
       }
     };
+    let MessageTitle = "";
+    let MessageIcon = null;
+    switch (item.MsgType) {
+      case 2:
+        MessageTitle = "询价通知";
+        MessageIcon = require("./img/message_enquiry_ic.png");
+        break;
+      case 3:
+        MessageTitle = "报价通知";
+        MessageIcon = require("./img/message_quote_ic.png");
+        break;
+      default:
+        MessageTitle = "系统通知";
+        MessageIcon = require("./img/message_system_pic.png");
+        break;
+    }
     return (
       <TouchableOpacity
         style={styles.messageRow}
@@ -53,27 +72,12 @@ class MessageList extends React.PureComponent<Props, State> {
         onPress={onPress}
       >
         <View style={styles.massageRowLeft}>
-          <Image
-            style={styles.messagePic}
-            source={
-              item.MsgType === 2
-                ? require("./img/message_enquiry_ic.png")
-                : item.MsgType === 3
-                ? require("./img/message_quote_ic.png")
-                : require("./img/message_system_pic.png")
-            }
-          />
+          <Image style={styles.messagePic} source={MessageIcon} />
           <View style={item.IsReaded ? styles.IsReaded : null} />
         </View>
         <View style={styles.massageRowRight}>
           <View style={styles.massageTitleBox}>
-            <Text style={styles.massageTitle}>
-              {item.MsgType === 2
-                ? "询价通知"
-                : item.MsgType === 3
-                ? "报价通知"
-                : "系统通知"}
-            </Text>
+            <Text style={styles.massageTitle}>{MessageTitle}</Text>
             <Text style={styles.massageTime}>{item.MsgTimePhrase}</Text>
           </View>
           <View>
@@ -98,11 +102,44 @@ class MessageList extends React.PureComponent<Props, State> {
     );
   };
 
+  // 渲染底部
+  _renderFooter = () => {
+    const { showFoot, data } = this.props;
+    if (showFoot && data.length > 0) {
+      return (
+        <View
+          style={{
+            height: 30,
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Text
+            style={{
+              color: "#999999",
+              fontSize: 14,
+              marginTop: 5,
+              marginBottom: 5,
+            }}
+          >
+            没有更多数据了...
+          </Text>
+        </View>
+      );
+    } else if (!showFoot || data.length === 0) {
+      return null;
+    }
+  };
+
   onRefresh = () => {
-    console.log(111111);
+    const { getMessageData } = this.props;
+    getMessageData();
   };
   onEndReached = () => {
-    console.log(3333333);
+    const { data, getMoreMesageData, showFoot } = this.props;
+    if (data.length >= 50 && !showFoot) {
+      getMoreMesageData();
+    }
   };
 
   render() {
@@ -115,6 +152,7 @@ class MessageList extends React.PureComponent<Props, State> {
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
           ListEmptyComponent={this._renderListEmptyComponent}
+          ListFooterComponent={this._renderFooter}
           refreshing={refreshing}
           onRefresh={this.onRefresh}
           onEndReached={this.onEndReached}

@@ -121,9 +121,12 @@ export const MessageData = (state = [], action) => {
     case "SET_MESSAGE_DATA":
       return action.MessageData;
     case "ADD_MESSAGE_DATA":
-      const Data = JSON.parse(state);
+      const Data = JSON.parse(JSON.stringify(state));
       Data.unshift(action.Message);
       return Data;
+    case "CONCAT_MESSAGE_DATA":
+      const ConcatData = state.concat(action.MessageData);
+      return ConcatData;
     default:
       return state;
   }

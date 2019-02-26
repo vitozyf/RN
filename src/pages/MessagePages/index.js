@@ -10,77 +10,74 @@ import { connect } from "react-redux";
 type Props = {
   navigation: INavigation,
   SET_MESSAGE_DATA: Function,
+  CONCAT_MESSAGE_DATA: Function,
   MessageData: Array<any>,
 };
-class MessagePages extends Component<Props> {
+type State = {
+  showFoot: boolean,
+};
+class MessagePages extends Component<Props, State> {
   static navigationOptions = () => {
     return {
       header: <ZnlHeader title="消息" hideLeft={true} />,
     };
   };
-  getMessageData = () => {
-    const { SET_MESSAGE_DATA } = this.props;
-    const data = [
-      {
-        MsgType: 2,
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      showFoot: false,
+    };
+  }
+  getMessageData = (count = 50, minMsgId = 0) => {
+    const { SET_MESSAGE_DATA, CONCAT_MESSAGE_DATA } = this.props;
+
+    // 数据模拟
+    const data = [];
+    for (let index = minMsgId + 1; index < minMsgId + 51; index++) {
+      data.push({
+        MsgType: index % 2 === 0 ? 2 : 3,
         MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 1,
-      },
-      {
-        MsgType: 3,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 2,
-      },
-      {
-        MsgType: 2,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 3,
-      },
-      {
-        MsgType: 3,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 4,
-      },
-      {
-        MsgType: 2,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 5,
-      },
-      {
-        MsgType: 3,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 6,
-      },
-      {
-        MsgType: 1,
-        MsgContent: "您收到了型号为BAV99的报价",
-        MsgTimePhrase: "15:37",
-        IsReaded: true,
-        Id: 7,
-      },
-    ];
-    SET_MESSAGE_DATA(data);
+        MsgTimePhrase: "15:37" + "--" + index,
+        IsReaded: index % 2 === 0,
+        Id: index,
+      });
+    }
+    if (minMsgId != 0) {
+      data.pop();
+    }
+    console.log(111, data.length);
+    // 数据模拟结束
+
+    if (data.length < 50) {
+      this.setState({
+        showFoot: true,
+      });
+    }
+    if (minMsgId === 0) {
+      SET_MESSAGE_DATA(data);
+    } else {
+      CONCAT_MESSAGE_DATA(data);
+    }
+  };
+  getMoreMesageData = () => {
+    const { MessageData } = this.props;
+    this.getMessageData(50, MessageData[MessageData.length - 1].Id);
   };
   componentWillMount() {
     this.getMessageData();
   }
   render() {
     const { navigation, MessageData } = this.props;
+    const { showFoot } = this.state;
     return (
       <View style={styles.container}>
-        <MessageList data={MessageData} navigation={navigation} />
+        <MessageList
+          data={MessageData}
+          navigation={navigation}
+          getMessageData={this.getMessageData}
+          getMoreMesageData={this.getMoreMesageData}
+          showFoot={showFoot}
+        />
       </View>
     );
   }
@@ -101,6 +98,12 @@ const mapDispatchToProps = dispatch => {
     SET_MESSAGE_DATA: MessageData => {
       return dispatch({
         type: "SET_MESSAGE_DATA",
+        MessageData,
+      });
+    },
+    CONCAT_MESSAGE_DATA: MessageData => {
+      return dispatch({
+        type: "CONCAT_MESSAGE_DATA",
         MessageData,
       });
     },
