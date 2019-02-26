@@ -9,15 +9,22 @@ type Props = {
   children: any,
   showDeleteIcon: boolean,
   onPressDelete?: Function,
+  style?: Object,
 };
 class SearchPane extends Component<Props> {
   static defaultProps = {
     showDeleteIcon: true,
   };
   render() {
-    const { title, children, showDeleteIcon, onPressDelete } = this.props;
+    const {
+      title,
+      children,
+      showDeleteIcon,
+      onPressDelete,
+      style,
+    } = this.props;
     return (
-      <View style={styles.SearchPane}>
+      <View style={[styles.SearchPane, style]}>
         <View style={styles.SearchPaneTitle}>
           <Text style={styles.SearchPaneTitleText}>{title}</Text>
           {showDeleteIcon && (
@@ -48,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingLeft: 12,
-    paddingRight: 12,
+    paddingRight: 8,
   },
   SearchPaneTitleText: {
     fontSize: 16,
@@ -56,7 +63,6 @@ const styles = StyleSheet.create({
   },
   Icon: {
     marginRight: 0,
-    // backgroundColor: '#007AFF'
   },
   SearchPaneBody: {
     paddingTop: 5,

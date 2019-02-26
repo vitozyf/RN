@@ -3,11 +3,12 @@
  * @flow
  */
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { ZnlHeader } from "@components";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 import InquiryList from "@pages/PersonalPages/components/InquiryList";
 import { connect } from "react-redux";
+import Icon from "@components/Iconfont/CloudIcon";
 
 type Props = { navigation: INavigation, ActiveRouteName: string };
 type State = {
@@ -19,8 +20,27 @@ class ReceivedInquiry extends Component<Props, State> {
     const goBack = () => {
       navigation.goBack();
     };
+    const renderRight = () => {
+      return (
+        <TouchableOpacity
+          style={{ width: 36 }}
+          activeOpacity={0.9}
+          onPress={() => {
+            navigation.push("InquirySearch");
+          }}
+        >
+          <Icon name="input_search_ic" size={20} />
+        </TouchableOpacity>
+      );
+    };
     return {
-      header: <ZnlHeader title="我收到的询价" onPressIcon={goBack} />,
+      header: (
+        <ZnlHeader
+          title="我收到的询价"
+          onPressIcon={goBack}
+          renderRight={renderRight}
+        />
+      ),
     };
   };
   constructor(props: Props) {

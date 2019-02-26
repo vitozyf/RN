@@ -6,6 +6,7 @@ export default {
     BackgroundColor: "#2C2D31", // #2C2D31 rgba(248,248,248,0.82)
   }, // 状态栏
   SearchRecord: [], // 本地搜索记录
+  ForQuotationSearchRecord: [], // 询报价搜索记录
   // 搜索页信息
   BomSearchInfo: {
     KeyWord: "",
@@ -37,7 +38,7 @@ export default {
   //   NickName: "",
   //   AvatarPath: "",
   // },
-  Hotpartnos: [],
+  Hotpartnos: [], // 热门型号
   ActiveRouteName: "",
   // 消息列表
   MessageData: [],

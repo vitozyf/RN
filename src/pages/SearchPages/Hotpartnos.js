@@ -18,10 +18,17 @@ const Width = Dimensions.get("window").width;
 let sibling = undefined;
 
 const Hotpartnos = {
-  show: (mapHotpartnos: Array<string>, onPress: Function) => {
+  show: (mapHotpartnos: Array<string>, onPress: Function, option: any) => {
     // sibling && sibling.destroy();
+    let style = null;
+    if (option && option.style) {
+      style = option.style;
+    }
     const SiblingEle = (
-      <ScrollView style={styles.maskStyle} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        style={[styles.maskStyle, style]}
+        keyboardShouldPersistTaps="handled"
+      >
         {mapHotpartnos.map((item, index) => {
           return (
             <TouchableOpacity
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: HeaderHeightInit,
   },
   hotrow: {
-    height: 30,
+    height: 44,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

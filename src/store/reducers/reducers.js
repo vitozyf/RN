@@ -55,6 +55,14 @@ export const SearchRecord = (state = [], action) => {
       return state;
   }
 };
+export const ForQuotationSearchRecord = (state = [], action) => {
+  switch (action.type) {
+    case "SET_FORQUOTATIONSEARCHRECORD":
+      return action.ForQuotationSearchRecord;
+    default:
+      return state;
+  }
+};
 export const BomSearchInfo = (state = {}, action) => {
   switch (action.type) {
     case "SetBomSearchInfo":

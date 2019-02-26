@@ -4,6 +4,9 @@ import PersonalCenter from "@pages/PersonalPages";
 import SettingScreen from "@pages/PersonalPages/Setting"; // 设置
 import ReceivedInquiry from "@pages/PersonalPages/ReceivedInquiry"; // 收到的询价
 import OutgoingInquiry from "@pages/PersonalPages/OutgoingInquiry"; // 发出的询价
+import InquirySearch from "@pages/PersonalPages/InquirySearch"; // 询价搜索
+import InquirySearchRes from "@pages/PersonalPages/InquirySearchRes"; // 询价搜索结果
+
 import AboutScreen from "@pages/PersonalPages/About"; // 关于
 import LegalProtection from "@pages/PersonalPages/LegalProtection"; // 法律条款
 import BaseInfoScreen from "@pages/PersonalPages/BaseInfoScreen"; // 基本信息
@@ -55,6 +58,14 @@ const IndexPages = createStackNavigator(
     OutgoingInquiry: {
       screen: OutgoingInquiry,
       path: "/Personal/OutgoingInquiry",
+    },
+    InquirySearch: {
+      screen: InquirySearch,
+      path: "/Personal/InquirySearch",
+    },
+    InquirySearchRes: {
+      screen: InquirySearchRes,
+      path: "/Personal/InquirySearchRes",
     },
   },
   {
