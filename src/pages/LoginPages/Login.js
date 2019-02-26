@@ -18,9 +18,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import DeviceInfo from "react-native-device-info";
 import store from "../../store";
 
-const AppUniqueID = DeviceInfo.getUniqueID();
-const MobileBrand = DeviceInfo.getBrand();
-
 type Props = {
   navigation: INavigation,
 };
@@ -141,6 +138,9 @@ class Login extends Component<Props, State> {
       Cloud.$setStorage(Cloud.$CONFIG.LoginPhoneNumber, PhoneNumber);
     AccountName &&
       Cloud.$setStorage(Cloud.$CONFIG.LoginAccountName, AccountName);
+
+    const AppUniqueID = DeviceInfo.getUniqueID();
+    const MobileBrand = DeviceInfo.getBrand();
 
     let LoginData = {
       CompanyName,

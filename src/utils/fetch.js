@@ -7,9 +7,6 @@ import CustomStore from "./jumpUtils";
 import DeviceInfo from "react-native-device-info";
 import { NetInfo } from "react-native";
 
-const MobileBrand = DeviceInfo.getBrand();
-const Version = DeviceInfo.getVersion();
-const SystemVersion = DeviceInfo.getSystemVersion();
 const LOGURL = "appget/addapplog";
 
 /**
@@ -19,6 +16,9 @@ const LOGURL = "appget/addapplog";
  * @param {*} PostParam 参数
  */
 const addLog = (Address: string, ExpContent: string, PostParam: string) => {
+  const MobileBrand = DeviceInfo.getBrand();
+  const Version = DeviceInfo.getVersion();
+  const SystemVersion = DeviceInfo.getSystemVersion();
   if (__DEV__) {
     console.log("error-log", Address, ExpContent, PostParam);
   } else {

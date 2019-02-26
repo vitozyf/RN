@@ -10,7 +10,6 @@ import {
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
-import DeviceInfo from "react-native-device-info";
 import { ISIOS, ISDEBUG } from "@src/utils/system";
 import { ZnlCardList } from "@components";
 import Icon from "@components/Iconfont/CloudIcon";

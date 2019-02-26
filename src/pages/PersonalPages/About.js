@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import Icon from "@components/Iconfont/CloudIcon";
 
-const Version = DeviceInfo.getVersion();
 type Props = {
   navigation: INavigation,
 };
@@ -28,6 +27,7 @@ class Setting extends Component<Props, State> {
   };
 
   render() {
+    const Version = DeviceInfo.getVersion();
     return (
       <View style={styles.container}>
         <View style={[styles.logoBox, styles.flexCenter]}>

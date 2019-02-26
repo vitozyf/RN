@@ -14,8 +14,6 @@ import { AppInit } from "@src/utils/appInit";
 import Icon from "@components/Iconfont/CloudIcon";
 import DeviceInfo from "react-native-device-info";
 import store from "../../store";
-const AppUniqueID = DeviceInfo.getUniqueID();
-const MobileBrand = DeviceInfo.getBrand();
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -195,6 +193,8 @@ class Register extends Component {
       AppCode,
       IsChangedPhone,
     } = this.state;
+    const AppUniqueID = DeviceInfo.getUniqueID();
+    const MobileBrand = DeviceInfo.getBrand();
     const regData = {
       ContactCompanyName,
       ContactName,
