@@ -22,7 +22,6 @@ import * as wechat from "react-native-wechat";
 import config from "./src/utils/config";
 import { ErrorBoundary } from "@components";
 import {
-  clearBadge,
   openNotificationListener,
   handleAppStateChange,
 } from "@src/utils/EventListenersHandler";

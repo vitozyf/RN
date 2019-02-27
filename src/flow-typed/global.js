@@ -40,6 +40,7 @@ declare type IConfig = {
   APIBASEURL: string,
   SEARCHAPIURL: string,
   ERPAPI: string,
+  IMURL: string,
 };
 declare type INavigation = {
   navigate: Function,

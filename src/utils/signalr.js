@@ -7,10 +7,6 @@ import { getStorage } from "./storage";
 import CONFIG from "./config";
 import store from "@src/store";
 
-const getUrl = () => {
-  return __DEV__ ? "http://test.bom.ai:8088/im" : "https://api.bom.ai/im";
-};
-
 const connectionInfo = {
   IsConnectionSuccess: false,
 };
@@ -21,6 +17,7 @@ const ClientMethodSets = [
   {
     name: "addAppMsg",
     method: data => {
+      console.log(11111, data);
       // 消息列表更新
       store.dispatch({
         type: "ADD_MESSAGE_DATA",
@@ -35,7 +32,7 @@ const hubConnection = async () => {
   if (!token) {
     return;
   }
-  const connection = signalr.hubConnection(getUrl(), {
+  const connection = signalr.hubConnection(Cloud.$CONFIG.IMURL, {
     qs: {
       token,
     },
@@ -48,7 +45,7 @@ const hubConnection = async () => {
       withCredentials: false,
     })
     .done(() => {
-      console.log("signalr-connection-success");
+      __DEV__ && console.log("signalr-connection-success", Cloud.$CONFIG.IMURL);
       connectionInfo.IsConnectionSuccess = true;
     })
     .fail(error => {

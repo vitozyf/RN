@@ -52,6 +52,7 @@ class MessageList extends React.PureComponent<Props, State> {
         });
         if (!item.IsReaded) {
           setBadge(-1);
+          item.IsReaded = true;
         }
       } else if (item.MsgType === 3) {
         this.toPage({
@@ -60,6 +61,7 @@ class MessageList extends React.PureComponent<Props, State> {
         });
         if (!item.IsReaded) {
           setBadge(-1);
+          item.IsReaded = true;
         }
       }
     };
