@@ -17,11 +17,13 @@ type State = {
 };
 class InquirySearch extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
+    const keyword = navigation.getParam("keyword");
+
     const goBack = () => {
       navigation.goBack();
     };
     return {
-      header: <ZnlHeader title="lm358" onPressIcon={goBack} />,
+      header: <ZnlHeader title={keyword} onPressIcon={goBack} />,
     };
   };
   constructor(props: Props) {
@@ -73,7 +75,9 @@ class InquirySearch extends Component<Props, State> {
   componentWillMount() {
     const { navigation } = this.props;
     const active = navigation.getParam("active");
+    const keyword = navigation.getParam("keyword");
     this.setState({ active });
+    navigation.setParams({ keyword });
   }
 }
 const styles = StyleSheet.create({

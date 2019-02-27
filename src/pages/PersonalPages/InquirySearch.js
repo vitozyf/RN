@@ -25,6 +25,7 @@ const Height = Dimensions.get("window").height;
 type Props = {
   navigation: INavigation,
   SET_FORQUOTATIONSEARCHRECORD: Function,
+  ForQuotationSearchRecord: Array<string>,
 };
 type State = {
   active: string,
@@ -83,11 +84,23 @@ class InquirySearch extends Component<Props, State> {
     };
   }
 
-  onSearchHandler = () => {};
+  onSearchHandler = () => {
+    const { KeyWord, active } = this.state;
+    this.toPage({
+      name: "InquirySearchRes",
+      params: { keyword: KeyWord, active },
+    });
+    Cloud.$setArrayStorage(
+      Cloud.$CONFIG.ForQuotationSearchRecord,
+      KeyWord,
+      30
+    ).then(() => {
+      this.getSearchRecord();
+    });
+  };
   onChangeText = value => {
-    console.log(222);
     this.setState({
-      KeyWord: value.toUpperCase(),
+      KeyWord: value,
     });
   };
 
@@ -107,16 +120,39 @@ class InquirySearch extends Component<Props, State> {
       this.setState({ active });
     }
   };
-  onPressDelete = () => {};
+  onPressDelete = () => {
+    Cloud.$removeStorage(Cloud.$CONFIG.ForQuotationSearchRecord).then(() => {
+      this.getSearchRecord();
+    });
+  };
 
   toPage = ({ name, params }: any) => {
     const { navigation } = this.props;
     navigation.push(name, params);
   };
 
+  getSearchRecord = () => {
+    const { SET_FORQUOTATIONSEARCHRECORD } = this.props;
+    Cloud.$getStorage(Cloud.$CONFIG.ForQuotationSearchRecord).then(
+      ForQuotationSearchRecord => {
+        if (ForQuotationSearchRecord) {
+          try {
+            const SearchRecord = JSON.parse(ForQuotationSearchRecord);
+            SET_FORQUOTATIONSEARCHRECORD(SearchRecord);
+          } catch (error) {
+            Cloud.$addLog("InquirySearch.js-getSearchRecord", error.message);
+          }
+        } else {
+          SET_FORQUOTATIONSEARCHRECORD([]);
+        }
+      }
+    );
+  };
+
   _renderSearchRecords = () => {
     const { active } = this.state;
-    const SearchRecords = ["LM357", "正能量"];
+    // const SearchRecords = ["LM357", "正能量"];
+    const { ForQuotationSearchRecord } = this.props;
     return (
       <SearchPane
         title="搜索记录"
@@ -125,17 +161,21 @@ class InquirySearch extends Component<Props, State> {
       >
         <View style={{ height: Height - HeaderHeightInit - 85 }}>
           <ScrollView style={[{ flex: 1 }]} keyboardShouldPersistTaps="handled">
-            {SearchRecords.map((item, index) => {
+            {ForQuotationSearchRecord.map((item, index) => {
               return (
                 <TouchableOpacity
                   key={index}
                   style={styles.hotrow}
                   activeOpacity={0.8}
                   onPress={() => {
-                    this.toPage({
-                      name: "InquirySearchRes",
-                      params: { keyword: item, active },
-                    });
+                    this.setState(
+                      {
+                        KeyWord: item,
+                      },
+                      () => {
+                        this.onSearchHandler();
+                      }
+                    );
                   }}
                 >
                   <View>
@@ -186,6 +226,7 @@ class InquirySearch extends Component<Props, State> {
   }
   componentWillMount() {
     this.passParameterHandler();
+    this.getSearchRecord();
   }
 }
 const styles = StyleSheet.create({

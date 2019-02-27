@@ -30,6 +30,7 @@ declare type IConfig = {
   LoginPhoneNumber: string, // 手机号
   LoginAccountName: string, // 账号
   Hotpartnos: string, // 联想用热搜型号
+  ForQuotationSearchRecord: string, // 询报价搜索记录
   // 正则验证表达式
   RegPhoneNumber: RegExp,
   // appid
