@@ -25,7 +25,7 @@ type Props = {
 type State = {
   modalVisible: boolean,
 };
-class ZnlPicker extends Component<Props> {
+class ZnlPicker extends Component<Props, State> {
   state = {
     modalVisible: false,
   };
@@ -35,13 +35,9 @@ class ZnlPicker extends Component<Props> {
     if (Platform.OS === "android") {
       return (
         <Picker {...this.props}>
-          {options.map(item => {
+          {options.map((item, index) => {
             return (
-              <Picker.Item
-                key={item.value}
-                label={item.label}
-                value={item.value}
-              />
+              <Picker.Item key={index} label={item.label} value={item.value} />
             );
           })}
         </Picker>
@@ -89,10 +85,10 @@ class ZnlPicker extends Component<Props> {
                 </TouchableOpacity>
               </View>
               <Picker style={styles.iosPicker} {...this.props}>
-                {options.map(item => {
+                {options.map((item, index) => {
                   return (
                     <Picker.Item
-                      key={item.value}
+                      key={index}
                       label={item.label}
                       value={item.value}
                     />

@@ -58,7 +58,7 @@ class ReceivedInquiry extends Component<Props, State> {
   getReceivedInquiryData = () => {
     // 模拟数据
     const data = [];
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 1; index++) {
       data.push({
         id: index + "",
         title: `列表${index}`,

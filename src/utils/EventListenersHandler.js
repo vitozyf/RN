@@ -22,15 +22,9 @@ const setBadge = (Badges: number) => {
 const openNotificationListener = (map: any) => {
   // clearBadge();
   // 通知的额外参数，用于导航跳转
-  if (
-    map.extras &&
-    (map.extras.MsgType === 2 ||
-      map.extras.MsgType === 3 ||
-      map.extras.MsgType === "2" ||
-      map.extras.MsgType === "3")
-  ) {
+  if (map.extras && map.extras.TargetURL) {
     if (CustomStore.navigator) {
-      CustomStore.navigator._navigation.navigate("MessageIndex");
+      CustomStore.navigator._navigation.navigate(map.extras.TargetURL);
     }
   }
 };
