@@ -19,7 +19,7 @@ const addLog = (Address: string, ExpContent: string, PostParam: string) => {
   const Version = DeviceInfo.getVersion();
   const SystemVersion = DeviceInfo.getSystemVersion();
   if (__DEV__) {
-    console.log("error-log", Address, ExpContent, PostParam);
+    console.log("ErrorLog-" + Address, ExpContent, PostParam);
   } else {
     const PhoneNumber = store.getState().UserInfo.PhoneNumber || "";
     $post(

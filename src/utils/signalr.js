@@ -32,7 +32,7 @@ const hubConnection = async () => {
   if (!token) {
     return;
   }
-  const connection = signalr.hubConnection(Cloud.$CONFIG.IMURL, {
+  const connection = await signalr.hubConnection(Cloud.$CONFIG.IMURL, {
     qs: {
       token,
     },
@@ -49,7 +49,7 @@ const hubConnection = async () => {
       connectionInfo.IsConnectionSuccess = true;
     })
     .fail(error => {
-      Cloud.$addLog("signalr.js", "connection--start-error: " + error.message);
+      Cloud.$addLog("signalr.js", "connection-start-error: " + error.message);
       connectionInfo.IsConnectionSuccess = false;
     });
 

@@ -56,6 +56,7 @@ class ReceivedInquiry extends Component<Props, State> {
     }
   };
   getReceivedInquiryData = () => {
+    // 模拟数据
     const data = [];
     for (let index = 0; index < 10; index++) {
       data.push({

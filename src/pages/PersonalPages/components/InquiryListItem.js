@@ -11,7 +11,7 @@ import {
   StyleSheet,
   Linking,
   Dimensions,
-  Picker,
+  PickerIOS,
 } from "react-native";
 import Icon from "@components/Iconfont/CloudIcon";
 import { DashLine, ZnlInput } from "@components";
@@ -202,16 +202,16 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
                 /> */}
-                <Picker
+                <PickerIOS
                   selectedValue={this.state.language}
-                  style={{ height: 36, width: "100%" }}
+                  style={{ height: 36, width: "100%", backgroundColor: "red" }}
                   onValueChange={(itemValue, itemIndex) =>
                     this.setState({ language: itemValue })
                   }
                 >
-                  <Picker.Item label="Java" value="java" />
-                  <Picker.Item label="JavaScript" value="js" />
-                </Picker>
+                  <PickerIOS.Item label="Java" value="java" />
+                  <PickerIOS.Item label="JavaScript" value="js" />
+                </PickerIOS>
               </View>
             </View>
           )}
