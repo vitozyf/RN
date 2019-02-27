@@ -14,12 +14,13 @@ type InquiryListProps = {
 };
 type InquiyListState = {
   refreshing: boolean,
+  language: number,
 };
 class InquiryList extends React.PureComponent<
   InquiryListProps,
   InquiyListState
 > {
-  state = { refreshing: false };
+  state = { refreshing: false, language: 1 };
 
   _keyExtractor = (item, index) => item.id;
 
