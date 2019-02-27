@@ -21,9 +21,10 @@ const setBadge = (Badges: number) => {
 // 点击通知事件处理
 const openNotificationListener = (map: any) => {
   clearBadge();
-  if (map.extras && map.extras.type === "1") {
+  // 通知的额外参数，用于导航跳转
+  if (map.extras && (map.extras.sendno === 2 || map.extras.sendno === 3)) {
     if (CustomStore.navigator) {
-      CustomStore.navigator._navigation.navigate("PersonalCenter");
+      CustomStore.navigator._navigation.navigate("MessageIndex");
     }
   }
 };

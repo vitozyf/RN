@@ -6,7 +6,6 @@ import store from "../store";
 import CustomStore from "./jumpUtils";
 import DeviceInfo from "react-native-device-info";
 import { NetInfo } from "react-native";
-
 const LOGURL = "appget/addapplog";
 
 /**
@@ -83,6 +82,8 @@ const fetchMethods = async (
     BaseUrl = CONFIG.SEARCHAPIURL;
   }
   const token = (await getStorage(CONFIG.TOKEN)) || "";
+  // 头部 token + UniqueID
+  // const AppUniqueID = DeviceInfo.getUniqueID();
   let Authorization = "JWTAPP " + token;
   if (option.erpApi) {
     BaseUrl = CONFIG.ERPAPI;

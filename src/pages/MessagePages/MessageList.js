@@ -137,7 +137,7 @@ class MessageList extends React.PureComponent<Props, State> {
   };
   onEndReached = () => {
     const { data, getMoreMesageData, showFoot } = this.props;
-    if (data.length >= 50 && !showFoot) {
+    if (data.length >= 30 && !showFoot) {
       getMoreMesageData();
     }
   };

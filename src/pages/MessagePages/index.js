@@ -28,13 +28,17 @@ class MessagePages extends Component<Props, State> {
       showFoot: false,
     };
   }
-  getMessageData = (count = 50, minMsgId = 0) => {
+  getMessageData = (count = 30, minMsgId = 0) => {
     const { SET_MESSAGE_DATA, CONCAT_MESSAGE_DATA } = this.props;
-
-    Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`).then(
-      res => {
+    if (minMsgId === 0) {
+      Cloud.$Loading.show();
+    }
+    Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`)
+      .then(res => {
+        console.log("消息列表", res);
+        Cloud.$Loading.hidden();
         const data = res || [];
-        if (data.length < 50) {
+        if (data.length < 30) {
           this.setState({
             showFoot: true,
           });
@@ -44,8 +48,10 @@ class MessagePages extends Component<Props, State> {
         } else {
           CONCAT_MESSAGE_DATA(data);
         }
-      }
-    );
+      })
+      .catch(() => {
+        Cloud.$Loading.hidden();
+      });
 
     // 数据模拟
     // const data = [];
@@ -66,7 +72,7 @@ class MessagePages extends Component<Props, State> {
   };
   getMoreMesageData = () => {
     const { MessageData } = this.props;
-    this.getMessageData(50, MessageData[MessageData.length - 1].Id);
+    this.getMessageData(30, MessageData[MessageData.length - 1].Id);
   };
   componentWillMount() {
     this.getMessageData();
