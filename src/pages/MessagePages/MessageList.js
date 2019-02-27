@@ -11,7 +11,15 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
+import { AppInit } from "@src/utils/appInit";
+// 设置角标
+const setBadge = (Badges: number) => {
+  if (Platform.OS == "ios") {
+    AppInit.JPushModule.setBadge(Badges, success => {});
+  }
+};
 
 const ITEM_HEIGHT = 72;
 
@@ -42,11 +50,17 @@ class MessageList extends React.PureComponent<Props, State> {
           name: "ReceivedInquiry",
           params: { active: "waiting" },
         });
+        if (!item.IsReaded) {
+          setBadge(-1);
+        }
       } else if (item.MsgType === 3) {
         this.toPage({
           name: "OutgoingInquiry",
           params: { active: "already" },
         });
+        if (!item.IsReaded) {
+          setBadge(-1);
+        }
       }
     };
     let MessageTitle = "";
@@ -73,7 +87,7 @@ class MessageList extends React.PureComponent<Props, State> {
       >
         <View style={styles.massageRowLeft}>
           <Image style={styles.messagePic} source={MessageIcon} />
-          <View style={item.IsReaded ? styles.IsReaded : null} />
+          <View style={!item.IsReaded ? styles.IsReaded : null} />
         </View>
         <View style={styles.massageRowRight}>
           <View style={styles.massageTitleBox}>

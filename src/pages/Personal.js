@@ -69,7 +69,7 @@ const IndexPages = createStackNavigator(
     },
   },
   {
-    initialRouteName: "InquirySearch",
+    initialRouteName: "PersonalCenter",
     headerLayoutPreset: "center",
     navigationOptions: {
       headerStyle: {

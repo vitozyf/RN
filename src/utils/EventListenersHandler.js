@@ -20,9 +20,15 @@ const setBadge = (Badges: number) => {
 };
 // 点击通知事件处理
 const openNotificationListener = (map: any) => {
-  clearBadge();
+  // clearBadge();
   // 通知的额外参数，用于导航跳转
-  if (map.extras && (map.extras.sendno === 2 || map.extras.sendno === 3)) {
+  if (
+    map.extras &&
+    (map.extras.sendno === 2 ||
+      map.extras.sendno === 3 ||
+      map.extras.sendno === "2" ||
+      map.extras.sendno === "3")
+  ) {
     if (CustomStore.navigator) {
       CustomStore.navigator._navigation.navigate("MessageIndex");
     }
@@ -32,7 +38,7 @@ const openNotificationListener = (map: any) => {
 // 前后台切换事件处理
 const handleAppStateChange = (nextAppState: string) => {
   if (nextAppState === "active") {
-    clearBadge();
+    // clearBadge();
   }
 };
 
