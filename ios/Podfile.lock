@@ -9,6 +9,10 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - Picker (4.3.7):
+    - Picker/Core (= 4.3.7)
+  - Picker/Core (4.3.7):
+    - React
   - React (0.57.2):
     - React/Core (= 0.57.2)
   - React/ART (0.57.2):
@@ -67,6 +71,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Picker (from `../node_modules/react-native-picker`)
   - React/ART (from `../node_modules/react-native/`)
   - React/Core (from `../node_modules/react-native/`)
   - React/CxxBridge (from `../node_modules/react-native/`)
@@ -96,6 +101,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Picker:
+    :path: "../node_modules/react-native-picker"
   React:
     :path: "../node_modules/react-native/"
   RNCharts:
@@ -109,11 +116,12 @@ SPEC CHECKSUMS:
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
   glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
+  Picker: 67a2566d9ff6b141d505d88b9177f905aaa5f1a6
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   RNCharts: 786d1ea7d4c42216b4895cdaa9b8865469833430
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: e8110b4d49489cf0ee7e2035fe25c6b1223e3833
+PODFILE CHECKSUM: e18c5abe0f7aed3b707747257e7afd2eec3472f1
 
 COCOAPODS: 1.5.3

@@ -27,6 +27,7 @@
     "react-native-device-info": "^0.24.3",
     "react-native-keyboard-aware-scroll-view": "^0.7.4",
     "react-native-modal": "^6.5.0",
+    "react-native-picker": "^4.3.7",
     "react-native-root-siblings": "2.2.0",
     "react-native-signalr": "^1.0.6",
     "react-native-splash-screen": "^3.1.1",

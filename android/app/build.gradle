@@ -170,6 +170,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-picker')
     implementation project(':react-native-wechat')
     implementation project(':react-native-charts-wrapper')
     implementation project(':react-native-device-info')
