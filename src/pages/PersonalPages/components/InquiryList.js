@@ -7,6 +7,7 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type InquiryListProps = {
   data: Array<any>,
@@ -14,13 +15,12 @@ type InquiryListProps = {
 };
 type InquiyListState = {
   refreshing: boolean,
-  language: number,
 };
 class InquiryList extends React.PureComponent<
   InquiryListProps,
   InquiyListState
 > {
-  state = { refreshing: false, language: 1 };
+  state = { refreshing: false };
 
   _keyExtractor = (item, index) => item.id;
 
@@ -70,19 +70,21 @@ class InquiryList extends React.PureComponent<
   render() {
     const { refreshing } = this.state;
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={this.props.data}
-          extraData={this.state}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-          ListEmptyComponent={this._renderListEmptyComponent}
-          refreshing={refreshing}
-          onRefresh={this.onRefresh}
-          onEndReached={this.onEndReached}
-          onEndReachedThreshold={0.5}
-        />
-      </View>
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
+          <FlatList
+            data={this.props.data}
+            extraData={this.state}
+            keyExtractor={this._keyExtractor}
+            renderItem={this._renderItem}
+            ListEmptyComponent={this._renderListEmptyComponent}
+            refreshing={refreshing}
+            onRefresh={this.onRefresh}
+            onEndReached={this.onEndReached}
+            onEndReachedThreshold={0.5}
+          />
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

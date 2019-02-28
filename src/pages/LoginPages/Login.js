@@ -542,7 +542,10 @@ class Login extends Component<Props, State> {
       );
 
     return (
-      <KeyboardAwareScrollView contentContainerStyle={styles.Page}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.Page}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.pagebox}>
           <View style={styles.Body}>
             <View style={styles.title}>
@@ -597,7 +600,6 @@ class Login extends Component<Props, State> {
 const styles = StyleSheet.create({
   Page: {
     backgroundColor: "#fff",
-    flex: 1,
     flexDirection: "column",
     alignItems: "center",
     // paddingLeft: 10,
