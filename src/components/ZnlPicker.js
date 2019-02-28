@@ -21,6 +21,7 @@ type IOption = {
 };
 type Props = {
   options: Array<IOption>,
+  selectedValue: string | number | boolean,
 };
 type State = {
   modalVisible: boolean,
@@ -29,8 +30,17 @@ class ZnlPicker extends Component<Props, State> {
   state = {
     modalVisible: false,
   };
+  closeModal = () => {
+    this.setState({ modalVisible: false });
+  };
+  OpenModal = () => {
+    this.setState({ modalVisible: true });
+  };
+  onValueChange = (value: string | number | boolean, index: string) => {
+    console.log(1111, value, index);
+  };
   render() {
-    const { options } = this.props;
+    const { options, selectedValue } = this.props;
     const { modalVisible } = this.state;
     if (Platform.OS === "android") {
       return (
@@ -45,21 +55,17 @@ class ZnlPicker extends Component<Props, State> {
     } else if (Platform.OS === "ios") {
       return (
         <View>
-          <ZnlInput
-            placeholder="请选择"
-            style={{ height: 36 }}
-            inputStyle={{ fontSize: 14 }}
-            onFocus={() => {
-              this.setState({ modalVisible: true });
-            }}
-          />
+          <TouchableOpacity style={{ height: 36 }} onPress={this.OpenModal}>
+            <Text> 请选择</Text>
+          </TouchableOpacity>
           <Modal transparent={true} visible={modalVisible}>
+            {/* onDismiss={() => {
+                this.textInput && this.textInput.blur();
+              }} */}
             <TouchableOpacity
               activeOpacity={1}
               style={styles.blankView}
-              onPress={() => {
-                this.setState({ modalVisible: false });
-              }}
+              onPress={this.closeModal}
             />
             <View style={styles.IosContainer}>
               <View style={styles.pickerHeader}>
@@ -84,7 +90,11 @@ class ZnlPicker extends Component<Props, State> {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <Picker style={styles.iosPicker} {...this.props}>
+              <Picker
+                style={styles.iosPicker}
+                {...this.props}
+                onValueChange={this.onValueChange}
+              >
                 {options.map((item, index) => {
                   return (
                     <Picker.Item

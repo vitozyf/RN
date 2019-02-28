@@ -161,7 +161,7 @@ class PersonalCenter extends Component<Props> {
       ]);
     }
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() => {

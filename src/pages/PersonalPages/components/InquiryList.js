@@ -106,7 +106,6 @@ class InquiryList extends React.PureComponent<
           onRefresh={this.onRefresh}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
-          keyboardShouldPersistTaps="handled"
         />
       </View>
     );
