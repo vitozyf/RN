@@ -44,8 +44,9 @@ const hubConnection = async () => {
     .start({
       withCredentials: false,
     })
-    .done(() => {
-      __DEV__ && console.log("signalr-connection-success", Cloud.$CONFIG.IMURL);
+    .done(res => {
+      __DEV__ &&
+        console.log("signalr-connection-success", Cloud.$CONFIG.IMURL, res);
       connectionInfo.IsConnectionSuccess = true;
     })
     .fail(error => {

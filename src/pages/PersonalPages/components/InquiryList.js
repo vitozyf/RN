@@ -7,7 +7,7 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
-import { ZnlPicker } from "@components";
+// import { ZnlPicker } from "@components";
 type InquiryListProps = {
   data: Array<any>,
   ActiveRouteName: string,
@@ -71,7 +71,7 @@ class InquiryList extends React.PureComponent<
     const { refreshing } = this.state;
     return (
       <View style={styles.container}>
-        <ZnlPicker
+        {/* <ZnlPicker
           selectedValue={this.state.language}
           onValueChange={(itemValue, itemIndex) =>
             this.setState({ language: itemValue })
@@ -94,7 +94,7 @@ class InquiryList extends React.PureComponent<
               value: 4,
             },
           ]}
-        />
+        /> */}
 
         <FlatList
           data={this.props.data}
