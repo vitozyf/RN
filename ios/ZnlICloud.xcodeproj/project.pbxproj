@@ -32,7 +32,7 @@
 		6F3C6F874202483FBEDD96F6 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 64BE6C810C9E4FBEA702C877 /* AntDesign.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		924C54DA61C48EF81A3021D8 /* Pods_ZnlICloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462F1EC23B9A9EB14E3E4840 /* Pods_ZnlICloud.framework */; };
-		94871FB92227B21A00F8F7D9 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94871FB82227B0CF00F8F7D9 /* libRCTBEEPickerManager.a */; };
+		94871FC02227C02B00F8F7D9 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94871FBF2227C01400F8F7D9 /* libRCTBEEPickerManager.a */; };
 		949BEDA521C8CE9300D33A8D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949BED7821C8CE9300D33A8D /* SystemConfiguration.framework */; };
 		949BEDA721C8CE9F00D33A8D /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 949BEDA621C8CE9F00D33A8D /* CoreTelephony.framework */; };
 		949BEDA921C8CEAB00D33A8D /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 949BEDA821C8CEAB00D33A8D /* libsqlite3.0.tbd */; };
@@ -333,9 +333,9 @@
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
-		94871FB72227B0CF00F8F7D9 /* PBXContainerItemProxy */ = {
+		94871FBE2227C01400F8F7D9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 94871FB32227B0CE00F8F7D9 /* RCTBEEPickerManager.xcodeproj */;
+			containerPortal = 94871FBA2227C01300F8F7D9 /* RCTBEEPickerManager.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 17D41E551D7EE0CA0031415E;
 			remoteInfo = RCTBEEPickerManager;
@@ -438,7 +438,7 @@
 		84179DA322284561B8AF9BDD /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		8A76CBB218C5483494BBB250 /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWeChat.xcodeproj; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; };
 		94871F832227AFD100F8F7D9 /* Picker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Picker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		94871FB32227B0CE00F8F7D9 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
+		94871FBA2227C01300F8F7D9 /* RCTBEEPickerManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBEEPickerManager.xcodeproj; path = "../node_modules/react-native-picker/ios/RCTBEEPickerManager.xcodeproj"; sourceTree = "<group>"; };
 		949BED7821C8CE9300D33A8D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		949BEDA621C8CE9F00D33A8D /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		949BEDA821C8CEAB00D33A8D /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -486,8 +486,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94871FC02227C02B00F8F7D9 /* libRCTBEEPickerManager.a in Frameworks */,
 				94C0898121E8A215003870BD /* libRCTJCoreModule.a in Frameworks */,
-				94871FB92227B21A00F8F7D9 /* libRCTBEEPickerManager.a in Frameworks */,
 				94C0898021E89E7C003870BD /* libRCTJPushModule.a in Frameworks */,
 				94C0897921E8960B003870BD /* libresolv.tbd in Frameworks */,
 				94C0897721E895F6003870BD /* Security.framework in Frameworks */,
@@ -691,7 +691,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				94871FB32227B0CE00F8F7D9 /* RCTBEEPickerManager.xcodeproj */,
+				94871FBA2227C01300F8F7D9 /* RCTBEEPickerManager.xcodeproj */,
 				94C0892221E8916A003870BD /* RCTJPushModule.xcodeproj */,
 				94C088F021E8913C003870BD /* RCTJCoreModule.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -782,10 +782,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		94871FB42227B0CE00F8F7D9 /* Products */ = {
+		94871FBB2227C01300F8F7D9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				94871FB82227B0CF00F8F7D9 /* libRCTBEEPickerManager.a */,
+				94871FBF2227C01400F8F7D9 /* libRCTBEEPickerManager.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -932,8 +932,8 @@
 					ProjectRef = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
 				},
 				{
-					ProductGroup = 94871FB42227B0CE00F8F7D9 /* Products */;
-					ProjectRef = 94871FB32227B0CE00F8F7D9 /* RCTBEEPickerManager.xcodeproj */;
+					ProductGroup = 94871FBB2227C01300F8F7D9 /* Products */;
+					ProjectRef = 94871FBA2227C01300F8F7D9 /* RCTBEEPickerManager.xcodeproj */;
 				},
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
@@ -1274,11 +1274,11 @@
 			remoteRef = 946C275121A25F9500FC4A0B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		94871FB82227B0CF00F8F7D9 /* libRCTBEEPickerManager.a */ = {
+		94871FBF2227C01400F8F7D9 /* libRCTBEEPickerManager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTBEEPickerManager.a;
-			remoteRef = 94871FB72227B0CF00F8F7D9 /* PBXContainerItemProxy */;
+			remoteRef = 94871FBE2227C01400F8F7D9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		949BED2521C8C93900D33A8D /* libRCTAnimation.a */ = {

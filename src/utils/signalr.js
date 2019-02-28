@@ -17,7 +17,6 @@ const ClientMethodSets = [
   {
     name: "addAppMsg",
     method: data => {
-      console.log(11111, data);
       // 消息列表更新
       store.dispatch({
         type: "ADD_MESSAGE_DATA",

@@ -7,7 +7,7 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
-// import { ZnlPicker } from "@components";
+import RNPicker from "@components/RNPicker";
 
 type InquiryListProps = {
   data: Array<any>,
@@ -72,6 +72,7 @@ class InquiryList extends React.PureComponent<
     const { refreshing } = this.state;
     return (
       <View style={styles.container}>
+        <RNPicker />
         <FlatList
           data={this.props.data}
           extraData={this.state}
