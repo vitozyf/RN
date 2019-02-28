@@ -137,7 +137,7 @@ const fetchMethods = async (
               resolve(response);
             }
           } else if (response.Code === 401 || response.code === 401) {
-            ZnlToast.show(response.Message || "权限验证失败");
+            // ZnlToast.show(response.Message || "权限验证失败");
             // 用户身份失效,清除存储
             removeStorage(CONFIG.TOKEN);
             store.dispatch({ type: "ClearUserInfo" });

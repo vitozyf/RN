@@ -15,9 +15,15 @@ import {
 } from "react-native";
 import Icon from "@components/Iconfont/CloudIcon";
 import { DashLine, ZnlInput } from "@components";
+import RNPicker from "@components/RNPicker";
+
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 20;
 
+type SelectData = {
+  key: string | number | boolean,
+  value: string,
+};
 type Props = {
   data: Object,
 };
@@ -33,8 +39,21 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       language: "Java",
     };
   }
+  onPickerConfirm = (data: SelectData) => {
+    console.log(121212, data);
+  };
+  onPickerConfirm1 = (data: SelectData) => {
+    console.log(121212, data);
+  };
   render() {
     const { showMoreParams } = this.state;
+    let testData = [];
+    let testData1 = [];
+    for (var i = 0; i < 20; i++) {
+      testData.push({ key: i, value: i + "-" + i });
+      testData1.push({ key: i, value: i + "=" + i });
+    }
+
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
         <View style={styles.timeView}>
@@ -196,25 +215,11 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 </Text>
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
-                {/* <ZnlInput
-                  placeholder="请选择"
-                  style={{ height: 36 }}
-                  inputStyle={{ fontSize: 14 }}
-                /> */}
-                <Picker
-                  style={{ backgroundColor: "red" }}
-                  selectedValue={this.state.language}
-                  onValueChange={(itemValue, itemIndex) =>
-                    this.setState({ language: itemValue })
-                  }
-                >
-                  <Picker.Item label="Java" value="java" />
-                  <Picker.Item label="JavaScript" value="js" />
-                  <Picker.Item label="Java1" value="java1" />
-                  <Picker.Item label="JavaScript1" value="js1" />
-                  <Picker.Item label="Java2" value="java2" />
-                  <Picker.Item label="JavaScript2" value="js2" />
-                </Picker>
+                <RNPicker
+                  data={testData}
+                  onPickerConfirm={this.onPickerConfirm}
+                  key="point"
+                />
               </View>
             </View>
           )}
@@ -256,10 +261,10 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 </Text>
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
-                <ZnlInput
-                  placeholder="请选择"
-                  style={{ height: 36 }}
-                  inputStyle={{ fontSize: 14 }}
+                <RNPicker
+                  data={testData1}
+                  onPickerConfirm={this.onPickerConfirm1}
+                  key="quality"
                 />
               </View>
             </View>

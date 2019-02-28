@@ -7,6 +7,7 @@ import {
   BackHandler,
   Alert,
 } from "react-native";
+import ReactNative from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader, ZnlProgress } from "@components";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -293,6 +294,11 @@ class Register extends Component {
     );
   };
 
+  _scrollToInput(reactNode: any) {
+    // Add a 'scroll' ref to your ScrollView
+    this.scroll.props.scrollToFocusedInput(reactNode);
+  }
+
   render() {
     const data = [
       {
@@ -309,7 +315,12 @@ class Register extends Component {
       },
     ];
     return (
-      <KeyboardAwareScrollView contentContainerStyle={styles.Page}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.Page}
+        innerRef={ref => {
+          this.scroll = ref;
+        }}
+      >
         <View style={styles.pagebox}>
           <ZnlProgress data={data} active={1} />
           <View style={styles.title}>
@@ -347,6 +358,11 @@ class Register extends Component {
                     this.onChangeText(value, "AccountName");
                   }}
                   placeholder="账号"
+                  onFocus={(event: Event) => {
+                    this._scrollToInput(
+                      ReactNative.findNodeHandle(event.target)
+                    );
+                  }}
                 />
               </View>
               <View style={styles.InputBox}>
@@ -357,6 +373,11 @@ class Register extends Component {
                     this.onChangeText(value, "PhoneNumber");
                   }}
                   placeholder="手机号"
+                  onFocus={(event: Event) => {
+                    this._scrollToInput(
+                      ReactNative.findNodeHandle(event.target)
+                    );
+                  }}
                 />
               </View>
               <View style={styles.InputBoxMessage}>
@@ -367,6 +388,11 @@ class Register extends Component {
                     this.onChangeText(value, "SmsCode");
                   }}
                   placeholder="验证码"
+                  onFocus={(event: Event) => {
+                    this._scrollToInput(
+                      ReactNative.findNodeHandle(event.target)
+                    );
+                  }}
                 />
                 <ZnlButton
                   style={styles.ButtonMessage}
@@ -389,6 +415,11 @@ class Register extends Component {
                   placeholder="6-16位密码"
                   secureTextEntry={this.state.secureTextEntry}
                   renderCloseBtn={this.renderCloseBtn}
+                  onFocus={(event: Event) => {
+                    this._scrollToInput(
+                      ReactNative.findNodeHandle(event.target)
+                    );
+                  }}
                 />
               </View>
               <View style={styles.InputBox}>
@@ -401,6 +432,11 @@ class Register extends Component {
                   placeholder="再次输入密码"
                   secureTextEntry={this.state.secureTextEntry}
                   renderCloseBtn={this.renderCloseBtn}
+                  onFocus={(event: Event) => {
+                    this._scrollToInput(
+                      ReactNative.findNodeHandle(event.target)
+                    );
+                  }}
                 />
               </View>
             </View>

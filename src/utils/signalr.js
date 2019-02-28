@@ -31,14 +31,14 @@ const hubConnection = async () => {
   if (!token) {
     return;
   }
-  const connection = signalr.hubConnection(Cloud.$CONFIG.IMURL, {
+  const connection = await signalr.hubConnection(Cloud.$CONFIG.IMURL, {
     qs: {
       token,
     },
   });
   connection.logging = true; // 启用日志记录
 
-  const proxy = connection.createHubProxy("IMHub");
+  const proxy = await connection.createHubProxy("IMHub");
 
   //   注册客户端方法
   ClientMethodSets.map(item => {
