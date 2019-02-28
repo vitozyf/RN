@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   BackHandler,
   Alert,
+  findNodeHandle,
 } from "react-native";
-import ReactNative from "react-native";
 import { ZnlInput, ZnlButton, ZnlHeader, ZnlProgress } from "@components";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -294,11 +294,6 @@ class Register extends Component {
     );
   };
 
-  _scrollToInput(reactNode: any) {
-    // Add a 'scroll' ref to your ScrollView
-    this.scroll.props.scrollToFocusedInput(reactNode);
-  }
-
   render() {
     const data = [
       {
@@ -315,142 +310,119 @@ class Register extends Component {
       },
     ];
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.Page}
-        innerRef={ref => {
-          this.scroll = ref;
-        }}
-      >
-        <View style={styles.pagebox}>
-          <ZnlProgress data={data} active={1} />
-          <View style={styles.title}>
-            <Text style={styles.titleText}>注册账号</Text>
-          </View>
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.Page}
+          innerRef={ref => {
+            this.scroll = ref;
+          }}
+        >
+          <View style={styles.pagebox}>
+            <ZnlProgress data={data} active={1} />
+            <View style={styles.title}>
+              <Text style={styles.titleText}>注册账号</Text>
+            </View>
 
-          <View style={styles.Body}>
-            <View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "ContactCompanyName");
-                  }}
-                  placeholder="公司名称"
-                  autoFocus={false}
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "ContactName");
-                  }}
-                  placeholder="联系人"
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "AccountName");
-                  }}
-                  placeholder="账号"
-                  onFocus={(event: Event) => {
-                    this._scrollToInput(
-                      ReactNative.findNodeHandle(event.target)
-                    );
-                  }}
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "PhoneNumber");
-                  }}
-                  placeholder="手机号"
-                  onFocus={(event: Event) => {
-                    this._scrollToInput(
-                      ReactNative.findNodeHandle(event.target)
-                    );
-                  }}
-                />
-              </View>
-              <View style={styles.InputBoxMessage}>
-                <ZnlInput
-                  style={styles.InputMessage}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "SmsCode");
-                  }}
-                  placeholder="验证码"
-                  onFocus={(event: Event) => {
-                    this._scrollToInput(
-                      ReactNative.findNodeHandle(event.target)
-                    );
-                  }}
-                />
-                <ZnlButton
-                  style={styles.ButtonMessage}
-                  textStyle={styles.ButtonMessageText}
-                  onPress={this.GetCode}
-                  disabled={this.state.Time != 0}
-                >
-                  {this.state.Time === 0
-                    ? "获取验证码"
-                    : `${this.state.Time}秒后重发`}
-                </ZnlButton>
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "Password");
-                  }}
-                  placeholder="6-16位密码"
-                  secureTextEntry={this.state.secureTextEntry}
-                  renderCloseBtn={this.renderCloseBtn}
-                  onFocus={(event: Event) => {
-                    this._scrollToInput(
-                      ReactNative.findNodeHandle(event.target)
-                    );
-                  }}
-                />
-              </View>
-              <View style={styles.InputBox}>
-                <ZnlInput
-                  style={styles.Input}
-                  inputStyle={styles.inputIn}
-                  onChangeText={value => {
-                    this.onChangeText(value, "RePassword");
-                  }}
-                  placeholder="再次输入密码"
-                  secureTextEntry={this.state.secureTextEntry}
-                  renderCloseBtn={this.renderCloseBtn}
-                  onFocus={(event: Event) => {
-                    this._scrollToInput(
-                      ReactNative.findNodeHandle(event.target)
-                    );
-                  }}
-                />
+            <View style={styles.Body}>
+              <View>
+                <View style={styles.InputBox}>
+                  <ZnlInput
+                    style={styles.Input}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "ContactCompanyName");
+                    }}
+                    placeholder="公司名称"
+                    autoFocus={false}
+                  />
+                </View>
+                <View style={styles.InputBox}>
+                  <ZnlInput
+                    style={styles.Input}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "ContactName");
+                    }}
+                    placeholder="联系人"
+                  />
+                </View>
+                <View style={styles.InputBox}>
+                  <ZnlInput
+                    style={styles.Input}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "AccountName");
+                    }}
+                    placeholder="账号"
+                  />
+                </View>
+                <View style={styles.InputBox}>
+                  <ZnlInput
+                    style={styles.Input}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "PhoneNumber");
+                    }}
+                    placeholder="手机号"
+                  />
+                </View>
+                <View style={styles.InputBoxMessage}>
+                  <ZnlInput
+                    style={styles.InputMessage}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "SmsCode");
+                    }}
+                    placeholder="验证码"
+                  />
+                  <ZnlButton
+                    style={styles.ButtonMessage}
+                    textStyle={styles.ButtonMessageText}
+                    onPress={this.GetCode}
+                    disabled={this.state.Time != 0}
+                  >
+                    {this.state.Time === 0
+                      ? "获取验证码"
+                      : `${this.state.Time}秒后重发`}
+                  </ZnlButton>
+                </View>
+                <View style={styles.InputBox}>
+                  <ZnlInput
+                    style={styles.Input}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "Password");
+                    }}
+                    placeholder="6-16位密码"
+                    secureTextEntry={this.state.secureTextEntry}
+                    renderCloseBtn={this.renderCloseBtn}
+                  />
+                </View>
+                <View style={styles.InputBox}>
+                  <ZnlInput
+                    style={styles.Input}
+                    inputStyle={styles.inputIn}
+                    onChangeText={value => {
+                      this.onChangeText(value, "RePassword");
+                    }}
+                    placeholder="再次输入密码"
+                    secureTextEntry={this.state.secureTextEntry}
+                    renderCloseBtn={this.renderCloseBtn}
+                  />
+                </View>
               </View>
             </View>
-          </View>
 
-          <ZnlButton
-            type="main"
-            style={styles.Button}
-            onPress={this.wechatLoginHandler}
-          >
-            下一步
-          </ZnlButton>
-        </View>
-      </KeyboardAwareScrollView>
+            <ZnlButton
+              type="main"
+              style={styles.Button}
+              onPress={this.wechatLoginHandler}
+            >
+              下一步
+            </ZnlButton>
+          </View>
+        </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
@@ -458,7 +430,7 @@ class Register extends Component {
 const styles = StyleSheet.create({
   Page: {
     backgroundColor: "#fff",
-    flex: 1,
+    // flex: 1,
     flexDirection: "column",
     alignItems: "center",
     paddingTop: 10,
