@@ -32,15 +32,21 @@ const hubConnection = async () => {
   if (!token) {
     return;
   }
-  const connection = await signalr.hubConnection(Cloud.$CONFIG.IMURL, {
+  const connection = signalr.hubConnection(Cloud.$CONFIG.IMURL, {
     qs: {
       token,
     },
   });
-
   connection.logging = true; // 启用日志记录
 
-  await connection
+  const proxy = connection.createHubProxy("IMHub");
+
+  //   注册客户端方法
+  ClientMethodSets.map(item => {
+    proxy.on(item.name, item.method);
+  });
+
+  connection
     .start({
       withCredentials: false,
     })
@@ -64,11 +70,6 @@ const hubConnection = async () => {
     Cloud.$addLog("signalr.js", "connection-error: " + error.message);
   });
 
-  const proxy = connection.createHubProxy("IMHub");
-  //   注册客户端方法
-  ClientMethodSets.map(item => {
-    proxy.on(item.name, item.method);
-  });
   Cloud.$connection = connection;
   Cloud.$proxy = proxy;
   return connection;
