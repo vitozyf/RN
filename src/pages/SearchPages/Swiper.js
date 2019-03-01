@@ -1,5 +1,5 @@
 /**
- * 公司认证资料图片轮播
+ * 公司认证资料图片轮播页
  *
  */
 import React, { Component } from "react";
@@ -21,7 +21,7 @@ class SwiperModal extends Component<Props, State> {
   static defaultProps = {
     isVisible: false,
   };
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       pageIndex: 0,

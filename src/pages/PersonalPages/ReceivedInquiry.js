@@ -10,10 +10,11 @@ import InquiryList from "@pages/PersonalPages/components/InquiryList";
 import { connect } from "react-redux";
 import Icon from "@components/Iconfont/CloudIcon";
 
-type Props = { navigation: INavigation, ActiveRouteName: string };
+type Props = { navigation: INavigation };
 type State = {
   active: string, // all waiting already
   data: Array<any>,
+  showFoot: boolean,
 };
 class ReceivedInquiry extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -48,6 +49,7 @@ class ReceivedInquiry extends Component<Props, State> {
     this.state = {
       active: "all",
       data: [],
+      showFoot: false,
     };
   }
   setActive = (active: string) => {
@@ -55,7 +57,7 @@ class ReceivedInquiry extends Component<Props, State> {
       this.setState({ active });
     }
   };
-  getReceivedInquiryData = () => {
+  getReceivedInquiryData = (count = 5, minMsgId = 0) => {
     // 模拟数据
     const data = [];
     for (let index = 0; index < 5; index++) {
@@ -64,12 +66,37 @@ class ReceivedInquiry extends Component<Props, State> {
         title: `列表${index}`,
       });
     }
-
     this.setState({ data });
+
+    // if (minMsgId === 0) {
+    //   Cloud.$Loading.show();
+    // }
+    // Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`)
+    //   .then(res => {
+    //     Cloud.$Loading.hidden();
+    //     const data = res || [];
+    //     if (data.length < 5) {
+    //       this.setState({
+    //         showFoot: true,
+    //       });
+    //     }
+    //     if (minMsgId === 0) {
+    // this.setState({
+    //   data
+    // })
+    //     } else {
+    // const ConcatData = this.state.data.concat(data);
+    // this.setState({
+    //   data: ConcatData
+    // })
+    //     }
+    //   })
+    //   .catch(() => {
+    //     Cloud.$Loading.hidden();
+    //   });
   };
   render() {
-    const { active, data } = this.state;
-    const { ActiveRouteName } = this.props;
+    const { active, data, showFoot } = this.state;
     const that = this;
     const tabs = [
       {
@@ -98,7 +125,12 @@ class ReceivedInquiry extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <HeaderTabs active={active} tabs={tabs} />
-        <InquiryList data={data} ActiveRouteName={ActiveRouteName} />
+
+        <InquiryList
+          showFoot={showFoot}
+          data={data}
+          ActiveRoute="ReceivedInquiry"
+        />
       </View>
     );
   }
@@ -117,12 +149,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, { ActiveRouteName: state.ActiveRouteName }, props);
+  return props;
 };
-const mapDispatchToProps = dispatch => {
-  return {};
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReceivedInquiry);
+export default connect(mapStateToProps)(ReceivedInquiry);

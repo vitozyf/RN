@@ -9,9 +9,11 @@ import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 import InquiryList from "@pages/PersonalPages/components/InquiryList";
 import { connect } from "react-redux";
 
-type Props = { navigation: INavigation, ActiveRouteName: string };
+type Props = { navigation: INavigation };
 type State = {
   active: string, // all waiting already
+  data: Array<any>,
+  showFoot: boolean,
 };
 class OutgoingInquiry extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -26,6 +28,8 @@ class OutgoingInquiry extends Component<Props, State> {
     super(props);
     this.state = {
       active: "all",
+      data: [],
+      showFoot: false,
     };
   }
   setActive = (active: string) => {
@@ -33,9 +37,38 @@ class OutgoingInquiry extends Component<Props, State> {
       this.setState({ active });
     }
   };
+  getReceivedInquiryData = (count = 5, minMsgId = 0) => {
+    this.setState({ data: [] });
+
+    // if (minMsgId === 0) {
+    //   Cloud.$Loading.show();
+    // }
+    // Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`)
+    //   .then(res => {
+    //     Cloud.$Loading.hidden();
+    //     const data = res || [];
+    //     if (data.length < 5) {
+    //       this.setState({
+    //         showFoot: true,
+    //       });
+    //     }
+    //     if (minMsgId === 0) {
+    // this.setState({
+    //   data
+    // })
+    //     } else {
+    // const ConcatData = this.state.data.concat(data);
+    // this.setState({
+    //   data: ConcatData
+    // })
+    //     }
+    //   })
+    //   .catch(() => {
+    //     Cloud.$Loading.hidden();
+    //   });
+  };
   render() {
-    const { active } = this.state;
-    const { ActiveRouteName } = this.props;
+    const { active, data, showFoot } = this.state;
     const that = this;
     const tabs = [
       {
@@ -60,11 +93,14 @@ class OutgoingInquiry extends Component<Props, State> {
         },
       },
     ];
-    const data = [];
     return (
       <View style={styles.container}>
         <HeaderTabs active={active} tabs={tabs} />
-        <InquiryList data={data} ActiveRouteName={ActiveRouteName} />
+        <InquiryList
+          showFoot={showFoot}
+          data={data}
+          ActiveRoute="OutgoingInquiry"
+        />
       </View>
     );
   }
@@ -72,6 +108,7 @@ class OutgoingInquiry extends Component<Props, State> {
     const { navigation } = this.props;
     const active = navigation.getParam("active");
     this.setActive(active);
+    this.getReceivedInquiryData();
   }
 }
 const styles = StyleSheet.create({
@@ -81,7 +118,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, props) => {
-  return Object.assign({}, { ActiveRouteName: state.ActiveRouteName }, props);
+  return props;
 };
 
 export default connect(mapStateToProps)(OutgoingInquiry);

@@ -39,7 +39,7 @@ type Props = {
 };
 const defaultEnquiryAndQuoteCntItem: IEnquiryAndQuoteCnt = {
   isHaveNoRead: false,
-  sumCnt: 10,
+  sumCnt: 0,
   typeName: 0,
 };
 class PersonalCenter extends Component<Props> {

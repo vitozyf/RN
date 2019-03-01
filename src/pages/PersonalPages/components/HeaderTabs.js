@@ -17,6 +17,9 @@ type Props = {
 class HeaderTabs extends Component<Props> {
   render() {
     const { active, tabs } = this.props;
+    if (tabs.length === 0) {
+      return null;
+    }
     return (
       <View style={styles.header}>
         {tabs.map(item => {

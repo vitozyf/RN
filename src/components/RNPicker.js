@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   pickerText: {
     color: "#333",
     lineHeight: 36,
-    fontWeight: "100",
+    fontWeight: "400",
   },
   selectedValue: {
     color: "#999",

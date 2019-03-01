@@ -11,7 +11,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 type InquiryListProps = {
   data: Array<any>,
-  ActiveRouteName: string,
+  ActiveRoute: string,
+  showFoot: boolean,
 };
 type InquiyListState = {
   refreshing: boolean,
@@ -27,10 +28,10 @@ class InquiryList extends React.PureComponent<
   _renderItem = ({ item }) => <InquiryListItem data={item} />;
 
   _renderListEmptyComponent = () => {
-    const { ActiveRouteName } = this.props;
+    const { ActiveRoute } = this.props;
     return (
       <View style={styles.containerCenter}>
-        {ActiveRouteName === "OutgoingInquiry" ? (
+        {ActiveRoute === "OutgoingInquiry" ? (
           <View style={styles.nullDataBox}>
             <Image
               style={styles.nullDataImage}
@@ -60,6 +61,35 @@ class InquiryList extends React.PureComponent<
     );
   };
 
+  // 渲染底部
+  _renderFooter = () => {
+    const { showFoot, data } = this.props;
+    if (showFoot && data.length > 0) {
+      return (
+        <View
+          style={{
+            height: 30,
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Text
+            style={{
+              color: "#999999",
+              fontSize: 14,
+              marginTop: 5,
+              marginBottom: 5,
+            }}
+          >
+            没有更多数据了...
+          </Text>
+        </View>
+      );
+    } else if (!showFoot || data.length === 0) {
+      return null;
+    }
+  };
+
   onRefresh = () => {
     console.log(111111);
   };
@@ -78,6 +108,7 @@ class InquiryList extends React.PureComponent<
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
             ListEmptyComponent={this._renderListEmptyComponent}
+            ListFooterComponent={this._renderFooter}
             refreshing={refreshing}
             onRefresh={this.onRefresh}
             onEndReached={this.onEndReached}
