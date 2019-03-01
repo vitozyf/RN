@@ -542,32 +542,34 @@ class Login extends Component<Props, State> {
       );
 
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.Page}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={styles.pagebox}>
-          <View style={styles.Body}>
-            <View style={styles.title}>
-              <Text style={styles.titleText}>{TitleText}</Text>
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.Page}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.pagebox}>
+            <View style={styles.Body}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>{TitleText}</Text>
+              </View>
+              {LoginForm}
             </View>
-            {LoginForm}
-          </View>
 
-          <ZnlButton
-            type="main"
-            style={styles.Button}
-            onPress={this.LoginHandler}
-          >
-            登录
-          </ZnlButton>
-
-          {Platform.OS == "android" && (
-            <ZnlButton style={styles.ButtonReg} onPress={this.ToRegister}>
-              注册
+            <ZnlButton
+              type="main"
+              style={styles.Button}
+              onPress={this.LoginHandler}
+            >
+              登录
             </ZnlButton>
-          )}
-        </View>
+
+            {Platform.OS == "android" && (
+              <ZnlButton style={styles.ButtonReg} onPress={this.ToRegister}>
+                注册
+              </ZnlButton>
+            )}
+          </View>
+        </KeyboardAwareScrollView>
         {this.state.showWechat && hasWechat && (
           <View style={styles.wechatLoginBox}>
             <View style={styles.wechatLoginTitle}>
@@ -592,7 +594,7 @@ class Login extends Component<Props, State> {
             </View>
           </View>
         )}
-      </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
@@ -676,6 +678,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     paddingBottom: 24,
+    width: "100%",
   },
   wechatLoginTitle: {
     height: 50,
