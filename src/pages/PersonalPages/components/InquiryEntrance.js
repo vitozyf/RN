@@ -4,10 +4,16 @@
  */
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+
+type IEnquiryAndQuoteCnt = {
+  isHaveNoRead: boolean,
+  sumCnt: number,
+  typeName: number,
+};
 type Props = {
   title: string,
-  message1: number,
-  message2: number,
+  message1: IEnquiryAndQuoteCnt,
+  message2: IEnquiryAndQuoteCnt,
   message1Title: string,
   message2Title: string,
   titlePress: Function,
@@ -49,8 +55,8 @@ class InquiryEntrance extends Component<Props> {
           >
             <View style={styles.textCenter}>
               <View style={styles.UnreadPromptBox}>
-                <View style={styles.UnreadPrompt} />
-                <Text style={styles.message1Text}>{message1}</Text>
+                {message1.isHaveNoRead && <View style={styles.UnreadPrompt} />}
+                <Text style={styles.message1Text}>{message1.sumCnt}</Text>
               </View>
             </View>
             <View style={styles.textCenter}>
@@ -64,8 +70,8 @@ class InquiryEntrance extends Component<Props> {
           >
             <View style={styles.textCenter}>
               <View style={styles.UnreadPromptBox}>
-                <View style={styles.UnreadPrompt} />
-                <Text style={styles.message1Text}>{message2}</Text>
+                {message2.isHaveNoRead && <View style={styles.UnreadPrompt} />}
+                <Text style={styles.message1Text}>{message2.sumCnt}</Text>
               </View>
             </View>
             <View style={styles.textCenter}>

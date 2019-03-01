@@ -1,4 +1,7 @@
-// @flow
+/**
+ * 个人中心首页
+ * @flow
+ */
 import React, { Component } from "react";
 import {
   View,
@@ -16,6 +19,11 @@ import Icon from "@components/Iconfont/CloudIcon";
 import { HeaderHeightInit, StatusBarHeader } from "@src/utils/constant";
 import InquiryEntrance from "./components/InquiryEntrance";
 
+type IEnquiryAndQuoteCnt = {
+  isHaveNoRead: boolean,
+  sumCnt: number,
+  typeName: number,
+};
 type PageInfo = {
   name: string,
   params?: Object,
@@ -27,6 +35,12 @@ type Props = {
   CompanyName: string,
   UserIdentity: Object,
   navigation: INavigation,
+  EnquiryAndQuoteCnt: Array<IEnquiryAndQuoteCnt>,
+};
+const defaultEnquiryAndQuoteCntItem: IEnquiryAndQuoteCnt = {
+  isHaveNoRead: false,
+  sumCnt: 10,
+  typeName: 0,
 };
 class PersonalCenter extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
@@ -72,7 +86,13 @@ class PersonalCenter extends Component<Props> {
     );
   };
   render() {
-    const { AvatarPath, NickName, UserIdentity, CompanyName } = this.props;
+    const {
+      AvatarPath,
+      NickName,
+      UserIdentity,
+      CompanyName,
+      EnquiryAndQuoteCnt,
+    } = this.props;
     // 用户身份
     let UserIdentityView = [];
     for (const key in UserIdentity) {
@@ -160,6 +180,27 @@ class PersonalCenter extends Component<Props> {
         },
       ]);
     }
+    // 待我报价
+    const EnquiryAndQuoteCnt1 =
+      EnquiryAndQuoteCnt.find(item => {
+        return item.typeName === 1;
+      }) || defaultEnquiryAndQuoteCntItem;
+    // 我已报价
+    const EnquiryAndQuoteCnt2 =
+      EnquiryAndQuoteCnt.find(item => {
+        return item.typeName === 2;
+      }) || defaultEnquiryAndQuoteCntItem;
+    // 等待供方报价
+    const EnquiryAndQuoteCnt3 =
+      EnquiryAndQuoteCnt.find(item => {
+        return item.typeName === 3;
+      }) || defaultEnquiryAndQuoteCntItem;
+    // 供方已报价
+    const EnquiryAndQuoteCnt4 =
+      EnquiryAndQuoteCnt.find(item => {
+        return item.typeName === 4;
+      }) || defaultEnquiryAndQuoteCntItem;
+
     return (
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
@@ -218,8 +259,8 @@ class PersonalCenter extends Component<Props> {
           <View>
             <InquiryEntrance
               title="我收到的询价"
-              message1={8}
-              message2={10}
+              message1={EnquiryAndQuoteCnt1}
+              message2={EnquiryAndQuoteCnt2}
               message1Title="待我报价"
               message2Title="我已报价"
               titlePress={() => {
@@ -246,8 +287,8 @@ class PersonalCenter extends Component<Props> {
             />
             <InquiryEntrance
               title="我发出的询价"
-              message1={7}
-              message2={32}
+              message1={EnquiryAndQuoteCnt3}
+              message2={EnquiryAndQuoteCnt4}
               message1Title="等待供方报价"
               message2Title="供方已报价"
               titlePress={() => {
@@ -459,6 +500,7 @@ const mapStateToProps = (state, props) => {
       NickName: state.UserInfo.NickName,
       UserIdentity: state.UserInfo.UserIdentity,
       CompanyName: state.UserInfo.HomeUserInfo.CompanyName,
+      EnquiryAndQuoteCnt: state.EnquiryAndQuoteCnt,
     },
     props
   );

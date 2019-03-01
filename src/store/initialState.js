@@ -42,4 +42,6 @@ export default {
   ActiveRouteName: "",
   // 消息列表
   MessageData: [],
+  // 个人中心询报价条数
+  EnquiryAndQuoteCnt: [],
 };

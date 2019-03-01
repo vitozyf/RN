@@ -16,11 +16,16 @@ const ClientMethodSets = [
   // 消息推送处理方法
   {
     name: "addAppMsg",
-    method: data => {
+    method: (Message, EnquiryAndQuoteCnt) => {
       // 消息列表更新
       store.dispatch({
         type: "ADD_MESSAGE_DATA",
-        Message: data,
+        Message,
+      });
+      // 个人中心询报价条数更新
+      store.dispatch({
+        type: "SET_ENQUIRYANDQUOTECNT",
+        EnquiryAndQuoteCnt,
       });
     },
   },

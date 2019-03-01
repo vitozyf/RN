@@ -47,6 +47,7 @@ export const StatusBarStyle = (
       return state;
   }
 };
+// 云价格搜索记录
 export const SearchRecord = (state = [], action) => {
   switch (action.type) {
     case "SetSearchRecord":
@@ -55,14 +56,7 @@ export const SearchRecord = (state = [], action) => {
       return state;
   }
 };
-export const ForQuotationSearchRecord = (state = [], action) => {
-  switch (action.type) {
-    case "SET_FORQUOTATIONSEARCHRECORD":
-      return action.ForQuotationSearchRecord;
-    default:
-      return state;
-  }
-};
+
 export const BomSearchInfo = (state = {}, action) => {
   switch (action.type) {
     case "SetBomSearchInfo":
@@ -135,6 +129,24 @@ export const MessageData = (state = [], action) => {
     case "CONCAT_MESSAGE_DATA":
       const ConcatData = state.concat(action.MessageData);
       return ConcatData;
+    default:
+      return state;
+  }
+};
+// 询报价搜索记录
+export const ForQuotationSearchRecord = (state = [], action) => {
+  switch (action.type) {
+    case "SET_FORQUOTATIONSEARCHRECORD":
+      return action.ForQuotationSearchRecord;
+    default:
+      return state;
+  }
+};
+// 个人中心询报价条数
+export const EnquiryAndQuoteCnt = (state = [], action) => {
+  switch (action.type) {
+    case "SET_ENQUIRYANDQUOTECNT":
+      return action.EnquiryAndQuoteCnt || [];
     default:
       return state;
   }
