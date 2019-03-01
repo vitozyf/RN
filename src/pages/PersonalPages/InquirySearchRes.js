@@ -16,6 +16,7 @@ type Props = {
 };
 type State = {
   active: string,
+  activeTag: string,
   data: Array<any>,
   showFoot: boolean,
 };
@@ -34,6 +35,7 @@ class InquirySearch extends Component<Props, State> {
     super(props);
     this.state = {
       active: "received",
+      activeTag: "",
       data: [],
       showFoot: false,
     };
@@ -42,6 +44,13 @@ class InquirySearch extends Component<Props, State> {
   setActive = (active: string) => {
     if (active !== this.state.active) {
       this.setState({ active });
+    }
+  };
+  setActiveTag = (activeTag: string) => {
+    if (activeTag !== this.state.activeTag) {
+      this.setState({ activeTag });
+    } else {
+      this.setState({ activeTag: "" });
     }
   };
   _renderSearchRes = () => {
@@ -53,6 +62,7 @@ class InquirySearch extends Component<Props, State> {
         ActiveRoute="ReceivedInquiry"
         getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
         getReceivedInquiryData={this.getReceivedInquiryData}
+        headerHeight={96}
       />
     );
   };
@@ -99,8 +109,7 @@ class InquirySearch extends Component<Props, State> {
     //   });
   };
   render() {
-    const { active } = this.state;
-    const that = this;
+    const { active, activeTag } = this.state;
     const tabs = [
       {
         value: "我收到的询价",
@@ -109,6 +118,28 @@ class InquirySearch extends Component<Props, State> {
       {
         value: "我发出的询价",
         key: "issued",
+      },
+    ];
+    const tabsTime = [
+      {
+        value: "3天内",
+        key: "3天内",
+      },
+      {
+        value: "7天内",
+        key: "7天内",
+      },
+      {
+        value: "14天内",
+        key: "14天内",
+      },
+      {
+        value: "30天内",
+        key: "30天内",
+      },
+      {
+        value: "半年内",
+        key: "半年内",
       },
     ];
     return (
@@ -124,6 +155,14 @@ class InquirySearch extends Component<Props, State> {
             tabs={tabs}
             onChangeHandler={key => {
               this.setActive(key);
+            }}
+          />
+          <HeaderTabs
+            active={activeTag}
+            tabs={tabsTime}
+            type="tag"
+            onChangeHandler={key => {
+              this.setActiveTag(key);
             }}
           />
         </View>

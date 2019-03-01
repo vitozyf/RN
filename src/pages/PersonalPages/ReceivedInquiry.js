@@ -118,8 +118,6 @@ class ReceivedInquiry extends Component<Props, State> {
   };
   render() {
     const { active } = this.state;
-
-    const that = this;
     const tabs = [
       {
         value: "待我报价",

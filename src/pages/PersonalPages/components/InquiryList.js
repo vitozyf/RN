@@ -15,6 +15,7 @@ type InquiryListProps = {
   showFoot: boolean,
   getMoreReceivedInquiryData?: Function,
   getReceivedInquiryData?: Function,
+  headerHeight: number,
 };
 type InquiyListState = {
   refreshing: boolean,
@@ -24,6 +25,10 @@ class InquiryList extends React.PureComponent<
   InquiyListState
 > {
   state = { refreshing: false };
+
+  static defaultProps = {
+    headerHeight: 48,
+  };
 
   _keyExtractor = (item, index) => item.id;
 
@@ -92,7 +97,8 @@ class InquiryList extends React.PureComponent<
     }
   };
   _renderListHeaderComponent = () => {
-    return <View style={{ height: 48 }} />;
+    const { headerHeight } = this.props;
+    return <View style={{ height: headerHeight }} />;
   };
 
   onRefresh = () => {
