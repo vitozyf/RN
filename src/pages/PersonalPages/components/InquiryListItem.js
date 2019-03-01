@@ -12,6 +12,8 @@ import {
   Linking,
   Dimensions,
   Picker,
+  findNodeHandle,
+  Platform,
 } from "react-native";
 import Icon from "@components/Iconfont/CloudIcon";
 import { DashLine, ZnlInput } from "@components";
@@ -19,6 +21,22 @@ import RNPicker from "@components/RNPicker";
 
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 20;
+
+const TaxPointData = [
+  { key: 0, value: "0" },
+  { key: 15, value: "15" },
+  { key: 16, value: "16" },
+  { key: 17, value: "17" },
+];
+const TheQualityOfData = [
+  { key: "原装", value: "原装" },
+  { key: "翻新", value: "翻新" },
+  { key: "散新", value: "散新" },
+  { key: "国产", value: "国产" },
+  { key: "台产", value: "台产" },
+  { key: "不确定", value: "不确定" },
+  { key: "旧货", value: "旧货" },
+];
 
 type SelectData = {
   key: string | number | boolean,
@@ -40,19 +58,13 @@ class InquiryListItem extends React.PureComponent<Props, State> {
     };
   }
   onPickerConfirm = (data: SelectData) => {
-    console.log(121212, data);
+    console.log(111, data);
   };
   onPickerConfirm1 = (data: SelectData) => {
-    console.log(121212, data);
+    console.log(222, data);
   };
   render() {
     const { showMoreParams } = this.state;
-    let testData = [];
-    let testData1 = [];
-    for (var i = 0; i < 20; i++) {
-      testData.push({ key: i, value: i + "-" + i });
-      testData1.push({ key: i, value: i + "=" + i });
-    }
 
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
@@ -160,6 +172,11 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   placeholder="请输入报价数量"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
+                  keyboardType={
+                    Platform.OS === "ios"
+                      ? "numbers-and-punctuation"
+                      : "numeric"
+                  }
                 />
               </View>
             </View>
@@ -182,6 +199,11 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   placeholder="请输入报价"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
+                  keyboardType={
+                    Platform.OS === "ios"
+                      ? "numbers-and-punctuation"
+                      : "numeric"
+                  }
                 />
               </View>
             </View>
@@ -216,7 +238,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
                 <RNPicker
-                  data={testData}
+                  data={TaxPointData}
                   onPickerConfirm={this.onPickerConfirm}
                   key="point"
                 />
@@ -242,6 +264,11 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   placeholder="请输入年份"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
+                  keyboardType={
+                    Platform.OS === "ios"
+                      ? "numbers-and-punctuation"
+                      : "numeric"
+                  }
                 />
               </View>
             </View>
@@ -262,7 +289,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
               <View style={[styles.flex1, styles.inputBox]}>
                 <RNPicker
-                  data={testData1}
+                  data={TheQualityOfData}
                   onPickerConfirm={this.onPickerConfirm1}
                   key="quality"
                 />

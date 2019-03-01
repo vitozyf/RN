@@ -7,14 +7,21 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 type Tab = {
   value: string,
   key: string,
-  onPress: Function,
 };
 type Props = {
   active: string, // all waiting already
   tabs: Array<Tab>,
+  onChangeHandler?: Function,
 };
 
 class HeaderTabs extends Component<Props> {
+  onHeaderTabsChangeHandler = item => {
+    const { active, onChangeHandler } = this.props;
+    if (item.key === active) {
+      return;
+    }
+    onChangeHandler(item.key);
+  };
   render() {
     const { active, tabs } = this.props;
     if (tabs.length === 0) {
@@ -27,7 +34,9 @@ class HeaderTabs extends Component<Props> {
             <TouchableOpacity
               style={styles.headerItem}
               activeOpacity={0.8}
-              onPress={item.onPress}
+              onPress={() => {
+                this.onHeaderTabsChangeHandler(item);
+              }}
               key={item.key}
             >
               <View style={styles.headerTitleBox}>

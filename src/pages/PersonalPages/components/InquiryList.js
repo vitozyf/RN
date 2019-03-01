@@ -7,12 +7,14 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type InquiryListProps = {
   data: Array<any>,
   ActiveRoute: string,
   showFoot: boolean,
+  getMoreReceivedInquiryData?: Function,
+  getReceivedInquiryData?: Function,
 };
 type InquiyListState = {
   refreshing: boolean,
@@ -89,33 +91,40 @@ class InquiryList extends React.PureComponent<
       return null;
     }
   };
+  _renderListHeaderComponent = () => {
+    return <View style={{ height: 48 }} />;
+  };
 
   onRefresh = () => {
-    console.log(111111);
+    const { getReceivedInquiryData } = this.props;
+    getReceivedInquiryData && getReceivedInquiryData();
   };
   onEndReached = () => {
-    console.log(3333333);
+    const { data, getMoreReceivedInquiryData, showFoot } = this.props;
+    if (data.length >= 5 && !showFoot) {
+      getMoreReceivedInquiryData && getMoreReceivedInquiryData();
+    }
   };
 
   render() {
     const { refreshing } = this.state;
     return (
-      <KeyboardAwareScrollView>
-        <View style={styles.container}>
-          <FlatList
-            data={this.props.data}
-            extraData={this.state}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-            ListEmptyComponent={this._renderListEmptyComponent}
-            ListFooterComponent={this._renderFooter}
-            refreshing={refreshing}
-            onRefresh={this.onRefresh}
-            onEndReached={this.onEndReached}
-            onEndReachedThreshold={0.5}
-          />
-        </View>
-      </KeyboardAwareScrollView>
+      // <View style={styles.container}>
+      <FlatList
+        data={this.props.data}
+        extraData={this.state}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        ListEmptyComponent={this._renderListEmptyComponent}
+        ListFooterComponent={this._renderFooter}
+        ListHeaderComponent={this._renderListHeaderComponent}
+        refreshing={refreshing}
+        onRefresh={this.onRefresh}
+        onEndReached={this.onEndReached}
+        onEndReachedThreshold={0.5}
+        initialNumToRender={2}
+      />
+      // </View>
     );
   }
 }

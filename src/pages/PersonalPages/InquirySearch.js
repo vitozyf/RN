@@ -205,21 +205,21 @@ class InquirySearch extends Component<Props, State> {
       {
         value: "我收到的询价",
         key: "received",
-        onPress() {
-          that.setActive("received");
-        },
       },
       {
         value: "我发出的询价",
         key: "issued",
-        onPress() {
-          that.setActive("issued");
-        },
       },
     ];
     return (
       <View style={styles.SearchPage}>
-        <HeaderTabs active={active} tabs={tabs} />
+        <HeaderTabs
+          active={active}
+          tabs={tabs}
+          onChangeHandler={key => {
+            this.setActive(key);
+          }}
+        />
         {this._renderSearchRecords()}
       </View>
     );

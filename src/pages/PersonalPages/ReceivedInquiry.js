@@ -9,6 +9,7 @@ import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 import InquiryList from "@pages/PersonalPages/components/InquiryList";
 import { connect } from "react-redux";
 import Icon from "@components/Iconfont/CloudIcon";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type Props = { navigation: INavigation };
 type State = {
@@ -57,10 +58,14 @@ class ReceivedInquiry extends Component<Props, State> {
       this.setState({ active });
     }
   };
+  getMoreReceivedInquiryData = () => {
+    const { data } = this.state;
+    this.getReceivedInquiryData(5, data[data.length - 1].Id);
+  };
   getReceivedInquiryData = (count = 5, minMsgId = 0) => {
     // 模拟数据
     const data = [];
-    for (let index = 0; index < 5; index++) {
+    for (let index = 0; index < 4; index++) {
       data.push({
         id: index + "",
         title: `列表${index}`,
@@ -95,42 +100,56 @@ class ReceivedInquiry extends Component<Props, State> {
     //     Cloud.$Loading.hidden();
     //   });
   };
+  _renderList = () => {
+    const { data, showFoot } = this.state;
+    return (
+      <InquiryList
+        showFoot={showFoot}
+        data={data}
+        ActiveRoute="ReceivedInquiry"
+        getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
+        getReceivedInquiryData={this.getReceivedInquiryData}
+      />
+    );
+  };
+  onChangeHandler = key => {
+    this.setActive(key);
+    // 搜索
+  };
   render() {
-    const { active, data, showFoot } = this.state;
+    const { active } = this.state;
+
     const that = this;
     const tabs = [
       {
         value: "待我报价",
         key: "waiting",
-        onPress() {
-          that.setActive("waiting");
-        },
       },
       {
         value: "我已报价",
         key: "already",
-        onPress() {
-          that.setActive("already");
-        },
       },
       {
         value: "全部",
         key: "all",
-        onPress() {
-          that.setActive("all");
-        },
       },
     ];
-
     return (
       <View style={styles.container}>
-        <HeaderTabs active={active} tabs={tabs} />
-
-        <InquiryList
-          showFoot={showFoot}
-          data={data}
-          ActiveRoute="ReceivedInquiry"
-        />
+        <View style={{ flex: 1 }}>
+          <KeyboardAwareScrollView>
+            {this._renderList()}
+          </KeyboardAwareScrollView>
+        </View>
+        <View style={{ position: "absolute", top: 0, width: "100%" }}>
+          <HeaderTabs
+            active={active}
+            tabs={tabs}
+            onChangeHandler={key => {
+              this.onChangeHandler(key);
+            }}
+          />
+        </View>
       </View>
     );
   }

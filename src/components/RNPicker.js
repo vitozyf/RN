@@ -113,15 +113,16 @@ class RNPicker extends Component<Props, State> {
         pickerData.push(item.value);
       });
     }
+
     Picker.init({
       pickerData,
-      selectedValue: [59],
+      selectedValue: [data[0].key],
       pickerConfirmBtnText: "确定",
       pickerCancelBtnText: "取消",
       pickerTitleText: " ",
       pickerConfirmBtnColor: [51, 131, 243, 1],
       pickerCancelBtnColor: [51, 131, 243, 1],
-      pickerToolBarBg: [242, 242, 242, 1],
+      pickerToolBarBg: [240, 240, 240, 1],
       pickerBg: [255, 255, 255, 1],
       onPickerConfirm: onPickerConfirmHandler,
       onPickerCancel: onPickerCancelHandler,
