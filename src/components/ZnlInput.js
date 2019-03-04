@@ -104,6 +104,10 @@ class ZnlInput extends Component<Props, State> {
   blur = () => {
     this.textInput && this.textInput.blur();
   };
+  focus = () => {
+    this.textInput && this.textInput.focus();
+  };
+
   textInput = null;
   render() {
     const {
