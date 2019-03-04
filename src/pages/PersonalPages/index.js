@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { ISIOS, ISDEBUG } from "@src/utils/system";
 import { ZnlCardList } from "@components";
 import Icon from "@components/Iconfont/CloudIcon";
-import { HeaderHeightInit, StatusBarHeader } from "@src/utils/constant";
+import { StatusBarHeader } from "@src/utils/constant";
 import InquiryEntrance from "./components/InquiryEntrance";
 
 type IEnquiryAndQuoteCnt = {
