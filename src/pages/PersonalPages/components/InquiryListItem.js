@@ -14,6 +14,7 @@ import {
   Picker,
   findNodeHandle,
   Platform,
+  Alert,
 } from "react-native";
 import Icon from "@components/Iconfont/CloudIcon";
 import { DashLine, ZnlInput } from "@components";
@@ -47,14 +48,12 @@ type Props = {
 };
 type State = {
   showMoreParams: boolean,
-  language: string,
 };
 class InquiryListItem extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       showMoreParams: false,
-      language: "Java",
     };
   }
   onPickerConfirm = (data: SelectData) => {
@@ -63,6 +62,40 @@ class InquiryListItem extends React.PureComponent<Props, State> {
   onPickerConfirm1 = (data: SelectData) => {
     console.log(222, data);
   };
+  IgnoreHandler = () => {
+    const Title = Platform.select({
+      ios: {
+        title: "确认忽略该询价吗？",
+      },
+      android: {
+        title: "",
+      },
+    });
+    const Content = Platform.select({
+      ios: {
+        content: "",
+      },
+      android: {
+        content: "确认忽略该询价吗？",
+      },
+    });
+    Alert.alert(Title.title, Content.content, [
+      { text: "取消" },
+      {
+        text: "忽略",
+        onPress: () => {
+          console.log(123);
+        },
+      },
+    ]);
+  };
+  sendQuotation = () => {
+    Cloud.$Toast.show("必填项为空", { icon: "tips_warning" });
+    // focus()
+    this.QuotationInput && this.QuotationInput.focus();
+  };
+  QuotationNumInput: any;
+  QuotationInput: any;
   render() {
     const { showMoreParams } = this.state;
 
@@ -177,6 +210,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                       ? "numbers-and-punctuation"
                       : "numeric"
                   }
+                  ref={ref => (this.QuotationNumInput = ref)}
                 />
               </View>
             </View>
@@ -204,6 +238,9 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                       ? "numbers-and-punctuation"
                       : "numeric"
                   }
+                  ref={ref => {
+                    this.QuotationInput = ref;
+                  }}
                 />
               </View>
             </View>
@@ -296,11 +333,12 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
             </View>
           )}
-          <View style={styles.sendBtnView}>
+          {/* <View style={styles.sendBtnView}>
             <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
               <TouchableOpacity
                 style={[styles.sendBtnCom, styles.sendBtnLeft]}
                 activeOpacity={0.8}
+                onPress={this.IgnoreHandler}
               >
                 <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
                   忽略
@@ -311,13 +349,37 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               <TouchableOpacity
                 style={[styles.sendBtnCom, styles.sendBtnRight]}
                 activeOpacity={0.8}
+                onPress={this.sendQuotation}
               >
                 <Text style={[styles.sendBtnText, styles.sendBtnTextRight]}>
                   发送报价
                 </Text>
               </TouchableOpacity>
             </View>
+          </View> */}
+
+          <View style={styles.sendBtnView}>
+            <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
+              <Text style={styles.sendBtnTitleText}>等待供方报价</Text>
+            </View>
+            <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
+              <TouchableOpacity
+                style={[styles.sendBtnCom, styles.sendBtnAgain]}
+                activeOpacity={0.8}
+                onPress={this.sendQuotation}
+              >
+                <Text style={[styles.sendBtnText, styles.sendBtnTextAgain]}>
+                  再次发送
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
+
+          {/* <TouchableOpacity activeOpacity={0.8} onPress={this.IgnoreHandler}>
+            <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
+              重新报价
+            </Text>
+          </TouchableOpacity> */}
         </View>
       </TouchableOpacity>
     );
@@ -461,6 +523,16 @@ const styles = StyleSheet.create({
   sendBtnRight: {
     backgroundColor: "#ee7700",
   },
+  sendBtnAgain: {
+    height: 30,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  sendBtnTitleText: {
+    fontSize: 16,
+    color: "#333",
+    fontWeight: "bold",
+  },
   sendBtnText: {
     fontSize: 16,
     textAlign: "center",
@@ -471,6 +543,10 @@ const styles = StyleSheet.create({
   },
   sendBtnTextRight: {
     color: "#fff",
+  },
+  sendBtnTextAgain: {
+    color: "#666",
+    lineHeight: 30,
   },
 });
 

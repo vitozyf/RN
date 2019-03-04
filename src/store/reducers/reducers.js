@@ -1,6 +1,5 @@
 import { StatusBar } from "react-native";
 import { ISANDROID } from "@src/utils/system";
-import { ZnlToast } from "@src/components";
 import { HeaderHeightInit } from "@src/utils/constant";
 // 底部tab显示
 export const IsTabBarShow = (state = false, action) => {

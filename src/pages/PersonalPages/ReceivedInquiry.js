@@ -57,12 +57,30 @@ class ReceivedInquiry extends Component<Props, State> {
     if (active !== this.state.active) {
       this.setState({ active });
     }
+    let msgType = 0;
+    switch (active) {
+      case "all":
+        msgType = 0;
+        break;
+      case "waiting":
+        msgType = 1;
+        break;
+      case "already":
+        msgType = 2;
+        break;
+      default:
+        break;
+    }
+    this.getReceivedInquiryData(1, {
+      msgType,
+    });
   };
   getMoreReceivedInquiryData = () => {
     const { data } = this.state;
-    this.getReceivedInquiryData(5, data[data.length - 1].Id);
+    // this.getReceivedInquiryData(5, data[data.length - 1].Id);
   };
-  getReceivedInquiryData = (count = 5, minMsgId = 0) => {
+  getReceivedInquiryData = (pageIndex = 1, option: any) => {
+    console.log(111, option);
     // 模拟数据
     const data = [];
     for (let index = 0; index < 4; index++) {
@@ -73,28 +91,16 @@ class ReceivedInquiry extends Component<Props, State> {
     }
     this.setState({ data });
 
-    // if (minMsgId === 0) {
+    // if (pageIndex === 1) {
     //   Cloud.$Loading.show();
     // }
-    // Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`)
+    // Cloud.$post(`im/getappenquirylistsync`, {
+    //   msgType: 0,
+    //   pageIndex,
+    //   pageSize: 10,
+    // })
     //   .then(res => {
-    //     Cloud.$Loading.hidden();
-    //     const data = res || [];
-    //     if (data.length < 5) {
-    //       this.setState({
-    //         showFoot: true,
-    //       });
-    //     }
-    //     if (minMsgId === 0) {
-    // this.setState({
-    //   data
-    // })
-    //     } else {
-    // const ConcatData = this.state.data.concat(data);
-    // this.setState({
-    //   data: ConcatData
-    // })
-    //     }
+    //     console.log(11, res);
     //   })
     //   .catch(() => {
     //     Cloud.$Loading.hidden();
