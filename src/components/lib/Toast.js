@@ -11,7 +11,11 @@ class Toast extends Component {
 
   static show = (
     message,
-    options = { position: positions.CENTER, duration: durations.SHORT }
+    options = {
+      position: positions.CENTER,
+      duration: durations.SHORT,
+      icon: null,
+    }
   ) => {
     return new RootSiblings(
       (
