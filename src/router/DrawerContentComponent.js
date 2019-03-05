@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { ZnlModal } from "@components";
 import DeviceInfo from "react-native-device-info";
-import InstallApk from "@components/InstallApk";
 
 const Height = Dimensions.get("window").height;
 
@@ -56,25 +55,6 @@ class MyScrollView extends Component {
           const ResData = data.Result;
           const downloadUrl = ResData.DownloadUrl;
           if (ResData.Version !== Version) {
-            // const ValueHandler = () => {
-            //   return (
-            //     <View style={{ paddingLeft: 10 }}>
-            //       {ResData.UpdateLog.Content.map((item, index) => {
-            //         return (
-            //           <Text style={{ fontSize: 16 }} key={index}>
-            //             {item}
-            //           </Text>
-            //         );
-            //       })}
-            //     </View>
-            //   );
-            // };
-            // this.setState({
-            //   visible: true,
-            //   title: ResData.UpdateLog.Title,
-            //   value,
-            //   DownloadUrl: downloadUrl,
-            // });
             const value = ResData.UpdateLog.Content.join("\n");
             this.getVersionAppHandler({
               title: ResData.UpdateLog.Title,
@@ -93,6 +73,7 @@ class MyScrollView extends Component {
       {
         text: "更新",
         onPress: () => {
+          const InstallApk = require("@components/InstallApk").default;
           InstallApk.show(DownloadUrl);
         },
       },
@@ -150,8 +131,8 @@ class MyScrollView extends Component {
     );
   }
   componentDidMount() {
-    const testarr = ["1, aaa", "2: bbb"];
-    console.log(111, testarr.join("\n"));
+    // const testarr = ["1, aaa", "2: bbb"];
+    // console.log(111, testarr.join("\n"));
 
     if (ISANDROID) {
       this.getVersionApp();

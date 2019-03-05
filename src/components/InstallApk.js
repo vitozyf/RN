@@ -10,6 +10,7 @@ import {
   Dimensions,
   Text,
   NativeModules,
+  Platform,
 } from "react-native";
 import RootSiblings from "react-native-root-siblings";
 const width = Dimensions.get("window").width;
@@ -32,7 +33,7 @@ class InstallView extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      percentageStr: "开始下载...",
+      percentageStr: "准备下载...",
       percentage: 0,
     };
   }
@@ -51,7 +52,9 @@ class InstallView extends Component<Props, State> {
             <View
               style={{
                 backgroundColor: "green",
-                width: (260 * percentage) / 100,
+                width: (250 * percentage) / 100,
+                height: 8,
+                borderRadius: 5,
               }}
             />
           </View>
@@ -60,9 +63,9 @@ class InstallView extends Component<Props, State> {
     );
   }
   downloadFileTest = (background, url) => {
-    //   if (jobId !== -1) {
-    //     this.setState({ output: "A download is already in progress" });
-    //   }
+    // if (jobId !== -1) {
+    //   this.setState({ output: "A download is already in progress" });
+    // }
     const { hiddenHandler } = this.props;
     const progress = data => {
       const percentage = ((100 * data.bytesWritten) / data.contentLength) | 0;
@@ -70,21 +73,21 @@ class InstallView extends Component<Props, State> {
         percentage,
         percentageStr: `下载进度 ${percentage}%`,
       });
-      if (percentage === 100) {
+      if (percentage >= 99) {
         hiddenHandler && hiddenHandler();
       }
     };
 
     const begin = res => {
-      console.log(0, res, "Download has begun");
+      this.setState({
+        percentageStr: "开始下载...",
+      });
     };
 
     const progressDivider = 2;
 
     // Random file name needed to force refresh...WW
-    const downloadDest = `${RNFS.ExternalDirectoryPath}/${(Math.random() *
-      1000) |
-      0}.apk`;
+    const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai.apk`;
 
     const ret = RNFS.downloadFile({
       fromUrl: url,
@@ -96,28 +99,21 @@ class InstallView extends Component<Props, State> {
     });
 
     jobId = ret.jobId;
-    console.log(888, ret, RNFS.ExternalDirectoryPath, {
-      fromUrl: url,
-      toFile: downloadDest,
-      begin,
-      progress,
-      background,
-      progressDivider,
-    });
     ret.promise
       .then(res => {
-        console.log(111, res, downloadDest);
         jobId = -1;
         NativeModules.InstallApk.install(downloadDest);
       })
       .catch(err => {
-        console.log(222, err);
+        Cloud.$addLog("InstallApk.js", e.message);
         jobId = -1;
       });
   };
   componentWillMount() {
-    const { url } = this.props;
-    this.downloadFileTest(false, url);
+    if (Platform.OS === "android") {
+      const { url } = this.props;
+      this.downloadFileTest(false, url);
+    }
   }
 }
 

@@ -9,19 +9,11 @@ import {
   Text,
   View,
   processColor,
-  Platform,
-  BackHandler,
 } from "react-native";
 import { HeaderTitle, HeaderRight } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { StackNavigator, SafeAreaView } from "react-navigation";
-
 import { PieChart } from "react-native-charts-wrapper";
-import { NativeModules } from "react-native";
-
-const RNFS = require("react-native-fs");
-let jobId = -1;
-
 type Props = {};
 type IV = {
   navigation: INavigation,
@@ -48,76 +40,73 @@ class TextPage extends Component<Props> {
   };
   constructor() {
     super();
-
     this.state = {
-      // legend: {
-      //   enabled: true,
-      //   textSize: 15,
-      //   form: "CIRCLE",
-      //   formSize: 15,
-      //   horizontalAlignment: "LEFT",
-      //   verticalAlignment: "CENTER",
-      //   orientation: "VERTICAL",
-      //   wordWrapEnabled: true,
-      //   formToTextSpace: 10,
-      //   yEntrySpace: 5,
-      // },
-      // data: {
-      //   dataSets: [
-      //     {
-      //       label: "品牌分布",
-      //       values: [
-      //         { value: 45, label: "TI(德州仪器)" },
-      //         { value: 15, label: "Maxim(美信)" },
-      //         { value: 21, label: "ST(意法)" },
-      //         { value: 15, label: "ON(安森美)" },
-      //         { value: 9, label: "EXAR(艾科嘉)" },
-      //         { value: 45, label: "TI(德州仪器)1" },
-      //         { value: 15, label: "Maxim(美信)1" },
-      //         { value: 21, label: "ST(意法)1" },
-      //         { value: 15, label: "ON(安森美)1" },
-      //         { value: 9, label: "EXAR(艾科嘉)1" },
-      //       ],
-      //       config: {
-      //         // common
-      //         colors: [
-      //           processColor("#7cb5ec"),
-      //           processColor("#434348"),
-      //           processColor("#90ed7d"),
-      //           processColor("#f7a35c"),
-      //           processColor("#8085e9"),
-      //           processColor("#f15c80"),
-      //           processColor("#e4d354"),
-      //           processColor("#2b908f"),
-      //           processColor("#f45b5b"),
-      //           processColor("#91e8e1"),
-      //         ],
-      //         //   highlightEnabled: true,
-      //         //   drawValues: false,
-      //         //   visible: false,
-      //         //   valueFormatterPattern: string or 'largeValue' or 'percent' or 'date',
-      //         //   axisDependency: string,
-      //         valueTextSize: 15,
-      //         valueTextColor: processColor("#fff"),
-      //         valueFormatter: "#.#'%'",
-      //         // pie
-      //         sliceSpace: 3, // 间隙
-      //         selectionShift: 5, // 选中时延长
-      //         //   xValuePosition: "OUTSIDE_SLICE",
-      //         //   yValuePosition: "OUTSIDE_SLICE",
-      //       },
-      //     },
-      //   ],
-      // },
-      // currentData: "", // 当前选中的数据内容
-      // highlights: [{ x: 2 }],
-      // description: {
-      //   text: "",
-      //   textSize: 15,
-      //   textColor: processColor("darkgray"),
-      // },
-      output: "",
-      imagePath: "",
+      legend: {
+        enabled: true,
+        textSize: 15,
+        form: "CIRCLE",
+        formSize: 15,
+        horizontalAlignment: "LEFT",
+        verticalAlignment: "CENTER",
+        orientation: "VERTICAL",
+        wordWrapEnabled: true,
+        formToTextSpace: 10,
+        yEntrySpace: 5,
+      },
+      data: {
+        dataSets: [
+          {
+            label: "品牌分布",
+            values: [
+              { value: 45, label: "TI(德州仪器)" },
+              { value: 15, label: "Maxim(美信)" },
+              { value: 21, label: "ST(意法)" },
+              { value: 15, label: "ON(安森美)" },
+              { value: 9, label: "EXAR(艾科嘉)" },
+              { value: 45, label: "TI(德州仪器)1" },
+              { value: 15, label: "Maxim(美信)1" },
+              { value: 21, label: "ST(意法)1" },
+              { value: 15, label: "ON(安森美)1" },
+              { value: 9, label: "EXAR(艾科嘉)1" },
+            ],
+            config: {
+              // common
+              colors: [
+                processColor("#7cb5ec"),
+                processColor("#434348"),
+                processColor("#90ed7d"),
+                processColor("#f7a35c"),
+                processColor("#8085e9"),
+                processColor("#f15c80"),
+                processColor("#e4d354"),
+                processColor("#2b908f"),
+                processColor("#f45b5b"),
+                processColor("#91e8e1"),
+              ],
+              //   highlightEnabled: true,
+              //   drawValues: false,
+              //   visible: false,
+              //   valueFormatterPattern: string or 'largeValue' or 'percent' or 'date',
+              //   axisDependency: string,
+              valueTextSize: 15,
+              valueTextColor: processColor("#fff"),
+              valueFormatter: "#.#'%'",
+              // pie
+              sliceSpace: 3, // 间隙
+              selectionShift: 5, // 选中时延长
+              //   xValuePosition: "OUTSIDE_SLICE",
+              //   yValuePosition: "OUTSIDE_SLICE",
+            },
+          },
+        ],
+      },
+      currentData: "", // 当前选中的数据内容
+      highlights: [{ x: 2 }],
+      description: {
+        text: "",
+        textSize: 15,
+        textColor: processColor("darkgray"),
+      },
     };
   }
   handleSelect = event => {
@@ -127,83 +116,13 @@ class TextPage extends Component<Props> {
     } else {
       this.setState({ currentData: `${entry.label} ${entry.value}` });
     }
-
     console.log(event.nativeEvent);
   };
-  downloadFileTest = (background, url) => {
-    if (jobId !== -1) {
-      this.setState({ output: "A download is already in progress" });
-    }
-
-    const progress = data => {
-      const percentage = ((100 * data.bytesWritten) / data.contentLength) | 0;
-      const text = `进度 ${percentage}%`;
-      this.setState({ output: text });
-      console.log(text);
-    };
-
-    const begin = res => {
-      this.setState({ output: "Download has begun" });
-      console.log(0, res, "Download has begun");
-    };
-
-    const progressDivider = 10;
-
-    this.setState({ imagePath: { uri: "" } });
-
-    // Random file name needed to force refresh...
-    const downloadDest = `${RNFS.ExternalDirectoryPath}/${(Math.random() *
-      1000) |
-      0}.apk`;
-
-    const ret = RNFS.downloadFile({
-      fromUrl: url,
-      toFile: downloadDest,
-      begin,
-      progress,
-      background,
-      progressDivider,
-    });
-
-    jobId = ret.jobId;
-    console.log(888, ret, RNFS.ExternalDirectoryPath, {
-      fromUrl: url,
-      toFile: downloadDest,
-      begin,
-      progress,
-      background,
-      progressDivider,
-    });
-    ret.promise
-      .then(res => {
-        console.log(111, res, downloadDest);
-        this.setState({ output: JSON.stringify(res) });
-        this.setState({ imagePath: { uri: "file://" + downloadDest } });
-        jobId = -1;
-        NativeModules.InstallApk.install(downloadDest);
-        BackHandler.exitApp();
-      })
-      .catch(err => {
-        console.log(222, err);
-        this.showError(err);
-        jobId = -1;
-      });
-  };
-
-  componentDidMount() {
-    if (Platform.OS === "android") {
-      // this.downloadFileTest(
-      //   true,
-      //   "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_1_1_1_1550744651000.apk"
-      // );
-    }
-  }
-
   render() {
     return (
       <SafeAreaView style={styles.SafeAreaView}>
         <View style={styles.container}>
-          {/* <PieChart
+          <PieChart
             style={styles.chart}
             logEnabled={false}
             chartBackgroundColor={processColor("#ccc")}
@@ -230,15 +149,13 @@ class TextPage extends Component<Props> {
             maxAngle={360}
             onSelect={this.handleSelect}
             // onChange={event => console.log(event.nativeEvent)}
-          /> */}
+          />
         </View>
       </SafeAreaView>
     );
   }
 }
-
 export default TextPage;
-
 const styles = StyleSheet.create({
   SafeAreaView: {
     flex: 1,
