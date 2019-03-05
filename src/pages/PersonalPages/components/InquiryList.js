@@ -17,6 +17,7 @@ type InquiryListProps = {
   getReceivedInquiryData?: Function,
   headerHeight: number,
   loading: boolean,
+  sendquotedpriceSuccess?: Function,
 };
 type InquiyListState = {
   refreshing: boolean,
@@ -33,7 +34,12 @@ class InquiryList extends React.PureComponent<
 
   _keyExtractor = (item, index) => item.BDLineGUID;
 
-  _renderItem = ({ item }) => <InquiryListItem data={item} />;
+  _renderItem = ({ item }) => (
+    <InquiryListItem
+      data={item}
+      sendquotedpriceSuccess={this.props.sendquotedpriceSuccess}
+    />
+  );
 
   _renderListEmptyComponent = () => {
     const { ActiveRoute } = this.props;
@@ -118,21 +124,21 @@ class InquiryList extends React.PureComponent<
     // console.log(12121212);
     const { refreshing } = this.state;
     return (
-      // <View style={styles.container}>
-      <FlatList
-        data={this.props.data}
-        extraData={this.state}
-        keyExtractor={this._keyExtractor}
-        renderItem={this._renderItem}
-        ListEmptyComponent={this._renderListEmptyComponent}
-        ListFooterComponent={this._renderFooter}
-        ListHeaderComponent={this._renderListHeaderComponent}
-        refreshing={refreshing}
-        onRefresh={this.onRefresh}
-        onEndReached={this.onEndReached}
-        onEndReachedThreshold={0.5}
-      />
-      // </View>
+      <View style={styles.container}>
+        <FlatList
+          data={this.props.data}
+          extraData={this.state}
+          keyExtractor={this._keyExtractor}
+          renderItem={this._renderItem}
+          ListEmptyComponent={this._renderListEmptyComponent}
+          ListFooterComponent={this._renderFooter}
+          ListHeaderComponent={this._renderListHeaderComponent}
+          refreshing={refreshing}
+          onRefresh={this.onRefresh}
+          onEndReached={this.onEndReached}
+          onEndReachedThreshold={0.5}
+        />
+      </View>
     );
   }
 }

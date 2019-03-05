@@ -3,14 +3,27 @@
  * @flow
  */
 import React, { Component } from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Platform,
+} from "react-native";
 import { connect } from "react-redux";
 import CONFIG from "@src/utils/config";
 import { ZnlHeader } from "@components";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 import InquiryList from "@pages/PersonalPages/components/InquiryList";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { AppInit } from "@src/utils/appInit";
 
+// 设置角标
+const setBadge = (Badges: number) => {
+  if (Platform.OS == "ios") {
+    AppInit.JPushModule.setBadge(Badges, success => {});
+  }
+};
 type Props = {
   navigation: INavigation,
 };
@@ -56,7 +69,6 @@ class InquirySearch extends Component<Props, State> {
   };
 
   setActiveTag = (activeTag: string) => {
-    console.log(1111, activeTag);
     let withinDays = 0;
     if (activeTag !== this.state.activeTag) {
       switch (activeTag) {
@@ -124,7 +136,6 @@ class InquirySearch extends Component<Props, State> {
       { onlydata: false }
     )
       .then(res => {
-        // setBadge()
         Cloud.$Loading.hidden();
         this.setState({ loading: false });
         try {
@@ -143,6 +154,12 @@ class InquirySearch extends Component<Props, State> {
             this.setState({ data: concantData, PageIndex });
           } else {
             this.setState({ data, PageIndex });
+          }
+
+          const Message = res.Result.Data.Message;
+          if (Message) {
+            const MessageParse = JSON.parse(Message);
+            setBadge(-1 * MessageParse.ReadCnt);
           }
         } catch (error) {
           Cloud.$addLog(

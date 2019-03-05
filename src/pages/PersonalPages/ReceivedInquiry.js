@@ -2,7 +2,13 @@
  * 收到的询价
  */
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { ZnlHeader } from "@components";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 import InquiryList from "@pages/PersonalPages/components/InquiryList";
@@ -61,6 +67,9 @@ class ReceivedInquiry extends Component<Props, State> {
       PageIndex: 1,
     };
   }
+  sendquotedpriceSuccess = active => {
+    this.setActive(active);
+  };
   setActive = (active: string) => {
     if (active !== this.state.active) {
       this.setState({ active });
@@ -106,7 +115,6 @@ class ReceivedInquiry extends Component<Props, State> {
       { onlydata: false }
     )
       .then(res => {
-        // setBadge()
         Cloud.$Loading.hidden();
         this.setState({ loading: false });
         try {
@@ -125,6 +133,12 @@ class ReceivedInquiry extends Component<Props, State> {
             this.setState({ data: concantData, PageIndex });
           } else {
             this.setState({ data, PageIndex });
+          }
+
+          const Message = res.Result.Data.Message;
+          if (Message) {
+            const MessageParse = JSON.parse(Message);
+            setBadge(-1 * MessageParse.ReadCnt);
           }
         } catch (error) {
           Cloud.$addLog(
@@ -148,6 +162,7 @@ class ReceivedInquiry extends Component<Props, State> {
         getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
         getReceivedInquiryData={this.getReceivedInquiryData}
         loading={loading}
+        sendquotedpriceSuccess={this.sendquotedpriceSuccess}
       />
     );
   };

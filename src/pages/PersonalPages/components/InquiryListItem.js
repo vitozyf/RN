@@ -62,10 +62,12 @@ type IQuotedPrice = {
 };
 type Props = {
   data: Object,
+  sendquotedpriceSuccess?: Function,
 };
 type State = {
   showMoreParams: boolean,
   QuotedPrice: IQuotedPrice,
+  CurrentStatus: number, // 修改内部按钮状态
 };
 class InquiryListItem extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -73,6 +75,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
     this.state = {
       showMoreParams: false,
       QuotedPrice: {},
+      CurrentStatus: 1,
     };
   }
   onPickerConfirm = (data: SelectData) => {
@@ -111,7 +114,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       {
         text: "忽略",
         onPress: () => {
-          console.log(123);
+          this.sendQuotation(3);
         },
       },
     ]);
@@ -120,33 +123,66 @@ class InquiryListItem extends React.PureComponent<Props, State> {
     const { QuotedPrice } = this.state;
     const { data } = this.props;
     const { Qty, Price } = QuotedPrice;
-    if (!Qty) {
+    if (!Qty && SupplierStatus === 2) {
       Cloud.$Toast.show("数量必填", { icon: "tips_warning" });
       return this.QuotationNumInput && this.QuotationNumInput.focus();
     }
-    if (!Price) {
+    if (!Price && SupplierStatus === 2) {
       Cloud.$Toast.show("报价必填", { icon: "tips_warning" });
       return this.QuotationInput && this.QuotationInput.focus();
     }
-    Cloud.$post(`im/sendquotedprice`, {
-      SupplierStatus,
-      sNeedInvoice: data.IsNeedInvoice, // 是否需要发票
-      TaxRate: QuotedPrice.TaxRate, //  税点
-      SupplierName: data.CompanyName, //  供应商名称
-      SupplierID: data.CompanyID, // 供应商ID
-      Model: data.Model, //型号
-      Qty: Number(QuotedPrice.Qty), // 数量
-      Price: Number(QuotedPrice.Price), // 单价
-      Brand: data.Brand, // 品牌
-      BDLineGuid: data.BDLineGUID, //  报价明细Guid
-      IQGuid: data.IQGuid, // 询价GUID
-      Quality: QuotedPrice.Quality, //  品质
-      MakeYear: QuotedPrice.MakeYear, //  年份
+    const HttpParams = [
+      {
+        SupplierStatus,
+        IsNeedInvoice: data.IsNeedInvoice, // 是否需要发票
+        TaxRate: QuotedPrice.TaxRate, //  税点
+        SupplierName: data.CompanyName, //  供应商名称
+        SupplierID: data.CompanyID, // 供应商ID
+        Model: data.Model, //型号
+        Qty: Number(QuotedPrice.Qty), // 数量
+        Price: Number(QuotedPrice.Price), // 单价
+        Brand: data.Brand, // 品牌
+        BDLineGuid: data.BDLineGUID, //  报价明细Guid
+        IQGuid: data.IQGUID, // 询价GUID
+        Quality: QuotedPrice.Quality, //  品质
+        MakeYear: QuotedPrice.MakeYear, //  年份
+        // SalesPrice: number, // 销售定价
+        // InvQty: number, // 库存量
+      },
+    ];
+    Cloud.$post(`im/sendquotedprice`, HttpParams).then(data => {
+      if (data && data.length > 0) {
+        const { sendquotedpriceSuccess } = this.props;
+        if (SupplierStatus === 2) {
+          Cloud.$Toast.show("报价成功！", { icon: "tips_right" });
+          this.setState({ CurrentStatus: 2 });
+          //报价成功调第二个接口
+          Cloud.$cnh("SendQuotedPrice", HttpParams)
+            .then(res => {
+              if (res.Code === 0 && res.Data.length > 0) {
+                Cloud.$addLog(
+                  "InquiryListItem.js-sendQuotation-code-0",
+                  JSON.stringify(res.Data),
+                  JSON.stringify(HttpParams)
+                );
+              }
+            })
+            .catch(error => {
+              Cloud.$addLog("InquiryListItem.js-sendQuotation", error.message);
+            });
 
-      // SalesPrice: number, // 销售定价
-      // InvQty: number, // 库存量
-    }).then(data => {
-      console.log(444, data);
+          const TimeID = setTimeout(() => {
+            sendquotedpriceSuccess && sendquotedpriceSuccess("already");
+            clearTimeout(TimeID);
+          }, 1000);
+        } else if (SupplierStatus === 3) {
+          Cloud.$Toast.show("已忽略该条报价！", { icon: "tips_warning" });
+          const TimeID = setTimeout(() => {
+            sendquotedpriceSuccess && sendquotedpriceSuccess("all");
+            clearTimeout(TimeID);
+          }, 1000);
+        }
+      }
     });
   };
   onChangeText = (key: string, value: string | number) => {
@@ -157,14 +193,14 @@ class InquiryListItem extends React.PureComponent<Props, State> {
   QuotationNumInput: any;
   QuotationInput: any;
   render() {
-    const { showMoreParams } = this.state;
+    const { showMoreParams, CurrentStatus } = this.state;
     const { data } = this.props;
 
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
         <View style={styles.timeView}>
           <View style={styles.timebox}>
-            <Text style={styles.time}>8:10</Text>
+            <Text style={styles.time}>{data.EnquiryPhrase}</Text>
           </View>
         </View>
 
@@ -263,16 +299,28 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 <Text style={styles.binding}>报价数量</Text>
                 <Text style={styles.colorRed}>*</Text>
               </View>
-              <View style={[styles.flex1, styles.inputBox]}>
-                <ZnlInput
-                  placeholder="请输入报价数量"
-                  style={{ height: 36 }}
-                  inputStyle={{ fontSize: 14 }}
-                  keyboardType={"numeric"}
-                  ref={ref => (this.QuotationNumInput = ref)}
-                  onChangeText={value => this.onChangeText("Qty", value)}
-                />
-              </View>
+              {(data.Status === 1 || CurrentStatus === 1) && (
+                <View style={[styles.flex1, styles.inputBox]}>
+                  <ZnlInput
+                    placeholder="请输入报价数量"
+                    style={{ height: 36 }}
+                    inputStyle={{ fontSize: 14 }}
+                    keyboardType={"numeric"}
+                    ref={ref => (this.QuotationNumInput = ref)}
+                    onChangeText={value => this.onChangeText("Qty", value)}
+                  />
+                </View>
+              )}
+              {data.Status === 2 && CurrentStatus === 2 && (
+                <Text
+                  selectable={true}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={styles.value}
+                >
+                  {data.Qty}
+                </Text>
+              )}
             </View>
 
             <View
@@ -288,18 +336,30 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 </Text>
                 <Text style={styles.colorRed}>*</Text>
               </View>
-              <View style={[styles.flex1, styles.inputBox]}>
-                <ZnlInput
-                  placeholder="请输入报价"
-                  style={{ height: 36 }}
-                  inputStyle={{ fontSize: 14 }}
-                  keyboardType={"numeric"}
-                  ref={ref => {
-                    this.QuotationInput = ref;
-                  }}
-                  onChangeText={value => this.onChangeText("Price", value)}
-                />
-              </View>
+              {(data.Status === 1 || CurrentStatus === 1) && (
+                <View style={[styles.flex1, styles.inputBox]}>
+                  <ZnlInput
+                    placeholder="请输入报价"
+                    style={{ height: 36 }}
+                    inputStyle={{ fontSize: 14 }}
+                    keyboardType={"numeric"}
+                    ref={ref => {
+                      this.QuotationInput = ref;
+                    }}
+                    onChangeText={value => this.onChangeText("Price", value)}
+                  />
+                </View>
+              )}
+              {data.Status === 2 && CurrentStatus === 2 && (
+                <Text
+                  selectable={true}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={styles.value}
+                >
+                  {data.Price}
+                </Text>
+              )}
             </View>
           </View>
 
@@ -330,13 +390,25 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;税点
                 </Text>
               </View>
-              <View style={[styles.flex1, styles.inputBox]}>
-                <RNPicker
-                  data={TaxPointData}
-                  onPickerConfirm={this.onPickerConfirm}
-                  key="point"
-                />
-              </View>
+              {(data.Status === 1 || CurrentStatus === 1) && (
+                <View style={[styles.flex1, styles.inputBox]}>
+                  <RNPicker
+                    data={TaxPointData}
+                    onPickerConfirm={this.onPickerConfirm}
+                    key="point"
+                  />
+                </View>
+              )}
+              {data.Status === 2 && CurrentStatus === 2 && (
+                <Text
+                  selectable={true}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={styles.value}
+                >
+                  {data.TaxRate}
+                </Text>
+              )}
             </View>
           )}
 
@@ -353,19 +425,31 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年份
                 </Text>
               </View>
-              <View style={[styles.flex1, styles.inputBox]}>
-                <ZnlInput
-                  placeholder="请输入年份"
-                  style={{ height: 36 }}
-                  inputStyle={{ fontSize: 14 }}
-                  keyboardType={
-                    Platform.OS === "ios"
-                      ? "numbers-and-punctuation"
-                      : "numeric"
-                  }
-                  onChangeText={value => this.onChangeText("MakeYear", value)}
-                />
-              </View>
+              {(data.Status === 1 || CurrentStatus === 1) && (
+                <View style={[styles.flex1, styles.inputBox]}>
+                  <ZnlInput
+                    placeholder="请输入年份"
+                    style={{ height: 36 }}
+                    inputStyle={{ fontSize: 14 }}
+                    keyboardType={
+                      Platform.OS === "ios"
+                        ? "numbers-and-punctuation"
+                        : "numeric"
+                    }
+                    onChangeText={value => this.onChangeText("MakeYear", value)}
+                  />
+                </View>
+              )}
+              {data.Status === 2 && CurrentStatus === 2 && (
+                <Text
+                  selectable={true}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={styles.value}
+                >
+                  {data.MakeYear}
+                </Text>
+              )}
             </View>
           )}
 
@@ -382,16 +466,28 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品质
                 </Text>
               </View>
-              <View style={[styles.flex1, styles.inputBox]}>
-                <RNPicker
-                  data={TheQualityOfData}
-                  onPickerConfirm={this.onPickerConfirm1}
-                  key="quality"
-                />
-              </View>
+              {(data.Status === 1 || CurrentStatus === 1) && (
+                <View style={[styles.flex1, styles.inputBox]}>
+                  <RNPicker
+                    data={TheQualityOfData}
+                    onPickerConfirm={this.onPickerConfirm1}
+                    key="quality"
+                  />
+                </View>
+              )}
+              {data.Status === 2 && CurrentStatus === 2 && (
+                <Text
+                  selectable={true}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={styles.value}
+                >
+                  {data.Quality}
+                </Text>
+              )}
             </View>
           )}
-          {data.Status === 1 && (
+          {(data.Status === 1 || CurrentStatus === 1) && (
             <View style={styles.sendBtnView}>
               <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
                 <TouchableOpacity
@@ -437,14 +533,28 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             </View>
           </View> */}
 
-          {/* <TouchableOpacity activeOpacity={0.8} onPress={this.IgnoreHandler}>
-            <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
-              重新报价
-            </Text>
-          </TouchableOpacity> */}
+          {data.Status === 2 && CurrentStatus === 2 && (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                this.setState({ CurrentStatus: 1 });
+              }}
+            >
+              <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
+                重新报价
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </TouchableOpacity>
     );
+  }
+
+  componentWillMount() {
+    this.setState({
+      CurrentStatus: this.props.data.Status,
+      showMoreParams: this.props.data.Status === 2,
+    });
   }
 }
 
@@ -455,7 +565,9 @@ const styles = StyleSheet.create({
   flex1: {
     flex: 1,
   },
-  ListRow: {},
+  ListRow: {
+    marginBottom: 10,
+  },
   timeView: {
     height: 40,
     flexDirection: "row",
@@ -463,7 +575,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   timebox: {
-    width: 48,
+    // width: 48,
+    paddingLeft: 2,
+    paddingRight: 2,
     height: 20,
     backgroundColor: "#ccc",
     borderRadius: 2,
