@@ -105,7 +105,7 @@ class InstallView extends Component<Props, State> {
         NativeModules.InstallApk.install(downloadDest);
       })
       .catch(err => {
-        Cloud.$addLog("InstallApk.js", e.message);
+        Cloud.$addLog("InstallApk.js", err.message);
         jobId = -1;
       });
   };
