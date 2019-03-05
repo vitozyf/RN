@@ -23,6 +23,8 @@ import java.util.List;
 
 import cn.jpush.reactnativejpush.JPushPackage;
 
+import com.rnfs.RNFSPackage;
+
 public class MainApplication extends Application implements ReactApplication {
   private final String CODEPUSH_KEY_PRODUCTIO = "x2D2xLa-NGE1OsbFXTZRwGFNgS-vd2879c22-c96e-4d6e-bef4-b597a869454d";
   private final String CODEPUSH_KEY_STAGING = "kVEeKJnlKXu88Jfvzo7acX5FxOphd2879c22-c96e-4d6e-bef4-b597a869454d";
@@ -46,9 +48,8 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(new MainReactPackage(),
-            new PickerViewPackage(), new WeChatPackage(), new MPAndroidChartPackage(),
-          new RNDeviceInfo(), new SplashScreenReactPackage(),
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new PickerViewPackage(), new WeChatPackage(),
+          new MPAndroidChartPackage(), new RNDeviceInfo(), new SplashScreenReactPackage(), new RNFSPackage(),
           // new
           // CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey),
           // getApplicationContext(), BuildConfig.DEBUG),

@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { ZnlModal } from "@components";
 import DeviceInfo from "react-native-device-info";
+
 const Height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
