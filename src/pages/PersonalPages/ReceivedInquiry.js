@@ -1,6 +1,5 @@
 /**
  * 收到的询价
- * @flow
  */
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
@@ -10,12 +9,20 @@ import InquiryList from "@pages/PersonalPages/components/InquiryList";
 import { connect } from "react-redux";
 import Icon from "@components/Iconfont/CloudIcon";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import { AppInit } from "@src/utils/appInit";
+// 设置角标
+const setBadge = (Badges: number) => {
+  if (Platform.OS == "ios") {
+    AppInit.JPushModule.setBadge(Badges, success => {});
+  }
+};
 type Props = { navigation: INavigation };
 type State = {
   active: string, // all waiting already
   data: Array<any>,
   showFoot: boolean,
+  PageIndex: number,
+  loading: boolean,
 };
 class ReceivedInquiry extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -51,6 +58,7 @@ class ReceivedInquiry extends Component<Props, State> {
       active: "all",
       data: [],
       showFoot: false,
+      PageIndex: 1,
     };
   }
   setActive = (active: string) => {
@@ -76,38 +84,62 @@ class ReceivedInquiry extends Component<Props, State> {
     });
   };
   getMoreReceivedInquiryData = () => {
-    const { data } = this.state;
-    // this.getReceivedInquiryData(5, data[data.length - 1].Id);
+    const { data, PageIndex } = this.state;
+    this.getReceivedInquiryData(PageIndex + 1);
   };
   getReceivedInquiryData = (pageIndex = 1, option: any) => {
-    console.log(111, option);
-    // 模拟数据
-    const data = [];
-    for (let index = 0; index < 4; index++) {
-      data.push({
-        id: index + "",
-        title: `列表${index}`,
-      });
+    this.setState({ loading: true });
+    if (pageIndex === 1) {
+      Cloud.$Loading.show();
     }
-    this.setState({ data });
-
-    // if (pageIndex === 1) {
-    //   Cloud.$Loading.show();
-    // }
-    // Cloud.$post(`im/getappenquirylistsync`, {
-    //   msgType: 0,
-    //   pageIndex,
-    //   pageSize: 10,
-    // })
-    //   .then(res => {
-    //     console.log(11, res);
-    //   })
-    //   .catch(() => {
-    //     Cloud.$Loading.hidden();
-    //   });
+    let msgType = 0;
+    if (option && option.msgType !== undefined) {
+      msgType = option.msgType;
+    }
+    Cloud.$post(
+      `im/getappenquirylistsync`,
+      {
+        msgType,
+        pageIndex,
+        pageSize: 10,
+      },
+      { onlydata: false }
+    )
+      .then(res => {
+        // setBadge()
+        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
+        try {
+          let data = [];
+          let PageIndex = pageIndex;
+          if (res.Result.Data.Data) {
+            data = res.Result.Data.Data.ResultList || [];
+            PageIndex = res.Result.Data.Data.PageIndex;
+          }
+          if (data.length < 10) {
+            this.setState({ showFoot: true });
+          }
+          let concantData = [];
+          if (pageIndex > 1) {
+            concantData = this.state.data.concat(data);
+            this.setState({ data: concantData, PageIndex });
+          } else {
+            this.setState({ data, PageIndex });
+          }
+        } catch (error) {
+          Cloud.$addLog(
+            "ReceivedInquiry.js-getReceivedInquiryData",
+            error.message
+          );
+        }
+      })
+      .catch(() => {
+        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
+      });
   };
   _renderList = () => {
-    const { data, showFoot } = this.state;
+    const { data, showFoot, loading } = this.state;
     return (
       <InquiryList
         showFoot={showFoot}
@@ -115,6 +147,7 @@ class ReceivedInquiry extends Component<Props, State> {
         ActiveRoute="ReceivedInquiry"
         getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
         getReceivedInquiryData={this.getReceivedInquiryData}
+        loading={loading}
       />
     );
   };
@@ -141,9 +174,9 @@ class ReceivedInquiry extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          <KeyboardAwareScrollView>
-            {this._renderList()}
-          </KeyboardAwareScrollView>
+          {/* <KeyboardAwareScrollView> */}
+          {this._renderList()}
+          {/* </KeyboardAwareScrollView> */}
         </View>
         <View style={{ position: "absolute", top: 0, width: "100%" }}>
           <HeaderTabs
@@ -161,7 +194,6 @@ class ReceivedInquiry extends Component<Props, State> {
     const { navigation } = this.props;
     const active = navigation.getParam("active");
     this.setActive(active);
-    this.getReceivedInquiryData();
   }
 }
 

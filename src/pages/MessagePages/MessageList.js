@@ -13,13 +13,6 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { AppInit } from "@src/utils/appInit";
-// 设置角标
-const setBadge = (Badges: number) => {
-  if (Platform.OS == "ios") {
-    AppInit.JPushModule.setBadge(Badges, success => {});
-  }
-};
 
 const ITEM_HEIGHT = 72;
 
@@ -51,7 +44,6 @@ class MessageList extends React.PureComponent<Props, State> {
           params: { active: "waiting" },
         });
         if (!item.IsReaded) {
-          setBadge(-1);
           item.IsReaded = true;
         }
       } else if (item.MsgType === 3) {
@@ -60,7 +52,6 @@ class MessageList extends React.PureComponent<Props, State> {
           params: { active: "already" },
         });
         if (!item.IsReaded) {
-          setBadge(-1);
           item.IsReaded = true;
         }
       }

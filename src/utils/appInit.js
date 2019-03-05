@@ -43,10 +43,12 @@ const getUserInfoByBomAi = async store => {
     { AppSource: 0 },
     { erpApi: true }
   ).then(data => {
-    store.dispatch({
-      type: "SetErpUserRoleList",
-      ErpUserRoleList: data.UserRoleList || [],
-    });
+    if (data) {
+      store.dispatch({
+        type: "SetErpUserRoleList",
+        ErpUserRoleList: data.UserRoleList || [],
+      });
+    }
   });
 };
 

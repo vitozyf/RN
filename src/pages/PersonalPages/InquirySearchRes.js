@@ -16,9 +16,13 @@ type Props = {
 };
 type State = {
   active: string,
+  keyword: string,
   activeTag: string,
   data: Array<any>,
   showFoot: boolean,
+  loading: boolean,
+  PageIndex: number,
+  withinDays: number | string,
 };
 class InquirySearch extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -36,8 +40,12 @@ class InquirySearch extends Component<Props, State> {
     this.state = {
       active: "received",
       activeTag: "",
+      keyword: "",
       data: [],
       showFoot: false,
+      loading: false,
+      PageIndex: 1,
+      withinDays: 0,
     };
   }
 
@@ -46,18 +54,47 @@ class InquirySearch extends Component<Props, State> {
       this.setState({ active });
     }
   };
+
   setActiveTag = (activeTag: string) => {
+    console.log(1111, activeTag);
+    let withinDays = 0;
     if (activeTag !== this.state.activeTag) {
-      this.setState({ activeTag });
+      switch (activeTag) {
+        case "3天内":
+          withinDays = 3;
+          break;
+        case "7天内":
+          withinDays = 7;
+          break;
+        case "14天内":
+          withinDays = 14;
+          break;
+        case "30天内":
+          withinDays = 30;
+          break;
+        case "半年内":
+          withinDays = 180;
+          break;
+
+        default:
+          break;
+      }
+      this.setState({ activeTag, withinDays }, () => {
+        this.getReceivedInquiryData();
+      });
     } else {
-      this.setState({ activeTag: "" });
+      this.setState({ activeTag: "", withinDays: 0 }, () => {
+        this.getReceivedInquiryData();
+      });
     }
   };
+  setActiveTagSearchHandler = () => {};
   _renderSearchRes = () => {
-    const { active, data, showFoot } = this.state;
+    const { active, data, showFoot, loading } = this.state;
     return (
       <InquiryList
         showFoot={showFoot}
+        loading={loading}
         data={data}
         ActiveRoute="ReceivedInquiry"
         getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
@@ -67,46 +104,57 @@ class InquirySearch extends Component<Props, State> {
     );
   };
   getMoreReceivedInquiryData = () => {
-    const { data } = this.state;
-    this.getReceivedInquiryData(5, data[data.length - 1].Id);
+    const { data, PageIndex } = this.state;
+    this.getReceivedInquiryData(PageIndex + 1);
   };
-  getReceivedInquiryData = (count = 5, minMsgId = 0) => {
-    // 模拟数据
-    const data = [];
-    for (let index = 0; index < 4; index++) {
-      data.push({
-        id: index + "",
-        title: `列表${index}`,
-      });
+  getReceivedInquiryData = (pageIndex = 1) => {
+    const { keyword, withinDays } = this.state;
+    this.setState({ loading: true });
+    if (pageIndex === 1) {
+      Cloud.$Loading.show();
     }
-    this.setState({ data });
-
-    // if (minMsgId === 0) {
-    //   Cloud.$Loading.show();
-    // }
-    // Cloud.$get(`im/getappmsglistsync?count=${count}&minMsgId=${minMsgId}`)
-    //   .then(res => {
-    //     Cloud.$Loading.hidden();
-    //     const data = res || [];
-    //     if (data.length < 5) {
-    //       this.setState({
-    //         showFoot: true,
-    //       });
-    //     }
-    //     if (minMsgId === 0) {
-    // this.setState({
-    //   data
-    // })
-    //     } else {
-    // const ConcatData = this.state.data.concat(data);
-    // this.setState({
-    //   data: ConcatData
-    // })
-    //     }
-    //   })
-    //   .catch(() => {
-    //     Cloud.$Loading.hidden();
-    //   });
+    Cloud.$post(
+      `im/getappenquirylistsync`,
+      {
+        keyWord: keyword,
+        withinDays,
+        pageIndex,
+        pageSize: 10,
+      },
+      { onlydata: false }
+    )
+      .then(res => {
+        // setBadge()
+        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
+        try {
+          let data = [];
+          let PageIndex = pageIndex;
+          if (res.Result.Data.Data) {
+            data = res.Result.Data.Data.ResultList || [];
+            PageIndex = res.Result.Data.Data.PageIndex;
+          }
+          if (data.length < 10) {
+            this.setState({ showFoot: true });
+          }
+          let concantData = [];
+          if (pageIndex > 1) {
+            concantData = this.state.data.concat(data);
+            this.setState({ data: concantData, PageIndex });
+          } else {
+            this.setState({ data, PageIndex });
+          }
+        } catch (error) {
+          Cloud.$addLog(
+            "InquirySearchRes.js-getReceivedInquiryData",
+            error.message
+          );
+        }
+      })
+      .catch(() => {
+        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
+      });
   };
   render() {
     const { active, activeTag } = this.state;
@@ -145,9 +193,9 @@ class InquirySearch extends Component<Props, State> {
     return (
       <View style={styles.SearchPage}>
         <View style={{ flex: 1 }}>
-          <KeyboardAwareScrollView>
-            {this._renderSearchRes()}
-          </KeyboardAwareScrollView>
+          {/* <KeyboardAwareScrollView> */}
+          {this._renderSearchRes()}
+          {/* </KeyboardAwareScrollView> */}
         </View>
         <View style={{ position: "absolute", top: 0, width: "100%" }}>
           <HeaderTabs
@@ -173,9 +221,10 @@ class InquirySearch extends Component<Props, State> {
     const { navigation } = this.props;
     const active = navigation.getParam("active");
     const keyword = navigation.getParam("keyword");
-    this.setState({ active });
+    this.setState({ active, keyword }, () => {
+      this.getReceivedInquiryData();
+    });
     navigation.setParams({ keyword });
-    this.getReceivedInquiryData();
   }
 }
 const styles = StyleSheet.create({

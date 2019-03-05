@@ -16,6 +16,7 @@ type InquiryListProps = {
   getMoreReceivedInquiryData?: Function,
   getReceivedInquiryData?: Function,
   headerHeight: number,
+  loading: boolean,
 };
 type InquiyListState = {
   refreshing: boolean,
@@ -30,7 +31,7 @@ class InquiryList extends React.PureComponent<
     headerHeight: 48,
   };
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => item.BDLineGUID;
 
   _renderItem = ({ item }) => <InquiryListItem data={item} />;
 
@@ -70,7 +71,7 @@ class InquiryList extends React.PureComponent<
 
   // 渲染底部
   _renderFooter = () => {
-    const { showFoot, data } = this.props;
+    const { showFoot, data, loading } = this.props;
     if (showFoot && data.length > 0) {
       return (
         <View
@@ -78,6 +79,7 @@ class InquiryList extends React.PureComponent<
             height: 30,
             alignItems: "center",
             justifyContent: "flex-start",
+            backgroundColor: "#fff",
           }}
         >
           <Text
@@ -106,13 +108,14 @@ class InquiryList extends React.PureComponent<
     getReceivedInquiryData && getReceivedInquiryData();
   };
   onEndReached = () => {
-    const { data, getMoreReceivedInquiryData, showFoot } = this.props;
-    if (data.length >= 5 && !showFoot) {
+    const { data, getMoreReceivedInquiryData, showFoot, loading } = this.props;
+    if (data.length >= 10 && !showFoot && !loading) {
       getMoreReceivedInquiryData && getMoreReceivedInquiryData();
     }
   };
 
   render() {
+    // console.log(12121212);
     const { refreshing } = this.state;
     return (
       // <View style={styles.container}>
@@ -128,7 +131,6 @@ class InquiryList extends React.PureComponent<
         onRefresh={this.onRefresh}
         onEndReached={this.onEndReached}
         onEndReachedThreshold={0.5}
-        initialNumToRender={2}
       />
       // </View>
     );

@@ -25,9 +25,9 @@ const PaddingLR = 20;
 
 const TaxPointData = [
   { key: 0, value: "0" },
-  { key: 15, value: "15" },
-  { key: 16, value: "16" },
-  { key: 17, value: "17" },
+  { key: 0.15, value: "15" },
+  { key: 0.16, value: "16" },
+  { key: 0.17, value: "17" },
 ];
 const TheQualityOfData = [
   { key: "原装", value: "原装" },
@@ -43,24 +43,51 @@ type SelectData = {
   key: string | number | boolean,
   value: string,
 };
+type IQuotedPrice = {
+  SupplierStatus?: number, //  供应商状态(1?: 未回复， 2：已回复， 3：供应商已忽略)
+  sNeedInvoice?: boolean, // 是否需要发票
+  TaxRate?: number, //  税点
+  SupplierName?: string, //  供应商名称
+  SupplierID?: string, // 供应商ID
+  Model?: string, //型号
+  Qty?: number, // 数量
+  Price?: number, // 单价
+  Quality?: string, //  品质
+  Brand?: string, // 品牌
+  SalesPrice?: number, // 销售定价
+  InvQty?: number, // 库存量
+  MakeYear?: string, //  年份
+  BDLineGuid?: string, //  报价明细Guid
+  IQGuid?: string, // 询价GUID
+};
 type Props = {
   data: Object,
 };
 type State = {
   showMoreParams: boolean,
+  QuotedPrice: IQuotedPrice,
 };
 class InquiryListItem extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       showMoreParams: false,
+      QuotedPrice: {},
     };
   }
   onPickerConfirm = (data: SelectData) => {
-    console.log(111, data);
+    this.setState({
+      QuotedPrice: Object.assign({}, this.state.QuotedPrice, {
+        TaxRate: Number(data.key),
+      }),
+    });
   };
   onPickerConfirm1 = (data: SelectData) => {
-    console.log(222, data);
+    this.setState({
+      QuotedPrice: Object.assign({}, this.state.QuotedPrice, {
+        Quality: String(data.key),
+      }),
+    });
   };
   IgnoreHandler = () => {
     const Title = Platform.select({
@@ -89,15 +116,49 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       },
     ]);
   };
-  sendQuotation = () => {
-    Cloud.$Toast.show("必填项为空", { icon: "tips_warning" });
-    // focus()
-    this.QuotationInput && this.QuotationInput.focus();
+  sendQuotation = (SupplierStatus: number) => {
+    const { QuotedPrice } = this.state;
+    const { data } = this.props;
+    const { Qty, Price } = QuotedPrice;
+    if (!Qty) {
+      Cloud.$Toast.show("数量必填", { icon: "tips_warning" });
+      return this.QuotationNumInput && this.QuotationNumInput.focus();
+    }
+    if (!Price) {
+      Cloud.$Toast.show("报价必填", { icon: "tips_warning" });
+      return this.QuotationInput && this.QuotationInput.focus();
+    }
+    Cloud.$post(`im/sendquotedprice`, {
+      SupplierStatus,
+      sNeedInvoice: data.IsNeedInvoice, // 是否需要发票
+      TaxRate: QuotedPrice.TaxRate, //  税点
+      SupplierName: data.CompanyName, //  供应商名称
+      SupplierID: data.CompanyID, // 供应商ID
+      Model: data.Model, //型号
+      Qty: Number(QuotedPrice.Qty), // 数量
+      Price: Number(QuotedPrice.Price), // 单价
+      Brand: data.Brand, // 品牌
+      BDLineGuid: data.BDLineGUID, //  报价明细Guid
+      IQGuid: data.IQGuid, // 询价GUID
+      Quality: QuotedPrice.Quality, //  品质
+      MakeYear: QuotedPrice.MakeYear, //  年份
+
+      // SalesPrice: number, // 销售定价
+      // InvQty: number, // 库存量
+    }).then(data => {
+      console.log(444, data);
+    });
+  };
+  onChangeText = (key: string, value: string | number) => {
+    this.setState({
+      QuotedPrice: Object.assign({}, this.state.QuotedPrice, { [key]: value }),
+    });
   };
   QuotationNumInput: any;
   QuotationInput: any;
   render() {
     const { showMoreParams } = this.state;
+    const { data } = this.props;
 
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
@@ -109,15 +170,17 @@ class InquiryListItem extends React.PureComponent<Props, State> {
 
         <View style={styles.InquiryInfo}>
           <View style={styles.InquiryHeader}>
-            <Text style={styles.InquiryTitle}>深圳市圣禾堂科技有限公司</Text>
-            <Text
-              style={[styles.telIcon]}
-              onPress={() => {
-                Linking.openURL("tel:400-699-2899");
-              }}
-            >
-              <Icon name="phone_ic" size={20} />
-            </Text>
+            <Text style={styles.InquiryTitle}>{data.CompanyName}</Text>
+            {data.PhoneNumber && data.PhoneNumber.length > 0 && (
+              <Text
+                style={[styles.telIcon]}
+                onPress={() => {
+                  Linking.openURL(`tel:${data.PhoneNumber[0].Number}`);
+                }}
+              >
+                <Icon name="phone_ic" size={20} />
+              </Text>
+            )}
           </View>
 
           <View style={styles.InquiryTop}>
@@ -129,7 +192,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 numberOfLines={1}
                 style={styles.value}
               >
-                STW20NK50ZSTW20NK50ZSTW20NK50ZSTW20NK50ZSTW20NK50Z
+                {data.Model}
               </Text>
             </View>
 
@@ -141,7 +204,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 numberOfLines={1}
                 style={styles.value}
               >
-                ST
+                {data.Brand}
               </Text>
             </View>
 
@@ -153,7 +216,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 numberOfLines={1}
                 style={styles.value}
               >
-                8000
+                {data.RequiredQty}
               </Text>
             </View>
 
@@ -165,14 +228,14 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 numberOfLines={1}
                 style={styles.value}
               >
-                是
+                {data.IsNeedInvoice ? "是" : "否"}
               </Text>
             </View>
 
             <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
               <Text style={styles.binding}>备注</Text>
               <Text selectable={true} style={styles.value}>
-                --
+                {data.Remark}
               </Text>
             </View>
             {/* 装饰、虚线 */}
@@ -205,12 +268,9 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   placeholder="请输入报价数量"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
-                  keyboardType={
-                    Platform.OS === "ios"
-                      ? "numbers-and-punctuation"
-                      : "numeric"
-                  }
+                  keyboardType={"numeric"}
                   ref={ref => (this.QuotationNumInput = ref)}
+                  onChangeText={value => this.onChangeText("Qty", value)}
                 />
               </View>
             </View>
@@ -233,14 +293,11 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   placeholder="请输入报价"
                   style={{ height: 36 }}
                   inputStyle={{ fontSize: 14 }}
-                  keyboardType={
-                    Platform.OS === "ios"
-                      ? "numbers-and-punctuation"
-                      : "numeric"
-                  }
+                  keyboardType={"numeric"}
                   ref={ref => {
                     this.QuotationInput = ref;
                   }}
+                  onChangeText={value => this.onChangeText("Price", value)}
                 />
               </View>
             </View>
@@ -306,6 +363,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                       ? "numbers-and-punctuation"
                       : "numeric"
                   }
+                  onChangeText={value => this.onChangeText("MakeYear", value)}
                 />
               </View>
             </View>
@@ -333,32 +391,36 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               </View>
             </View>
           )}
-          {/* <View style={styles.sendBtnView}>
-            <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
-              <TouchableOpacity
-                style={[styles.sendBtnCom, styles.sendBtnLeft]}
-                activeOpacity={0.8}
-                onPress={this.IgnoreHandler}
-              >
-                <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
-                  忽略
-                </Text>
-              </TouchableOpacity>
+          {data.Status === 1 && (
+            <View style={styles.sendBtnView}>
+              <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
+                <TouchableOpacity
+                  style={[styles.sendBtnCom, styles.sendBtnLeft]}
+                  activeOpacity={0.8}
+                  onPress={this.IgnoreHandler}
+                >
+                  <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
+                    忽略
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
+                <TouchableOpacity
+                  style={[styles.sendBtnCom, styles.sendBtnRight]}
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    this.sendQuotation(2);
+                  }}
+                >
+                  <Text style={[styles.sendBtnText, styles.sendBtnTextRight]}>
+                    发送报价
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
-              <TouchableOpacity
-                style={[styles.sendBtnCom, styles.sendBtnRight]}
-                activeOpacity={0.8}
-                onPress={this.sendQuotation}
-              >
-                <Text style={[styles.sendBtnText, styles.sendBtnTextRight]}>
-                  发送报价
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View> */}
+          )}
 
-          <View style={styles.sendBtnView}>
+          {/* <View style={styles.sendBtnView}>
             <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
               <Text style={styles.sendBtnTitleText}>等待供方报价</Text>
             </View>
@@ -373,7 +435,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
 
           {/* <TouchableOpacity activeOpacity={0.8} onPress={this.IgnoreHandler}>
             <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
