@@ -10,12 +10,15 @@ import {
   View,
   processColor,
   Platform,
+  BackHandler,
 } from "react-native";
 import { HeaderTitle, HeaderRight } from "@components";
 import Icon from "react-native-vector-icons/Ionicons";
 import { StackNavigator, SafeAreaView } from "react-navigation";
 
 import { PieChart } from "react-native-charts-wrapper";
+import { NativeModules } from "react-native";
+
 const RNFS = require("react-native-fs");
 let jobId = -1;
 
@@ -177,6 +180,8 @@ class TextPage extends Component<Props> {
         this.setState({ output: JSON.stringify(res) });
         this.setState({ imagePath: { uri: "file://" + downloadDest } });
         jobId = -1;
+        NativeModules.InstallApk.install(downloadDest);
+        BackHandler.exitApp();
       })
       .catch(err => {
         console.log(222, err);
@@ -187,10 +192,10 @@ class TextPage extends Component<Props> {
 
   componentDidMount() {
     if (Platform.OS === "android") {
-      this.downloadFileTest(
-        true,
-        "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_1_1_1_1550744651000.apk"
-      );
+      // this.downloadFileTest(
+      //   true,
+      //   "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_1_1_1_1550744651000.apk"
+      // );
     }
   }
 

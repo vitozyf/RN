@@ -7,12 +7,14 @@ import {
   Platform,
   Linking,
   Dimensions,
+  Alert,
 } from "react-native";
 import { DrawerItems, SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { ZnlModal } from "@components";
 import DeviceInfo from "react-native-device-info";
+import InstallApk from "@components/InstallApk";
 
 const Height = Dimensions.get("window").height;
 
@@ -54,28 +56,47 @@ class MyScrollView extends Component {
           const ResData = data.Result;
           const downloadUrl = ResData.DownloadUrl;
           if (ResData.Version !== Version) {
-            const ValueHandler = () => {
-              return (
-                <View style={{ paddingLeft: 10 }}>
-                  {ResData.UpdateLog.Content.map((item, index) => {
-                    return (
-                      <Text style={{ fontSize: 16 }} key={index}>
-                        {item}
-                      </Text>
-                    );
-                  })}
-                </View>
-              );
-            };
-            this.setState({
-              visible: true,
+            // const ValueHandler = () => {
+            //   return (
+            //     <View style={{ paddingLeft: 10 }}>
+            //       {ResData.UpdateLog.Content.map((item, index) => {
+            //         return (
+            //           <Text style={{ fontSize: 16 }} key={index}>
+            //             {item}
+            //           </Text>
+            //         );
+            //       })}
+            //     </View>
+            //   );
+            // };
+            // this.setState({
+            //   visible: true,
+            //   title: ResData.UpdateLog.Title,
+            //   value,
+            //   DownloadUrl: downloadUrl,
+            // });
+            const value = ResData.UpdateLog.Content.join("\n");
+            this.getVersionAppHandler({
               title: ResData.UpdateLog.Title,
-              value: ValueHandler,
+              value,
               DownloadUrl: downloadUrl,
             });
           }
         }
       });
+  }
+  getVersionAppHandler({ title, value, DownloadUrl }) {
+    Alert.alert(title || "更新提示", value || "有新版本，是否更新?", [
+      {
+        text: "下次更新",
+      },
+      {
+        text: "更新",
+        onPress: () => {
+          InstallApk.show(DownloadUrl);
+        },
+      },
+    ]);
   }
   confirmHandler = () => {
     this.setState({
@@ -129,8 +150,17 @@ class MyScrollView extends Component {
     );
   }
   componentDidMount() {
+    const testarr = ["1, aaa", "2: bbb"];
+    console.log(111, testarr.join("\n"));
+
     if (ISANDROID) {
       this.getVersionApp();
+      // this.getVersionAppHandler({
+      //   title: "更新提示",
+      //   value: testarr.join("\n"),
+      //   DownloadUrl:
+      //     "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_1_1_1_1550744651000.apk",
+      // });
     }
   }
 }

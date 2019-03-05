@@ -26,6 +26,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-device-info": "^0.24.3",
     "react-native-fs": "^2.13.3",
+    "react-native-install-apk": "https://github.com/flare216/react-native-install-apk#c44d5c84ab901fd5e6fe1c4b12325719c424f216",
     "react-native-keyboard-aware-scroll-view": "0.8.0",
     "react-native-modal": "^6.5.0",
     "react-native-picker": "^4.3.7",

@@ -29,9 +29,6 @@ Archive
 upload
 publish
 
-- 注意
-如果`node_modules`包重装后，将`react-native-wechat`包中的`DevelopmentTeam`改为`P3YTJX7552`
-
 ### 更新
 
 APP每次启动会请求服务器， 对应版本号不一致时会提示用户下载更新，正式的会请求正式API（返回正式版本下载地址）， 测试版本会请求测试API（返回测试版本下载地址）
@@ -45,3 +42,8 @@ code-push对应发布正式/测试版本
 - 下载最新字体，取出svg放入transfont目录
 - 执行 `run cd ./transfont` && `./iconfont_mapper.sh iconfont.svg` 获取编码json， 替换 `src/components/Iconfont/iconfont.json`
 - 替换 `ios/` 及 `android/app/src/main/assets/fonts/` 目录下的 `iconfont.ttf`文件
+
+
+### 第三包重装后需要对部分包进行修改
+- 将`react-native-wechat`包中的`DevelopmentTeam`改为`P3YTJX7552`
+- `react-native-install-apk`包中的`InstallApkPackager.java`去掉继承自`JavaScriptModule`的注解`@Override`

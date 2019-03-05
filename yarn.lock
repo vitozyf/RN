@@ -5650,6 +5650,10 @@ react-native-fs@^2.13.3:
     base-64 "^0.1.0"
     utf8 "^2.1.1"
 
+"react-native-install-apk@https://github.com/flare216/react-native-install-apk#c44d5c84ab901fd5e6fe1c4b12325719c424f216":
+  version "1.0.0"
+  resolved "https://github.com/flare216/react-native-install-apk#c44d5c84ab901fd5e6fe1c4b12325719c424f216"
+
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"

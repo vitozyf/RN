@@ -3,6 +3,7 @@ package com.znlicloud;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.heyao216.react_native_installapk.InstallApkPackager;
 import com.beefe.picker.PickerViewPackage;
 import com.theweflex.react.WeChatPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
@@ -48,8 +49,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(new MainReactPackage(), new PickerViewPackage(), new WeChatPackage(),
-          new MPAndroidChartPackage(), new RNDeviceInfo(), new SplashScreenReactPackage(), new RNFSPackage(),
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new InstallApkPackager(), new PickerViewPackage(),
+          new WeChatPackage(), new MPAndroidChartPackage(), new RNDeviceInfo(), new SplashScreenReactPackage(),
+          new RNFSPackage(),
           // new
           // CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey),
           // getApplicationContext(), BuildConfig.DEBUG),
