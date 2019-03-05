@@ -170,9 +170,12 @@ class ErpIndex extends Component<ErpIndexProps> {
     } else {
       return (
         <View style={styles.norule}>
-          <Text style={styles.noruleText}>
-            您没有权限访问, 请联系主账号开通权限
-          </Text>
+          <Image
+            style={styles.nullDataImage}
+            source={require("./img/erp-permission_default_pic.png")}
+          />
+          <Text style={styles.noruleText}>您没有权限访问</Text>
+          <Text style={styles.noruleText}>请联系主账号开通权限</Text>
         </View>
       );
     }
@@ -210,13 +213,21 @@ const styles = StyleSheet.create({
   },
   norule: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
+    // flexDirection: "row",
+    // justifyContent: "center",
+    paddingTop: 168,
     alignItems: "center",
     backgroundColor: "#fff",
   },
   noruleText: {
     fontSize: 16,
+    color: "#999",
+    lineHeight: 22,
+  },
+  nullDataImage: {
+    width: 156,
+    height: 108,
+    marginBottom: 12,
   },
 });
 
