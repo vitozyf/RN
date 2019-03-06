@@ -60,10 +60,8 @@ class PersonalCenter extends Component<Props> {
   };
   getinquirycount = () => {
     const { SET_ENQUIRYANDQUOTECNT } = this.props;
-    console.log(111111);
     Cloud.$get("im/getappenquiryandquotecntsync")
       .then(data => {
-        console.log(111, data);
         if (data && data.length > 0) {
           SET_ENQUIRYANDQUOTECNT(data);
         }

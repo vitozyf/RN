@@ -25,15 +25,39 @@ type Props = {
   value: Object,
   name: string,
   NoSeeStockCost: boolean,
+  navigation: INavigation,
 };
 class ListRow extends PureComponent<Props> {
+  toInventoryDetails = () => {
+    const { value, name, NoSeeStockCost } = this.props;
+    if (name === "StkStock") {
+      this.props.navigation.push("InventoryDetails", {
+        data: value,
+        name,
+        NoSeeStockCost,
+      });
+    }
+  };
   render() {
     const { value, name, NoSeeStockCost } = this.props;
     const StkStockView = (
-      <View style={styles.FlatListRow}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={this.toInventoryDetails}
+        style={styles.FlatListRow}
+      >
         {/* top */}
         <View style={[styles.FlatListRowTitle, styles.ViewHeight]}>
-          <Text style={[styles.FlatListRowModel, styles.TextCommon]}>
+          <Text
+            style={[
+              styles.FlatListRowModel,
+              styles.TextCommon,
+              { maxWidth: 300 },
+            ]}
+            selectable={true}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
             {value.Model}
           </Text>
           <View style={styles.FlatListRowRightBox}>
@@ -44,7 +68,7 @@ class ListRow extends PureComponent<Props> {
             </View>
             <View style={styles.FlatListRowInvTypeBox}>
               <Feather
-                size={16}
+                size={12}
                 name="database"
                 style={styles.FlatListRowInvQtyIcon}
               />
@@ -98,7 +122,7 @@ class ListRow extends PureComponent<Props> {
             )}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
     let TimeKey = "";
     let CompanyKey = "SupplierName";
@@ -124,14 +148,22 @@ class ListRow extends PureComponent<Props> {
     }
     // bottom
     const OtherView = (
-      <View style={[styles.FlatListRow, styles.ViewHeight]}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={this.toInventoryDetails}
+        style={[styles.FlatListRow, styles.ViewHeight]}
+      >
         <View style={styles.FlatListRowTitle}>
           <Text
             style={[
               styles.FlatListRowModel,
               styles.TextCommon,
               styles.TextCommonBottom,
+              { maxWidth: 300 },
             ]}
+            selectable={true}
+            numberOfLines={1}
+            ellipsizeMode="tail"
           >
             {value.Model}
           </Text>
@@ -201,7 +233,7 @@ class ListRow extends PureComponent<Props> {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
     return name === "StkStock" ? StkStockView : OtherView;
   }
@@ -804,6 +836,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
         value={item}
         name={this.state.name}
         NoSeeStockCost={NoSeeStockCost}
+        navigation={this.props.navigation}
       />
     );
   };
@@ -833,6 +866,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     const OrderBy = searchParams.join(",");
 
     // 已无数据或正在加载数据时，直接返回
+
     if (DataOver || loading) {
       return null;
     }
@@ -852,9 +886,9 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
     this.setState({
       FieldWhereString,
     });
-
+    const ReqURL = `${name}/${name === "StkStock" ? "SearchApp" : "Search"}`;
     Cloud.$post(
-      `${name}/${name === "StkStock" ? "SearchApp" : "Search"}`,
+      ReqURL,
       {
         FieldWhereString,
         OrderBy,
@@ -896,7 +930,8 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
           );
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(222, err);
         this.setState({
           loading: false,
         });

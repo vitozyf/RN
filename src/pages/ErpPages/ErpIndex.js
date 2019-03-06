@@ -19,9 +19,9 @@ class ErpIndex extends Component<ErpIndexProps> {
   };
   toErpList(name) {
     const { navigation, ErpUserRoleList } = this.props;
-    // 成本价
-    const NoSeeStockCost = !!ErpUserRoleList.find(item => {
-      return item.ResourceId === 122265;
+    // 成本价 true 允许  ， false  不允许看
+    const NoSeeStockCost = !ErpUserRoleList.find(item => {
+      return item.Code === "NoSeeStockCost";
     });
     navigation.push("ErpList", { name, NoSeeStockCost });
   }
@@ -33,49 +33,42 @@ class ErpIndex extends Component<ErpIndexProps> {
     if (IsMainAccount) {
       AppErpUserRoleList = [
         {
-          ResourceId: 157,
+          Code: "StkStock",
         },
         {
-          ResourceId: 200,
+          Code: "PastStkIn",
         },
         {
-          ResourceId: 202,
+          Code: "PastStkOut",
         },
         {
-          ResourceId: 205,
+          Code: "PastInquire",
         },
         {
-          ResourceId: 209,
-        },
-        {
-          ResourceId: 122265,
+          Code: "PastQuote",
         },
       ];
     }
 
     // 库存
-    const ShowStkStock = AppErpUserRoleList.find(item => {
-      return item.ResourceId === 157;
+    const ShowStkStock = AppErpUserRoleList.find((item: any) => {
+      return item.Code === "StkStock";
     });
     // 入库
-    const ShowPastStkIn = AppErpUserRoleList.find(item => {
-      return item.ResourceId === 200;
+    const ShowPastStkIn = AppErpUserRoleList.find((item: any) => {
+      return item.Code === "PastStkIn";
     });
     // 出库
-    const ShowPastStkOut = AppErpUserRoleList.find(item => {
-      return item.ResourceId === 202;
+    const ShowPastStkOut = AppErpUserRoleList.find((item: any) => {
+      return item.Code === "PastStkOut";
     });
     // 询价
-    const ShowPastInquire = AppErpUserRoleList.find(item => {
-      return item.ResourceId === 205;
+    const ShowPastInquire = AppErpUserRoleList.find((item: any) => {
+      return item.Code === "PastInquire";
     });
     // 报价
-    const ShowPastQuote = AppErpUserRoleList.find(item => {
-      return item.ResourceId === 209;
-    });
-    // 成本价
-    const NoSeeStockCost = AppErpUserRoleList.find(item => {
-      return item.ResourceId === 122265;
+    const ShowPastQuote = AppErpUserRoleList.find((item: any) => {
+      return item.Code === "PastQuote";
     });
     if (AppErpUserRoleList.length > 0) {
       return (

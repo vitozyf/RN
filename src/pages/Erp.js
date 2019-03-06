@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import ErpIndex from "@pages/ErpPages/ErpIndex";
 import ErpList from "@pages/ErpPages/ErpList";
+import InventoryDetails from "@pages/ErpPages/InventoryDetails";
 import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
@@ -16,6 +17,10 @@ const IndexPages = createStackNavigator(
     ErpList: {
       screen: ErpList,
       path: "/Home/Erp/ErpList",
+    },
+    InventoryDetails: {
+      screen: InventoryDetails,
+      path: "/Home/Erp/InventoryDetails",
     },
   },
   {

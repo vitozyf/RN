@@ -250,7 +250,6 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       default:
         break;
     }
-    console.log(111, QuotationQty, QuotationPrice);
 
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
