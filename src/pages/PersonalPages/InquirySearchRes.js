@@ -28,7 +28,7 @@ type Props = {
   navigation: INavigation,
 };
 type State = {
-  active: string,
+  active: "ReceivedInquiry" | "OutgoingInquiry",
   keyword: string,
   activeTag: string,
   data: Array<any>,
@@ -51,7 +51,7 @@ class InquirySearch extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      active: "received",
+      active: "ReceivedInquiry",
       activeTag: "",
       keyword: "",
       data: [],
@@ -62,9 +62,11 @@ class InquirySearch extends Component<Props, State> {
     };
   }
 
-  setActive = (active: string) => {
+  setActive = (active: "ReceivedInquiry" | "OutgoingInquiry") => {
     if (active !== this.state.active) {
-      this.setState({ active });
+      this.setState({ active }, () => {
+        this.getReceivedInquiryData();
+      });
     }
   };
 
@@ -108,7 +110,7 @@ class InquirySearch extends Component<Props, State> {
         showFoot={showFoot}
         loading={loading}
         data={data}
-        ActiveRoute="ReceivedInquiry"
+        ActiveRoute={active}
         getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
         getReceivedInquiryData={this.getReceivedInquiryData}
         headerHeight={96}
@@ -120,13 +122,24 @@ class InquirySearch extends Component<Props, State> {
     this.getReceivedInquiryData(PageIndex + 1);
   };
   getReceivedInquiryData = (pageIndex = 1) => {
-    const { keyword, withinDays } = this.state;
+    const { keyword, withinDays, active } = this.state;
+    let RqsURL = "im/getappenquirylistsync";
+    switch (active) {
+      case "ReceivedInquiry":
+        RqsURL = "im/getappenquirylistsync";
+        break;
+      case "OutgoingInquiry":
+        RqsURL = "im/getappsendenquirylistsync";
+        break;
+      default:
+        break;
+    }
     this.setState({ loading: true });
     if (pageIndex === 1) {
       Cloud.$Loading.show();
     }
     Cloud.$post(
-      `im/getappenquirylistsync`,
+      RqsURL,
       {
         keyWord: keyword,
         withinDays,
@@ -178,11 +191,11 @@ class InquirySearch extends Component<Props, State> {
     const tabs = [
       {
         value: "我收到的询价",
-        key: "received",
+        key: "ReceivedInquiry",
       },
       {
         value: "我发出的询价",
-        key: "issued",
+        key: "OutgoingInquiry",
       },
     ];
     const tabsTime = [

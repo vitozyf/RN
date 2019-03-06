@@ -41,7 +41,7 @@ class ReceivedInquiry extends Component<Props, State> {
           style={{ width: 36 }}
           activeOpacity={0.9}
           onPress={() => {
-            navigation.push("InquirySearch");
+            navigation.push("InquirySearch", { active: "ReceivedInquiry" });
           }}
         >
           <Icon name="input_search_ic" size={20} />

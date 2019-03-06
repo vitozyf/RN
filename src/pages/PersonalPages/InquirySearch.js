@@ -79,7 +79,7 @@ class InquirySearch extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      active: "received",
+      active: "ReceivedInquiry",
       KeyWord: "",
     };
   }
@@ -204,11 +204,11 @@ class InquirySearch extends Component<Props, State> {
     const tabs = [
       {
         value: "我收到的询价",
-        key: "received",
+        key: "ReceivedInquiry",
       },
       {
         value: "我发出的询价",
-        key: "issued",
+        key: "OutgoingInquiry",
       },
     ];
     return (
@@ -227,6 +227,9 @@ class InquirySearch extends Component<Props, State> {
   componentWillMount() {
     this.passParameterHandler();
     this.getSearchRecord();
+    this.setState({
+      active: this.props.navigation.getParam("active"),
+    });
   }
 }
 const styles = StyleSheet.create({
