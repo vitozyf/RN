@@ -36,6 +36,7 @@ type Props = {
   UserIdentity: Object,
   navigation: INavigation,
   EnquiryAndQuoteCnt: Array<IEnquiryAndQuoteCnt>,
+  SET_ENQUIRYANDQUOTECNT: Function,
 };
 const defaultEnquiryAndQuoteCntItem: IEnquiryAndQuoteCnt = {
   isHaveNoRead: false,
@@ -58,13 +59,17 @@ class PersonalCenter extends Component<Props> {
     }
   };
   getinquirycount = () => {
-    // Cloud.$cnh("getinquirycount")
-    //   .then(data => {
-    //     console.log(1111, data);
-    //   })
-    //   .catch(error => {
-    //     console.log(2222, error);
-    //   });
+    const { SET_ENQUIRYANDQUOTECNT } = this.props;
+    Cloud.$get("im/getappenquiryandquotecntsync")
+      .then(data => {
+        console.log(111, data);
+        if (data && data.length > 0) {
+          SET_ENQUIRYANDQUOTECNT(data);
+        }
+      })
+      .catch(err => {
+        Cloud.$addLog("getinquirycount", err.Message);
+      });
   };
   _renderRow = item => {
     return (
@@ -505,4 +510,18 @@ const mapStateToProps = (state, props) => {
     props
   );
 };
-export default connect(mapStateToProps)(PersonalCenter);
+const mapDispatchToProps = dispatch => {
+  return {
+    SET_ENQUIRYANDQUOTECNT: EnquiryAndQuoteCnt => {
+      return dispatch({
+        type: "SET_ENQUIRYANDQUOTECNT",
+        EnquiryAndQuoteCnt,
+      });
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PersonalCenter);

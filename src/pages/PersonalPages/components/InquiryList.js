@@ -9,6 +9,13 @@ import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
 import HeaderTabs from "@pages/PersonalPages/components/HeaderTabs";
 // import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+type IScrollToIndexParams = {
+  animated: boolean,
+  index: number,
+  viewOffset: number,
+  viewPosition: number,
+};
+
 type InquiryListProps = {
   data: Array<any>,
   ActiveRoute: string,
@@ -119,7 +126,10 @@ class InquiryList extends React.PureComponent<
       getMoreReceivedInquiryData && getMoreReceivedInquiryData();
     }
   };
-
+  scrollToIndex = (params: IScrollToIndexParams) => {
+    this.FlatListRef && this.FlatListRef.scrollToIndex(params);
+  };
+  FlatListRef: any = null;
   render() {
     // console.log(12121212);
     const { refreshing } = this.state;
@@ -137,6 +147,7 @@ class InquiryList extends React.PureComponent<
           onRefresh={this.onRefresh}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
+          ref={ref => (this.FlatListRef = ref)}
         />
       </View>
     );

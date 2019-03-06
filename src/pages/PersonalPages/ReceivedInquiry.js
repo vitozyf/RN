@@ -91,6 +91,14 @@ class ReceivedInquiry extends Component<Props, State> {
     this.getReceivedInquiryData(1, {
       msgType,
     });
+
+    this.InquiryListRef &&
+      this.InquiryListRef.scrollToIndex({
+        animated: false,
+        index: 0,
+        viewOffset: 50,
+        viewPosition: 0,
+      });
   };
   getMoreReceivedInquiryData = () => {
     const { data, PageIndex } = this.state;
@@ -152,6 +160,7 @@ class ReceivedInquiry extends Component<Props, State> {
         this.setState({ loading: false });
       });
   };
+  InquiryListRef: any = null;
   _renderList = () => {
     const { data, showFoot, loading } = this.state;
     return (
@@ -163,6 +172,9 @@ class ReceivedInquiry extends Component<Props, State> {
         getReceivedInquiryData={this.getReceivedInquiryData}
         loading={loading}
         sendquotedpriceSuccess={this.sendquotedpriceSuccess}
+        ref={ref => {
+          this.InquiryListRef = ref;
+        }}
       />
     );
   };
