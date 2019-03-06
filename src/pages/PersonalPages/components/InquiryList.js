@@ -18,7 +18,7 @@ type IScrollToIndexParams = {
 
 type InquiryListProps = {
   data: Array<any>,
-  ActiveRoute: string,
+  ActiveRoute: "ReceivedInquiry" | "OutgoingInquiry",
   showFoot: boolean,
   getMoreReceivedInquiryData?: Function,
   getReceivedInquiryData?: Function,
@@ -39,12 +39,21 @@ class InquiryList extends React.PureComponent<
     headerHeight: 48,
   };
 
-  _keyExtractor = (item, index) => item.BDLineGUID;
+  _keyExtractor = (item, index) => {
+    if (this.props.ActiveRoute === "OutgoingInquiry") {
+      return ` ${item.IID} `;
+    } else if (this.props.ActiveRoute === "ReceivedInquiry") {
+      return item.BDLineGUID;
+    } else {
+      return ` ${index} `;
+    }
+  };
 
   _renderItem = ({ item }) => (
     <InquiryListItem
       data={item}
       sendquotedpriceSuccess={this.props.sendquotedpriceSuccess}
+      ActiveRoute={this.props.ActiveRoute}
     />
   );
 

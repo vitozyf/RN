@@ -63,6 +63,7 @@ type IQuotedPrice = {
 type Props = {
   data: Object,
   sendquotedpriceSuccess?: Function,
+  ActiveRoute: "ReceivedInquiry" | "OutgoingInquiry",
 };
 type State = {
   showMoreParams: boolean,
@@ -118,6 +119,24 @@ class InquiryListItem extends React.PureComponent<Props, State> {
         },
       },
     ]);
+  };
+  ResendInquiry = () => {
+    // const { data } = this.props;
+    // const HttpParams = [
+    //   {
+    //     IsNeedInvoice: data.IsNeedInvoice, // 是否需要发票
+    //     SupplierName: data.SupplierName, //  供应商名称
+    //     SupplierID: data.SupplierID,
+    //     Remark: data.Remark,
+    //     Model: data.Model, //型号
+    //     Qty: data.RequiredQty,
+    //     Brand: data.Brand, // 品牌
+    //     RequiredQty: data.RequiredQty,
+    //   },
+    // ];
+    // Cloud.$post(`im/sendenquiry`, HttpParams).then(res => {
+    //   console.log(111, res)
+    // })
   };
   sendQuotation = (SupplierStatus: number) => {
     const { QuotedPrice } = this.state;
@@ -194,19 +213,56 @@ class InquiryListItem extends React.PureComponent<Props, State> {
   QuotationInput: any;
   render() {
     const { showMoreParams, CurrentStatus } = this.state;
-    const { data } = this.props;
+    const { data, ActiveRoute } = this.props;
+
+    let companyName = ""; // 公司名
+    let BottomTitle = ""; // 报价标题
+    let TimePhrase = ""; // 时间短语
+    let QuotationQty = ""; // 报价数量
+    let QuotationPrice = ""; // 报价
+
+    let showInput = false; // 显示输入框
+    let showText = false; // 显示已有数据
+
+    let AlreadyOffer = true; // 供方已报价
+    switch (ActiveRoute) {
+      case "ReceivedInquiry":
+        companyName = data.CompanyName;
+        BottomTitle = "";
+        TimePhrase = data.EnquiryPhrase;
+        QuotationQty = data.Qty;
+        QuotationPrice = data.Price;
+        showInput = data.Status === 1 || CurrentStatus === 1;
+        showText = data.Status === 2 && CurrentStatus === 2;
+        AlreadyOffer = true;
+        break;
+      case "OutgoingInquiry":
+        companyName = data.SupplierName;
+        BottomTitle = data.SupplierStatus === 2 ? "供方报价" : "";
+        TimePhrase = data.TimePhrase;
+        QuotationQty = data.QuotationQty;
+        QuotationPrice = data.QuotationPrice;
+        showInput = false;
+        showText = true;
+        AlreadyOffer = data.SupplierStatus === 2;
+        break;
+
+      default:
+        break;
+    }
+    console.log(111, QuotationQty, QuotationPrice);
 
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
         <View style={styles.timeView}>
           <View style={styles.timebox}>
-            <Text style={styles.time}>{data.EnquiryPhrase}</Text>
+            <Text style={styles.time}>{TimePhrase}</Text>
           </View>
         </View>
 
         <View style={styles.InquiryInfo}>
           <View style={styles.InquiryHeader}>
-            <Text style={styles.InquiryTitle}>{data.CompanyName}</Text>
+            <Text style={styles.InquiryTitle}>{companyName}</Text>
             {data.PhoneNumber && data.PhoneNumber.length > 0 && (
               <Text
                 style={[styles.telIcon]}
@@ -288,79 +344,100 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             <View style={[styles.edges, styles.edgesLeftBottom]} />
             <View style={[styles.edges, styles.edgesRightBottom]} />
 
-            <View
-              style={[
-                styles.leftrightstyle,
-                styles.paddingLeftRight8,
-                styles.paddingTopBottom4,
-              ]}
-            >
-              <View style={[styles.leftrightstyle, styles.formTitle]}>
-                <Text style={styles.binding}>报价数量</Text>
-                <Text style={styles.colorRed}>*</Text>
-              </View>
-              {(data.Status === 1 || CurrentStatus === 1) && (
-                <View style={[styles.flex1, styles.inputBox]}>
-                  <ZnlInput
-                    placeholder="请输入报价数量"
-                    style={{ height: 36 }}
-                    inputStyle={{ fontSize: 14 }}
-                    keyboardType={"numeric"}
-                    ref={ref => (this.QuotationNumInput = ref)}
-                    onChangeText={value => this.onChangeText("Qty", value)}
-                  />
-                </View>
-              )}
-              {data.Status === 2 && CurrentStatus === 2 && (
+            {/* Bottom */}
+            {!!BottomTitle && (
+              <View>
                 <Text
-                  selectable={true}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={styles.value}
+                  style={{
+                    color: "#333",
+                    lineHeight: 22,
+                    textAlign: "center",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
                 >
-                  {data.Qty}
+                  {BottomTitle}
                 </Text>
-              )}
-            </View>
+              </View>
+            )}
 
-            <View
-              style={[
-                styles.leftrightstyle,
-                styles.paddingLeftRight8,
-                styles.paddingTopBottom4,
-              ]}
-            >
-              <View style={[styles.leftrightstyle, styles.formTitle]}>
-                <Text style={styles.binding}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;报价
-                </Text>
-                <Text style={styles.colorRed}>*</Text>
-              </View>
-              {(data.Status === 1 || CurrentStatus === 1) && (
-                <View style={[styles.flex1, styles.inputBox]}>
-                  <ZnlInput
-                    placeholder="请输入报价"
-                    style={{ height: 36 }}
-                    inputStyle={{ fontSize: 14 }}
-                    keyboardType={"numeric"}
-                    ref={ref => {
-                      this.QuotationInput = ref;
-                    }}
-                    onChangeText={value => this.onChangeText("Price", value)}
-                  />
+            {AlreadyOffer && (
+              <View
+                style={[
+                  styles.leftrightstyle,
+                  styles.paddingLeftRight8,
+                  styles.paddingTopBottom4,
+                ]}
+              >
+                <View style={[styles.leftrightstyle, styles.formTitle]}>
+                  <Text style={styles.binding}>报价数量</Text>
+                  <Text style={styles.colorRed}>*</Text>
                 </View>
-              )}
-              {data.Status === 2 && CurrentStatus === 2 && (
-                <Text
-                  selectable={true}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                  style={styles.value}
-                >
-                  {data.Price}
-                </Text>
-              )}
-            </View>
+                {!!showInput && (
+                  <View style={[styles.flex1, styles.inputBox]}>
+                    <ZnlInput
+                      placeholder="请输入报价数量"
+                      style={{ height: 36 }}
+                      inputStyle={{ fontSize: 14 }}
+                      keyboardType={"numeric"}
+                      ref={ref => (this.QuotationNumInput = ref)}
+                      onChangeText={value => this.onChangeText("Qty", value)}
+                    />
+                  </View>
+                )}
+                {!!showText && (
+                  <Text
+                    selectable={true}
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={styles.value}
+                  >
+                    {QuotationQty}
+                  </Text>
+                )}
+              </View>
+            )}
+
+            {AlreadyOffer && (
+              <View
+                style={[
+                  styles.leftrightstyle,
+                  styles.paddingLeftRight8,
+                  styles.paddingTopBottom4,
+                ]}
+              >
+                <View style={[styles.leftrightstyle, styles.formTitle]}>
+                  <Text style={styles.binding}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;报价
+                  </Text>
+                  <Text style={styles.colorRed}>*</Text>
+                </View>
+                {!!showInput && (
+                  <View style={[styles.flex1, styles.inputBox]}>
+                    <ZnlInput
+                      placeholder="请输入报价"
+                      style={{ height: 36 }}
+                      inputStyle={{ fontSize: 14 }}
+                      keyboardType={"numeric"}
+                      ref={ref => {
+                        this.QuotationInput = ref;
+                      }}
+                      onChangeText={value => this.onChangeText("Price", value)}
+                    />
+                  </View>
+                )}
+                {!!showText && (
+                  <Text
+                    selectable={true}
+                    ellipsizeMode="tail"
+                    numberOfLines={1}
+                    style={styles.value}
+                  >
+                    {QuotationPrice}
+                  </Text>
+                )}
+              </View>
+            )}
           </View>
 
           {!showMoreParams && (
@@ -377,7 +454,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             </TouchableOpacity>
           )}
 
-          {showMoreParams && (
+          {showMoreParams && AlreadyOffer && (
             <View
               style={[
                 styles.leftrightstyle,
@@ -390,7 +467,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;税点
                 </Text>
               </View>
-              {(data.Status === 1 || CurrentStatus === 1) && (
+              {!!showInput && (
                 <View style={[styles.flex1, styles.inputBox]}>
                   <RNPicker
                     data={TaxPointData}
@@ -399,7 +476,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   />
                 </View>
               )}
-              {data.Status === 2 && CurrentStatus === 2 && (
+              {!!showText && (
                 <Text
                   selectable={true}
                   ellipsizeMode="tail"
@@ -412,7 +489,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             </View>
           )}
 
-          {showMoreParams && (
+          {showMoreParams && AlreadyOffer && (
             <View
               style={[
                 styles.leftrightstyle,
@@ -425,7 +502,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年份
                 </Text>
               </View>
-              {(data.Status === 1 || CurrentStatus === 1) && (
+              {!!showInput && (
                 <View style={[styles.flex1, styles.inputBox]}>
                   <ZnlInput
                     placeholder="请输入年份"
@@ -440,7 +517,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   />
                 </View>
               )}
-              {data.Status === 2 && CurrentStatus === 2 && (
+              {!!showText && (
                 <Text
                   selectable={true}
                   ellipsizeMode="tail"
@@ -453,7 +530,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             </View>
           )}
 
-          {showMoreParams && (
+          {showMoreParams && AlreadyOffer && (
             <View
               style={[
                 styles.leftrightstyle,
@@ -466,7 +543,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品质
                 </Text>
               </View>
-              {(data.Status === 1 || CurrentStatus === 1) && (
+              {!!showInput && (
                 <View style={[styles.flex1, styles.inputBox]}>
                   <RNPicker
                     data={TheQualityOfData}
@@ -475,7 +552,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   />
                 </View>
               )}
-              {data.Status === 2 && CurrentStatus === 2 && (
+              {!!showText && (
                 <Text
                   selectable={true}
                   ellipsizeMode="tail"
@@ -487,7 +564,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               )}
             </View>
           )}
-          {(data.Status === 1 || CurrentStatus === 1) && (
+          {!!showInput && ActiveRoute === "ReceivedInquiry" && (
             <View style={styles.sendBtnView}>
               <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
                 <TouchableOpacity
@@ -516,24 +593,26 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             </View>
           )}
 
-          {/* <View style={styles.sendBtnView}>
-            <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
-              <Text style={styles.sendBtnTitleText}>等待供方报价</Text>
+          {!AlreadyOffer && (
+            <View style={styles.sendBtnView}>
+              <View style={[styles.sendBtnBox, styles.sendBtnViewLeft]}>
+                <Text style={styles.sendBtnTitleText}>等待供方报价</Text>
+              </View>
+              <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
+                <TouchableOpacity
+                  style={[styles.sendBtnCom, styles.sendBtnAgain]}
+                  activeOpacity={0.8}
+                  onPress={this.ResendInquiry}
+                >
+                  <Text style={[styles.sendBtnText, styles.sendBtnTextAgain]}>
+                    再次发送
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
-              <TouchableOpacity
-                style={[styles.sendBtnCom, styles.sendBtnAgain]}
-                activeOpacity={0.8}
-                onPress={this.sendQuotation}
-              >
-                <Text style={[styles.sendBtnText, styles.sendBtnTextAgain]}>
-                  再次发送
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View> */}
+          )}
 
-          {data.Status === 2 && CurrentStatus === 2 && (
+          {!!showText && ActiveRoute === "ReceivedInquiry" && (
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => {
@@ -551,9 +630,22 @@ class InquiryListItem extends React.PureComponent<Props, State> {
   }
 
   componentWillMount() {
+    let showMoreParams = false;
+    switch (this.props.ActiveRoute) {
+      case "ReceivedInquiry":
+        if (this.props.data.Status === 2) {
+          showMoreParams = true;
+        }
+        break;
+      case "OutgoingInquiry":
+        showMoreParams = true;
+        break;
+      default:
+        break;
+    }
     this.setState({
       CurrentStatus: this.props.data.Status,
-      showMoreParams: this.props.data.Status === 2,
+      showMoreParams: showMoreParams,
     });
   }
 }
@@ -722,7 +814,7 @@ const styles = StyleSheet.create({
   },
   sendBtnTextAgain: {
     color: "#666",
-    lineHeight: 30,
+    lineHeight: 28,
   },
 });
 
