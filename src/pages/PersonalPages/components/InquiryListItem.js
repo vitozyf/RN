@@ -121,22 +121,47 @@ class InquiryListItem extends React.PureComponent<Props, State> {
     ]);
   };
   ResendInquiry = () => {
-    // const { data } = this.props;
-    // const HttpParams = [
-    //   {
-    //     IsNeedInvoice: data.IsNeedInvoice, // 是否需要发票
-    //     SupplierName: data.SupplierName, //  供应商名称
-    //     SupplierID: data.SupplierID,
-    //     Remark: data.Remark,
-    //     Model: data.Model, //型号
-    //     Qty: data.RequiredQty,
-    //     Brand: data.Brand, // 品牌
-    //     RequiredQty: data.RequiredQty,
-    //   },
-    // ];
-    // Cloud.$post(`im/sendenquiry`, HttpParams).then(res => {
-    //   console.log(111, res)
-    // })
+    const { data } = this.props;
+    const HttpParams = {
+      IsNeedInvoice: data.IsNeedInvoice, // 是否需要发票
+      SupplierName: data.SupplierName, //  供应商名称
+      SupplierID: data.SupplierID,
+      Remark: data.Remark,
+      Model: data.Model, //型号
+      Qty: data.QuotationQty,
+      Brand: data.Brand, // 品牌
+      RequiredQty: data.RequiredQty,
+      BDLineGuid: "",
+    };
+    Cloud.$post(`im/resendappenquirysync`, {
+      IQGUID: data.IQGUID,
+    }).then((res: string) => {
+      if (res) {
+        Cloud.$Toast.show("再次发送成功！", { icon: "tips_right" });
+        HttpParams.BDLineGuid = res;
+        //再次发送成功调第二个接口
+        Cloud.$cnh("SendEnquiry", [HttpParams])
+          .then(data => {
+            if (!data.Data) {
+              Cloud.$addLog(
+                "InquiryListItem.js-sendQuotation-code-0",
+                JSON.stringify(data),
+                JSON.stringify(HttpParams)
+              );
+            }
+          })
+          .catch(error => {
+            Cloud.$addLog("InquiryListItem.js-ResendInquiry", error.message);
+          });
+      } else {
+        Cloud.$Toast.show("再次发送失败！", { icon: "tips_warning" });
+        Cloud.$addLog(
+          "InquiryListItem.js-ResendInquiry-im/resendappenquirysync",
+          res
+        );
+      }
+      //
+    });
   };
   sendQuotation = (SupplierStatus: number) => {
     const { QuotedPrice } = this.state;
@@ -598,15 +623,17 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 <Text style={styles.sendBtnTitleText}>等待供方报价</Text>
               </View>
               <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
-                <TouchableOpacity
-                  style={[styles.sendBtnCom, styles.sendBtnAgain]}
-                  activeOpacity={0.8}
-                  onPress={this.ResendInquiry}
-                >
-                  <Text style={[styles.sendBtnText, styles.sendBtnTextAgain]}>
-                    再次发送
-                  </Text>
-                </TouchableOpacity>
+                {data.EnquiryCnt <= 1 && (
+                  <TouchableOpacity
+                    style={[styles.sendBtnCom, styles.sendBtnAgain]}
+                    activeOpacity={0.8}
+                    onPress={this.ResendInquiry}
+                  >
+                    <Text style={[styles.sendBtnText, styles.sendBtnTextAgain]}>
+                      再次发送
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           )}

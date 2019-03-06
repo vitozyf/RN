@@ -41,7 +41,7 @@ class InquiryList extends React.PureComponent<
 
   _keyExtractor = (item, index) => {
     if (this.props.ActiveRoute === "OutgoingInquiry") {
-      return ` ${item.IID} `;
+      return `${item.IID}-${item.BDLineGUID}`;
     } else if (this.props.ActiveRoute === "ReceivedInquiry") {
       return item.BDLineGUID;
     } else {
