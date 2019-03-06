@@ -11,7 +11,7 @@ import CustomDrawerContentComponent from "./DrawerContentComponent";
 
 const SimpleAppNavigator = createDrawerNavigator(
   {
-    Home: {
+    RootHome: {
       screen: Home,
       path: "/Home",
     },
@@ -34,7 +34,7 @@ const SimpleAppNavigator = createDrawerNavigator(
     TestPage: TestPageScreen,
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "RootHome",
     drawerPosition: "left",
     drawerWidth: 250,
     contentComponent: CustomDrawerContentComponent,

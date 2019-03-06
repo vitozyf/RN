@@ -5591,10 +5591,10 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-charts-wrapper@0.5.0:
-  version "0.5.0"
-  resolved "http://registry.npm.taobao.org/react-native-charts-wrapper/download/react-native-charts-wrapper-0.5.0.tgz#bba324b83d090f34368ce46e629ec09304ec0524"
-  integrity sha1-u6MkuD0JDzQ2jORuYp7AkwTsBSQ=
+react-native-charts-wrapper@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-charts-wrapper/-/react-native-charts-wrapper-0.5.1.tgz#4dd45c9d73657378d3430306621d4c40e4bfe6c6"
+  integrity sha512-Ri8qQgTNDK+dw5XDvrPl0W8j81J9AlqGk0g8BVZyyfOg8Fm9A1nr2vORNH+n5F2xTQ5teQGWm6bNpAE5cYhY0A==
   dependencies:
     prop-types "^15.5.10"
     react "16.1.1"

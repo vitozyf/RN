@@ -16,6 +16,7 @@ import {
 import { ZnlHeader, DashLine } from "@components";
 import Pane from "./Pane";
 import SwiperModal from "./Swiper";
+import PieChartView from "@pages/SearchPages/components/PieChart";
 
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 14;
@@ -83,87 +84,6 @@ class CompanyInfoPage extends Component<Props, State> {
         </View>
       );
     }
-    // testdata
-    // CompanyInfo.Telephone =
-    //   "0755-61329358 蔡小姐,0755-23947880 只做进口原装现货,";
-    // CompanyInfo.Name = "深圳市正能量网络技术有限公司";
-    // CompanyInfo.Address = "深圳市福田区中航路新亚洲电子城1期5楼523室";
-    // CompanyInfo.Mobile = "13729093675";
-    // CompanyInfo.AuthenticationInfo = [
-    //   {
-    //     Description: "经营场所实景照片 前台",
-    //     Url:
-    //       "//bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/h3Zzm2_1530156784919.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
-    //   },
-    //   {
-    //     Description: "经营场所实景照片 内景",
-    //     Url:
-    //       "//bom-ai-read.oss-cn-shenzhen.aliyuncs.com/makesureFile/YeFNdQ_1530156813319.jpg?x-oss-process=image/resize,m_mfit,h_300,w_300/quality,Q_80",
-    //   },
-    // ];
-    // CompanyInfo.Labellist = [
-    //   {
-    //     Id: 0,
-    //     IsMine: true,
-    //     Label: "置顶",
-    //     Qty: 10,
-    //   },
-    //   {
-    //     Id: 0,
-    //     IsMine: false,
-    //     Label: "原装",
-    //     Qty: 20,
-    //   },
-    //   {
-    //     Id: 0,
-    //     IsMine: false,
-    //     Label: "现货",
-    //     Qty: 28,
-    //   },
-    // ];
-    // CompanyInfo.spotChecklist = {};
-    // CompanyInfo.spotChecklist.SpotCheckGroup = [
-    //   {
-    //     SpotCheckDate: "2018年09月29日",
-    //     WareHouse: "深圳",
-    //     listSpotCheckList: [
-    //       {
-    //         Brand: "VISHAY",
-    //         Model: "SMBJ33CA-E3/52",
-    //         Num: 20302,
-    //         Reson: null,
-    //         Result: true,
-    //       },
-    //       {
-    //         Brand: "VISHAY",
-    //         Model: "SMBJ33CA",
-    //         Num: 2032,
-    //         Reson: null,
-    //         Result: false,
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     SpotCheckDate: "2018年09月29日",
-    //     WareHouse: "深圳",
-    //     listSpotCheckList: [
-    //       {
-    //         Brand: "VISHAY",
-    //         Model: "SMBJ33CA-E3/52",
-    //         Num: 20302,
-    //         Reson: null,
-    //         Result: true,
-    //       },
-    //       {
-    //         Brand: "VISHAY",
-    //         Model: "SMBJ33CA",
-    //         Num: 2032,
-    //         Reson: null,
-    //         Result: true,
-    //       },
-    //     ],
-    //   },
-    // ];
     // 联系人
     const Tels = CompanyInfo.Telephone ? CompanyInfo.Telephone.split(",") : [];
     const ContactEle = Tels.map((item, index) => {
@@ -301,6 +221,26 @@ class CompanyInfoPage extends Component<Props, State> {
     };
 
     const { isVisible, index } = this.state;
+
+    // 经营分析
+    const SupplierMngAnalysis = CompanyInfo.SupplierMngAnalysis;
+    // 品牌分析
+    const BrandCounts = SupplierMngAnalysis.BrandCounts || [];
+    // 年份分析
+    const MakeYearCounts = SupplierMngAnalysis.MakeYearCounts || [];
+
+    const BrandData = BrandCounts.map(item => {
+      return {
+        value: Number(item.Percent.toFixed(4)),
+        label: item.Brand,
+      };
+    });
+    const MakeYearData = MakeYearCounts.map(item => {
+      return {
+        value: Number(item.Percent.toFixed(4)),
+        label: item.MakeYears,
+      };
+    });
     return (
       <ScrollView style={styles.container}>
         <SwiperModal
@@ -419,11 +359,42 @@ class CompanyInfoPage extends Component<Props, State> {
             </View>
           </Pane>
         )}
-        {/* <Pane title="经营分析">
-          <View>
-            <Text>经营分析</Text>
-          </View>
-        </Pane> */}
+        {BrandData.length > 0 && MakeYearData.length > 0 && (
+          <Pane title="经营分析">
+            <View
+              style={{
+                paddingLeft: 20,
+                paddingRight: 20,
+                height: 340,
+                paddingTop: 10,
+              }}
+            >
+              {BrandData.length > 0 && (
+                <PieChartView
+                  piedata={BrandData}
+                  key="BrandData"
+                  title="品牌分布"
+                />
+              )}
+            </View>
+            <View
+              style={{
+                paddingLeft: 20,
+                paddingRight: 20,
+                height: 340,
+                paddingTop: 10,
+              }}
+            >
+              {MakeYearData.length > 0 && (
+                <PieChartView
+                  piedata={MakeYearData}
+                  key="MakeYearData"
+                  title="年份分布"
+                />
+              )}
+            </View>
+          </Pane>
+        )}
         {SpotCheckGroup.length > 0 && (
           <Pane title="抽查记录" renderHeaderRight={renderHeaderRight}>
             {SpotCheckGroupEle}

@@ -43,12 +43,12 @@ class TextPage extends Component<Props> {
     this.state = {
       legend: {
         enabled: true,
-        textSize: 15,
+        textSize: 12,
         form: "CIRCLE",
-        formSize: 15,
-        horizontalAlignment: "LEFT",
-        verticalAlignment: "CENTER",
-        orientation: "VERTICAL",
+        formSize: 10,
+        horizontalAlignment: "CENTER",
+        verticalAlignment: "BOTTOM",
+        orientation: "HORIZONTAL",
         wordWrapEnabled: true,
         formToTextSpace: 10,
         yEntrySpace: 5,
@@ -56,18 +56,18 @@ class TextPage extends Component<Props> {
       data: {
         dataSets: [
           {
-            label: "品牌分布",
+            label: "",
             values: [
-              { value: 45, label: "TI(德州仪器)" },
-              { value: 15, label: "Maxim(美信)" },
-              { value: 21, label: "ST(意法)" },
-              { value: 15, label: "ON(安森美)" },
-              { value: 9, label: "EXAR(艾科嘉)" },
-              { value: 45, label: "TI(德州仪器)1" },
-              { value: 15, label: "Maxim(美信)1" },
-              { value: 21, label: "ST(意法)1" },
-              { value: 15, label: "ON(安森美)1" },
-              { value: 9, label: "EXAR(艾科嘉)1" },
+              { value: 0.451, label: "TI(德州仪器)" },
+              { value: 0.15, label: "Maxim(美信)" },
+              { value: 0.21, label: "ST(意法)" },
+              { value: 0.15, label: "ON(安森美)" },
+              { value: 0.9, label: "EXAR(艾科嘉)" },
+              { value: 0.45, label: "TI(德州仪器)" },
+              { value: 0.15, label: "Maxim(美信)" },
+              { value: 0.21, label: "ST(意法)" },
+              { value: 0.15, label: "ON(安森美)" },
+              { value: 0.9, label: "EXAR(艾科嘉)" },
             ],
             config: {
               // common
@@ -83,19 +83,17 @@ class TextPage extends Component<Props> {
                 processColor("#f45b5b"),
                 processColor("#91e8e1"),
               ],
-              //   highlightEnabled: true,
+              // highlightEnabled: true,
               //   drawValues: false,
               //   visible: false,
-              //   valueFormatterPattern: string or 'largeValue' or 'percent' or 'date',
+              // valueFormatterPattern: "percent",
               //   axisDependency: string,
-              valueTextSize: 15,
+              valueTextSize: 12,
               valueTextColor: processColor("#fff"),
-              valueFormatter: "#.#'%'",
+              valueFormatter: "#.###%",
               // pie
-              sliceSpace: 3, // 间隙
+              sliceSpace: 2, // 间隙
               selectionShift: 5, // 选中时延长
-              //   xValuePosition: "OUTSIDE_SLICE",
-              //   yValuePosition: "OUTSIDE_SLICE",
             },
           },
         ],
@@ -111,12 +109,13 @@ class TextPage extends Component<Props> {
   }
   handleSelect = event => {
     let entry = event.nativeEvent;
-    if (entry == null) {
+    if (entry == null || !entry.data) {
       this.setState({ currentData: "" });
     } else {
-      this.setState({ currentData: `${entry.label} ${entry.value}` });
+      this.setState({
+        currentData: `${entry.label} ${entry.value.toFixed(2) * 100}%`,
+      });
     }
-    console.log(event.nativeEvent);
   };
   render() {
     return (
@@ -125,7 +124,7 @@ class TextPage extends Component<Props> {
           <PieChart
             style={styles.chart}
             logEnabled={false}
-            chartBackgroundColor={processColor("#ccc")}
+            chartBackgroundColor={processColor("#fff")}
             chartDescription={this.state.description} // 描述
             data={this.state.data}
             legend={this.state.legend} // 图例
@@ -134,17 +133,17 @@ class TextPage extends Component<Props> {
             // entryLabelTextSize={20}
             drawEntryLabels={false} // 显示lables
             rotationEnabled={true}
-            rotationAngle={30} // 旋转角度
+            rotationAngle={-90} // 旋转角度
             usePercentValues={false} // 显示小数
             styledCenterText={{
               text: this.state.currentData,
               color: processColor("#000"),
-              size: 15,
+              size: 12,
             }}
-            centerTextRadiusPercent={60} // 中心文字占的半径百分比
-            holeRadius={60} // 中心大小
+            centerTextRadiusPercent={100} // 中心文字占的半径百分比
+            holeRadius={50} // 中心大小
             holeColor={processColor("#fff")} // 中心背景颜色
-            transparentCircleRadius={0} // 中心阴影
+            transparentCircleRadius={10} // 中心阴影
             // transparentCircleColor={processColor("#f0f0f088")} // 中心阴影颜色
             maxAngle={360}
             onSelect={this.handleSelect}
@@ -155,7 +154,6 @@ class TextPage extends Component<Props> {
     );
   }
 }
-export default TextPage;
 const styles = StyleSheet.create({
   SafeAreaView: {
     flex: 1,
@@ -170,6 +168,8 @@ const styles = StyleSheet.create({
   chart: {
     // flex: 1,
     width: 360,
-    height: 220,
+    height: 300,
+    borderWidth: 1,
   },
 });
+export default TextPage;
