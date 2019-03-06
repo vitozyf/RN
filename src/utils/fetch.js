@@ -67,10 +67,11 @@ const fetchMethods = async (
   data: Object,
   option: IOption = { onlydata: true }
 ) => {
-  const isConnected = await NetInfo.isConnected.fetch();
-  if (!isConnected) {
-    return ZnlToast.show("当前网络不可用，请检查网络是否正常");
-  }
+  NetInfo.isConnected.fetch().then(isConnected => {
+    if (!isConnected) {
+      return ZnlToast.show("当前网络不可用，请检查网络是否正常");
+    }
+  });
   let BaseUrl: string = CONFIG.APIBASEURL;
   if (option.loading) {
     Loading.show();
@@ -81,6 +82,7 @@ const fetchMethods = async (
   if (option.searchApi) {
     BaseUrl = CONFIG.SEARCHAPIURL;
   }
+
   const token = (await getStorage(CONFIG.TOKEN)) || "";
   // 头部 token + UniqueID
   // const AppUniqueID = DeviceInfo.getUniqueID();
@@ -104,8 +106,8 @@ const fetchMethods = async (
   if (method === "post") {
     ReqConfig.body = JSON.stringify(data);
   }
-  try {
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+    try {
       fetch(BaseUrl + url, {
         ...ReqConfig,
       })
@@ -171,19 +173,19 @@ const fetchMethods = async (
             );
           }
         });
-    });
-  } catch (error) {
-    if (option && option.loading) {
-      Loading.hidden();
+    } catch (error) {
+      if (option && option.loading) {
+        Loading.hidden();
+      }
+      if (url !== LOGURL) {
+        addLog(
+          BaseUrl + url,
+          error.message || "请求错误，未捕获到message",
+          data ? JSON.stringify(data) : ""
+        );
+      }
     }
-    if (url !== LOGURL) {
-      addLog(
-        BaseUrl + url,
-        error.message || "请求错误，未捕获到message",
-        data ? JSON.stringify(data) : ""
-      );
-    }
-  }
+  });
 };
 
 const abort_promise = () => {
