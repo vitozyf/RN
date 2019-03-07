@@ -1050,7 +1050,9 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginLeft: 3,
   },
-  icon: {},
+  icon: {
+    color: "#666",
+  },
   iconTop: {
     position: "absolute",
     right: 0,

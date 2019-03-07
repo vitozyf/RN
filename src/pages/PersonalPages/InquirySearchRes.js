@@ -154,7 +154,7 @@ class InquirySearch extends Component<Props, State> {
         try {
           let data = [];
           let PageIndex = pageIndex;
-          if (res.Result.Data.Data) {
+          if (res && res.Result && res.Result.Data.Data) {
             data = res.Result.Data.Data.ResultList || [];
             PageIndex = res.Result.Data.Data.PageIndex;
           }

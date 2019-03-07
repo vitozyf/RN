@@ -111,7 +111,7 @@ const initUserData = async (store, CustomStore) => {
     } catch (error) {
       Cloud.$addLog("appInit-initUserData-AppWechatInfo-if", error.message);
     }
-  } else {
+  } else if (HomeInfo) {
     try {
       UserInfo.AvatarPath = `https:${HomeInfo.UserInfo.HeadPic}`;
       UserInfo.NickName = HomeInfo.UserInfo.NikeName;
