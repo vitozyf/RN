@@ -63,11 +63,9 @@ class InquirySearch extends Component<Props, State> {
   }
 
   setActive = (active: "ReceivedInquiry" | "OutgoingInquiry") => {
-    if (active !== this.state.active) {
-      this.setState({ active }, () => {
-        this.getReceivedInquiryData();
-      });
-    }
+    this.setState({ active }, () => {
+      this.getReceivedInquiryData();
+    });
   };
 
   setActiveTag = (activeTag: string) => {
@@ -113,6 +111,9 @@ class InquirySearch extends Component<Props, State> {
         ActiveRoute={active}
         getMoreReceivedInquiryData={this.getMoreReceivedInquiryData}
         getReceivedInquiryData={this.getReceivedInquiryData}
+        sendquotedpriceSuccess={() => {
+          this.getReceivedInquiryData();
+        }}
         headerHeight={96}
       />
     );

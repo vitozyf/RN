@@ -160,6 +160,7 @@ class InquiryList extends React.PureComponent<
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
           ref={ref => (this.FlatListRef = ref)}
+          keyboardShouldPersistTaps="handled"
         />
       </View>
     );

@@ -116,9 +116,7 @@ class InquirySearch extends Component<Props, State> {
     });
   }
   setActive = (active: string) => {
-    if (active !== this.state.active) {
-      this.setState({ active });
-    }
+    this.setState({ active });
   };
   onPressDelete = () => {
     Cloud.$removeStorage(Cloud.$CONFIG.ForQuotationSearchRecord).then(() => {

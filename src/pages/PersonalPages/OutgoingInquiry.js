@@ -71,19 +71,17 @@ class OutgoingInquiry extends Component<Props, State> {
     this.setActive(active);
   };
   setActive = (active: string) => {
-    if (active !== this.state.active) {
-      this.setState({ active }, () => {
-        this.getReceivedInquiryData().then(() => {
-          this.InquiryListRef &&
-            this.InquiryListRef.scrollToIndex({
-              animated: false,
-              index: 0,
-              viewOffset: 0,
-              viewPosition: 0,
-            });
-        });
+    this.setState({ active }, () => {
+      this.getReceivedInquiryData().then(() => {
+        this.InquiryListRef &&
+          this.InquiryListRef.scrollToIndex({
+            animated: false,
+            index: 0,
+            viewOffset: 0,
+            viewPosition: 0,
+          });
       });
-    }
+    });
   };
   getMoreReceivedInquiryData = () => {
     const { data, PageIndex } = this.state;
@@ -108,9 +106,6 @@ class OutgoingInquiry extends Component<Props, State> {
       default:
         break;
     }
-    // if (option && option.msgType !== undefined) {
-    //   msgType = option.msgType;
-    // }
     return Cloud.$post(
       `im/getappsendenquirylistsync`,
       {

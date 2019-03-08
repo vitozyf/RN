@@ -69,6 +69,7 @@ type State = {
   showMoreParams: boolean,
   QuotedPrice: IQuotedPrice,
   CurrentStatus: number, // 修改内部按钮状态
+  SendAgain: boolean,
 };
 class InquiryListItem extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -77,6 +78,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       showMoreParams: false,
       QuotedPrice: {},
       CurrentStatus: 1,
+      SendAgain: true,
     };
   }
   onPickerConfirm = (data: SelectData) => {
@@ -137,8 +139,9 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       IQGUID: data.IQGUID,
     }).then((res: string) => {
       if (res) {
-        Cloud.$Toast.show("再次发送成功！", { icon: "tips_right" });
+        Cloud.$Toast.show("发送成功", { icon: "tips_right" });
         HttpParams.BDLineGuid = res;
+        this.setState({ SendAgain: false });
         //再次发送成功调第二个接口
         Cloud.$cnh("SendEnquiry", [HttpParams])
           .then(data => {
@@ -154,7 +157,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             Cloud.$addLog("InquiryListItem.js-ResendInquiry", error.message);
           });
       } else {
-        Cloud.$Toast.show("再次发送失败！", { icon: "tips_warning" });
+        Cloud.$Toast.show("发送失败", { icon: "tips_warning" });
         Cloud.$addLog(
           "InquiryListItem.js-ResendInquiry-im/resendappenquirysync",
           res
@@ -218,13 +221,13 @@ class InquiryListItem extends React.PureComponent<Props, State> {
           const TimeID = setTimeout(() => {
             sendquotedpriceSuccess && sendquotedpriceSuccess("already");
             clearTimeout(TimeID);
-          }, 1000);
+          }, 500);
         } else if (SupplierStatus === 3) {
           Cloud.$Toast.show("已忽略该条报价！", { icon: "tips_warning" });
           const TimeID = setTimeout(() => {
             sendquotedpriceSuccess && sendquotedpriceSuccess("all");
             clearTimeout(TimeID);
-          }, 1000);
+          }, 500);
         }
       }
     });
@@ -623,7 +626,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 <Text style={styles.sendBtnTitleText}>等待供方报价</Text>
               </View>
               <View style={[styles.sendBtnBox, styles.sendBtnViewRight]}>
-                {data.EnquiryCnt <= 1 && (
+                {data.EnquiryCnt <= 1 && this.state.SendAgain && (
                   <TouchableOpacity
                     style={[styles.sendBtnCom, styles.sendBtnAgain]}
                     activeOpacity={0.8}

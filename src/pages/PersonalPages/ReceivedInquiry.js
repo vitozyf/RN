@@ -71,36 +71,17 @@ class ReceivedInquiry extends Component<Props, State> {
     this.setActive(active);
   };
   setActive = (active: string) => {
-    if (active !== this.state.active) {
-      this.setState({ active }, () => {
-        this.getReceivedInquiryData().then(() => {
-          this.InquiryListRef &&
-            this.InquiryListRef.scrollToIndex({
-              animated: false,
-              index: 0,
-              viewOffset: 0,
-              viewPosition: 0,
-            });
-        });
+    this.setState({ active }, () => {
+      this.getReceivedInquiryData().then(() => {
+        this.InquiryListRef &&
+          this.InquiryListRef.scrollToIndex({
+            animated: false,
+            index: 0,
+            viewOffset: 0,
+            viewPosition: 0,
+          });
       });
-    }
-    // let msgType = 0;
-    // switch (active) {
-    //   case "all":
-    //     msgType = 0;
-    //     break;
-    //   case "waiting":
-    //     msgType = 1;
-    //     break;
-    //   case "already":
-    //     msgType = 2;
-    //     break;
-    //   default:
-    //     break;
-    // }
-    // this.getReceivedInquiryData(1, {
-    //   msgType,
-    // });
+    });
   };
   getMoreReceivedInquiryData = () => {
     const { data, PageIndex } = this.state;
@@ -125,9 +106,6 @@ class ReceivedInquiry extends Component<Props, State> {
       default:
         break;
     }
-    // if (option && option.msgType !== undefined) {
-    //   msgType = option.msgType;
-    // }
     return Cloud.$post(
       `im/getappenquirylistsync`,
       {
