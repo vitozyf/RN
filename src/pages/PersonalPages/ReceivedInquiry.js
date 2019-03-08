@@ -61,7 +61,7 @@ class ReceivedInquiry extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      active: "all",
+      active: "",
       data: [],
       showFoot: false,
       PageIndex: 1,
@@ -72,10 +72,47 @@ class ReceivedInquiry extends Component<Props, State> {
   };
   setActive = (active: string) => {
     if (active !== this.state.active) {
-      this.setState({ active });
+      this.setState({ active }, () => {
+        this.getReceivedInquiryData().then(() => {
+          this.InquiryListRef &&
+            this.InquiryListRef.scrollToIndex({
+              animated: false,
+              index: 0,
+              viewOffset: 0,
+              viewPosition: 0,
+            });
+        });
+      });
+    }
+    // let msgType = 0;
+    // switch (active) {
+    //   case "all":
+    //     msgType = 0;
+    //     break;
+    //   case "waiting":
+    //     msgType = 1;
+    //     break;
+    //   case "already":
+    //     msgType = 2;
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // this.getReceivedInquiryData(1, {
+    //   msgType,
+    // });
+  };
+  getMoreReceivedInquiryData = () => {
+    const { data, PageIndex } = this.state;
+    this.getReceivedInquiryData(PageIndex + 1);
+  };
+  getReceivedInquiryData = async (pageIndex = 1, option: any) => {
+    this.setState({ loading: true });
+    if (pageIndex === 1) {
+      Cloud.$Loading.show();
     }
     let msgType = 0;
-    switch (active) {
+    switch (this.state.active) {
       case "all":
         msgType = 0;
         break;
@@ -88,32 +125,10 @@ class ReceivedInquiry extends Component<Props, State> {
       default:
         break;
     }
-    this.getReceivedInquiryData(1, {
-      msgType,
-    });
-
-    this.InquiryListRef &&
-      this.InquiryListRef.scrollToIndex({
-        animated: false,
-        index: 0,
-        viewOffset: 50,
-        viewPosition: 0,
-      });
-  };
-  getMoreReceivedInquiryData = () => {
-    const { data, PageIndex } = this.state;
-    this.getReceivedInquiryData(PageIndex + 1);
-  };
-  getReceivedInquiryData = (pageIndex = 1, option: any) => {
-    this.setState({ loading: true });
-    if (pageIndex === 1) {
-      Cloud.$Loading.show();
-    }
-    let msgType = 0;
-    if (option && option.msgType !== undefined) {
-      msgType = option.msgType;
-    }
-    Cloud.$post(
+    // if (option && option.msgType !== undefined) {
+    //   msgType = option.msgType;
+    // }
+    return Cloud.$post(
       `im/getappenquirylistsync`,
       {
         msgType,

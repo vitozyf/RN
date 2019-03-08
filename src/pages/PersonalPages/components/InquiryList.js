@@ -138,6 +138,9 @@ class InquiryList extends React.PureComponent<
   scrollToIndex = (params: IScrollToIndexParams) => {
     this.FlatListRef && this.FlatListRef.scrollToIndex(params);
   };
+  recordInteraction = () => {
+    this.FlatListRef && this.FlatListRef.recordInteraction();
+  };
   FlatListRef: any = null;
   render() {
     // console.log(12121212);

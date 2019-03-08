@@ -56,8 +56,17 @@ class MessagePages extends Component<Props, State> {
     const { MessageData } = this.props;
     this.getMessageData(30, MessageData[MessageData.length - 1].Id);
   };
+
+  willFocusListener: any;
   componentWillMount() {
-    this.getMessageData();
+    const { navigation } = this.props;
+    // this.getMessageData();
+    this.willFocusListener = navigation.addListener("willFocus", () => {
+      this.getMessageData();
+    });
+  }
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
   render() {
     const { navigation, MessageData } = this.props;
