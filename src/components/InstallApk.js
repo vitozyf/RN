@@ -87,7 +87,8 @@ class InstallView extends Component<Props, State> {
     const progressDivider = 2;
 
     // Random file name needed to force refresh...WW
-    const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai.apk`;
+    // const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai.apk`;
+    const downloadDest = `${RNFS.DocumentDirectoryPath}/bomai.apk`;
 
     const ret = RNFS.downloadFile({
       fromUrl: url,
@@ -101,8 +102,15 @@ class InstallView extends Component<Props, State> {
     jobId = ret.jobId;
     ret.promise
       .then(res => {
+        Cloud.$Toast.show("ok");
+        if (res.statusCode == 200) {
+          try {
+            NativeModules.InstallApk.install(downloadDest);
+          } catch (error) {
+            Cloud.$Toast.show("fail");
+          }
+        }
         jobId = -1;
-        NativeModules.InstallApk.install(downloadDest);
       })
       .catch(err => {
         Cloud.$addLog("InstallApk.js", err.message);

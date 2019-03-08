@@ -46,7 +46,7 @@ class MyScrollView extends Component {
     const { navigation } = this.props;
     navigation.navigate(name, parms);
   };
-  getVersionApp() {
+  getVersionApp = () => {
     const Version = DeviceInfo.getVersion();
     const Url = "appget/getversioninfo";
     !__DEV__ &&
@@ -64,8 +64,8 @@ class MyScrollView extends Component {
           }
         }
       });
-  }
-  getVersionAppHandler({ title, value, DownloadUrl }) {
+  };
+  getVersionAppHandler = ({ title, value, DownloadUrl }) => {
     Alert.alert(title || "更新提示", value || "有新版本，是否更新?", [
       {
         text: "下次更新",
@@ -78,7 +78,7 @@ class MyScrollView extends Component {
         },
       },
     ]);
-  }
+  };
   confirmHandler = () => {
     this.setState({
       visible: false,

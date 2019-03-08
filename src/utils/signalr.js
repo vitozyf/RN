@@ -17,7 +17,7 @@ const ClientMethodSets = [
   {
     name: "addAppMsg",
     method: data => {
-      // console.log(11111, data);
+      // Cloud.$Toast.show("收到推送消息");
       // 消息列表更新
       store.dispatch({
         type: "ADD_MESSAGE_DATA",

@@ -45,34 +45,23 @@ class Setting extends Component<Props, State> {
     };
   }
 
-  getVersionApp() {
+  getVersionApp = () => {
+    const that = this;
     if (Platform.OS === "android") {
       const Url = "appget/getversioninfo";
       Cloud.$get(Url, null, { onlydata: false }).then(data => {
         if (data && data.Code === 200) {
           const ResData = data.Result;
           const downloadUrl = ResData.DownloadUrl;
-          if (ResData.Version !== Version) {
-            Alert.alert(
-              "检测到新版本，是否更新",
-              `新版本： ${ResData.Version}`,
-              [
-                { text: "取消" },
-                {
-                  text: "确定",
-                  onPress: () => {
-                    Linking.openURL(downloadUrl).catch(err => {
-                      Cloud.$addLog(
-                        "DrawerContentComponent.js-confirmHandler",
-                        err.message || err.toString()
-                      );
-                    });
-                  },
-                },
-              ]
-            );
+          if (ResData.Version === Version) {
+            Cloud.$Toast.show("当前为最新版本！");
           } else {
-            Cloud.$Toast.show("当前版本为最新版本！");
+            const value = ResData.UpdateLog.Content.join("\n");
+            that.getVersionAppHandler({
+              title: ResData.UpdateLog.Title,
+              value,
+              DownloadUrl: downloadUrl,
+            });
           }
         }
       });
@@ -86,7 +75,21 @@ class Setting extends Component<Props, State> {
         );
       });
     }
-  }
+  };
+  getVersionAppHandler = ({ title, value, DownloadUrl }) => {
+    Alert.alert(title || "更新提示", value || "有新版本，是否更新?", [
+      {
+        text: "下次更新",
+      },
+      {
+        text: "更新",
+        onPress: () => {
+          const InstallApk = require("@components/InstallApk").default;
+          InstallApk.show(DownloadUrl);
+        },
+      },
+    ]);
+  };
 
   _renderRowVersion = item => {
     return (
