@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   UnreadPromptBox: {
-    width: 50,
+    // width: 100,
     flexDirection: "row",
     justifyContent: "center",
   },
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: "#ff2200",
-    top: 0,
-    right: 0,
+    top: 3,
+    right: -5,
   },
   container: {
     backgroundColor: "#fff",
