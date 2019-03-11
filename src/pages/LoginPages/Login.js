@@ -131,6 +131,7 @@ class Login extends Component<Props, State> {
       AppOpenID,
       AppCode,
       IsBandWechat,
+      IsFreeLogin,
     } = this.state;
     CompanyName &&
       Cloud.$setStorage(Cloud.$CONFIG.LoginCompanyName, CompanyName);
@@ -154,6 +155,7 @@ class Login extends Component<Props, State> {
       AppOpenID,
       AppCode,
       IsBandWechat,
+      IsFreeLogin,
     };
 
     if (!url) {
