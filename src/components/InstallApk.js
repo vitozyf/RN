@@ -23,6 +23,7 @@ let sibling = undefined;
 
 type Props = {
   url: string,
+  Version: string,
   hiddenHandler: Function,
 };
 type State = {
@@ -66,7 +67,7 @@ class InstallView extends Component<Props, State> {
     // if (jobId !== -1) {
     //   this.setState({ output: "A download is already in progress" });
     // }
-    const { hiddenHandler } = this.props;
+    const { hiddenHandler, Version } = this.props;
     const progress = data => {
       const percentage = ((100 * data.bytesWritten) / data.contentLength) | 0;
       this.setState({
@@ -87,35 +88,43 @@ class InstallView extends Component<Props, State> {
     const progressDivider = 2;
 
     // Random file name needed to force refresh...WW
-    // const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai.apk`;
-    const downloadDest = `${RNFS.DocumentDirectoryPath}/bomai.apk`;
+    const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai-${Version}.apk`;
+    // const downloadDest = `${RNFS.DocumentDirectoryPath}/bomai.apk`;
 
-    const ret = RNFS.downloadFile({
-      fromUrl: url,
-      toFile: downloadDest,
-      begin,
-      progress,
-      background,
-      progressDivider,
+    const Exists = RNFS.exists(downloadDest);
+
+    Exists.then((HasFile: boolean) => {
+      if (!HasFile) {
+        const ret = RNFS.downloadFile({
+          fromUrl: url,
+          toFile: downloadDest,
+          begin,
+          progress,
+          background,
+          progressDivider,
+        });
+
+        jobId = ret.jobId;
+        ret.promise
+          .then(res => {
+            if (res.statusCode == 200) {
+              try {
+                NativeModules.InstallApk.install(downloadDest);
+              } catch (error) {
+                Cloud.$Toast.show("fail");
+              }
+            }
+            jobId = -1;
+          })
+          .catch(err => {
+            Cloud.$addLog("InstallApk.js", err.message);
+            jobId = -1;
+          });
+      } else {
+        hiddenHandler && hiddenHandler();
+        NativeModules.InstallApk.install(downloadDest);
+      }
     });
-
-    jobId = ret.jobId;
-    ret.promise
-      .then(res => {
-        Cloud.$Toast.show("ok");
-        if (res.statusCode == 200) {
-          try {
-            NativeModules.InstallApk.install(downloadDest);
-          } catch (error) {
-            Cloud.$Toast.show("fail");
-          }
-        }
-        jobId = -1;
-      })
-      .catch(err => {
-        Cloud.$addLog("InstallApk.js", err.message);
-        jobId = -1;
-      });
   };
   componentWillMount() {
     if (Platform.OS === "android") {
@@ -126,11 +135,12 @@ class InstallView extends Component<Props, State> {
 }
 
 const InstallApk = {
-  show: (url: string) => {
+  show: (url: string, Version: string) => {
     sibling = new RootSiblings(
       (
         <InstallView
           url={url}
+          Version={Version}
           hiddenHandler={() => {
             if (sibling instanceof RootSiblings) {
               sibling.destroy();

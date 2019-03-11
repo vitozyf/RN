@@ -10,6 +10,8 @@ xmlns:tools="http://schemas.android.com/tools"
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!-- 获取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 授予“安装未知应用”的许可 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <!-- 文件读写权限 -->
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />　 -->
@@ -29,8 +31,8 @@ xmlns:tools="http://schemas.android.com/tools"
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"
         tools:node="remove"/>
      <!-- 允许程序获取当前或最近运行的应用 -->
-    <uses-permission android:name="android.permission.GET_TASKS"
-        tools:node="remove"/>
+    <!-- <uses-permission android:name="android.permission.GET_TASKS"
+        tools:node="remove"/> -->
 
 
     <application
@@ -67,6 +69,15 @@ xmlns:tools="http://schemas.android.com/tools"
       <meta-data android:name="JPUSH_CHANNEL" android:value="${APP_CHANNEL}"/>
       <meta-data android:name="JPUSH_APPKEY" android:value="${JPUSH_APPKEY}"/>
 
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="${applicationId}.znl"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_provider_paths"/>
+    </provider>
     </application>
 
 </manifest>

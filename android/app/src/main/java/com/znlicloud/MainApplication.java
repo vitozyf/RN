@@ -3,7 +3,8 @@ package com.znlicloud;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.heyao216.react_native_installapk.InstallApkPackager;
+// import com.heyao216.react_native_installapk.InstallApkPackager;
+import com.znlicloud.InstallApkPackager;
 import com.beefe.picker.PickerViewPackage;
 import com.theweflex.react.WeChatPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
@@ -51,10 +52,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new MainReactPackage(), new InstallApkPackager(), new PickerViewPackage(),
           new WeChatPackage(), new MPAndroidChartPackage(), new RNDeviceInfo(), new SplashScreenReactPackage(),
-          new RNFSPackage(),
-          // new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(),
-          // BuildConfig.DEBUG),
-          new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG), new VectorIconsPackage(),
+          new RNFSPackage(), new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
+          // new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(),
+          // BuildConfig.DEBUG), new VectorIconsPackage(),
           new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG));
     }
 

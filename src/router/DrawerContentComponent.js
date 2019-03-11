@@ -60,12 +60,13 @@ class MyScrollView extends Component {
               title: ResData.UpdateLog.Title,
               value,
               DownloadUrl: downloadUrl,
+              Version: ResData.Version,
             });
           }
         }
       });
   };
-  getVersionAppHandler = ({ title, value, DownloadUrl }) => {
+  getVersionAppHandler = ({ title, value, DownloadUrl, Version }) => {
     Alert.alert(title || "更新提示", value || "有新版本，是否更新?", [
       {
         text: "下次更新",
@@ -74,7 +75,7 @@ class MyScrollView extends Component {
         text: "更新",
         onPress: () => {
           const InstallApk = require("@components/InstallApk").default;
-          InstallApk.show(DownloadUrl);
+          InstallApk.show(DownloadUrl, Version);
         },
       },
     ]);
@@ -96,7 +97,7 @@ class MyScrollView extends Component {
     // 自定义区域
     const CustomDrawer = (
       <View style={styles.container}>
-        <ZnlModal
+        {/* <ZnlModal
           visible={visible}
           title={title}
           value={value}
@@ -109,7 +110,7 @@ class MyScrollView extends Component {
         />
         <View style={styles.DrawerItems}>
           <DrawerItems {...this.props} items={items} />
-        </View>
+        </View> */}
       </View>
     );
     // IOS外层包裹安全区域

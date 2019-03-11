@@ -61,6 +61,7 @@ class Setting extends Component<Props, State> {
               title: ResData.UpdateLog.Title,
               value,
               DownloadUrl: downloadUrl,
+              Version: ResData.Version,
             });
           }
         }
@@ -76,7 +77,7 @@ class Setting extends Component<Props, State> {
       });
     }
   };
-  getVersionAppHandler = ({ title, value, DownloadUrl }) => {
+  getVersionAppHandler = ({ title, value, DownloadUrl, Version }) => {
     Alert.alert(title || "更新提示", value || "有新版本，是否更新?", [
       {
         text: "下次更新",
@@ -85,7 +86,7 @@ class Setting extends Component<Props, State> {
         text: "更新",
         onPress: () => {
           const InstallApk = require("@components/InstallApk").default;
-          InstallApk.show(DownloadUrl);
+          InstallApk.show(DownloadUrl, Version);
         },
       },
     ]);
