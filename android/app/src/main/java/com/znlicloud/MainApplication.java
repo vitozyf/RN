@@ -52,9 +52,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(new MainReactPackage(), new InstallApkPackager(), new PickerViewPackage(),
           new WeChatPackage(), new MPAndroidChartPackage(), new RNDeviceInfo(), new SplashScreenReactPackage(),
-          new RNFSPackage(), new CodePush(CODEPUSH_KEY_PRODUCTIO, getApplicationContext(), BuildConfig.DEBUG),
-          // new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(),
-          // BuildConfig.DEBUG), new VectorIconsPackage(),
+          // new RNFSPackage(), new CodePush(CODEPUSH_KEY_PRODUCTIO,
+          // getApplicationContext(), BuildConfig.DEBUG),
+          new CodePush(CODEPUSH_KEY_STAGING, getApplicationContext(), BuildConfig.DEBUG), new VectorIconsPackage(),
           new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG));
     }
 
