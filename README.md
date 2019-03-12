@@ -21,9 +21,9 @@ code-push热更新测试和正式对于APP的测试和正式版本
 
 ### IOS
 bug: 删除lib.react
-clear
-config.js
 版本号
+config.js
+clear
 bundle-ios
 Archive
 upload
