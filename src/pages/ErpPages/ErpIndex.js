@@ -136,7 +136,6 @@ class ErpIndex extends Component<ErpIndexProps> {
           <ZnlCardList
             datas={datas}
             renderRow={this._renderRow}
-            style={{ borderBottomWidth: 1, borderColor: "#f0f0f0" }}
             rowStyle={{ height: 52 }}
           />
         </View>

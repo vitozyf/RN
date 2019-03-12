@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
-  Platform,
-  Linking,
-  Dimensions,
   Alert,
+  ScrollView,
+  Linking,
 } from "react-native";
 import { DrawerItems, SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
@@ -15,19 +13,9 @@ import { ISDEBUG, ISANDROID, ISIOS } from "@src/utils/system";
 import { ZnlModal } from "@components";
 import DeviceInfo from "react-native-device-info";
 
-const Height = Dimensions.get("window").height;
-
 const styles = StyleSheet.create({
-  containerbox: {
-    flex: 1,
-  },
   container: {
-    height: Height - 30,
-    justifyContent: "space-between",
-  },
-  DrawerItems: {
     flex: 1,
-    justifyContent: "flex-start",
   },
 });
 
@@ -46,9 +34,9 @@ class MyScrollView extends Component {
     const { navigation } = this.props;
     navigation.navigate(name, parms);
   };
-  getVersionApp = () => {
+  getVersionApp = url => {
     const Version = DeviceInfo.getVersion();
-    const Url = "appget/getversioninfo";
+    const Url = url || "appget/getversioninfo";
     !__DEV__ &&
       Cloud.$get(Url, null, { onlydata: false }).then(data => {
         if (data.Code === 200) {
@@ -74,66 +62,37 @@ class MyScrollView extends Component {
       {
         text: "更新",
         onPress: () => {
-          const InstallApk = require("@components/InstallApk").default;
-          InstallApk.show(DownloadUrl, Version);
+          if (ISANDROID) {
+            const InstallApk = require("@components/InstallApk").default;
+            InstallApk.show(DownloadUrl, Version);
+          } else if (ISIOS) {
+            Linking.openURL(
+              "https://itunes.apple.com/us/app/%E6%AD%A3%E8%83%BD%E9%87%8F%E7%94%B5%E5%AD%90%E7%BD%91/id1443457324?l=zh&ls=1&mt=8"
+            ).catch(err => {
+              Cloud.$addLog(
+                "DrawerContentComponent.js-confirmHandler",
+                err.message || err.toString()
+              );
+            });
+          }
         },
       },
     ]);
   };
-  confirmHandler = () => {
-    this.setState({
-      visible: false,
-    });
-    Linking.openURL(this.state.DownloadUrl).catch(err => {
-      Cloud.$addLog(
-        "DrawerContentComponent.js-confirmHandler",
-        err.message || err.toString()
-      );
-    });
-  };
   render() {
-    const { visible, title, value } = this.state;
-
-    // 自定义区域
-    const CustomDrawer = (
-      <View style={styles.container}>
-        {/* <ZnlModal
-          visible={visible}
-          title={title}
-          value={value}
-          cancelText="下次更新"
-          confirmText="去更新"
-          confirmHandler={this.confirmHandler}
-          cancelHandler={() => {
-            this.setState({ visible: false });
-          }}
-        />
-        <View style={styles.DrawerItems}>
-          <DrawerItems {...this.props} items={items} />
-        </View> */}
-      </View>
-    );
-    // IOS外层包裹安全区域
-    const Container = Cloud.$ISIOS ? (
-      <SafeAreaView
-        style={styles.ioscontainer}
-        forceInset={{ top: "always", horizontal: "never" }}
-      >
-        {CustomDrawer}
-      </SafeAreaView>
-    ) : (
-      CustomDrawer
-    );
-
     return (
-      <ScrollView contentContainerStyle={styles.containerbox}>
-        {Container}
+      <ScrollView>
+        <SafeAreaView
+          style={styles.container}
+          forceInset={{ top: "always", horizontal: "never" }}
+        >
+          <DrawerItems {...this.props} />
+        </SafeAreaView>
       </ScrollView>
     );
   }
   componentDidMount() {
     // const testarr = ["1, aaa", "2: bbb"];
-    // console.log(111, testarr.join("\n"));
 
     if (ISANDROID) {
       this.getVersionApp();
@@ -143,6 +102,8 @@ class MyScrollView extends Component {
       //   DownloadUrl:
       //     "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_dev_1_1_6_1552358752000.apk",
       // });
+    } else if (ISIOS) {
+      this.getVersionApp("appget/getversioninfo?IsIos=true");
     }
   }
 }

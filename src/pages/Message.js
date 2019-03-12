@@ -4,7 +4,6 @@
  */
 import React, { Component } from "react";
 import MessageIndex from "@pages/MessagePages/index";
-import Entypo from "react-native-vector-icons/Entypo";
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
 import { Image } from "react-native";
