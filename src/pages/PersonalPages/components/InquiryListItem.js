@@ -193,6 +193,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
         IQGuid: data.IQGUID, // 询价GUID
         Quality: QuotedPrice.Quality, //  品质
         MakeYear: QuotedPrice.MakeYear, //  年份
+        DataFrom: "imbomai",
         // SalesPrice: number, // 销售定价
         // InvQty: number, // 库存量
       },
