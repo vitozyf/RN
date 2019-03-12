@@ -152,9 +152,12 @@ const jpushHandler = store => {
     }
     const HomeUserInfo = store.getState().UserInfo.HomeUserInfo;
     // 设置推送设备别名： UserId
-    const UserId = HomeUserInfo.UserId.replace(/-/g, "");
+    const UserId = HomeUserInfo.UserId;
     if (UserId) {
-      setAlias(UserId);
+      const AliasUserId = HomeUserInfo.UserId.replace(/-/g, "");
+      if (AliasUserId) {
+        setAlias(AliasUserId);
+      }
     }
     // 设置推送设备标签： 手机号 是否主账号 公司id
     const BindMobile = HomeUserInfo.BindMobile;
@@ -231,12 +234,11 @@ const AppInit = async (store: any, CustomStore: any) => {
   }
   Loading.hidden();
   const TOKEN = await Cloud.$getStorage(Cloud.$CONFIG.TOKEN);
+  // 异步执行
   if (TOKEN) {
     getUserInfoByBomAi(store);
+    jpushHandler(store);
   }
-
-  // 异步执行
-  jpushHandler(store);
   gethotpartnos(store);
 };
 
