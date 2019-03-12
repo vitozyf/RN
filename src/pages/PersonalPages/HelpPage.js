@@ -54,7 +54,7 @@ class MembershipScreen extends Component<Props> {
               <Text
                 style={[styles.textCommon, styles.textValue, styles.telText]}
                 onPress={() => {
-                  Linking.openURL("tel:400-699-2899");
+                  Linking.openURL(Sales.telephone);
                 }}
               >
                 <Icon name="phone_ic" size={16} />
