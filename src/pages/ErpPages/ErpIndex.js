@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { HeaderTitle } from "@components";
+import { HeaderTitle, ZnlCardList } from "@components";
 
 type ErpIndexProps = {
   navigation: INavigation,
@@ -25,6 +25,20 @@ class ErpIndex extends Component<ErpIndexProps> {
     });
     navigation.push("ErpList", { name, NoSeeStockCost });
   }
+
+  _renderRow = (item, index) => {
+    return (
+      <TouchableOpacity
+        style={[styles.row]}
+        activeOpacity={0.8}
+        onPress={item.onPress}
+      >
+        <Image style={styles.titleicon} source={item.image} />
+        <Text style={styles.title}>{item.key}</Text>
+        <AntDesign style={styles.icon} name="right" size={20} />
+      </TouchableOpacity>
+    );
+  };
 
   render() {
     const { ErpUserRoleList, HomeUserInfo } = this.props;
@@ -70,94 +84,61 @@ class ErpIndex extends Component<ErpIndexProps> {
     const ShowPastQuote = AppErpUserRoleList.find((item: any) => {
       return item.Code === "PastQuote";
     });
+    let datas = [];
+    if (!!ShowStkStock) {
+      datas.push({
+        key: "库存",
+        image: require("./img/list-wh_ic.png"),
+        onPress: () => {
+          this.toErpList("StkStock");
+        },
+      });
+    }
+    if (!!ShowPastStkIn) {
+      datas.push({
+        key: "入库",
+        image: require("./img/list-into-wh_ic.png"),
+        onPress: () => {
+          this.toErpList("StkInRecord");
+        },
+      });
+    }
+    if (!!ShowPastStkOut) {
+      datas.push({
+        key: "出库",
+        image: require("./img/list-go-out-wh_ic.png"),
+        onPress: () => {
+          this.toErpList("StkOutByModel");
+        },
+      });
+    }
+    if (!!ShowPastStkOut) {
+      datas.push({
+        key: "询价",
+        image: require("./img/list-askprice_ic.png"),
+        onPress: () => {
+          this.toErpList("StkInquireRecord");
+        },
+      });
+    }
+    if (!!ShowPastQuote) {
+      datas.push({
+        key: "报价",
+        image: require("./img/list-quote_ic.png"),
+        onPress: () => {
+          this.toErpList("HisOfferPrice");
+        },
+      });
+    }
     if (AppErpUserRoleList.length > 0) {
       return (
         <View style={styles.container}>
-          {!!ShowStkStock && (
-            <TouchableOpacity
-              style={styles.row}
-              activeOpacity={0.8}
-              onPress={() => {
-                this.toErpList("StkStock");
-              }}
-            >
-              <Image
-                style={styles.titleicon}
-                source={require("./img/list-wh_ic.png")}
-              />
-              <Text style={styles.title}>库存</Text>
-              <AntDesign style={styles.icon} name="right" size={20} />
-            </TouchableOpacity>
-          )}
-
-          {!!ShowPastStkIn && (
-            <TouchableOpacity
-              style={styles.row}
-              activeOpacity={0.8}
-              onPress={() => {
-                this.toErpList("StkInRecord");
-              }}
-            >
-              <Image
-                style={styles.titleicon}
-                source={require("./img/list-into-wh_ic.png")}
-              />
-
-              <Text style={styles.title}>入库</Text>
-              <AntDesign style={styles.icon} name="right" size={20} />
-            </TouchableOpacity>
-          )}
-
-          {!!ShowPastStkOut && (
-            <TouchableOpacity
-              style={styles.row}
-              activeOpacity={0.8}
-              onPress={() => {
-                this.toErpList("StkOutByModel");
-              }}
-            >
-              <Image
-                style={styles.titleicon}
-                source={require("./img/list-go-out-wh_ic.png")}
-              />
-              <Text style={styles.title}>出库</Text>
-              <AntDesign style={styles.icon} name="right" size={20} />
-            </TouchableOpacity>
-          )}
-
-          {!!ShowPastInquire && (
-            <TouchableOpacity
-              style={styles.row}
-              activeOpacity={0.8}
-              onPress={() => {
-                this.toErpList("StkInquireRecord");
-              }}
-            >
-              <Image
-                style={styles.titleicon}
-                source={require("./img/list-askprice_ic.png")}
-              />
-              <Text style={styles.title}>询价</Text>
-              <AntDesign style={styles.icon} name="right" size={20} />
-            </TouchableOpacity>
-          )}
-
-          {!!ShowPastQuote && (
-            <TouchableOpacity
-              style={styles.row}
-              activeOpacity={0.8}
-              onPress={() => {
-                this.toErpList("HisOfferPrice");
-              }}
-            >
-              <Image
-                style={styles.titleicon}
-                source={require("./img/list-quote_ic.png")}
-              />
-              <Text style={styles.title}>报价</Text>
-              <AntDesign style={styles.icon} name="right" size={20} />
-            </TouchableOpacity>
-          )}
+          <ZnlCardList
+            datas={datas}
+            renderRow={this._renderRow}
+            style={{ borderBottomWidth: 1, borderColor: "#f0f0f0" }}
+            rowStyle={{ height: 52 }}
+          />
         </View>
       );
     } else {
@@ -180,22 +161,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   row: {
-    borderBottomWidth: 1,
-    borderColor: "#E6E6E6",
     height: 52,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // paddingLeft: 20,
-    // paddingRight: 20,
   },
   title: {
     flex: 1,
     fontSize: 15,
-    // textAlign: 'left',
   },
   titleicon: {
-    marginLeft: 16,
+    marginLeft: 0,
     marginRight: 8,
   },
   icon: {
@@ -206,8 +182,6 @@ const styles = StyleSheet.create({
   },
   norule: {
     flex: 1,
-    // flexDirection: "row",
-    // justifyContent: "center",
     paddingTop: 168,
     alignItems: "center",
     backgroundColor: "#fff",

@@ -9,18 +9,23 @@ type Props = {
   renderRow: Function,
   datas: Array<any>,
   style: Object,
+  rowStyle: Object,
 };
 class ZnlCardList extends Component<Props> {
   render() {
-    const { renderRow, datas, style } = this.props;
+    const { renderRow, datas, style, rowStyle } = this.props;
     const RowElement = datas.map((item, index) => {
       const borderHide = index === datas.length - 1;
       return (
         <View
-          style={[styles.cardRow, borderHide ? styles.borderHide : null]}
+          style={[
+            styles.cardRow,
+            borderHide ? styles.borderHide : null,
+            rowStyle,
+          ]}
           key={index}
         >
-          {renderRow && renderRow(item)}
+          {renderRow && renderRow(item, index)}
         </View>
       );
     });

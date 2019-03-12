@@ -219,18 +219,20 @@ class PersonalCenter extends Component<Props> {
               style={[styles.ImageBackground]}
             >
               <View style={[styles.headerLeft]}>
-                <Image
-                  style={styles.headerLeftImg}
-                  source={
-                    AvatarPath ===
-                      "https://static.bom.ai/assets/img/linked-head.png" ||
-                    AvatarPath === ""
-                      ? require("./img/head-portrait_default_pic.png")
-                      : {
-                          uri: AvatarPath,
-                        }
-                  }
-                />
+                <View style={styles.headerLeftImgBox}>
+                  <Image
+                    style={styles.headerLeftImg}
+                    source={
+                      AvatarPath ===
+                        "https://static.bom.ai/assets/img/linked-head.png" ||
+                      AvatarPath === ""
+                        ? require("./img/head-portrait_default_pic.png")
+                        : {
+                            uri: AvatarPath,
+                          }
+                    }
+                  />
+                </View>
                 <View>
                   <View>
                     <Text style={[styles.$TextColorWhite, styles.NickName]}>
@@ -370,11 +372,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  headerLeftImg: {
+  headerLeftImgBox: {
     marginLeft: 27,
     marginRight: 17,
     width: 60,
     height: 60,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#fff",
+  },
+  headerLeftImg: {
+    width: 58,
+    height: 58,
     borderRadius: 8,
   },
   NickName: {

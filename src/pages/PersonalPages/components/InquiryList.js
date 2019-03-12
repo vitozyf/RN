@@ -94,7 +94,7 @@ class InquiryList extends React.PureComponent<
   // 渲染底部
   _renderFooter = () => {
     const { showFoot, data, loading } = this.props;
-    if (showFoot && data.length > 0) {
+    if (showFoot && data.length >= 2) {
       return (
         <View
           style={{
@@ -117,8 +117,9 @@ class InquiryList extends React.PureComponent<
         </View>
       );
     } else if (!showFoot || data.length === 0) {
-      return null;
+      return <View />;
     }
+    return <View />;
   };
   _renderListHeaderComponent = () => {
     const { headerHeight } = this.props;
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f2f2f2",
     paddingLeft: 12,
     paddingRight: 12,
   },

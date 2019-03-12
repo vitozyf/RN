@@ -112,7 +112,7 @@ class MessageList extends React.PureComponent<Props, State> {
   // 渲染底部
   _renderFooter = () => {
     const { showFoot, data } = this.props;
-    if (showFoot && data.length > 0) {
+    if (showFoot && data.length > 10) {
       return (
         <View
           style={{
@@ -180,11 +180,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     paddingLeft: 12,
-    paddingRight: 12,
+    paddingRight: 0,
   },
   messageRow: {
     paddingLeft: 12,
-    paddingRight: 12,
+    paddingRight: 0,
     flexDirection: "row",
   },
   massageRowLeft: {
@@ -215,6 +215,7 @@ const styles = StyleSheet.create({
   massageTitleBox: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingRight: 12,
   },
   massageTitle: {
     fontSize: 16,

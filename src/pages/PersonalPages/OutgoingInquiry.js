@@ -179,7 +179,7 @@ class OutgoingInquiry extends Component<Props, State> {
     const { active } = this.state;
     const tabs = [
       {
-        value: "等待供方报价",
+        value: "待供方报价",
         key: "waiting",
       },
       {

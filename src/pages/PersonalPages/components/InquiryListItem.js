@@ -325,7 +325,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 numberOfLines={1}
                 style={styles.value}
               >
-                {data.Brand}
+                {data.Brand ? data.Brand : "--"}
               </Text>
             </View>
 
@@ -356,7 +356,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
               <Text style={styles.binding}>备注</Text>
               <Text selectable={true} style={styles.value}>
-                {data.Remark}
+                {data.Remark ? data.Remark : "--"}
               </Text>
             </View>
             {/* 装饰、虚线 */}
@@ -391,13 +391,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             )}
 
             {AlreadyOffer && (
-              <View
-                style={[
-                  styles.leftrightstyle,
-                  styles.paddingLeftRight8,
-                  styles.paddingTopBottom4,
-                ]}
-              >
+              <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
                 <View style={[styles.leftrightstyle, styles.formTitle]}>
                   <Text style={styles.binding}>
                     报价数量 &nbsp;
@@ -405,7 +399,13 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   </Text>
                 </View>
                 {!!showInput && (
-                  <View style={[styles.flex1, styles.inputBox]}>
+                  <View
+                    style={[
+                      styles.flex1,
+                      styles.inputBox,
+                      styles.paddingTopBottom4,
+                    ]}
+                  >
                     <ZnlInput
                       placeholder="请输入报价数量"
                       style={{ height: 36 }}
@@ -413,6 +413,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                       keyboardType={"numeric"}
                       ref={ref => (this.QuotationNumInput = ref)}
                       onChangeText={value => this.onChangeText("Qty", value)}
+                      defaultValue={data.RequiredQty.toString()}
                     />
                   </View>
                 )}
@@ -430,13 +431,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             )}
 
             {AlreadyOffer && (
-              <View
-                style={[
-                  styles.leftrightstyle,
-                  styles.paddingLeftRight8,
-                  styles.paddingTopBottom4,
-                ]}
-              >
+              <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
                 <View style={[styles.leftrightstyle, styles.formTitle]}>
                   <Text style={styles.binding}>
                     报价 &nbsp;
@@ -444,7 +439,13 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   </Text>
                 </View>
                 {!!showInput && (
-                  <View style={[styles.flex1, styles.inputBox]}>
+                  <View
+                    style={[
+                      styles.flex1,
+                      styles.inputBox,
+                      styles.paddingTopBottom4,
+                    ]}
+                  >
                     <ZnlInput
                       placeholder="请输入报价"
                       style={{ height: 36 }}
@@ -486,18 +487,18 @@ class InquiryListItem extends React.PureComponent<Props, State> {
           )}
 
           {showMoreParams && AlreadyOffer && (
-            <View
-              style={[
-                styles.leftrightstyle,
-                styles.paddingLeftRight8,
-                styles.paddingTopBottom4,
-              ]}
-            >
+            <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
               <View style={[styles.leftrightstyle, styles.formTitle]}>
                 <Text style={styles.binding}>税点</Text>
               </View>
               {!!showInput && (
-                <View style={[styles.flex1, styles.inputBox]}>
+                <View
+                  style={[
+                    styles.flex1,
+                    styles.inputBox,
+                    styles.paddingTopBottom4,
+                  ]}
+                >
                   <RNPicker
                     data={TaxPointData}
                     onPickerConfirm={this.onPickerConfirm}
@@ -519,18 +520,18 @@ class InquiryListItem extends React.PureComponent<Props, State> {
           )}
 
           {showMoreParams && AlreadyOffer && (
-            <View
-              style={[
-                styles.leftrightstyle,
-                styles.paddingLeftRight8,
-                styles.paddingTopBottom4,
-              ]}
-            >
+            <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
               <View style={[styles.leftrightstyle, styles.formTitle]}>
                 <Text style={styles.binding}>年份</Text>
               </View>
               {!!showInput && (
-                <View style={[styles.flex1, styles.inputBox]}>
+                <View
+                  style={[
+                    styles.flex1,
+                    styles.inputBox,
+                    styles.paddingTopBottom4,
+                  ]}
+                >
                   <ZnlInput
                     placeholder="请输入年份"
                     style={{ height: 36 }}
@@ -558,18 +559,18 @@ class InquiryListItem extends React.PureComponent<Props, State> {
           )}
 
           {showMoreParams && AlreadyOffer && (
-            <View
-              style={[
-                styles.leftrightstyle,
-                styles.paddingLeftRight8,
-                styles.paddingTopBottom4,
-              ]}
-            >
+            <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
               <View style={[styles.leftrightstyle, styles.formTitle]}>
                 <Text style={styles.binding}>品质</Text>
               </View>
               {!!showInput && (
-                <View style={[styles.flex1, styles.inputBox]}>
+                <View
+                  style={[
+                    styles.flex1,
+                    styles.inputBox,
+                    styles.paddingTopBottom4,
+                  ]}
+                >
                   <RNPicker
                     data={TheQualityOfData}
                     onPickerConfirm={this.onPickerConfirm1}

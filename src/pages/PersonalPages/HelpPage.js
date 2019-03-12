@@ -47,7 +47,7 @@ class MembershipScreen extends Component<Props> {
                 {Sales.SalesName}
               </Text>
             </View>
-            <View style={styles.rowView}>
+            <View style={[styles.rowView, { borderBottomWidth: 0 }]}>
               <Text style={[styles.textCommon, styles.textTitle]}>
                 联系电话
               </Text>
@@ -74,7 +74,7 @@ class MembershipScreen extends Component<Props> {
             <Text style={[styles.textCommon, styles.textTitle]}>客服</Text>
             <Text style={[styles.textCommon, styles.textValue]}>小正</Text>
           </View>
-          <View style={styles.rowView}>
+          <View style={[styles.rowView, { borderBottomWidth: 0 }]}>
             <Text style={[styles.textCommon, styles.textTitle]}>联系电话</Text>
             <Text
               style={[styles.textCommon, styles.textValue, styles.telText]}
