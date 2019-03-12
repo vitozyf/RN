@@ -17,18 +17,24 @@ const ClientMethodSets = [
   {
     name: "addAppMsg",
     method: data => {
-      // Cloud.$Toast.show("收到推送消息" + JSON.stringify(data.cntList));
-      // console.log(111111, data);
       // 消息列表更新
       store.dispatch({
         type: "ADD_MESSAGE_DATA",
         Message: data.msgResult,
       });
-      // 个人中心询报价条数更新
-      store.dispatch({
-        type: "SET_ENQUIRYANDQUOTECNT",
-        EnquiryAndQuoteCnt: data.cntList,
-      });
+      Cloud.$get("im/getappenquiryandquotecntsync")
+        .then(res => {
+          if (res && res.length > 0) {
+            // 个人中心询报价条数更新
+            store.dispatch({
+              type: "SET_ENQUIRYANDQUOTECNT",
+              EnquiryAndQuoteCnt: res,
+            });
+          }
+        })
+        .catch(err => {
+          Cloud.$addLog("getinquirycount", err.Message);
+        });
     },
   },
 ];
