@@ -88,43 +88,34 @@ class InstallView extends Component<Props, State> {
     const progressDivider = 2;
 
     // Random file name needed to force refresh...WW
-    const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai-${Version}.apk`;
+    const downloadDest = `${RNFS.ExternalDirectoryPath}/bomai.apk`;
     // const downloadDest = `${RNFS.DocumentDirectoryPath}/bomai.apk`;
 
-    const Exists = RNFS.exists(downloadDest);
-
-    Exists.then((HasFile: boolean) => {
-      if (!HasFile) {
-        const ret = RNFS.downloadFile({
-          fromUrl: url,
-          toFile: downloadDest,
-          begin,
-          progress,
-          background,
-          progressDivider,
-        });
-
-        jobId = ret.jobId;
-        ret.promise
-          .then(res => {
-            if (res.statusCode == 200) {
-              try {
-                NativeModules.InstallApk.install(downloadDest);
-              } catch (error) {
-                Cloud.$Toast.show("fail");
-              }
-            }
-            jobId = -1;
-          })
-          .catch(err => {
-            Cloud.$addLog("InstallApk.js", err.message);
-            jobId = -1;
-          });
-      } else {
-        hiddenHandler && hiddenHandler();
-        NativeModules.InstallApk.install(downloadDest);
-      }
+    const ret = RNFS.downloadFile({
+      fromUrl: url,
+      toFile: downloadDest,
+      begin,
+      progress,
+      background,
+      progressDivider,
     });
+
+    jobId = ret.jobId;
+    ret.promise
+      .then(res => {
+        if (res.statusCode == 200) {
+          try {
+            NativeModules.InstallApk.install(downloadDest);
+          } catch (error) {
+            Cloud.$Toast.show("fail");
+          }
+        }
+        jobId = -1;
+      })
+      .catch(err => {
+        Cloud.$addLog("InstallApk.js", err.message);
+        jobId = -1;
+      });
   };
   componentWillMount() {
     if (Platform.OS === "android") {

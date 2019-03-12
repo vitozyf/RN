@@ -154,7 +154,7 @@ const jpushHandler = store => {
     // 设置推送设备别名： UserId
     const UserId = HomeUserInfo.UserId;
     if (UserId) {
-      const AliasUserId = HomeUserInfo.UserId.replace(/-/g, "");
+      const AliasUserId = UserId.replace(/-/g, "");
       if (AliasUserId) {
         setAlias(AliasUserId);
       }

@@ -141,7 +141,7 @@ class MyScrollView extends Component {
       //   title: "更新提示",
       //   value: testarr.join("\n"),
       //   DownloadUrl:
-      //     "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_1_1_1_1550744651000.apk",
+      //     "http://admin.bom.ai/chanel/Content/Files/ede45b8d-705b-4dec-a053-427c0e3bb0f7/bomai_dev_1_1_6_1552358752000.apk",
       // });
     }
   }
