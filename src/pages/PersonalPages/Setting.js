@@ -134,6 +134,7 @@ class Setting extends Component<Props, State> {
 
   logoutHandler = () => {
     const { navigation, ClearUserInfo } = this.props;
+    navigation.goBack(null);
     Cloud.$post("user/logout", null, { onlydata: false }).then(data => {
       if (data.Result.isSuccess) {
         this.closeModal(() => {

@@ -108,11 +108,12 @@ class Login extends Component<Props, State> {
   isWXAppInstalledHandler() {
     const { wechat } = this.props;
 
-    wechat.isWXAppInstalled().then(isInstalled => {
-      this.setState({
-        hasWechat: !!isInstalled,
+    wechat &&
+      wechat.isWXAppInstalled().then(isInstalled => {
+        this.setState({
+          hasWechat: !!isInstalled,
+        });
       });
-    });
   }
   componentWillMount() {
     this.readLoginInfo();

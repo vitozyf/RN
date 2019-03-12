@@ -204,7 +204,6 @@ class PersonalCenter extends Component<Props> {
       EnquiryAndQuoteCnt.find(item => {
         return item.typeName === 4;
       }) || defaultEnquiryAndQuoteCntItem;
-
     return (
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
@@ -293,7 +292,7 @@ class PersonalCenter extends Component<Props> {
               title="我发出的询价"
               message1={EnquiryAndQuoteCnt3}
               message2={EnquiryAndQuoteCnt4}
-              message1Title="等待供方报价"
+              message1Title="待供方报价"
               message2Title="供方已报价"
               titlePress={() => {
                 this.toPage({
@@ -320,7 +319,11 @@ class PersonalCenter extends Component<Props> {
           </View>
 
           <View style={[styles.blockview]}>
-            <ZnlCardList datas={datas} renderRow={this._renderRow} />
+            <ZnlCardList
+              datas={datas}
+              renderRow={this._renderRow}
+              style={{ marginTop: 0 }}
+            />
           </View>
         </View>
       </ScrollView>

@@ -8,10 +8,11 @@ import { View, StyleSheet } from "react-native";
 type Props = {
   renderRow: Function,
   datas: Array<any>,
+  style: Object,
 };
 class ZnlCardList extends Component<Props> {
   render() {
-    const { renderRow, datas } = this.props;
+    const { renderRow, datas, style } = this.props;
     const RowElement = datas.map((item, index) => {
       const borderHide = index === datas.length - 1;
       return (
@@ -23,7 +24,7 @@ class ZnlCardList extends Component<Props> {
         </View>
       );
     });
-    return <View style={styles.container}>{RowElement}</View>;
+    return <View style={[styles.container, style]}>{RowElement}</View>;
   }
 }
 

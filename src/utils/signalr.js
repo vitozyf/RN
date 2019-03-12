@@ -37,6 +37,16 @@ const ClientMethodSets = [
         });
     },
   },
+  {
+    name: "addAppOwnCompanyMsg",
+    method: data => {
+      // 个人中心询报价条数更新
+      store.dispatch({
+        type: "SET_ENQUIRYANDQUOTECNT",
+        EnquiryAndQuoteCnt: data.cntList,
+      });
+    },
+  },
 ];
 
 const hubConnection = async () => {

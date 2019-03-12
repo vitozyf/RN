@@ -19,6 +19,7 @@ import {
 import Icon from "@components/Iconfont/CloudIcon";
 import { DashLine, ZnlInput } from "@components";
 import RNPicker from "@components/RNPicker";
+import { underline } from "ansi-colors";
 
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 20;
@@ -398,8 +399,10 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 ]}
               >
                 <View style={[styles.leftrightstyle, styles.formTitle]}>
-                  <Text style={styles.binding}>报价数量</Text>
-                  <Text style={styles.colorRed}>*</Text>
+                  <Text style={styles.binding}>
+                    报价数量 &nbsp;
+                    {!!showInput && <Text style={styles.colorRed}>*</Text>}
+                  </Text>
                 </View>
                 {!!showInput && (
                   <View style={[styles.flex1, styles.inputBox]}>
@@ -420,7 +423,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                     numberOfLines={1}
                     style={styles.value}
                   >
-                    {QuotationQty}
+                    {QuotationQty ? QuotationQty : "--"}
                   </Text>
                 )}
               </View>
@@ -436,9 +439,9 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               >
                 <View style={[styles.leftrightstyle, styles.formTitle]}>
                   <Text style={styles.binding}>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;报价
+                    报价 &nbsp;
+                    {!!showInput && <Text style={styles.colorRed}>*</Text>}
                   </Text>
-                  <Text style={styles.colorRed}>*</Text>
                 </View>
                 {!!showInput && (
                   <View style={[styles.flex1, styles.inputBox]}>
@@ -461,7 +464,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                     numberOfLines={1}
                     style={styles.value}
                   >
-                    {QuotationPrice}
+                    {QuotationPrice ? QuotationPrice : "--"}
                   </Text>
                 )}
               </View>
@@ -491,9 +494,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               ]}
             >
               <View style={[styles.leftrightstyle, styles.formTitle]}>
-                <Text style={styles.binding}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;税点
-                </Text>
+                <Text style={styles.binding}>税点</Text>
               </View>
               {!!showInput && (
                 <View style={[styles.flex1, styles.inputBox]}>
@@ -511,7 +512,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   numberOfLines={1}
                   style={styles.value}
                 >
-                  {data.TaxRate}
+                  {data.TaxRate ? data.TaxRate : "--"}
                 </Text>
               )}
             </View>
@@ -526,9 +527,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               ]}
             >
               <View style={[styles.leftrightstyle, styles.formTitle]}>
-                <Text style={styles.binding}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年份
-                </Text>
+                <Text style={styles.binding}>年份</Text>
               </View>
               {!!showInput && (
                 <View style={[styles.flex1, styles.inputBox]}>
@@ -552,7 +551,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   numberOfLines={1}
                   style={styles.value}
                 >
-                  {data.MakeYear}
+                  {data.MakeYear ? data.MakeYear : "--"}
                 </Text>
               )}
             </View>
@@ -567,9 +566,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               ]}
             >
               <View style={[styles.leftrightstyle, styles.formTitle]}>
-                <Text style={styles.binding}>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品质
-                </Text>
+                <Text style={styles.binding}>品质</Text>
               </View>
               {!!showInput && (
                 <View style={[styles.flex1, styles.inputBox]}>
@@ -587,7 +584,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   numberOfLines={1}
                   style={styles.value}
                 >
-                  {data.Quality}
+                  {data.Quality ? data.Quality : "--"}
                 </Text>
               )}
             </View>
@@ -648,6 +645,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
               onPress={() => {
                 this.setState({ CurrentStatus: 1 });
               }}
+              style={{ borderTopWidth: 1, borderColor: "#f0f0f0" }}
             >
               <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
                 重新报价
@@ -780,7 +778,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   formTitle: {
-    width: 70,
+    width: 75,
   },
   inputBox: {
     paddingLeft: 15,
