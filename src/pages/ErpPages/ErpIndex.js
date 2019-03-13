@@ -33,7 +33,9 @@ class ErpIndex extends Component<ErpIndexProps> {
         activeOpacity={0.8}
         onPress={item.onPress}
       >
-        <Image style={styles.titleicon} source={item.image} />
+        <View style={styles.titleiconBox}>
+          <Image style={styles.titleicon} source={item.image} />
+        </View>
         <Text style={styles.title}>{item.key}</Text>
         <AntDesign style={styles.icon} name="right" size={20} />
       </TouchableOpacity>
@@ -169,10 +171,17 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
   },
-  titleicon: {
+  titleiconBox: {
+    width: 28,
+    height: 28,
     marginLeft: 0,
     marginRight: 8,
+    height: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
+  titleicon: {},
   icon: {
     width: 50,
     textAlign: "center",
