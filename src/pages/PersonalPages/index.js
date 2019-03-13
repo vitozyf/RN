@@ -331,8 +331,16 @@ class PersonalCenter extends Component<Props> {
       </ScrollView>
     );
   }
+
+  willFocusListener: any;
   componentWillMount() {
-    this.getinquirycount();
+    const { navigation } = this.props;
+    this.willFocusListener = navigation.addListener("willFocus", () => {
+      this.getinquirycount();
+    });
+  }
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 }
 const styles = StyleSheet.create({

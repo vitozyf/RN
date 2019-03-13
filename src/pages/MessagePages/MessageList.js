@@ -46,20 +46,26 @@ class MessageList extends React.PureComponent<Props, State> {
 
   _renderItem = ({ item }) => {
     const onPress = () => {
-      if (item.MsgType === 2) {
-        this.toPage({
-          name: "ReceivedInquiry",
-          params: { active: "waiting" },
-        });
-        if (!item.IsReaded) {
-          item.IsReaded = true;
-        }
-      } else if (item.MsgType === 3) {
-        this.toPage({
-          name: "OutgoingInquiry",
-          params: { active: "already" },
-        });
-      }
+      // if (item.MsgType === 2) {
+      //   this.toPage({
+      //     name: "ReceivedInquiry",
+      //     params: { active: "waiting" },
+      //   });
+      //   if (!item.IsReaded) {
+      //     item.IsReaded = true;
+      //   }
+      // } else if (item.MsgType === 3) {
+      //   this.toPage({
+      //     name: "OutgoingInquiry",
+      //     params: { active: "already" },
+      //   });
+      // }
+      const { navigation } = this.props;
+      navigation.push("MessageDetail", {
+        MsgType: item.MsgType,
+        Model: item.Model || "",
+        BDLineGuid: item.BDLineGuid || "",
+      });
     };
     let MessageTitle = "";
     let MessageIcon = require("./img/message_system_pic.png");

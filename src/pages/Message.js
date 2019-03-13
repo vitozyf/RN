@@ -4,6 +4,8 @@
  */
 import React, { Component } from "react";
 import MessageIndex from "@pages/MessagePages/index";
+import MessageDetail from "@pages/MessagePages/MessageDetail";
+
 import { connect } from "react-redux";
 import { createStackNavigator } from "react-navigation";
 import { Image } from "react-native";
@@ -13,6 +15,10 @@ const IndexPages = createStackNavigator(
     MessageIndex: {
       screen: MessageIndex,
       path: "/Message/Index",
+    },
+    MessageDetail: {
+      screen: MessageDetail,
+      path: "/Message/MessageDetail",
     },
   },
   {

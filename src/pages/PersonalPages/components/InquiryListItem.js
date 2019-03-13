@@ -413,7 +413,9 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                       keyboardType={"numeric"}
                       ref={ref => (this.QuotationNumInput = ref)}
                       onChangeText={value => this.onChangeText("Qty", value)}
-                      defaultValue={data.RequiredQty.toString()}
+                      defaultValue={
+                        data.RequiredQty ? data.RequiredQty.toString() : ""
+                      }
                     />
                   </View>
                 )}
@@ -673,6 +675,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       default:
         break;
     }
+
     this.setState({
       CurrentStatus: this.props.data.Status,
       showMoreParams: showMoreParams,
