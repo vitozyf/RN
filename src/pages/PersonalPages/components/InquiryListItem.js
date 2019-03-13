@@ -660,6 +660,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
 
   componentWillMount() {
     let showMoreParams = false;
+    this.state.QuotedPrice.Qty = this.props.data.RequiredQty;
     switch (this.props.ActiveRoute) {
       case "ReceivedInquiry":
         if (this.props.data.Status === 2) {
