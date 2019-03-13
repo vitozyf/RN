@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { ZnlHeader, ZnlCardList, ZnlButton, ZnlModal } from "@components";
+import { ZnlHeader, ZnlCardList, ZnlButton } from "@components";
 import { connect } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import Icon from "@components/Iconfont/CloudIcon";
@@ -19,9 +19,7 @@ type Props = {
   navigation: INavigation,
   ClearUserInfo: Function,
 };
-type State = {
-  modalVisible: boolean,
-};
+type State = {};
 class Setting extends Component<Props, State> {
   static navigationOptions = ({ navigation }) => {
     const onPressIcon = () => {
@@ -38,13 +36,6 @@ class Setting extends Component<Props, State> {
     };
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-    };
-  }
-
   getVersionApp = () => {
     const that = this;
     if (Platform.OS === "android") {
@@ -53,16 +44,21 @@ class Setting extends Component<Props, State> {
         if (data && data.Code === 200) {
           const ResData = data.Result;
           const downloadUrl = ResData.DownloadUrl;
-          if (ResData.Version === Version) {
-            Cloud.$Toast.show("当前为最新版本！");
+          if (ResData.AllowUpdate) {
+            // 允许通知
+            if (ResData.Version === Version) {
+              Cloud.$Toast.show("当前为最新版本！");
+            } else {
+              const value = ResData.UpdateLog.Content.join("\n");
+              that.getVersionAppHandler({
+                title: ResData.UpdateLog.Title,
+                value,
+                DownloadUrl: downloadUrl,
+                Version: ResData.Version,
+              });
+            }
           } else {
-            const value = ResData.UpdateLog.Content.join("\n");
-            that.getVersionAppHandler({
-              title: ResData.UpdateLog.Title,
-              value,
-              DownloadUrl: downloadUrl,
-              Version: ResData.Version,
-            });
+            Cloud.$Toast.show("当前为最新版本！");
           }
         }
       });
@@ -114,22 +110,17 @@ class Setting extends Component<Props, State> {
   };
 
   openModal = () => {
-    this.setState({
-      modalVisible: true,
-    });
-  };
-
-  closeModal = cb => {
-    this.setState(
+    Alert.alert("确定要退出登录吗？", "退出登录后，您将无法查看云价格?", [
       {
-        modalVisible: false,
+        text: "取消",
       },
-      () => {
-        if (typeof cb === "function") {
-          cb();
-        }
-      }
-    );
+      {
+        text: "退出",
+        onPress: () => {
+          this.logoutHandler();
+        },
+      },
+    ]);
   };
 
   logoutHandler = () => {
@@ -137,10 +128,8 @@ class Setting extends Component<Props, State> {
     navigation.goBack(null);
     Cloud.$post("user/logout", null, { onlydata: false }).then(data => {
       if (data.Result.isSuccess) {
-        this.closeModal(() => {
-          Cloud.$clearAllStorage();
-          navigation.navigate("Login");
-        });
+        Cloud.$clearAllStorage();
+        navigation.navigate("Login");
       }
       ClearUserInfo && ClearUserInfo();
     });
@@ -174,7 +163,6 @@ class Setting extends Component<Props, State> {
         },
       },
     ];
-    const { modalVisible } = this.state;
 
     return (
       <View style={styles.container}>
@@ -186,14 +174,6 @@ class Setting extends Component<Props, State> {
             退出登录
           </ZnlButton>
         </View>
-
-        <ZnlModal
-          visible={modalVisible}
-          title="确定要退出登录吗？"
-          value="退出登录后，您将无法查看云价格"
-          cancelHandler={this.closeModal}
-          confirmHandler={this.logoutHandler}
-        />
       </View>
     );
   }
