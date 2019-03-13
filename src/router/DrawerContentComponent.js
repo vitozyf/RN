@@ -37,26 +37,26 @@ class MyScrollView extends Component {
   getVersionApp = url => {
     const Version = DeviceInfo.getVersion();
     const Url = url || "appget/getversioninfo";
-    // !__DEV__ &&
-    Cloud.$get(Url, null, { onlydata: false }).then(data => {
-      if (data.Code === 200) {
-        const ResData = data.Result;
-        // 允许更新
-        if (ResData.AllowUpdate) {
-          const downloadUrl = ResData.DownloadUrl;
-          if (ResData.Version !== Version) {
-            const value = ResData.UpdateLog.Content.join("\n");
-            this.getVersionAppHandler({
-              title: ResData.UpdateLog.Title,
-              value,
-              DownloadUrl: downloadUrl,
-              Version: ResData.Version,
-            });
+    !__DEV__ &&
+      Cloud.$get(Url, null, { onlydata: false }).then(data => {
+        if (data.Code === 200) {
+          const ResData = data.Result;
+          // 允许更新
+          if (ResData.AllowUpdate) {
+            const downloadUrl = ResData.DownloadUrl;
+            if (ResData.Version !== Version) {
+              const value = ResData.UpdateLog.Content.join("\n");
+              this.getVersionAppHandler({
+                title: ResData.UpdateLog.Title,
+                value,
+                DownloadUrl: downloadUrl,
+                Version: ResData.Version,
+              });
+            }
           }
+          return;
         }
-        return;
-      }
-    });
+      });
   };
   getVersionAppHandler = ({ title, value, DownloadUrl, Version }) => {
     Alert.alert(title || "更新提示", value || "有新版本，是否更新?", [

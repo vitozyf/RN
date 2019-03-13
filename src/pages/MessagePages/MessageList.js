@@ -16,8 +16,16 @@ import {
 
 const ITEM_HEIGHT = 72;
 
+type IMessageData = {
+  Id: number,
+  MsgType: number,
+  MsgContent: string,
+  MsgTimePhrase: string,
+  IsReaded: boolean,
+};
+
 type Props = {
-  data: Array<any>,
+  data: Array<IMessageData>,
   navigation: INavigation,
   getMessageData: Function,
   getMoreMesageData: Function,
@@ -51,13 +59,10 @@ class MessageList extends React.PureComponent<Props, State> {
           name: "OutgoingInquiry",
           params: { active: "already" },
         });
-        if (!item.IsReaded) {
-          item.IsReaded = true;
-        }
       }
     };
     let MessageTitle = "";
-    let MessageIcon = null;
+    let MessageIcon = require("./img/message_system_pic.png");
     switch (item.MsgType) {
       case 2:
         MessageTitle = "询价通知";
@@ -134,8 +139,9 @@ class MessageList extends React.PureComponent<Props, State> {
         </View>
       );
     } else if (!showFoot || data.length === 0) {
-      return null;
+      return <View />;
     }
+    return <View />;
   };
 
   onRefresh = () => {
