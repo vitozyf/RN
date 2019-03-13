@@ -46,7 +46,7 @@ const Loading = {
 const styles = StyleSheet.create({
   maskStyle: {
     position: "absolute",
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "rgba(0, 0, 0, 0)",
     width: width,
     height: height,
     alignItems: "center",
