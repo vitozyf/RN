@@ -67,6 +67,8 @@ class MessageList extends React.PureComponent<Props, State> {
         BDLineGuid: item.BDLineGuid || "",
       });
     };
+    const { data } = this.props;
+
     let MessageTitle = "";
     let MessageIcon = require("./img/message_system_pic.png");
     switch (item.MsgType) {
@@ -83,9 +85,10 @@ class MessageList extends React.PureComponent<Props, State> {
         MessageIcon = require("./img/message_system_pic.png");
         break;
     }
+
     return (
       <TouchableOpacity
-        style={styles.messageRow}
+        style={[styles.messageRow]}
         activeOpacity={0.8}
         onPress={onPress}
       >
@@ -93,7 +96,14 @@ class MessageList extends React.PureComponent<Props, State> {
           <Image style={styles.messagePic} source={MessageIcon} />
           <View style={!item.IsReaded ? styles.IsReaded : null} />
         </View>
-        <View style={styles.massageRowRight}>
+        <View
+          style={[
+            styles.massageRowRight,
+            data.length > 0 && item.Id === data[data.length - 1].Id
+              ? { borderBottomWidth: 0 }
+              : null,
+          ]}
+        >
           <View style={styles.massageTitleBox}>
             <Text style={styles.massageTitle}>{MessageTitle}</Text>
             <Text style={styles.massageTime}>{item.MsgTimePhrase}</Text>

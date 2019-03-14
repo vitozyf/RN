@@ -24,9 +24,6 @@ const openNotificationListener = (map: any) => {
   // 通知的额外参数，用于导航跳转
   if (map.extras && map.extras.TargetURL) {
     let Params = {};
-    if (map.extras.Model) {
-      Params.Model = map.extras.Model;
-    }
     if (map.extras.MsgType) {
       Params.MsgType = map.extras.MsgType;
     }

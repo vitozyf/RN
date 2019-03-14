@@ -28,9 +28,14 @@ class MessageDetail extends Component<Props, State> {
     const goBack = () => {
       navigation.goBack();
     };
-    const Model = navigation.getParam("Model");
+    const MsgType = navigation.getParam("MsgType");
     return {
-      header: <ZnlHeader title={Model} onPressIcon={goBack} />,
+      header: (
+        <ZnlHeader
+          title={MsgType === 2 ? "询价通知" : MsgType === 3 ? "报价通知" : ""}
+          onPressIcon={goBack}
+        />
+      ),
     };
   };
 
@@ -167,16 +172,16 @@ class MessageDetail extends Component<Props, State> {
     }
   };
   sendquotedpriceSuccess = () => {
-    this.getMessageDetail();
+    // this.getMessageDetail();
+    this.props.navigation.goBack();
   };
   componentWillMount() {
     const { navigation } = this.props;
     const MsgType = navigation.getParam("MsgType");
-    const Model = navigation.getParam("Model");
     const BDLineGuid = navigation.getParam("BDLineGuid");
 
     navigation.setParams({
-      Model,
+      MsgType,
     });
     this.setState(
       {
@@ -192,7 +197,7 @@ class MessageDetail extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
   },
   noData: {
     justifyContent: "center",

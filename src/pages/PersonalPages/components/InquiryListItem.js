@@ -410,7 +410,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   >
                     <ZnlInput
                       placeholder="请输入报价数量"
-                      style={{ height: 36 }}
+                      style={[{ height: 36 }, styles.boxShadow]}
                       inputStyle={{ fontSize: 14 }}
                       keyboardType={"numeric"}
                       ref={ref => (this.QuotationNumInput = ref)}
@@ -452,7 +452,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                   >
                     <ZnlInput
                       placeholder="请输入报价"
-                      style={{ height: 36 }}
+                      style={[{ height: 36 }, styles.boxShadow]}
                       inputStyle={{ fontSize: 14 }}
                       keyboardType={"numeric"}
                       ref={ref => {
@@ -507,6 +507,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                     data={TaxPointData}
                     onPickerConfirm={this.onPickerConfirm}
                     key="point"
+                    style={styles.boxShadow}
                   />
                 </View>
               )}
@@ -538,7 +539,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 >
                   <ZnlInput
                     placeholder="请输入年份"
-                    style={{ height: 36 }}
+                    style={[{ height: 36 }, styles.boxShadow]}
                     inputStyle={{ fontSize: 14 }}
                     keyboardType={
                       Platform.OS === "ios"
@@ -585,6 +586,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                     data={TheQualityOfData}
                     onPickerConfirm={this.onPickerConfirm1}
                     key="quality"
+                    style={styles.boxShadow}
                   />
                 </View>
               )}
@@ -779,15 +781,15 @@ const styles = StyleSheet.create({
 
     backgroundColor: "#f5f5f5",
   },
-  edgesLeft: { left: -15, bottom: -15 },
-  edgesRight: { right: -15, bottom: -15 },
+  edgesLeft: { left: -12, bottom: -12 },
+  edgesRight: { right: -12, bottom: -12 },
   edgesLeftBottom: {
-    left: -15,
-    top: -15,
+    left: -12,
+    top: -12,
   },
   edgesRightBottom: {
-    right: -15,
-    top: -15,
+    right: -12,
+    top: -12,
   },
   InquiryBottom: {
     paddingTop: 10,
@@ -858,6 +860,13 @@ const styles = StyleSheet.create({
   sendBtnTextAgain: {
     color: "#666",
     lineHeight: 28,
+  },
+  boxShadow: {
+    // shadowColor: "#000",
+    // shadowOffset: { height: 2, width: 0 },
+    // shadowRadius: 2,
+    // shadowOpacity: 0.1,
+    borderRadius: 4,
   },
 });
 

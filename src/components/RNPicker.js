@@ -26,6 +26,7 @@ type Props = {
   onPickerCancel?: Function,
   onPickerSelect?: Function,
   defaultSelectedValue?: string,
+  style: Object,
 };
 type State = {
   selectedValue: string,
@@ -53,11 +54,12 @@ class RNPicker extends Component<Props, State> {
 
   render() {
     const { selectedValue } = this.state;
+    const { style } = this.props;
     return (
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={this.openPicker}
-        style={styles.pickerView}
+        style={[styles.pickerView, style]}
       >
         <Text
           style={[

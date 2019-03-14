@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   header: {
     height: 48,
     borderBottomWidth: 1,
-    borderColor: "#D8D8D8",
+    borderColor: "#f0f0f0",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   rightLine: {
     borderRightWidth: 1,
-    borderColor: "#D8D8D8",
+    borderColor: "#f0f0f0",
   },
   message1Text: {
     fontSize: 36,
