@@ -11,6 +11,8 @@ const connectionInfo = {
   IsConnectionSuccess: false,
 };
 
+let aaa = 1;
+
 // 客户端方法集合
 const ClientMethodSets = [
   // 消息推送处理方法
@@ -73,8 +75,7 @@ const hubConnection = async () => {
       withCredentials: false,
     })
     .done(res => {
-      __DEV__ &&
-        console.log("signalr-connection-success", Cloud.$CONFIG.IMURL, res);
+      console.log("signalr-connection-success", Cloud.$CONFIG.IMURL, res);
       connectionInfo.IsConnectionSuccess = true;
     })
     .fail(error => {

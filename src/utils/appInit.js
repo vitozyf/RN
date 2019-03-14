@@ -238,6 +238,9 @@ const AppInit = async (store: any, CustomStore: any) => {
   if (TOKEN) {
     getUserInfoByBomAi(store);
     jpushHandler(store);
+    // 链接signalr
+    const hubConnection = require("@src/utils/signalr");
+    hubConnection.hubConnection();
   }
   gethotpartnos(store);
 };

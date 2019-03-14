@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import store from "@src/store";
 import DrawerNavRouter from "@router/DrawerNavRouter";
 import { AppInit } from "@src/utils/appInit";
-import { hubConnection } from "@src/utils/signalr";
+// import { hubConnection } from "@src/utils/signalr";
 import CustomStore from "./src/utils/jumpUtils";
 import codePush from "react-native-code-push";
 import { ISANDROID, ISIOS } from "@src/utils/system";
@@ -61,7 +61,7 @@ class App extends Component<Props> {
     });
 
     // 链接signalr
-    hubConnection();
+    // hubConnection();
   }
 
   componentDidMount() {

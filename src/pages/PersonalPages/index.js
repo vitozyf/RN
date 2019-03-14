@@ -225,7 +225,7 @@ class PersonalCenter extends Component<Props> {
                     source={
                       AvatarPath ===
                         "https://static.bom.ai/assets/img/linked-head.png" ||
-                      AvatarPath === ""
+                      !AvatarPath
                         ? require("./img/head-portrait_default_pic.png")
                         : {
                             uri: AvatarPath,

@@ -33,6 +33,9 @@ const openNotificationListener = (map: any) => {
 const handleAppStateChange = (nextAppState: string) => {
   if (nextAppState === "active") {
     // clearBadge();
+    // 链接signalr
+    // const hubConnection = require("@src/utils/signalr");
+    // hubConnection.hubConnection();
   }
 };
 

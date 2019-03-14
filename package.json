@@ -11,7 +11,7 @@
     "android-linux": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && react-native run-android",
     "bundle-android": "react-native bundle --platform android --entry-file index.js --bundle-output ./bundles/index.android.bundle --assets-dest ./bundles/assets/ --dev false",
     "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
-    "publishdev": "code-push release-react ZnlICloud android --t 1.1.6 --dev false  --des '1. 更新一；\n 2. 更新二' --m false",
+    "publishdev": "code-push release-react ZnlICloud android --t 1.1.7 --dev false  --des '1. 更新一；\n 2. 更新二' --m false",
     "publishpro": "code-push release-react ZnlICloud android --t 1.1.1 --dev false --d Production --des '1. 更新一；\n 2. 更新二' --m false",
     "publish1": "code-push release ZnlICloud ./bundles/index.android.bundle 1.0.4 -d Production --des '1.0 正式API' -m true",
     "code-push promote": "code-push promote"
