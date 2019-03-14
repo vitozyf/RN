@@ -283,11 +283,13 @@ class InquiryListItem extends React.PureComponent<Props, State> {
 
     return (
       <TouchableOpacity style={styles.ListRow} activeOpacity={1}>
-        <View style={styles.timeView}>
-          <View style={styles.timebox}>
-            <Text style={styles.time}>{TimePhrase}</Text>
+        {!!TimePhrase && (
+          <View style={styles.timeView}>
+            <View style={styles.timebox}>
+              <Text style={styles.time}>{TimePhrase}</Text>
+            </View>
           </View>
-        </View>
+        )}
 
         <View style={styles.InquiryInfo}>
           <View style={styles.InquiryHeader}>
@@ -692,6 +694,8 @@ const styles = StyleSheet.create({
   },
   ListRow: {
     marginBottom: 10,
+    marginLeft: 12,
+    marginRight: 12,
   },
   timeView: {
     height: 40,

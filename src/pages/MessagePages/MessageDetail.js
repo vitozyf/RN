@@ -3,7 +3,7 @@
  * @flow
  */
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Platform } from "react-native";
+import { View, Text, StyleSheet, Platform, ScrollView } from "react-native";
 import { ZnlHeader } from "@components";
 import { connect } from "react-redux";
 import InquiryListItem from "@pages/PersonalPages/components/InquiryListItem";
@@ -21,6 +21,7 @@ type State = {
   data: Object | null,
   MsgType: number,
   BDLineGuid: string,
+  loading: boolean,
 };
 class MessageDetail extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -39,13 +40,14 @@ class MessageDetail extends Component<Props, State> {
       data: null,
       MsgType: 2,
       BDLineGuid: "",
+      loading: false,
     };
   }
 
   render() {
     const { navigation } = this.props;
     const MsgType = navigation.getParam("MsgType");
-    const { data } = this.state;
+    const { data, loading } = this.state;
     let ActiveRoute = "";
     switch (MsgType) {
       case 2:
@@ -60,31 +62,38 @@ class MessageDetail extends Component<Props, State> {
     }
     return (
       <View style={styles.container}>
-        {data && (
-          <InquiryListItem
-            data={data}
-            ActiveRoute={ActiveRoute}
-            sendquotedpriceSuccess={this.sendquotedpriceSuccess}
-          />
+        {data && !loading && (
+          <ScrollView>
+            <InquiryListItem
+              data={data}
+              ActiveRoute={ActiveRoute}
+              sendquotedpriceSuccess={this.sendquotedpriceSuccess}
+            />
+          </ScrollView>
+        )}
+        {!data && !loading && (
+          <View style={[styles.container, styles.noData]}>
+            <Text>没有查到相关数据，看看其他消息吧～</Text>
+          </View>
         )}
       </View>
     );
   }
   getReceivedInquiryData = async () => {
     const { BDLineGuid } = this.state;
-
-    Cloud.$Loading.show();
+    this.setState({ loading: true });
     return Cloud.$post(
       `im/getappenquirylistsync`,
       {
         msgType: 0,
         pageIndex: 1,
         pageSize: 2,
+        BDLineGuid,
       },
-      { onlydata: false }
+      { onlydata: false, loading: true }
     )
       .then(res => {
-        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
         try {
           let data = [];
           if (res && res.Result && res.Result.Data.Data) {
@@ -106,24 +115,24 @@ class MessageDetail extends Component<Props, State> {
         }
       })
       .catch(() => {
-        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
       });
   };
   getappsendenquirylistsync = async () => {
     const { BDLineGuid } = this.state;
-
-    Cloud.$Loading.show();
+    this.setState({ loading: true });
     return Cloud.$post(
       `im/getappsendenquirylistsync`,
       {
         msgType: 0,
         pageIndex: 1,
         pageSize: 2,
+        BDLineGuid,
       },
-      { onlydata: false }
+      { onlydata: false, loading: true }
     )
       .then(res => {
-        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
         try {
           let data = [];
           if (res && res.Result && res.Result.Data.Data) {
@@ -145,7 +154,7 @@ class MessageDetail extends Component<Props, State> {
         }
       })
       .catch(() => {
-        Cloud.$Loading.hidden();
+        this.setState({ loading: false });
       });
   };
   getMessageDetail = () => {
@@ -184,6 +193,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  noData: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
