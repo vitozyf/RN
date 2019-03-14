@@ -101,7 +101,6 @@ class InquiryList extends React.PureComponent<
             height: 30,
             alignItems: "center",
             justifyContent: "flex-start",
-            backgroundColor: "#fff",
           }}
         >
           <Text

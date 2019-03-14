@@ -172,11 +172,11 @@ class InquiryListItem extends React.PureComponent<Props, State> {
     const { data } = this.props;
     const { Qty, Price } = QuotedPrice;
     if (!Qty && SupplierStatus === 2) {
-      Cloud.$Toast.show("数量必填", { icon: "tips_warning" });
+      Cloud.$Toast.show("请输入数量", { icon: "tips_warning" });
       return this.QuotationNumInput && this.QuotationNumInput.focus();
     }
     if (!Price && SupplierStatus === 2) {
-      Cloud.$Toast.show("报价必填", { icon: "tips_warning" });
+      Cloud.$Toast.show("请输入报价", { icon: "tips_warning" });
       return this.QuotationInput && this.QuotationInput.focus();
     }
     const HttpParams = [
@@ -203,7 +203,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       if (data && data.length > 0) {
         const { sendquotedpriceSuccess } = this.props;
         if (SupplierStatus === 2) {
-          Cloud.$Toast.show("报价成功！", { icon: "tips_right" });
+          Cloud.$Toast.show("报价成功", { icon: "tips_right" });
           this.setState({ CurrentStatus: 2 });
           //报价成功调第二个接口
           Cloud.$cnh("SendQuotedPrice", HttpParams)
@@ -225,7 +225,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             clearTimeout(TimeID);
           }, 500);
         } else if (SupplierStatus === 3) {
-          Cloud.$Toast.show("已忽略该条报价！", { icon: "tips_warning" });
+          Cloud.$Toast.show("已忽略", { icon: "tips_warning" });
           const TimeID = setTimeout(() => {
             sendquotedpriceSuccess && sendquotedpriceSuccess("all");
             clearTimeout(TimeID);
