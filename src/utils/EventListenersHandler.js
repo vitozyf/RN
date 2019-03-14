@@ -20,19 +20,31 @@ const setBadge = (Badges: number) => {
 };
 // 点击通知事件处理
 const openNotificationListener = (map: any) => {
-  // clearBadge();
-  // 通知的额外参数，用于导航跳转
-  if (map.extras && map.extras.TargetURL) {
-    let Params = {};
-    if (map.extras.MsgType) {
-      Params.MsgType = map.extras.MsgType;
+  try {
+    const messageData =
+      typeof map.extras === "string" ? JSON.parse(map.extras) : map.extras;
+    // clearBadge();
+    // 通知的额外参数，用于导航跳转
+    if (messageData && messageData.TargetURL) {
+      let Params = {};
+      if (messageData.MsgType) {
+        Params.MsgType = messageData.MsgType;
+      }
+      if (messageData.BDLineGuid) {
+        Params.BDLineGuid = messageData.BDLineGuid;
+      }
+      if (CustomStore.navigator) {
+        CustomStore.navigator._navigation.navigate(
+          messageData.TargetURL,
+          Params
+        );
+      }
     }
-    if (map.extras.BDLineGuid) {
-      Params.BDLineGuid = map.extras.BDLineGuid;
-    }
-    if (CustomStore.navigator) {
-      CustomStore.navigator._navigation.navigate(map.extras.TargetURL, Params);
-    }
+  } catch (error) {
+    Cloud.$addLog(
+      "EventListenersHandler.js-openNotificationListener",
+      error.message
+    );
   }
 };
 
