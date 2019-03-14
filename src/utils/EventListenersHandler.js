@@ -23,8 +23,18 @@ const openNotificationListener = (map: any) => {
   // clearBadge();
   // 通知的额外参数，用于导航跳转
   if (map.extras && map.extras.TargetURL) {
+    let Params = {};
+    if (map.extras.Model) {
+      Params.Model = map.extras.Model;
+    }
+    if (map.extras.MsgType) {
+      Params.MsgType = map.extras.MsgType;
+    }
+    if (map.extras.BDLineGuid) {
+      Params.BDLineGuid = map.extras.BDLineGuid;
+    }
     if (CustomStore.navigator) {
-      CustomStore.navigator._navigation.navigate(map.extras.TargetURL);
+      CustomStore.navigator._navigation.navigate(map.extras.TargetURL, Params);
     }
   }
 };
@@ -33,9 +43,6 @@ const openNotificationListener = (map: any) => {
 const handleAppStateChange = (nextAppState: string) => {
   if (nextAppState === "active") {
     // clearBadge();
-    // 链接signalr
-    // const hubConnection = require("@src/utils/signalr");
-    // hubConnection.hubConnection();
   }
 };
 
