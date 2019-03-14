@@ -82,7 +82,7 @@ class HeaderTabs extends Component<Props> {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: "#fff",
-    height: 48,
+    height: 44,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fAfAfA",
   },
   headerItem: {
-    height: 48,
+    height: 44,
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     // height: 32,
   },
   headerTitleBox: {
-    height: 48,
+    height: 44,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
   },
   headerItemTitle: {
     color: "#666666",
-    fontSize: 16,
+    fontSize: 15,
   },
   headerItemTitleTag: {
-    fontSize: 14,
+    fontSize: 12,
   },
   activeTitle: {
     color: "#ee7700",

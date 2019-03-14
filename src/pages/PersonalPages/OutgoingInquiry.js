@@ -54,6 +54,7 @@ class OutgoingInquiry extends Component<Props, State> {
           title="我发出的询价"
           onPressIcon={goBack}
           renderRight={renderRight}
+          style={{ backgroundColor: "#fff" }}
         />
       ),
     };

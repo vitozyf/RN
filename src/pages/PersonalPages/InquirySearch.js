@@ -72,6 +72,7 @@ class InquirySearch extends Component<Props, State> {
               />
             );
           }}
+          style={{ backgroundColor: "#fff" }}
         />
       ),
     };

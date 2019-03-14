@@ -54,6 +54,7 @@ class ReceivedInquiry extends Component<Props, State> {
           title="我收到的询价"
           onPressIcon={goBack}
           renderRight={renderRight}
+          style={{ backgroundColor: "#fff" }}
         />
       ),
     };

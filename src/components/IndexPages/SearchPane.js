@@ -2,7 +2,8 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import PropTypes from "prop-types";
-import Icon from "react-native-vector-icons/AntDesign";
+// import Icon from "react-native-vector-icons/AntDesign";
+import Icon from "@components/Iconfont/CloudIcon";
 
 type Props = {
   title: string,
@@ -29,7 +30,7 @@ class SearchPane extends Component<Props> {
           <Text style={styles.SearchPaneTitleText}>{title}</Text>
           {showDeleteIcon && (
             <Icon.Button
-              name={"delete"}
+              name={"delete_ic"}
               size={18}
               color="#999"
               backgroundColor="transparent"
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
   },
   SearchPaneTitleText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#666",
   },
   Icon: {

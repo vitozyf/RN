@@ -11,14 +11,13 @@ const connectionInfo = {
   IsConnectionSuccess: false,
 };
 
-let aaa = 1;
-
 // 客户端方法集合
 const ClientMethodSets = [
   // 消息推送处理方法
   {
     name: "addAppMsg",
-    method: data => {
+    method: (data, ConnectionID) => {
+      Cloud.$addLog("signalr-ConnectionID", ConnectionID);
       // 消息列表更新
       store.dispatch({
         type: "ADD_MESSAGE_DATA",

@@ -563,7 +563,13 @@ class InquiryListItem extends React.PureComponent<Props, State> {
           )}
 
           {showMoreParams && AlreadyOffer && (
-            <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
+            <View
+              style={[
+                styles.leftrightstyle,
+                styles.paddingLeftRight8,
+                { marginBottom: 8 },
+              ]}
+            >
               <View style={[styles.leftrightstyle, styles.formTitle]}>
                 <Text style={styles.binding}>品质</Text>
               </View>
@@ -766,9 +772,9 @@ const styles = StyleSheet.create({
     maxWidth: 220,
   },
   edges: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     position: "absolute",
 
     backgroundColor: "#f5f5f5",

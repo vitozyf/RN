@@ -45,7 +45,13 @@ class InquirySearch extends Component<Props, State> {
       navigation.goBack();
     };
     return {
-      header: <ZnlHeader title={keyword} onPressIcon={goBack} />,
+      header: (
+        <ZnlHeader
+          title={keyword}
+          onPressIcon={goBack}
+          style={{ backgroundColor: "#fff" }}
+        />
+      ),
     };
   };
   constructor(props: Props) {

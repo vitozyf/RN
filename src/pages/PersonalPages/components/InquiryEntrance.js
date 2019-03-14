@@ -49,7 +49,7 @@ class InquiryEntrance extends Component<Props> {
         </TouchableOpacity>
         <View style={styles.messageBox}>
           <TouchableOpacity
-            style={[styles.message]}
+            style={[styles.message, styles.rightLine]}
             activeOpacity={0.8}
             onPress={message1Press}
           >
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   header: {
     height: 48,
     borderBottomWidth: 1,
-    borderColor: "#f0f0f0",
+    borderColor: "#D8D8D8",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -140,6 +140,10 @@ const styles = StyleSheet.create({
   },
   message: {
     flex: 1,
+  },
+  rightLine: {
+    borderRightWidth: 1,
+    borderColor: "#D8D8D8",
   },
   message1Text: {
     fontSize: 36,
