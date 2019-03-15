@@ -71,6 +71,7 @@ type State = {
   QuotedPrice: IQuotedPrice,
   CurrentStatus: number, // 修改内部按钮状态
   SendAgain: boolean,
+  showCancel: boolean,
 };
 class InquiryListItem extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -80,6 +81,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       QuotedPrice: {},
       CurrentStatus: 1,
       SendAgain: true,
+      showCancel: false,
     };
   }
   onPickerConfirm = (data: SelectData) => {
@@ -242,7 +244,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
   QuotationNumInput: any;
   QuotationInput: any;
   render() {
-    const { showMoreParams, CurrentStatus } = this.state;
+    const { showMoreParams, CurrentStatus, showCancel } = this.state;
     const { data, ActiveRoute } = this.props;
 
     let companyName = ""; // 公司名
@@ -608,10 +610,14 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                 <TouchableOpacity
                   style={[styles.sendBtnCom, styles.sendBtnLeft]}
                   activeOpacity={0.8}
-                  onPress={this.IgnoreHandler}
+                  onPress={() => {
+                    showCancel
+                      ? this.setState({ showCancel: false, CurrentStatus: 2 })
+                      : this.IgnoreHandler();
+                  }}
                 >
                   <Text style={[styles.sendBtnText, styles.sendBtnTextLeft]}>
-                    忽略
+                    {showCancel ? "取消" : "忽略"}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -656,7 +662,7 @@ class InquiryListItem extends React.PureComponent<Props, State> {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => {
-                this.setState({ CurrentStatus: 1 });
+                this.setState({ CurrentStatus: 1, showCancel: true });
               }}
               style={{ borderTopWidth: 1, borderColor: "#f0f0f0" }}
             >
