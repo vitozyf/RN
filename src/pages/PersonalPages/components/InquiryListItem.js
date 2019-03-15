@@ -236,6 +236,20 @@ class InquiryListItem extends React.PureComponent<Props, State> {
       }
     });
   };
+  inputRenderLeft = () => {
+    return (
+      <View
+        style={{
+          width: 14,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "#999", fontSize: 14 }}>¥</Text>
+      </View>
+    );
+  };
   onChangeText = (key: string, value: string | number) => {
     this.setState({
       QuotedPrice: Object.assign({}, this.state.QuotedPrice, { [key]: value }),
@@ -310,12 +324,12 @@ class InquiryListItem extends React.PureComponent<Props, State> {
 
           <View style={styles.InquiryTop}>
             <View style={[styles.leftrightstyle, styles.paddingLeftRight8]}>
-              <Text style={styles.binding}>型号</Text>
+              <Text style={[styles.binding]}>型号</Text>
               <Text
                 selectable={true}
                 ellipsizeMode="tail"
                 numberOfLines={1}
-                style={styles.value}
+                style={[styles.value, styles.fontBlod]}
               >
                 {data.Model}
               </Text>
@@ -461,6 +475,8 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                         this.QuotationInput = ref;
                       }}
                       onChangeText={value => this.onChangeText("Price", value)}
+                      renderLeft={this.inputRenderLeft}
+                      inputStyle={{ paddingLeft: 3 }}
                     />
                   </View>
                 )}
@@ -469,9 +485,9 @@ class InquiryListItem extends React.PureComponent<Props, State> {
                     selectable={true}
                     ellipsizeMode="tail"
                     numberOfLines={1}
-                    style={styles.value}
+                    style={[styles.value, { color: "#ee7700" }]}
                   >
-                    {QuotationPrice ? QuotationPrice : "--"}
+                    ¥&nbsp;{QuotationPrice ? QuotationPrice : "--"}
                   </Text>
                 )}
               </View>
@@ -778,6 +794,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 24,
     maxWidth: 220,
+  },
+  fontBlod: {
+    color: "#333",
+    fontWeight: "600",
   },
   edges: {
     width: 24,
