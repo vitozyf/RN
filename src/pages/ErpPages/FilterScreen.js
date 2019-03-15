@@ -118,13 +118,13 @@ class FilterScreen extends Component<FilterScreenProps, FilterScreenState> {
         <Text
           style={[
             styles.StockTypeText,
-            InvPosition === item.WarehouseId ? styles.activeText : null,
+            InvPosition === item.WarehouseName ? styles.activeText : null,
           ]}
           key={item.WarehouseId}
           onPress={() => {
             this.setState({
               InvPosition:
-                InvPosition === item.WarehouseId ? "" : item.WarehouseId,
+                InvPosition === item.WarehouseName ? "" : item.WarehouseName,
             });
           }}
         >
