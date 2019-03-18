@@ -17,6 +17,7 @@ import { ZnlHeader, DashLine } from "@components";
 import Pane from "./Pane";
 import SwiperModal from "./Swiper";
 import PieChartView from "@pages/SearchPages/components/PieChart";
+import type { IData } from "./SearchListItem";
 
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 14;
@@ -27,7 +28,7 @@ type State = {
   isVisible: boolean,
   index: number,
   CompanyInfo: Object | null,
-  listRow: Object,
+  listRow: IData,
 };
 class CompanyInfoPage extends Component<Props, State> {
   static navigationOptions = ({ navigation }: any) => {
@@ -47,7 +48,7 @@ class CompanyInfoPage extends Component<Props, State> {
       isVisible: false,
       index: 0,
       CompanyInfo: null,
-      listRow: {},
+      listRow: { Supplier: {} },
     };
   }
   getData = () => {
