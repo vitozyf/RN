@@ -154,7 +154,7 @@ class InventoryDetails extends Component<Props, State> {
     ];
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView style={styles.containerScrollView}>
           <View style={[styles.boxCom, styles.top]}>
             <View style={styles.header}>
               <Text
@@ -207,9 +207,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
+    paddingLeft: 12,
+    paddingRight: 0,
+    paddingTop: 10,
+  },
+  containerScrollView: {
+    paddingRight: 12,
   },
   boxCom: {
     borderWidth: 1,
@@ -230,6 +233,7 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
   },
   InvType: {
     fontSize: 16,
