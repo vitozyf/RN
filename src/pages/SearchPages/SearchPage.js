@@ -60,16 +60,16 @@ class SearchPage extends Component<Props, State> {
     return {
       header: (
         <ZnlHeader
-          onPressIcon={() => {
-            navigation.goBack();
-          }}
+          hideLeft={true}
           renderCenter={renderCenter}
           renderRight={() => {
             return (
               <HeaderRight
                 style={styles.HeaderRight}
-                title="搜索"
-                onPress={method.onSearchHandler}
+                title="取消"
+                onPress={() => {
+                  navigation.goBack();
+                }}
               />
             );
           }}

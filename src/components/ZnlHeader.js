@@ -27,6 +27,7 @@ type Props = {
   renderRight: Function,
   HeaderHeight: number,
   ActiveRouteName: string,
+  RightStyle: Object,
 };
 type State = {
   currentHeaderHeightAni: any,
@@ -72,6 +73,7 @@ class ZnlHeader extends Component<Props, State> {
       renderCenter,
       renderRight,
       HeaderHeight,
+      RightStyle,
     } = this.props;
 
     const Left = hideLeft ? null : renderLeft ? (
@@ -95,7 +97,7 @@ class ZnlHeader extends Component<Props, State> {
     const RightEle = renderRight ? (
       renderRight()
     ) : hideLeft ? null : (
-      <View style={styles.right} />
+      <View style={[styles.right, RightStyle]} />
     );
 
     const { currentHeaderHeightAni, currentOpacityAni } = this.state;

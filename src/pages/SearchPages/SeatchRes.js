@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Yunext from "./Yunext";
 import Stocks from "./Stocks";
 import { View, StyleSheet, Text } from "react-native";
-import { ZnlInput, ZnlHeader, HeaderRight } from "@components";
+import { ZnlInput, ZnlHeader } from "@components";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { createMaterialTopTabNavigator } from "react-navigation";
 import { connect } from "react-redux";
@@ -12,13 +12,10 @@ const styles = StyleSheet.create({
   SearchInputBox: {
     height: 32,
     flex: 1,
-    marginRight: 10,
+    marginRight: 0,
   },
   SearchInput: {
     borderRadius: 0,
-  },
-  HeaderRight: {
-    marginRight: 10,
   },
   FontAwesome: {
     paddingLeft: 5,
@@ -153,19 +150,9 @@ class SeatchRes extends Component<Props, State> {
         <ZnlHeader
           renderCenter={renderCenter}
           onPressIcon={() => {
-            navigation.goBack();
+            navigation.navigate("Bom");
           }}
-          renderRight={() => {
-            return (
-              <HeaderRight
-                style={styles.HeaderRight}
-                title="取消"
-                onPress={() => {
-                  navigation.navigate("Bom");
-                }}
-              />
-            );
-          }}
+          RightStyle={{ width: 10 }}
         />
       ),
     };
