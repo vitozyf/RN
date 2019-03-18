@@ -5,8 +5,32 @@ import { BackTop } from "@components";
 import { connect } from "react-redux";
 import { HeaderHeightInit } from "@src/utils/constant";
 import SearchListItem from "./SearchListItem";
-import type { IData } from "./SearchListItem";
+import SearchListStockItem from "./SearchListStockItem";
 
+export type IData = {
+  // 自定义字段
+  FlatListRowType?: number, // 1 正能量审核发布， 2 会员自行发布
+  // 实体字段
+  Brand?: string,
+  Depot?: string,
+  Description?: string,
+  Id?: number,
+  IsInvisibleSupplier?: boolean,
+  MakeAges?: string,
+  PDatePhrase?: string,
+  Package?: string,
+  PartNo?: string,
+  Properties?: string,
+  Qty?: number,
+  QuantityPhrase?: string,
+  QuotedPhrase?: string,
+  SType?: number,
+  StockType?: number,
+  Supplier: Object,
+  SupplierName?: string,
+  Tags?: Array<string>,
+  UnitPriceText?: string,
+};
 type SerchListProps = {
   showFoot: boolean,
   datas: Array<IData>,
@@ -154,18 +178,36 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   // 渲染行
   _renderItem = ({ item }) => {
     const { ActiveTab, navigation } = this.props;
-    return (
-      <SearchListItem
-        value={item}
-        ActiveTab={ActiveTab}
-        navigation={navigation}
-      />
-    );
+    let ItemEle = null;
+    switch (ActiveTab) {
+      case "yunext":
+        ItemEle = (
+          <SearchListItem
+            value={item}
+            ActiveTab={ActiveTab}
+            navigation={navigation}
+          />
+        );
+        break;
+      case "getyunexttopstocks":
+        ItemEle = (
+          <SearchListStockItem
+            value={item}
+            ActiveTab={ActiveTab}
+            navigation={navigation}
+          />
+        );
+        break;
+      default:
+        ItemEle = <View />;
+        break;
+    }
+    return ItemEle;
   };
   flatList: any;
   render() {
     const { datas, ActiveTab } = this.props;
-    let listDatas: Array<any> = [];
+    let listDatas: Array<IData> = [];
     if (ActiveTab === "getyunexttopstocks") {
       let StockType = 0;
       datas.forEach((item, index) => {
@@ -174,11 +216,9 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
             FlatListRowType:
               new String("485697").indexOf(String(item.StockType)) > -1 ? 1 : 2,
             StockType: item.StockType,
+            Supplier: {},
           });
           StockType = item.StockType;
-          if (index > 0) {
-            listDatas[index - 1].hideBorder = true;
-          }
         }
         listDatas.push(item);
       });
@@ -186,6 +226,17 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       listDatas = datas;
     }
     const { refreshing } = this.state;
+    let ITEM_HEIGHT = 52;
+    switch (ActiveTab) {
+      case "yunext":
+        ITEM_HEIGHT = 52;
+        break;
+      case "getyunexttopstocks":
+        ITEM_HEIGHT = 75;
+        break;
+      default:
+        break;
+    }
     return (
       <View style={[styles.SerchList]}>
         {/* {this._renderHeader()} */}
@@ -195,8 +246,8 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
           ref={ref => (this.flatList = ref)}
           keyExtractor={this._keyExtractor}
           getItemLayout={(data, index) => ({
-            length: 48,
-            offset: (48 + 1) * index,
+            length: ITEM_HEIGHT,
+            offset: ITEM_HEIGHT * index,
             index,
           })}
           renderItem={this._renderItem}

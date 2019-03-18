@@ -17,7 +17,7 @@ import { ZnlHeader, DashLine } from "@components";
 import Pane from "./Pane";
 import SwiperModal from "./Swiper";
 import PieChartView from "@pages/SearchPages/components/PieChart";
-import type { IData } from "./SearchListItem";
+import type { IData } from "./SerchList";
 
 const WindowWidth = Dimensions.get("window").width;
 const PaddingLR = 14;
