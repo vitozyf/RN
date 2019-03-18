@@ -44,7 +44,7 @@ class Login extends Component<Props, State> {
       PhoneNumber: "", // 手机号
       AccountName: "", // 账号
       Password: "", // 密码
-      LoginType: 0, // 登录方式:0 手机号, 1 erp
+      LoginType: 1, // 登录方式:0 手机号, 1 erp
       OpenId: "",
       IsFreeLogin: true,
       showWechat: true,
