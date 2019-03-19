@@ -266,6 +266,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   willFocusListener: any;
   componentWillMount() {
     const { navigation } = this.props;
+
     this.didBlurSubscription = navigation.addListener("willBlur", payload => {
       BackTop.hidden();
     });

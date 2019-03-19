@@ -1,9 +1,12 @@
-/* @flow */
+/**
+ * 全部搜索结果
+ * @flow
+ */
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import SerchList from "./SerchList";
-
+import SearchListItem from "./SearchListItem";
 type Props = {
   navigation: INavigation,
   KeyWord: string,
@@ -15,12 +18,13 @@ type Props = {
   PageSize: number,
 };
 
-class Yunext extends Component<Props> {
+class AllSearchRes extends Component<Props> {
   static navigationOptions = () => {
     return {
-      tabBarLabel: "云价格",
+      tabBarLabel: "全部",
     };
   };
+
   onSearchHandler = (pageindex = 1, isconcat?: boolean = false) => {
     const {
       SetBomSearchInfo,
@@ -54,7 +58,7 @@ class Yunext extends Component<Props> {
           const computedDatas = isconcat ? datas.concat(Datas) : Datas;
           SetBomSearchInfo({
             Yunext: {
-              datas: isconcat ? datas.concat(Datas) : Datas,
+              datas: computedDatas,
               PageIndex,
               TotalCount,
               TotalPage,
@@ -70,15 +74,38 @@ class Yunext extends Component<Props> {
   render() {
     const { navigation, datas, SetBomSearchInfo } = this.props;
 
+    // const AllResYunextDatas = datas.length > 2 ? [datas[0], datas[1]] : datas;
+    const AllResYunextData0 = datas[0] || { Supplier: {} };
+    const AllResYunextData1 = datas[1] || { Supplier: {} };
     return (
       <View style={styles.viewbox}>
-        <SerchList
-          datas={datas}
-          ActiveTab="yunext"
-          onSearchHandler={this.onSearchHandler}
-          SetBomSearchInfo={SetBomSearchInfo}
-          {...this.props}
-        />
+        <View style={styles.block}>
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>云价格</Text>
+          </View>
+
+          <View style={{ height: 104 }}>
+            {/* <SerchList
+              {...this.props}
+              datas={AllResYunextDatas}
+              ActiveTab="yunext"
+              onSearchHandler={this.onSearchHandler}
+              SetBomSearchInfo={SetBomSearchInfo}
+            /> */}
+            <SearchListItem value={AllResYunextData0} navigation={navigation} />
+            <SearchListItem value={AllResYunextData1} navigation={navigation} />
+          </View>
+
+          <TouchableOpacity
+            style={styles.moreDataButton}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate("Yunext");
+            }}
+          >
+            <Text style={styles.moreDataButtonText}>加载更多</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -100,7 +127,33 @@ class Yunext extends Component<Props> {
   };
 }
 const styles = StyleSheet.create({
-  viewbox: {},
+  viewbox: {
+    flex: 1,
+    backgroundColor: "#f2f2f2",
+  },
+  block: {
+    marginTop: 10,
+    backgroundColor: "#fff",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 30,
+    paddingLeft: 10,
+  },
+  headerTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  moreDataButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+  },
+  moreDataButtonText: {
+    color: "#EE7700",
+  },
 });
 const mapStateToProps = (state, props) => {
   return Object.assign(
@@ -123,4 +176,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Yunext);
+)(AllSearchRes);

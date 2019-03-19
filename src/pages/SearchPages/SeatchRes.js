@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import Yunext from "./Yunext";
 import Stocks from "./Stocks";
+import AllSearchRes from "./All";
 import { View, StyleSheet, Text } from "react-native";
 import { ZnlInput, ZnlHeader } from "@components";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -35,7 +36,8 @@ const styles = StyleSheet.create({
   },
   tabStyle: {
     height: 44,
-    width: 100,
+    width: 80,
+    padding: 0,
   },
   tabBarStyle: {
     backgroundColor: "#fff",
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     height: 3,
     backgroundColor: "#ee7700",
     width: 60,
-    marginLeft: 20,
+    marginLeft: 10,
   },
 });
 
@@ -65,6 +67,10 @@ const navigationOptions = {
 
 const TabNav = createMaterialTopTabNavigator(
   {
+    AllSearchRes: {
+      screen: AllSearchRes,
+      path: "/Home/Bom/AllSearchRes",
+    },
     Yunext: {
       screen: Yunext,
       path: "/Home/Bom/Yunext",
@@ -75,7 +81,7 @@ const TabNav = createMaterialTopTabNavigator(
     },
   },
   {
-    initialRouteName: "Yunext",
+    initialRouteName: "AllSearchRes",
     lazy: true,
     tabBarOptions: navigationOptions,
     backBehavior: "none",
