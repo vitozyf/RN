@@ -104,7 +104,6 @@ type State = {
   SupplierProducts: Array<any>,
   StartIndex: number,
   ActiveTab: string,
-  showFoot: number,
   isLoading: boolean,
   showHeader: boolean,
 };
@@ -118,7 +117,6 @@ class SeatchRes extends Component<Props, State> {
       SupplierProducts: [],
       StartIndex: 0,
       ActiveTab: "yunext",
-      showFoot: 0,
       isLoading: false,
       showHeader: true,
     };
@@ -186,6 +184,7 @@ class SeatchRes extends Component<Props, State> {
     Cloud.$setArrayStorage(Cloud.$CONFIG.KeyWords, KeyWord, 8);
     // 处理搜索
     this.setState({ isLoading: true });
+    console.log(222, PageSize);
     const serchData = {
       PageSize,
       KeyWord,

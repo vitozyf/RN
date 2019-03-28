@@ -32,7 +32,7 @@ export type IData = {
   UnitPriceText?: string,
 };
 type SerchListProps = {
-  showFoot: boolean,
+  showFoot: number,
   datas: Array<IData>,
   onSearchHandler: Function,
   SetHeaderHeight: Function,
@@ -237,6 +237,16 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
       default:
         break;
     }
+    // if (__DEV__) {
+    //   if (listDatas.length > 1) {
+    //     listDatas[1].Supplier.PublicLabelInfo = [
+    //       { LabelName: "原装", LabelTimes: 10 },
+    //       { LabelName: "正品", LabelTimes: 22 },
+    //       { LabelName: "正品测试", LabelTimes: 33 },
+    //       { LabelName: "测测测", LabelTimes: 10 },
+    //     ];
+    //   }
+    // }
     return (
       <View style={[styles.SerchList]}>
         {/* {this._renderHeader()} */}

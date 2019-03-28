@@ -22,7 +22,6 @@ class Stocks extends Component<Props> {
     };
   };
   onSearchHandler = (startindex = 0, isconcat?: boolean = false) => {
-    console.log(1111, startindex);
     const {
       SetBomSearchInfo,
       TotalCount,
@@ -31,6 +30,7 @@ class Stocks extends Component<Props> {
       KeyWord,
       datas,
     } = this.props;
+    console.log(111, PageSize);
     const serchData = {
       PageSize,
       KeyWord,

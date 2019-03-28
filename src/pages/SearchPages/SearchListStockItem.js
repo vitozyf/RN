@@ -48,7 +48,7 @@ class SearchListStockItem extends PureComponent<Props> {
             正品企业
           </Text>
         );
-        StockTypeBorderColor = styles.StockType4BorderColor;
+        // StockTypeBorderColor = styles.StockType4BorderColor;
         break;
       case 8:
         StockTypeTextEle = (
@@ -56,7 +56,7 @@ class SearchListStockItem extends PureComponent<Props> {
             正品物料
           </Text>
         );
-        StockTypeBorderColor = styles.StockType8BorderColor;
+        // StockTypeBorderColor = styles.StockType8BorderColor;
         break;
       case 5:
         StockTypeTextEle = (
@@ -64,7 +64,7 @@ class SearchListStockItem extends PureComponent<Props> {
             正品期货
           </Text>
         );
-        StockTypeBorderColor = styles.StockType5BorderColor;
+        // StockTypeBorderColor = styles.StockType5BorderColor;
         break;
       case 6:
         StockTypeTextEle = (
@@ -72,7 +72,7 @@ class SearchListStockItem extends PureComponent<Props> {
             保证有料
           </Text>
         );
-        StockTypeBorderColor = styles.StockType6BorderColor;
+        // StockTypeBorderColor = styles.StockType6BorderColor;
         break;
       case 9:
         StockTypeTextEle = (
@@ -80,7 +80,7 @@ class SearchListStockItem extends PureComponent<Props> {
             优势库存
           </Text>
         );
-        StockTypeBorderColor = styles.StockType9BorderColor;
+        // StockTypeBorderColor = styles.StockType9BorderColor;
         break;
       case 7:
         StockTypeTextEle = (
@@ -88,7 +88,7 @@ class SearchListStockItem extends PureComponent<Props> {
             品牌替代
           </Text>
         );
-        StockTypeBorderColor = styles.StockType7BorderColor;
+        // StockTypeBorderColor = styles.StockType7BorderColor;
         break;
       default:
         break;
@@ -96,13 +96,29 @@ class SearchListStockItem extends PureComponent<Props> {
     // title
     if (value.FlatListRowType === 1) {
       return (
-        <View style={[styles.FlatListRowTitle, StockTypeBorderColor]}>
-          <View style={[styles.FlatListRowTitleText]}>{StockTypeTextEle}</View>
+        <View>
+          <View
+            style={{
+              height: 10,
+              backgroundColor: "#f8f8f8",
+            }}
+          />
+          <View style={[styles.FlatListRowTitle, StockTypeBorderColor]}>
+            <View style={[styles.FlatListRowTitleText]}>
+              {StockTypeTextEle}
+            </View>
+          </View>
         </View>
       );
     } else if (value.FlatListRowType === 2) {
       return (
         <View style={styles.FlatListRowTitle2}>
+          <View
+            style={{
+              height: 10,
+              backgroundColor: "#f8f8f8",
+            }}
+          />
           <View style={styles.FlexCenter}>
             <Text style={styles.FlatListRowTitle2Text}>
               以下库存由会员自行发布，正能量未参与任何监督，请自行甄别。
@@ -124,7 +140,10 @@ class SearchListStockItem extends PureComponent<Props> {
         </View>
       );
     }
-
+    const Telephone = value.Supplier.Telephone
+      ? value.Supplier.Telephone.split(",")[0]
+      : "";
+    const Tel = Telephone ? Telephone.split(" ")[0] : "";
     return (
       <TouchableOpacity
         style={[styles.FlatListRow]}
@@ -133,6 +152,21 @@ class SearchListStockItem extends PureComponent<Props> {
           this.RowClickHandler(value);
         }}
       >
+        <View style={styles.flexrow}>
+          <View style={styles.flexrow}>
+            <Text style={styles.SupplierName}>{value.SupplierName}</Text>
+            {(value.Supplier.PublicLabelInfo || []).map((item, index) => {
+              if (index < 1) {
+                return (
+                  <Text style={styles.lableTag} key={index}>
+                    {item.LabelName}({item.LabelTimes})
+                  </Text>
+                );
+              }
+            })}
+          </View>
+          <View>{StockTypeTextEle}</View>
+        </View>
         {/* top */}
         <View style={[styles.FlatListRowTop]}>
           <View style={styles.FlatListRowTopTitleBox}>
@@ -226,13 +260,12 @@ class SearchListStockItem extends PureComponent<Props> {
             {value.Description}
           </Text>
           <Text
-            style={[
-              styles.color666,
-              styles.stocksBottomText,
-              styles.fontSize13,
-            ]}
+            style={[styles.stocksBottomText, styles.fontSize13, styles.telText]}
+            onPress={() => {
+              Linking.openURL(`tel:${Tel}`);
+            }}
           >
-            {value.SupplierName}
+            {Tel}
           </Text>
         </View>
       </TouchableOpacity>
@@ -241,6 +274,11 @@ class SearchListStockItem extends PureComponent<Props> {
 }
 const styles = StyleSheet.create({
   // common
+  flexrow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   colorMain: {
     color: "#ee7700",
   },
@@ -276,9 +314,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     paddingRight: 8,
     borderBottomWidth: 1,
-    height: 26,
+    height: 30,
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   FlatListRowTitle2: {
     backgroundColor: "#F0F0F0",
@@ -358,6 +396,7 @@ const styles = StyleSheet.create({
     // fontWeight: "bold",
     borderWidth: 1,
     textAlign: "center",
+    maxWidth: 80,
   },
   StockType0BorderColor: {
     borderColor: "#E6E6E6",
@@ -410,8 +449,20 @@ const styles = StyleSheet.create({
   StockType7BorderColor: {
     borderColor: "#006DCC",
   },
-
-  // 现货
+  lableTag: {
+    color: "#41B341",
+    borderColor: "#41B341",
+    borderWidth: 1,
+    borderRadius: 2,
+    paddingLeft: 3,
+    paddingRight: 3,
+    marginLeft: 5,
+  },
+  SupplierName: {
+    fontWeight: "bold",
+    color: "#666",
+    lineHeight: 30,
+  },
   stocksBottom: {
     flexDirection: "row",
     justifyContent: "space-between",
