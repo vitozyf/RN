@@ -84,7 +84,7 @@ class ListRow extends PureComponent<Props> {
             <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
               {value.Brand}
             </Text>
-            {value.Brand ? (
+            {!!value.Packaging ? (
               <Text
                 style={[
                   styles.line,
@@ -98,7 +98,7 @@ class ListRow extends PureComponent<Props> {
             <Text style={[styles.TextCommon, styles.TextCommonCenter]}>
               {value.Packaging}
             </Text>
-            {value.Packaging ? (
+            {!!value.MakeYear ? (
               <Text
                 style={[
                   styles.line,
@@ -198,19 +198,31 @@ class ListRow extends PureComponent<Props> {
             <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
               {value.Brand}
             </Text>
-            <Text
-              style={[styles.line, styles.TextCommon, styles.TextCommonBottom]}
-            >
-              |
-            </Text>
+            {!!value.Packaging && (
+              <Text
+                style={[
+                  styles.line,
+                  styles.TextCommon,
+                  styles.TextCommonBottom,
+                ]}
+              >
+                |
+              </Text>
+            )}
             <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
               {value.Packaging}
             </Text>
-            <Text
-              style={[styles.line, styles.TextCommon, styles.TextCommonBottom]}
-            >
-              |
-            </Text>
+            {!!value.MakeYear && (
+              <Text
+                style={[
+                  styles.line,
+                  styles.TextCommon,
+                  styles.TextCommonBottom,
+                ]}
+              >
+                |
+              </Text>
+            )}
             <Text style={[styles.TextCommon, styles.TextCommonBottom]}>
               {value.MakeYear}
             </Text>

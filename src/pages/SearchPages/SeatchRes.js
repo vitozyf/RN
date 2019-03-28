@@ -67,10 +67,10 @@ const navigationOptions = {
 
 const TabNav = createMaterialTopTabNavigator(
   {
-    AllSearchRes: {
-      screen: AllSearchRes,
-      path: "/Home/Bom/AllSearchRes",
-    },
+    // AllSearchRes: {
+    //   screen: AllSearchRes,
+    //   path: "/Home/Bom/AllSearchRes",
+    // },
     Yunext: {
       screen: Yunext,
       path: "/Home/Bom/Yunext",
@@ -81,7 +81,7 @@ const TabNav = createMaterialTopTabNavigator(
     },
   },
   {
-    initialRouteName: "AllSearchRes",
+    initialRouteName: "Yunext",
     lazy: true,
     tabBarOptions: navigationOptions,
     backBehavior: "none",
@@ -202,7 +202,7 @@ class SeatchRes extends Component<Props, State> {
         url = `appget/${CurrentName}`;
         break;
       case "getyunexttopstocks":
-        serchData.StartIndex = 1;
+        serchData.StartIndex = 0;
         searchApi.searchApi = true;
         onlydata.onlydata = false;
         url = `${CurrentName}`;
