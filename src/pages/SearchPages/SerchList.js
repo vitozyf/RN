@@ -107,7 +107,7 @@ class SerchList extends PureComponent<SerchListProps, SerchListState> {
   // 下拉刷新
   _renderRefresh = () => {
     const { onSearchHandler } = this.props;
-    onSearchHandler(1, false);
+    onSearchHandler(undefined, false);
   };
   // 加载更多
   onEndReached = () => {

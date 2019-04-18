@@ -30,7 +30,7 @@ class Stocks extends Component<Props> {
       KeyWord,
       datas,
     } = this.props;
-    console.log(111, PageSize);
+    console.log(111, startindex);
     const serchData = {
       PageSize,
       KeyWord,
